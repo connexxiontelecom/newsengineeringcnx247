@@ -68,7 +68,10 @@ class DriveController extends Controller
     public function getSize(Request $request)
     {
 
-        $tenant = Tenant::where("tenant_id", $request->tenant_id)->get();
+			$size = 	$this->getDriveSize($request);
+			return response()->json(["used" => $size['used'], "capacity" => $size['capacity']], 200);
+
+      /*   $tenant = Tenant::where("tenant_id", $request->tenant_id)->get();
         $planId = $tenant[0]['plan_id'];
 
         $plan_details = DB::table('plan_features')
@@ -130,7 +133,7 @@ class DriveController extends Controller
         $size = ceil(($size) / 1024 / 1024);
 
         return response()->json(["used" => $size, "size" => $storage_size, "formated" => number_format($size)], 200);
-
+ */
     }
 
     public function getDriveSize(Request $request)
