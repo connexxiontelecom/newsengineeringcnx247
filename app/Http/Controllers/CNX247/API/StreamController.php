@@ -1002,7 +1002,7 @@ class StreamController extends Controller
 				$send->save();
 				$user = User::find($request->sender_id);
 				$title = $user->first_name ." ".$user->surname;
-				$this->ToSpecificUser($request->tenant_id, $title, $request->message, $request->sender_id);
+				$this->ToSpecificUser($request->tenant_id, $title, $request->message, $request->receiver);
         return response()->json(['Response' => "Sent"], 200);
     }
 
