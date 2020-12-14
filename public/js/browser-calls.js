@@ -17155,16 +17155,16 @@ window.hangUp = function () {
 
 /***/ }),
 
-/***/ 1:
+/***/ 2:
 /*!*********************************************!*\
   !*** multi ./resources/js/browser-calls.js ***!
   \*********************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! C:\Projects\Laravel\cnx247\resources\js\browser-calls.js */"./resources/js/browser-calls.js");
+module.exports = __webpack_require__(/*! C:\Projects\connexxiontelecom\connexxiongroup-cnx247v2\resources\js\browser-calls.js */"./resources/js/browser-calls.js");
 
 
 /***/ })
 
-},[[1,"/js/manifest","/js/vendor"]]]);
+},[[2,"/js/manifest","/js/vendor"]]]);

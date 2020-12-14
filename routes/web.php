@@ -120,7 +120,8 @@ Route::post('/conversation/attachment', 'CNX247\Backend\ChatnCallsController@sen
 Route::get('/chat-n-calls', 'CNX247\Backend\ChatnCallsController@showChatnCallsView')->name('chat-n-calls');
 Route::post('/conversation/compatibility-token', 'CNX247\Backend\TokenController@newToken');
 Route::post('/conversation/call', 'CNX247\Backend\TokenController@newCall');
-#Route::get('/chat', '')->name('chat');
+Route::get('/chat', 'CNX247\Backend\ChatnCallsController@chat')->name('chat');
+Route::get('/initialize-chat', 'CNX247\Backend\ChatnCallsController@initializeChat');
 #Route::post('/cnx247/calls', 'CNX247\Backend\ChatnCallsController@newCall');
 #CNXStream
 Route::get('/cnx247-stream', 'CNX247\Backend\CNX247Stream@index')->name('cnx247-stream');

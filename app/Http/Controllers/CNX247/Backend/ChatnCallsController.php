@@ -179,5 +179,17 @@ class ChatnCallsController extends Controller
         }
 
         return $response;
-    }
+		}
+
+
+		public function chat(){
+			return view('backend.chat.view.chat');
+		}
+
+		public function initializeChat(){
+			$users = User::where('tenant_id', Auth::user()->tenant_id)->get();
+			$messages = Message::where('tenant_id', Auth::user()->tenant_id)->get();
+			$auth_user = Auth::user();
+			return response()->json(['users'=>$users,'messages'=>$messages, 'auth_user'=>$auth_user],200);
+		}
 }
