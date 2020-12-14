@@ -1,0 +1,69 @@
+ var addresses = yawait Geocoder.local.findAddressesFromCoordinates(coordinates);
+          var first = addresses.first;
+// print number of retured addresses 
+debugPrint('${addresses.length}');
+// print the best address
+debugPrint("${first.featureName} : ${first.addressLine}");
+//print other address names
+debugPrint(Country:${first.countryName} AdminArea:${first.adminArea} SubAdminArea:${first.subAdminArea}");
+//print more address names
+debugPrint(Locality:${first.locality}: Sublocality:${first.subLocality}");
+
+
+
+I saw a damsel
+could she be an Angel
+the thoughts crosses my heart
+even in the dark of night
+
+My heart stayed to wonder
+and then paced to ponder
+am I dreaming of this beauty
+or I'm deep in reality
+
+I couldn't but hear
+oh my oh dear,
+The music in her voice
+again I saw the elegance in her poise
+
+
+The gentle breeze whispered
+as the moon glistered
+the radiance on her skin
+is none like I have seen
+
+As I lay down to sleep
+i fetched my treasures deep
+the best that i would cherish
+and these things for her I wish
+
+that the brooks washed her feet
+and the stars brighten her street
+that she live in opulence
+and ever walk with elegance
+
+that amongst flowers her name be rose
+that tales of her be the best prose
+that if she would ever smile
+let it be bright as the sky
+
+That her bosom be of melody
+while she dances to the symphony
+let her fantasies
+take beyond the galaxies
+
+that the fragrance of the best flowers
+pour out to her like soft showers
+that she ever stands tall
+and before her the best treasures fall.
+
+I Saw a damsel
+
+
+
+
+
+
+
+
+

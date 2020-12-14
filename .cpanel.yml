@@ -1,0 +1,6 @@
+---
+deployment:
+  tasks:
+    # - export DEPLOYPATH=/home/connexx1/public_html/
+    - export DEPLOYPATH=/home/connexx1/public_html/connexxiongroup/
+    - /bin/cp -R * $DEPLOYPATH
