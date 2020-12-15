@@ -32292,8 +32292,7 @@ var vm = new Vue({
         _this3.messages = '';
         _this3.messages = response.data.messages;
         _this3.selected_user_details = response.data.selected_user;
-      });
-      this.scrollToBottom();
+      }); //this.scrollToBottom();
     },
     clearMessages: function clearMessages(id) {
       var _this4 = this;

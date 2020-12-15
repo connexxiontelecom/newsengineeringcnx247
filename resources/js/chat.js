@@ -75,7 +75,7 @@ var vm = new Vue({
 				this.messages = response.data.messages;
 				this.selected_user_details = response.data.selected_user;
 			});
-			this.scrollToBottom();
+			//this.scrollToBottom();
 
 		},
 
