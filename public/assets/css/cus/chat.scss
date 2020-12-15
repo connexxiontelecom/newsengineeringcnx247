@@ -79,13 +79,21 @@ input {
     outline: none;
   }
 }
-
+.conversation{
+	height: 500px;
+	overflow-x: scroll;
+	display: flex;
+	flex: 5;
+	flex-direction: column;
+	justify-content: space-between;
+}
 .friend-drawer {
   padding: 10px 15px;
   display: flex;
   vertical-align: baseline;
   background: #fff;
-  transition: .3s ease;
+	transition: .3s ease;
+	position: relative;
 
   &--grey {
     background: #eee;
@@ -127,7 +135,7 @@ hr {
 }
 
 .chat-bubble {
-  padding: 10px 14px;
+  padding: 20px 30px;
   background: #eee;
   margin: 10px 30px;
   border-radius: 9px;
@@ -188,7 +196,7 @@ hr {
   padding: 10px 15px;
   align-items: center;
   margin-top: 19px;
-  bottom: 0;
+	bottom: 0;
 
   input {
     margin: 0 10px;

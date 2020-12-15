@@ -35,7 +35,7 @@ class WorkflowController extends Controller
 						['purchase-request', 'expense-report',
 						'leave-request', 'business-trip',
 						'general-request'])
-						->where('post_status', 'in-progress')
+						//->where('post_status', 'in-progress')
 						->where('user_id', Auth::user()->id)
 						->where('tenant_id',Auth::user()->tenant_id)
 						->orderBy('id', 'DESC')

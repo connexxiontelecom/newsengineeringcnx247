@@ -14318,22 +14318,107 @@ var vm = new Vue({
       users: '',
       messages: '',
       auth_user: '',
-      selected_user: ''
+      selected_user: '',
+      selected_user_details: ''
     };
   },
   watch: {},
   created: function created() {
+    var _this = this;
+
     this.initializeChat();
+    Echo["private"]("messages".concat(this.user.id)).listen('NewMessage', function (e) {
+      _this.handleIncoming(e.message);
+    });
+  },
+  filters: {
+    moment: function (_moment) {
+      function moment(_x) {
+        return _moment.apply(this, arguments);
+      }
+
+      moment.toString = function () {
+        return _moment.toString();
+      };
+
+      return moment;
+    }(function (date) {
+      return moment().format('MMMM Do YYYY, h:mm:ss a');
+    })
   },
   methods: {
     initializeChat: function initializeChat() {
-      var _this = this;
+      var _this2 = this;
 
       axios.get('/initialize-chat').then(function (response) {
-        _this.messages = response.data.messages;
-        _this.users = response.data.users;
-        _this.auth_user = response.data.auth_user;
+        _this2.users = response.data.users;
+        _this2.auth_user = response.data.auth_user;
       });
+    },
+    handleIncoming: function handleIncoming(message) {
+      if (this.selected_user && message.from_id == $this.selected_user.id) {
+        this.saveNewMessage(message); //this.messages.push(message);
+
+        return;
+      }
+
+      alert(message.message);
+    },
+    getSelectedUser: function getSelectedUser(id) {
+      var _this3 = this;
+
+      this.selected_user = id;
+      axios.get('/chat-with/' + id).then(function (response) {
+        _this3.messages = '';
+        _this3.messages = response.data.messages;
+        _this3.selected_user_details = response.data.selected_user;
+      });
+      this.scrollToBottom();
+    },
+    sendMessage: function sendMessage() {
+      var _this4 = this;
+
+      if (!this.selected_user) {
+        return;
+      }
+
+      axios.post('/conversation/send', {
+        message: this.compose_message,
+        receiver: this.selected_user
+      }).then(function (response) {
+        _this4.compose_message = '';
+
+        _this4.getSelectedUser(_this4.selected_user);
+      });
+    },
+    saveNewMessage: function saveNewMessage(obj) {
+      this.messages.push(obj);
+    },
+    moment: function (_moment2) {
+      function moment() {
+        return _moment2.apply(this, arguments);
+      }
+
+      moment.toString = function () {
+        return _moment2.toString();
+      };
+
+      return moment;
+    }(function () {
+      return moment();
+    }),
+    date: function date(_date) {
+      return moment(_date).format('MMMM Do YYYY, h:mm:ss a');
+    },
+    scrollToBottom: function scrollToBottom() {
+      var _this5 = this;
+
+      //var container = this.$el.querySelector("#messageWrapper");
+      //var container = this.$el.querySelector("#messageWrapper");
+      //container.scrollTop = container.scrollHeight;
+      setTimeout(function () {
+        _this5.$refs.messageWrapper.scrollTo = _this5.$refs.messageWrapper.scrollHeight - _this5.$refs.messageWrapper.clientHeight;
+      }, 50);
     }
   }
 });

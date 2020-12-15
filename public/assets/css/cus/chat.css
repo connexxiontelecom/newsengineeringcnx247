@@ -97,6 +97,24 @@ input:focus {
   outline: none;
 }
 
+.conversation {
+  height: 500px;
+  overflow-x: scroll;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-flex: 5;
+      -ms-flex: 5;
+          flex: 5;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
 .friend-drawer {
   padding: 10px 15px;
   display: -webkit-box;
@@ -106,6 +124,7 @@ input:focus {
   background: #fff;
   -webkit-transition: .3s ease;
   transition: .3s ease;
+  position: relative;
 }
 
 .friend-drawer--grey {
@@ -147,7 +166,7 @@ hr {
 }
 
 .chat-bubble {
-  padding: 10px 14px;
+  padding: 20px 30px;
   background: #eee;
   margin: 10px 30px;
   border-radius: 9px;

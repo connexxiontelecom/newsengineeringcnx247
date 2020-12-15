@@ -11,6 +11,7 @@ use Twilio\Jwt\AccessToken;
 use Twilio\Jwt\Grants\VoiceGrant;
 use Twilio\Rest\Client;
 use Pusher\Pusher;
+use App\Events\NewMessage;
 use App\User;
 use App\Message;
 use Auth;
@@ -52,9 +53,10 @@ class ChatnCallsController extends Controller
         $send->from_id = Auth::user()->id;
         $send->tenant_id = Auth::user()->tenant_id;
         $send->save();
-        $this->showChatnCallsView();
+				//$this->showChatnCallsView();
+				broadcast(new NewMessage($send));
 
-        // pusher
+       /*  // pusher
         $options = array(
             'cluster' => 'eu'
         );
@@ -67,7 +69,7 @@ class ChatnCallsController extends Controller
         );
         $data = ['from' => Auth::user()->id, 'to' => $request->receiver]; // sending from and to user id when pressed enter
         $pusher->trigger('my-channel', 'my-event', $data);
-
+			//	return response()->json($send); */
     }
     /*
     *
@@ -187,9 +189,33 @@ class ChatnCallsController extends Controller
 		}
 
 		public function initializeChat(){
-			$users = User::where('tenant_id', Auth::user()->tenant_id)->get();
-			$messages = Message::where('tenant_id', Auth::user()->tenant_id)->get();
+			$users = DB::select("select users.id, users.first_name, users.avatar,
+									users.email, users.surname, users.mobile, users.position, count(is_read) as unread,
+									messages.created_at as message_date
+									FROM users
+									LEFT  JOIN  messages
+									ON users.id = messages.from_id
+									AND messages.to_id = " . Auth::id() . "
+									WHERE users.id != " . Auth::id() . "
+									AND users.tenant_id = " .Auth::user()->tenant_id. "
+									GROUP BY  messages.created_at, users.id, users.first_name, users.avatar, users.email, users.surname, users.mobile, users.position
+									ORDER BY messages.created_at DESC ");
 			$auth_user = Auth::user();
-			return response()->json(['users'=>$users,'messages'=>$messages, 'auth_user'=>$auth_user],200);
+			return response()->json(['users'=>$users, 'auth_user'=>$auth_user],200);
+		}
+
+
+		public function chatWith($id){
+			$my_id = Auth::user()->id;
+
+			Message::where(['from_id' => $id, 'to_id' => $my_id])->update(['is_read' => 1]);
+			$messages = Message::where(function ($query) use ($id, $my_id) {
+																	$query->where('from_id', $id)->where('to_id', $my_id);
+															})->oRwhere(function ($query) use ($id, $my_id) {
+																	$query->where('from_id', $my_id)->where('to_id', $id);
+															})->get();
+			$auth_user = Auth::user();
+			$selected_user = User::where('tenant_id', Auth::user()->tenant_id)->where('id', $id)->first();
+			return response()->json(['messages'=>$messages, 'auth_user'=>$auth_user, 'selected_user'=>$selected_user],200);
 		}
 }
