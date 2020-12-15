@@ -44,7 +44,7 @@ var vm = new Vue({
 		sortedContacts(){
 			return _.sortBy(this.users, [(selected_user)=>{
 				if(selected_user == this.selected){
-					return Infinity;
+					//return Infinity;
 				}
 				return selected_user.unread;
 			}]).reverse();

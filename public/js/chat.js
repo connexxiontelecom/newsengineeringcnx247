@@ -32262,8 +32262,7 @@ var vm = new Vue({
       var _this2 = this;
 
       return _.sortBy(this.users, [function (selected_user) {
-        if (selected_user == _this2.selected) {
-          return Infinity;
+        if (selected_user == _this2.selected) {//return Infinity;
         }
 
         return selected_user.unread;
