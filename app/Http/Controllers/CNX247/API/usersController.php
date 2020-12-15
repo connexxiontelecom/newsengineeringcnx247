@@ -56,6 +56,35 @@ class usersController extends Controller
         $user->device_token = $token;
         $user->save();
 
+		}
+
+
+
+		public function isLoggedIn(Request $request)
+    {
+        $tenant_id = $request->tenant_id;
+        $user_id = $request->user_id;
+        $user = User::find($user_id);
+        $user->is_online = 1;
+        $user->save();
+				return response()->json(['ok' => 'Success',
+			], 200);
+		}
+
+
+
+		public function isLoggedout(Request $request)
+    {
+			$tenant_id = $request->tenant_id;
+			$user_id = $request->user_id;
+			$user = User::find($user_id);
+			$user->is_online = 0;
+			$user->save();
+			return response()->json(['ok' => 'Success',
+		], 200);
+
     }
+
+
 
 } //end class

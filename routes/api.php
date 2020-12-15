@@ -48,6 +48,14 @@ Route::group(['middleware' => ['jwt.verify'], 'prefix'=>'auth' ], function() {
 		Route::post('users', 'CNX247\API\usersController@users');
 		Route::post('tenant', 'CNX247\API\usersController@getTenantDetails');
 
+
+		Route::post('isloggedin', 'CNX247\API\usersController@isLoggedIn');
+
+		Route::post('isloggedout', 'CNX247\API\usersController@isLoggedout');
+
+
+
+
 		Route::post('savetoken', 'CNX247\API\usersController@saveUserDeviceToken');
 
 		Route::post('newtask', 'CNX247\API\StreamController@storeTask');
@@ -80,6 +88,7 @@ Route::group(['middleware' => ['jwt.verify'], 'prefix'=>'auth' ], function() {
 		Route::post('streamsharefile', 'CNX247\API\StreamController@shareFile');
 		Route::get('priorities', 'CNX247\API\StreamController@priorities');
 		Route::post('chats', 'CNX247\API\StreamController@getmessages');
+
 
 		Route::post('sndchat', 'CNX247\API\StreamController@sendChat');
 
