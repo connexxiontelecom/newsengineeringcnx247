@@ -24,12 +24,12 @@
 				<div class="search-box">
 					<div class="input-wrapper">
 						<i class="material-icons">search</i>
-						<input placeholder="Search here" type="text" v-model="searchText">
+						<input placeholder="Search here" type="text">
 					</div>
 				</div>
 
 				<div  style="overflow-x: scroll;" v-slimscroll="options">
-					<div v-for="user in sortedContacts"  class="friend-drawer friend-drawer--onhover" :class="{ 'selected': selected_user == selected}" @click="getSelectedUser(user.id)">
+					<div v-for="user in sortedContacts"  class="friend-drawer friend-drawer--onhover" @click="getSelectedUser(user.id)">
 						<img class="profile-image" :src="'/assets/images/avatars/thumbnails/'+user.avatar" alt="">
 						<div class="live-status" :class="user.is_online == 1 ? 'bg-success' : 'bg-danger'"></div>
 						<div class="text">
@@ -88,7 +88,7 @@
 				<div class="row" >
 					<div class="col-12" >
 						<div class="chat-box-tray">
-							<i style="cursor: pointer;" class="material-icons">sentiment_very_satisfied</i>
+							{{-- <i style="cursor: pointer;" class="material-icons">sentiment_very_satisfied</i> --}}
 							<input type="text" v-model="compose_message" @keydown.enter="sendMessage" style="padding: 7px; color: #B1B1B1;" placeholder="Type your message here...">
 							{{-- <i class="material-icons">mic</i> --}}
 							<i style="cursor: pointer;" class="material-icons" @click="sendMessage">send</i>
