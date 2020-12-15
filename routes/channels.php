@@ -19,6 +19,7 @@ Broadcast::channel('App.User.{id}', function ($user, $id) {
 
 
 Broadcast::channel('messages.{id}', function ($user, $id) { //private channel [event]
+	return dd($user->id, $id);
 	return (int) $user->id === (int) $id;
 });
 

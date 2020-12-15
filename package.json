@@ -28,6 +28,7 @@
         "push.js": "^1.0.12",
         "pusher-js": "^7.0.0",
         "turbolinks": "^5.2.0",
-        "twilio-client": "^1.12.5"
+        "twilio-client": "^1.12.5",
+        "vue-slimscroll": "^1.0.1"
     }
 }

@@ -55841,7 +55841,8 @@ window.Echo = new laravel_echo__WEBPACK_IMPORTED_MODULE_0__["default"]({
    disableStats: true, */
   key: "90d6dd6920c71f1d27c0",
   cluster: "eu",
-  forceTLS: true
+  encrypted: true // forceTLS: true
+
 });
 
 /***/ }),

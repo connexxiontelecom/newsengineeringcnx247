@@ -18,25 +18,23 @@
 				<div class="settings-tray">
 					<img class="profile-image" :src="'/assets/images/avatars/thumbnails/'+auth_user.avatar" :alt="auth_user.first_name">
 					<span class="settings-tray--right">
-						<i class="material-icons">cached</i>
-						<i class="material-icons">message</i>
-						<i class="material-icons">menu</i>
+						<i class="material-icons" @click="initializeChat">cached</i>
 					</span>
 				</div>
 				<div class="search-box">
 					<div class="input-wrapper">
 						<i class="material-icons">search</i>
-						<input placeholder="Search here" type="text">
+						<input placeholder="Search here" type="text" v-model="searchText">
 					</div>
 				</div>
 
-				<div  style="height:500px; overflow-x: scroll;">
-					<div v-for="(user, index) in users" class="friend-drawer friend-drawer--onhover" @click="getSelectedUser(user.id)">
+				<div  style="overflow-x: scroll;" v-slimscroll="options">
+					<div v-for="user in sortedContacts"  class="friend-drawer friend-drawer--onhover" :class="{ 'selected': selected_user == selected}" @click="getSelectedUser(user.id)">
 						<img class="profile-image" :src="'/assets/images/avatars/thumbnails/'+user.avatar" alt="">
-						<div class="live-status bg-success"></div>
+						<div class="live-status" :class="user.is_online == 1 ? 'bg-success' : 'bg-danger'"></div>
 						<div class="text">
 							<h6>@{{user.first_name}} @{{user.surname}}</h6>
-							<p class="text-muted"> Hey, you're arrested!</p>
+							<p class="text-muted"> @{{user.email}}</p>
 						</div>
 						<span class="time text-muted small">
 							<span class="badge badge-danger" v-if="user.unread > 0 ">@{{  user.unread }}</span>
@@ -47,26 +45,31 @@
 			<div class="col-md-8 " style="background: url(/assets/images/chat-bg.png);">
 				<div class="settings-tray">
 						<div class="friend-drawer no-gutters friend-drawer--grey">
-						<img class="profile-image" :src="'/assets/images/avatars/thumbnails/'+selected_user_details.avatar" v-if="messages.length > 0" :alt="selected_user_details.first_name">
-						<img class="profile-image" :src="'/assets/images/avatars/thumbnails/'+auth_user.avatar" v-if="messages.length <= 0" :alt="auth_user.first_name">
+						<img class="profile-image" :src="'/assets/images/avatars/thumbnails/'+selected_user_details.avatar" v-if="selected_user" :alt="selected_user_details.first_name">
+						<img class="profile-image" :src="'/assets/images/avatars/thumbnails/'+auth_user.avatar" v-else :alt="auth_user.first_name">
 						<div class="text">
-							<h6 v-if="messages.length <= 0">@{{auth_user.first_name}} @{{auth_user.surname}}</h6>
-							<h6 v-if="messages.length > 0">@{{selected_user_details.first_name}} @{{selected_user_details.surname}}</h6>
-							<p class="text-muted">Layin' down the law since like before Christ...</p>
+							<h6 v-if="!selected_user">@{{auth_user.first_name}} @{{auth_user.surname}}</h6>
+							<h6 v-else>@{{selected_user_details.first_name}} @{{selected_user_details.surname}}</h6>
+							<p v-if="selected_user">@{{selected_user_details.position}} <small v-if="selected_user_details.is_online == 1">Online</small> <small v-else>Offline</small></p>
+							<p v-else>@{{auth_user.position}}</p>
 						</div>
-						<span class="settings-tray--right">
-							<i class="material-icons">cached</i>
+						<span class="settings-tray--right dropdown" v-if="selected_user">
+							<i class="material-icons" @click="getSelectedUser(selected_user)">cached</i>
 							<i class="material-icons">message</i>
-							<i class="material-icons">menu</i>
+							<i class="material-icons dropdown-toggle" data-toggle="dropdown" >menu</i>
+							<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+								<a class="dropdown-item" :href=`/activity-stream/profile/${selected_user_details.url}`>Contact info</a>
+								<a class="dropdown-item" href="javascript:void(0);" @click="clearMessages(selected_user)">Clear messages</a>
+							</div>
 						</span>
 					</div>
 				</div>
-				<div class="chat-panel conversation" >
+				<div class="chat-panel conversation" v-slimscroll="options">
 
-					<div class="row no-gutters" v-if="messages.length <= 0">
+					<div class="row no-gutters" v-if="!selected_user">
 						<div class="col-md-8">
 							<div class="chat-bubble chat-bubble--left w-100 text-primary text-center">
-								Hello @{{auth_user.first_name}}, select a contact on your left to <strong>start conversation</strong>
+								Hello @{{auth_user.first_name}}, select a contact on your left to <strong>start a conversation</strong>
 							</div>
 						</div>
 					</div>

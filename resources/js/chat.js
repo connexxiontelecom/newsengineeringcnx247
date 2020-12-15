@@ -1,7 +1,9 @@
 const { default: Axios } = require('axios');
+var _ = require('lodash');
+import VueSlimScroll from 'vue-slimscroll';
 
 window.Vue = require('vue');
-
+Vue.use(VueSlimScroll);
 var vm = new Vue({
 	el: "#chat",
 	data(){
@@ -13,6 +15,11 @@ var vm = new Vue({
 			auth_user:'',
 			selected_user:'',
 			selected_user_details: '',
+			searchText:'',
+			options:{
+				height:'500px'
+			},
+			selected: 0,
 		}
 	},
 	watch:{
@@ -20,6 +27,8 @@ var vm = new Vue({
 	},
 	created(){
 		this.initializeChat();
+	},
+	mounted(){
 		Echo.private(`messages${this.user.id}`)
 		.listen('NewMessage', (e)=>{
 			this.handleIncoming(e.message);
@@ -31,6 +40,26 @@ var vm = new Vue({
 			return moment().format('MMMM Do YYYY, h:mm:ss a');
 		},
 	},
+	computed:{
+		sortedContacts(){
+			return _.sortBy(this.users, [(selected_user)=>{
+				if(selected_user == this.selected){
+					return Infinity;
+				}
+				return selected_user.unread;
+			}]).reverse();
+		},
+
+		filterContact(){
+			/* this.users.filter((contact)=>{
+				return boolean;
+			}); */
+		/* 	var self = this;
+        	return this.users.filter(function (user) {
+          return _.includes(user.toLowerCase(), self.searchText.toLowerCase());
+			}); */
+		},
+	},
 	methods:{
 		initializeChat(){
 			axios.get('/initialize-chat')
@@ -40,12 +69,12 @@ var vm = new Vue({
 			});
 		},
 		handleIncoming(message){
-			if(this.selected_user && message.from_id == $this.selected_user.id){
+			if(this.selected_user && message.from_id == $this.selected_user){
 				this.saveNewMessage(message);
 				//this.messages.push(message);
 				return;
 			}
-			alert(message.message);
+			//alert(message.message);
 		},
 		getSelectedUser(id){
 			this.selected_user = id;
@@ -57,6 +86,13 @@ var vm = new Vue({
 			});
 			this.scrollToBottom();
 
+		},
+
+		clearMessages(id){
+			axios.get('/clear-messages/'+id)
+			.then(response=>{
+				this.getSelectedUser(id);
+			});
 		},
 
 		sendMessage(){
@@ -82,9 +118,6 @@ var vm = new Vue({
       return moment(date).format('MMMM Do YYYY, h:mm:ss a');
 		},
 		scrollToBottom() {
-      //var container = this.$el.querySelector("#messageWrapper");
-      //var container = this.$el.querySelector("#messageWrapper");
-			//container.scrollTop = container.scrollHeight;
 			setTimeout(()=>{
 				this.$refs.messageWrapper.scrollTo = this.$refs.messageWrapper.scrollHeight - this.$refs.messageWrapper.clientHeight;
 			}, 50);
@@ -92,3 +125,4 @@ var vm = new Vue({
 	},
 
 });
+
