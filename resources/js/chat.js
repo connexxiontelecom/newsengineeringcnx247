@@ -43,22 +43,13 @@ var vm = new Vue({
 	computed:{
 		sortedContacts(){
 			return _.sortBy(this.users, [(selected_user)=>{
-				if(selected_user == this.selected){
+			/* 	if(selected_user == this.selected){
 					//return Infinity;
 				}
-				return selected_user.unread;
+				return selected_user.unread; */
 			}]).reverse();
 		},
 
-		filterContact(){
-			/* this.users.filter((contact)=>{
-				return boolean;
-			}); */
-		/* 	var self = this;
-        	return this.users.filter(function (user) {
-          return _.includes(user.toLowerCase(), self.searchText.toLowerCase());
-			}); */
-		},
 	},
 	methods:{
 		initializeChat(){

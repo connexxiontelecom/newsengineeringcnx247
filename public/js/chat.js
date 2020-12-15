@@ -32259,33 +32259,21 @@ var vm = new Vue({
   },
   computed: {
     sortedContacts: function sortedContacts() {
-      var _this2 = this;
-
       return _.sortBy(this.users, [function (selected_user) {
-        if (selected_user == _this2.selected) {//return Infinity;
-        }
-
-        return selected_user.unread;
+        /* 	if(selected_user == this.selected){
+        		//return Infinity;
+        	}
+        	return selected_user.unread; */
       }]).reverse();
-    },
-    filterContact: function filterContact() {
-      /* this.users.filter((contact)=>{
-      	return boolean;
-      }); */
-
-      /* 	var self = this;
-            	return this.users.filter(function (user) {
-              return _.includes(user.toLowerCase(), self.searchText.toLowerCase());
-      	}); */
     }
   },
   methods: {
     initializeChat: function initializeChat() {
-      var _this3 = this;
+      var _this2 = this;
 
       axios.get('/initialize-chat').then(function (response) {
-        _this3.users = response.data.users;
-        _this3.auth_user = response.data.auth_user;
+        _this2.users = response.data.users;
+        _this2.auth_user = response.data.auth_user;
       });
     },
     handleIncoming: function handleIncoming(message) {
@@ -32297,25 +32285,25 @@ var vm = new Vue({
 
     },
     getSelectedUser: function getSelectedUser(id) {
-      var _this4 = this;
+      var _this3 = this;
 
       this.selected_user = id;
       axios.get('/chat-with/' + id).then(function (response) {
-        _this4.messages = '';
-        _this4.messages = response.data.messages;
-        _this4.selected_user_details = response.data.selected_user;
+        _this3.messages = '';
+        _this3.messages = response.data.messages;
+        _this3.selected_user_details = response.data.selected_user;
       });
       this.scrollToBottom();
     },
     clearMessages: function clearMessages(id) {
-      var _this5 = this;
+      var _this4 = this;
 
       axios.get('/clear-messages/' + id).then(function (response) {
-        _this5.getSelectedUser(id);
+        _this4.getSelectedUser(id);
       });
     },
     sendMessage: function sendMessage() {
-      var _this6 = this;
+      var _this5 = this;
 
       if (!this.selected_user) {
         return;
@@ -32325,9 +32313,9 @@ var vm = new Vue({
         message: this.compose_message,
         receiver: this.selected_user
       }).then(function (response) {
-        _this6.compose_message = '';
+        _this5.compose_message = '';
 
-        _this6.getSelectedUser(_this6.selected_user);
+        _this5.getSelectedUser(_this5.selected_user);
       });
     },
     saveNewMessage: function saveNewMessage(obj) {
@@ -32350,10 +32338,10 @@ var vm = new Vue({
       return moment(_date).format('MMMM Do YYYY, h:mm:ss a');
     },
     scrollToBottom: function scrollToBottom() {
-      var _this7 = this;
+      var _this6 = this;
 
       setTimeout(function () {
-        _this7.$refs.messageWrapper.scrollTo = _this7.$refs.messageWrapper.scrollHeight - _this7.$refs.messageWrapper.clientHeight;
+        _this6.$refs.messageWrapper.scrollTo = _this6.$refs.messageWrapper.scrollHeight - _this6.$refs.messageWrapper.clientHeight;
       }, 50);
     }
   }
