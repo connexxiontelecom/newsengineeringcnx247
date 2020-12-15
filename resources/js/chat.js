@@ -1,9 +1,12 @@
 const { default: Axios } = require('axios');
 var _ = require('lodash');
-import VueSlimScroll from 'vue-slimscroll';
+//import VueSlimScroll from 'vue-slimscroll';
+//import Vue from 'vue';
+import Echo from 'laravel-echo';
 
 window.Vue = require('vue');
-Vue.use(VueSlimScroll);
+//Vue.use(VueSlimScroll);
+
 var vm = new Vue({
 	el: "#chat",
 	data(){
@@ -29,10 +32,10 @@ var vm = new Vue({
 		this.initializeChat();
 	},
 	mounted(){
-		Echo.private(`messages${this.user.id}`)
+		/* Echo.private(`messages${this.user.id}`)
 		.listen('NewMessage', (e)=>{
 			this.handleIncoming(e.message);
-		});
+		}); */
 	},
 
 	filters:{
@@ -108,12 +111,13 @@ var vm = new Vue({
 		date: function (date) {
       return moment(date).format('MMMM Do YYYY, h:mm:ss a');
 		},
-		scrollToBottom() {
+		/* scrollToBottom() {
 			setTimeout(()=>{
 				this.$refs.messageWrapper.scrollTo = this.$refs.messageWrapper.scrollHeight - this.$refs.messageWrapper.clientHeight;
 			}, 50);
-    },
+    }, */
 	},
 
 });
+
 

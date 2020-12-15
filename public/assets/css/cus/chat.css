@@ -99,7 +99,7 @@ input:focus {
 
 .conversation {
   height: 500px;
-  overflow-x: scroll;
+ /*  overflow-x: scroll; */
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;

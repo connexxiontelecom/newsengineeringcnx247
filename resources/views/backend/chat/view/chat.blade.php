@@ -28,7 +28,7 @@
 					</div>
 				</div>
 
-				<div  style="overflow-x: scroll;" v-slimscroll="options">
+				<div  style="overflow-x: scroll; height:500px;background: transparent;">
 					<div v-for="user in sortedContacts"  class="friend-drawer friend-drawer--onhover" @click="getSelectedUser(user.id)">
 						<img class="profile-image" :src="'/assets/images/avatars/thumbnails/'+user.avatar" alt="">
 						<div class="live-status" :class="user.is_online == 1 ? 'bg-success' : 'bg-danger'"></div>
@@ -64,7 +64,7 @@
 						</span>
 					</div>
 				</div>
-				<div class="chat-panel conversation" v-slimscroll="options">
+				<div class="chat-panel conversation" >
 
 					<div class="row no-gutters" v-if="!selected_user">
 						<div class="col-md-8">

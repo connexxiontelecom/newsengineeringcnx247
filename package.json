@@ -29,6 +29,7 @@
         "pusher-js": "^7.0.0",
         "turbolinks": "^5.2.0",
         "twilio-client": "^1.12.5",
+        "vue-custom-scrollbar": "^1.4.0",
         "vue-slimscroll": "^1.0.1"
     }
 }
