@@ -157,7 +157,6 @@ class Shortcut extends Component
          $this->birthdays = User::where('tenant_id', Auth::user()->tenant_id)
 				 												->whereNotNull('birth_date')
 																->whereIn('id', $userIds)
-																//->orderByRaw('DATE_FORMAT(birth_date, "%d-%m")', 'DESC')
 																->orderByRaw("FIELD(id, $ids_ordered)")
 																->get();
         $this->online = User::where('tenant_id', Auth::user()->tenant_id)->where('is_online', 1)->count();

@@ -261,7 +261,9 @@ class ActivityStreamController extends Controller
             return response()->json(['error'=>'Success! Ooops! Something went wrong. Try again.'], 400);
 
         }
-    }
+		}
+
+
 
     /*
     * Create announcement

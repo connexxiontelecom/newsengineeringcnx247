@@ -126,5 +126,12 @@ class EventController extends Controller
                     ->where('user_id', Auth::user()->id)
                     ->get();
         return response($event);
-    }
+		}
+
+
+		public function viewAllEvents(){
+			$events = Post::where('post_type', 'event')->where('tenant_id', Auth::user()->tenant_id)->get();
+			return view('backend.events.view-events', ['events'=>$events]);
+		}
+
 }

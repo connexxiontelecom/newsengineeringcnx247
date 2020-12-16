@@ -429,6 +429,7 @@ Route::get('/my-event/calendar', 'CNX247\Backend\EventController@eventCalendar')
 Route::get('/my-event-calendar', 'CNX247\Backend\EventController@getEventCalendarData');
 Route::get('/company-calendar', 'CNX247\Backend\EventController@companyCalendar')->name('company-calendar');
 Route::get('/company-event-calendar', 'CNX247\Backend\EventController@getCompanyEventData');
+Route::get('/all-events', 'CNX247\Backend\EventController@viewAllEvents')->name('view-all-events');
 
 #Procurement routes
 #Supplier routes

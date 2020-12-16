@@ -80,6 +80,11 @@
                             <span class="pcoded-mtext">My Events</span>
                         </a>
                     </li>
+                    <li class="">
+                        <a href="{{route('view-all-events')}}">
+                            <span class="pcoded-mtext">All Events</span>
+                        </a>
+                    </li>
                 </ul>
             </li>
         </ul>

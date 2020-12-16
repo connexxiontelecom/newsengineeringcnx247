@@ -39,7 +39,8 @@
                                 <tr>
                                     <th>#</th>
                                     <th>Event Name</th>
-                                    <th>Start date</th>
+                                    <th>Status</th>
+                                    <th>Start Date</th>
                                     <th>End Date</th>
                                 </tr>
                                 </thead>
@@ -53,7 +54,14 @@
                                                 <td>{{$i++}}</td>
                                                 <td>
                                                     <a href="{{route('view-post-activity-stream', $event->post_url)}}">{{$event->post_title}}</a>
-                                                </td>
+																								</td>
+																								<td>
+																									@if ($event->end_date < \Carbon\Carbon::now())
+																											<label for="" class="label label-danger">Closed</label>
+																									@else
+																											<label for="" class="label label-success">Open</label>
+																									@endif
+																								</td>
                                                 <td><label for="" class="label label-primary">{{date(Auth::user()->tenant->dateFormat->format ?? 'd F, Y', strtotime($event->start_date))}} @ {{date('h:ia', strtotime($event->start_date))}}</label></td>
                                                 <td><label for="" class="label label-danger">{{date(Auth::user()->tenant->dateFormat->format ?? 'd F, Y', strtotime($event->end_date))}} @ {{date('h:ia', strtotime($event->start_date))}}</label></td>
                                             </tr>
@@ -68,7 +76,7 @@
                                 <tr>
                                     <th>#</th>
                                     <th>Event Name</th>
-                                    <th>Start date</th>
+                                    <th>Start Date</th>
                                     <th>End Date</th>
                                 </tr>
                                 </tfoot>

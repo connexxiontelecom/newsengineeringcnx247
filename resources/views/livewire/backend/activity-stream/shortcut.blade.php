@@ -2318,6 +2318,7 @@
 																	</div>
 																	<hr>
 															@endforeach
+															<p class="text-center text-muted"><a href="{{route('view-all-events')}}">View All Events</a></p>
 															@else
 																	<p class="text-center text-muted">There're no events</p>
 															@endif
