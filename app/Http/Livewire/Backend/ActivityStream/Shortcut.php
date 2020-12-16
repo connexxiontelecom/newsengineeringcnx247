@@ -112,7 +112,8 @@ class Shortcut extends Component
 
         $now = Carbon::now();
         $events = Post::where('tenant_id', Auth::user()->tenant_id)
-                                ->where('post_type', 'event')
+																->where('post_type', 'event')
+																->whereDate('start_date', '>=', $now)
                                 ->orderBy('id', 'DESC')
                                 ->take(5)
                                 ->get();
@@ -127,7 +128,7 @@ class Shortcut extends Component
         $this->assisting = ResponsiblePerson::where('user_id',Auth::user()->id)
                                 ->where('tenant_id', Auth::user()->tenant_id)
                                 ->count();
-        $duration = Carbon::parse($now->today())->diffInDays($now->addMonths(2));
+        //$duration = Carbon::parse($now->today())->diffInDays($now->addMonths(2));
         $current = strtotime($now->today());
         $dates = [];
         $stepVal = '+1 day';
@@ -136,10 +137,10 @@ class Shortcut extends Component
             $current = strtotime($stepVal, $current);
          }
 
-        $users = User::where('tenant_id', Auth::user()->tenant_id)
-                        ->orderByRaw('DATE_FORMAT(birth_date, "%d-%m")', 'DESC')
+				$users = User::where('tenant_id', Auth::user()->tenant_id)
+				 							->whereNotNull('birth_date')
+                        ->orderByRaw('DATE_FORMAT(birth_date, "%m-%d")', 'DESC')
 												->get();
-
         $userBirthDates = [];
         $userIds = [];
         foreach($users as $user){
@@ -151,7 +152,7 @@ class Shortcut extends Component
 							}
             }
 				}
-        $this->birthdays = User::where('tenant_id', Auth::user()->tenant_id)
+         $this->birthdays = User::where('tenant_id', Auth::user()->tenant_id)
 																->whereIn('id', $userIds)
 																->orderByRaw('DATE_FORMAT(birth_date, "%d-%m")', 'DESC')
 																->get();
