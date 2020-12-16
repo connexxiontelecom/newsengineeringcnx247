@@ -139,10 +139,10 @@ class Shortcut extends Component
 
 				$users = User::where('tenant_id', Auth::user()->tenant_id)
 				 							->whereNotNull('birth_date')
-                        ->orderByRaw('DATE_FORMAT(birth_date, "%m-%d")', 'DESC')
+                        ->orderByRaw('DATE_FORMAT(birth_date, "%m-%d")', 'ASC')
 												->get();
         $userBirthDates = [];
-        $userIds = [];
+				$userIds = [];
         foreach($users as $user){
             $n = 0;
             array_push($userBirthDates, Carbon::parse($user->birth_date)->format('m-d'));
@@ -152,9 +152,13 @@ class Shortcut extends Component
 							}
             }
 				}
+				//return dd($userIds);
+				$ids_ordered = implode(',', $userIds);
          $this->birthdays = User::where('tenant_id', Auth::user()->tenant_id)
+				 												->whereNotNull('birth_date')
 																->whereIn('id', $userIds)
-																->orderByRaw('DATE_FORMAT(birth_date, "%d-%m")', 'DESC')
+																//->orderByRaw('DATE_FORMAT(birth_date, "%d-%m")', 'DESC')
+																->orderByRaw("FIELD(id, $ids_ordered)")
 																->get();
         $this->online = User::where('tenant_id', Auth::user()->tenant_id)->where('is_online', 1)->count();
         $this->workforce = User::where('tenant_id', Auth::user()->tenant_id)->count();
