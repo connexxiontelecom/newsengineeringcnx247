@@ -24,7 +24,7 @@
 				<div class="search-box">
 					<div class="input-wrapper">
 						<i class="material-icons">search</i>
-						<input placeholder="Search here" type="text">
+						<input placeholder="Search here" type="text" v-model="searchText" @keyup="searchContact">
 					</div>
 				</div>
 
@@ -39,6 +39,13 @@
 						<span class="time text-muted small">
 							<span class="badge badge-danger" v-if="user.unread > 0 ">@{{  user.unread }}</span>
 						</span>
+					</div>
+					<div class="text" v-if="noRecord">
+						<div><h6 class="text-center">No record match your search</h6></div>
+						<hr>
+						<div class="btn-group d-flex justify-content-center">
+							<button class="btn btn-mini btn-light"><i class="material-icons" @click="initializeChat()">cached</i></button>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -75,7 +82,7 @@
 					</div>
 					<div class="row no-gutters" v-if="messages.length > 0" v-for="(msg,index) in messages">
 						<div ref="messageWrapper" style="min-width: 190px; padding: 7px; max-width: auto;" :class="auth_user.id == msg.to_id ? '' : 'offset-md-7'">
-							<div class="chat-bubble " :class="auth_user.id == msg.to_id ? 'chat-bubble--left' : 'chat-bubble--right' ">
+							<div :class="auth_user.id == msg.to_id ? 'chat-bubble chat-bubble--left' : 'chat-bubble chat-bubble--right' ">
 								@{{msg.message}}
 								<br>
 								<p class="float-right"><small>@{{date(msg.created_at)}}</small></p>

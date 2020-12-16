@@ -33026,6 +33026,7 @@ var vm = new Vue({
       selected_user: '',
       selected_user_details: '',
       searchText: '',
+      noRecord: false,
       options: {
         height: '500px'
       },
@@ -33059,12 +33060,7 @@ var vm = new Vue({
   },
   computed: {
     sortedContacts: function sortedContacts() {
-      return _.sortBy(this.users, [function (selected_user) {
-        /* 	if(selected_user == this.selected){
-        		//return Infinity;
-        	}
-        	return selected_user.unread; */
-      }]).reverse();
+      return _.sortBy(this.users, [function (selected_user) {}]).reverse();
     }
   },
   methods: {
@@ -33074,6 +33070,22 @@ var vm = new Vue({
       axios.get('/initialize-chat').then(function (response) {
         _this.users = response.data.users;
         _this.auth_user = response.data.auth_user;
+        _this.searchText = '';
+      });
+    },
+    searchContact: function searchContact() {
+      var _this2 = this;
+
+      axios.get('/filter-contact/' + this.searchText).then(function (response) {
+        _this2.users = response.data.users;
+
+        if (_this2.users.length <= 0) {
+          _this2.noRecord = true;
+        } else {
+          _this2.noRecord = false;
+        }
+
+        _this2.auth_user = response.data.auth_user;
       });
     },
     handleIncoming: function handleIncoming(message) {
@@ -33085,24 +33097,28 @@ var vm = new Vue({
 
     },
     getSelectedUser: function getSelectedUser(id) {
-      var _this2 = this;
+      var _this3 = this;
 
       this.selected_user = id;
       axios.get('/chat-with/' + id).then(function (response) {
-        _this2.messages = '';
-        _this2.messages = response.data.messages;
-        _this2.selected_user_details = response.data.selected_user;
+        _this3.messages = '';
+        _this3.messages = response.data.messages;
+        _this3.selected_user_details = response.data.selected_user;
+
+        _this3.initializeChat();
+
+        _this3.searchText = '';
       }); //this.scrollToBottom();
     },
     clearMessages: function clearMessages(id) {
-      var _this3 = this;
+      var _this4 = this;
 
       axios.get('/clear-messages/' + id).then(function (response) {
-        _this3.getSelectedUser(id);
+        _this4.getSelectedUser(id);
       });
     },
     sendMessage: function sendMessage() {
-      var _this4 = this;
+      var _this5 = this;
 
       if (!this.selected_user) {
         return;
@@ -33112,9 +33128,9 @@ var vm = new Vue({
         message: this.compose_message,
         receiver: this.selected_user
       }).then(function (response) {
-        _this4.compose_message = '';
+        _this5.compose_message = '';
 
-        _this4.getSelectedUser(_this4.selected_user);
+        _this5.getSelectedUser(_this5.selected_user);
       });
     },
     saveNewMessage: function saveNewMessage(obj) {

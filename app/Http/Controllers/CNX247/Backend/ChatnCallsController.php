@@ -230,4 +230,18 @@ class ChatnCallsController extends Controller
 
 			return response()->json(['message'=>'Done!'], 200);
 		}
+
+		public function filterContact($search){
+			//$users = User::where('id', '!=', auth()->id())->where('tenant_id', Auth::user()->tenant_id)->get();
+			$filtered_users = User::where('tenant_id', Auth::user()->tenant_id)
+														->where('id', '!=', auth()->id())
+														->where('first_name', 'like', "%{$search}%")
+														->get();
+
+				$auth_user = Auth::user();
+				return response()->json(['users'=>$filtered_users, 'auth_user'=>$auth_user],200);
+
+
+
+		}
 }

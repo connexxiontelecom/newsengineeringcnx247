@@ -19,6 +19,7 @@ var vm = new Vue({
 			selected_user:'',
 			selected_user_details: '',
 			searchText:'',
+			noRecord:false,
 			options:{
 				height:'500px'
 			},
@@ -46,10 +47,6 @@ var vm = new Vue({
 	computed:{
 		sortedContacts(){
 			return _.sortBy(this.users, [(selected_user)=>{
-			/* 	if(selected_user == this.selected){
-					//return Infinity;
-				}
-				return selected_user.unread; */
 			}]).reverse();
 		},
 
@@ -59,6 +56,20 @@ var vm = new Vue({
 			axios.get('/initialize-chat')
 			.then(response=>{
 				this.users = response.data.users;
+				this.auth_user = response.data.auth_user;
+				this.searchText = '';
+			});
+		},
+
+		searchContact(){
+			axios.get('/filter-contact/'+this.searchText)
+			.then(response=>{
+				this.users = response.data.users;
+				if(this.users.length <= 0){
+					this.noRecord = true;
+				}else{
+					this.noRecord = false;
+				}
 				this.auth_user = response.data.auth_user;
 			});
 		},
@@ -77,6 +88,8 @@ var vm = new Vue({
 				this.messages = '';
 				this.messages = response.data.messages;
 				this.selected_user_details = response.data.selected_user;
+				this.initializeChat();
+				this.searchText = '';
 			});
 			//this.scrollToBottom();
 
