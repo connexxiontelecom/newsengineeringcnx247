@@ -1004,7 +1004,17 @@ class StreamController extends Controller
 				$title = $user->first_name ." ".$user->surname;
 				$this->ToSpecificUser($request->tenant_id, $title, $request->message, $request->receiver);
         return response()->json(['Response' => "Sent"], 200);
-    }
+		}
+
+
+		public function updateIsReadStatus(Request $request)
+		{
+			$id= $request->id;
+			$my_id = $request->my_id;
+			Message::where('from_id', $id)->where('to_id', $my_id)->update(['is_read' => 1]);
+			return response()->json(['Response' => "updated"], 200);
+		}
+
 
     public function verifyCode(Request $request)
     {
