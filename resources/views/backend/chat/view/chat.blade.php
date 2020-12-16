@@ -85,7 +85,7 @@
 							<div :class="auth_user.id == msg.to_id ? 'chat-bubble chat-bubble--left' : 'chat-bubble chat-bubble--right' ">
 								@{{msg.message}}
 								<br>
-								<p class="float-right"><small>@{{date(msg.created_at)}}</small></p>
+								<small class="float-right">@{{date(msg.created_at)}}</small>
 							</div>
 						</div>
 					</div>

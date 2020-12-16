@@ -139,7 +139,8 @@ hr {
   background: #eee;
   margin: 10px 30px;
   border-radius: 9px;
-  position: relative;
+	position: relative;
+	overflow-wrap: break-word;
   animation: fadeIn 1s ease-in;
 
   &:after {
