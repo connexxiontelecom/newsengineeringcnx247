@@ -62,16 +62,21 @@ var vm = new Vue({
 		},
 
 		searchContact(){
-			axios.get('/filter-contact/'+this.searchText)
-			.then(response=>{
-				this.users = response.data.users;
-				if(this.users.length <= 0){
-					this.noRecord = true;
-				}else{
-					this.noRecord = false;
-				}
-				this.auth_user = response.data.auth_user;
-			});
+			if(this.searchText = ''){
+				this.initializeChat();
+			}else{
+				axios.get('/filter-contact/'+this.searchText)
+				.then(response=>{
+					this.users = response.data.users;
+					if(this.users.length <= 0){
+						this.noRecord = true;
+					}else{
+						this.noRecord = false;
+					}
+					this.auth_user = response.data.auth_user;
+				});
+
+			}
 		},
 		handleIncoming(message){
 			if(this.selected_user && message.from_id == $this.selected_user){

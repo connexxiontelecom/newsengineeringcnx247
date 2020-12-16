@@ -33076,17 +33076,21 @@ var vm = new Vue({
     searchContact: function searchContact() {
       var _this2 = this;
 
-      axios.get('/filter-contact/' + this.searchText).then(function (response) {
-        _this2.users = response.data.users;
+      if (this.searchText = '') {
+        this.initializeChat();
+      } else {
+        axios.get('/filter-contact/' + this.searchText).then(function (response) {
+          _this2.users = response.data.users;
 
-        if (_this2.users.length <= 0) {
-          _this2.noRecord = true;
-        } else {
-          _this2.noRecord = false;
-        }
+          if (_this2.users.length <= 0) {
+            _this2.noRecord = true;
+          } else {
+            _this2.noRecord = false;
+          }
 
-        _this2.auth_user = response.data.auth_user;
-      });
+          _this2.auth_user = response.data.auth_user;
+        });
+      }
     },
     handleIncoming: function handleIncoming(message) {
       if (this.selected_user && message.from_id == $this.selected_user) {
