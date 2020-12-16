@@ -91,6 +91,7 @@ Route::group(['middleware' => ['jwt.verify'], 'prefix'=>'auth' ], function() {
 
 
 		Route::post('sndchat', 'CNX247\API\StreamController@sendChat');
+		Route::post('updatechat', 'CNX247\API\StreamController@updateIsReadStatus');
 
 		//Route::post('notify', 'CNX247\API\StreamController@pushtoToken');
 
