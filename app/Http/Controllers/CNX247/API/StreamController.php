@@ -7,6 +7,7 @@ use App\Driver;
 use App\FileModel;
 use App\Http\Controllers\Controller;
 use App\Message;
+use App\Events\NewMessage;
 use App\Notifications\NewPostNotification;
 use App\Notifications\SubmitTask;
 use App\Observer;
@@ -1003,6 +1004,9 @@ class StreamController extends Controller
 				$user = User::find($request->sender_id);
 				$title = $user->first_name ." ".$user->surname;
 				$this->ToSpecificUser($request->tenant_id, $title, $request->message, $request->receiver);
+				//$this->showChatnCallsView();
+				broadcast(new NewMessage($send));
+
         return response()->json(['Response' => "Sent"], 200);
 		}
 
