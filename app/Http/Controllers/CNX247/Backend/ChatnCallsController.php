@@ -56,6 +56,9 @@ class ChatnCallsController extends Controller
 				//$this->showChatnCallsView();
 				broadcast(new NewMessage($send));
 
+				$title =  Auth::user()->first_name ." ". Auth::user()->surname;
+				$this->ToSpecificUser($send->tenant_id, $title, $request->message, $request->receiver);
+
        /*  // pusher
         $options = array(
             'cluster' => 'eu'
@@ -244,4 +247,84 @@ class ChatnCallsController extends Controller
 
 
 		}
+
+
+
+
+
+		public function pushtoToken($token, $title, $body, $userId, $tenantId)
+    {
+        //$token, $title, $body, $userId, $tenantId
+
+        $ch = curl_init("https://fcm.googleapis.com/fcm/send");
+
+        $data = array("clickaction" => "FLUTTERNOTIFICATIONCLICK", "user" => $userId, "tenant_id" => $tenantId);
+
+        //Creating the notification array.
+        $notification = array('title' => $title, 'body' => $body);
+
+        //This array contains, the token and the notification. The 'to' attribute stores the token.
+        $arrayToSend = array('to' =>$token, 'notification' => $notification, 'data' => $data);
+
+        //Generating JSON encoded string form the above array.
+        $json = json_encode($arrayToSend);
+
+        $url = "https://fcm.googleapis.com/fcm/send";
+        //Setup headers:
+        $headers = array();
+        $headers[] = 'Content-Type: application/json';
+        $headers[] = 'Authorization: key=AAAAQ6WOcsM:APA91bGx5qqTvsZoFYEMdLiNuM-DlH509sszesHzH5IdW-_OqyRNAw8UrT1VfimR0ITKpF4sJCK7GOoeI0zPYvhkQu4gmow783ZG77Qrj8seV_0QgWkkCBGZ7oSSzdVoTKIckOusTI8x';
+
+        //Setup curl, add headers and post parameters.
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $json);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        $result = curl_exec($ch);
+       // print($result);
+
+        //Send the request
+        //curl_exec($ch);
+
+        //Close request
+        curl_close($ch);
+		}
+
+
+
+		public function ToAllUsers($tenant_id, $title, $body, $userId="32")
+		{
+			$token = "/topics/all";
+			$this->pushtoToken($token, $title, $body, $userId, $tenant_id);
+		}
+
+
+		public function ToSpecificUser($tenant_id, $title, $body, $userId)
+		{
+			$users = User::where('users.tenant_id', $tenant_id)->where('users.id', $userId)->get();
+			foreach($users as $user)
+			{
+					 $token= $user['device_token'];
+					 if($token !=null && !empty($token))
+						{
+							$this->pushtoToken($token, $title, $body, $userId, $tenant_id);
+						}
+			}
+		}
+
+
+
+
+
+
+
+
+
+
+
 }
