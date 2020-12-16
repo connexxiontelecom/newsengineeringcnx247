@@ -62,9 +62,7 @@ var vm = new Vue({
 		},
 
 		searchContact(){
-			if(this.searchText = ''){
-				this.initializeChat();
-			}else{
+
 				axios.get('/filter-contact/'+this.searchText)
 				.then(response=>{
 					this.users = response.data.users;
@@ -76,7 +74,7 @@ var vm = new Vue({
 					this.auth_user = response.data.auth_user;
 				});
 
-			}
+
 		},
 		handleIncoming(message){
 			if(this.selected_user && message.from_id == $this.selected_user){
