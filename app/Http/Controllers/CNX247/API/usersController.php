@@ -35,7 +35,10 @@ class usersController extends Controller
         }
         return response()->json(['users' => $users,
         ], 200);
-    }
+		}
+
+
+
 
     public function getTenantDetails(Request $request)
     {
@@ -55,7 +58,6 @@ class usersController extends Controller
         $user = User::find($user_id);
         $user->device_token = $token;
         $user->save();
-
 		}
 
 
