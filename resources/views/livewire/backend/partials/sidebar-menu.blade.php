@@ -69,23 +69,11 @@
                     <span class="pcoded-mtext">CNX247.Drive</span>
                 </a>
             </li>
-            <li class="pcoded-hasmenu">
-                <a href="javascript:void(0)">
+            <li class="">
+                <a href="{{route('my-event-list')}}">
                     <span class="pcoded-micon"><i class="ti-calendar"></i></span>
                     <span class="pcoded-mtext">Events</span>
                 </a>
-                <ul class="pcoded-submenu">
-                    <li class="">
-                        <a href="{{route('my-event-list')}}">
-                            <span class="pcoded-mtext">My Events</span>
-                        </a>
-                    </li>
-                    <li class="">
-                        <a href="{{route('view-all-events')}}">
-                            <span class="pcoded-mtext">All Events</span>
-                        </a>
-                    </li>
-                </ul>
             </li>
         </ul>
         <div class="pcoded-navigatio-lavel">Human Resource</div>
