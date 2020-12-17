@@ -82,7 +82,7 @@
 					<div class="row no-gutters"  v-for="(msg,index) in messages">
 						<div :class="`col-md-5${msg.from_id != auth_user.id ? ' ' : ' offset-md-7'}`">
 							<div :class="`chat-bubble${msg.from_id != auth_user.id ? ' chat-bubble--left' : ' chat-bubble--right'}`" :key="msg.id">
-								@{{msg.message}}
+								@{{msg.message}} <br>
                 <small class="ml-3 text-muted">@{{date(msg.created_at)}}</small>
 							</div>
 						</div>
@@ -93,7 +93,7 @@
 					<div class="col-12" >
 						<div class="chat-box-tray">
 							{{-- <i style="cursor: pointer;" class="material-icons">sentiment_very_satisfied</i> --}}
-							<input type="text" v-model="compose_message" @keydown.enter="sendMessage" style="padding: 7px; color: #B1B1B1;" placeholder="Type your message here...">
+							<input type="text" v-model="compose_message" @keydown.enter="sendMessage" style="padding: 7px; color: #000000;" placeholder="Type your message here...">
 							{{-- <i class="material-icons">mic</i> --}}
 							<i style="cursor: pointer;" class="material-icons" @click="sendMessage">send</i>
 						</div>

@@ -20,6 +20,8 @@ use App\PostComment;
 use App\PostLike;
 use App\ResponsiblePerson;
 use App\RequestApprover;
+use App\Participant;
+use App\Observer;
 use App\User;
 use DatePeriod;
 use Auth;
@@ -117,15 +119,18 @@ class Shortcut extends Component
                                 ->orderBy('id', 'DESC')
                                 ->take(5)
                                 ->get();
-        $this->ongoing = Post::where('post_status','in-progress')
+        $this->ongoing = ResponsiblePerson::where('status','in-progress')
                                 ->where('tenant_id', Auth::user()->tenant_id)
-                                ->where('post_type', 'task')
+                                ->where('user_id', Auth::user()->id)
                                 ->count();
         $this->set_by_me = Post::where('user_id',Auth::user()->id)
                                 ->where('tenant_id', Auth::user()->tenant_id)
                                 ->where('post_type', 'task')
                                 ->count();
-        $this->assisting = ResponsiblePerson::where('user_id',Auth::user()->id)
+        $this->assisting = Participant::where('user_id',Auth::user()->id)
+                                ->where('tenant_id', Auth::user()->tenant_id)
+                                ->count();
+        $this->following = Observer::where('user_id',Auth::user()->id)
                                 ->where('tenant_id', Auth::user()->tenant_id)
                                 ->count();
         //$duration = Carbon::parse($now->today())->diffInDays($now->addMonths(2));

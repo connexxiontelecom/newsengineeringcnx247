@@ -43,7 +43,7 @@ body {
 }
 
 .settings-tray--right i:hover {
-  color: #74b9ff;
+  color: #056162;
   cursor: pointer;
 }
 
@@ -141,7 +141,7 @@ input:focus {
 }
 
 .friend-drawer--onhover:hover {
-  background: #74b9ff;
+  background: #056162;
   cursor: pointer;
 }
 
@@ -187,7 +187,7 @@ hr {
 
 .chat-bubble--right:after {
   right: 0;
-  border-left-color: #74b9ff;
+  border-left-color: #056162;
   border-right: 0;
   margin-right: -20px;
 }
@@ -211,7 +211,7 @@ hr {
 }
 
 .offset-md-7 .chat-bubble {
-  background: #74b9ff;
+  background: #056162;
   color: #fff;
 }
 

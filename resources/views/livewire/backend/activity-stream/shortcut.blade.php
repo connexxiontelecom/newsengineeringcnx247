@@ -2263,7 +2263,7 @@
 																	<li class="active"><a href="{{route('task-board')}}">On-going <label for="" class="badge badge-warning text-white float-right">{{number_format($ongoing)}}</label></a></li>
 																	<li><a href="{{route('task-board')}}">Assisting <label for="" class="badge badge-secondary float-right">{{number_format($assisting)}}</label></a></li>
 																	<li><a href="{{route('task-board')}}">Set by me <label for="" class="badge badge-primary float-right">{{number_format($set_by_me)}}</label></a></li>
-																	<li><a href="{{route('task-board')}}">Following <label for="" class="badge badge-info float-right">3</label></a>  </li>
+																	<li><a href="{{route('task-board')}}">Following <label for="" class="badge badge-info float-right">{{number_format($following)}}</label></a>  </li>
 															</ul>
 													</div>
 											</div>
