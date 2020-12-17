@@ -8,7 +8,27 @@
 <link rel="stylesheet" type="text/css" href="\assets\pages\message\message.css">
 <link rel="stylesheet" type="text/css" href="\assets\css\cus\chat.css">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/material-design-icons/3.0.1/iconfont/material-icons.min.css" rel="stylesheet">
+<style>
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
 
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+</style>
 @endsection
 
 @section('content')
@@ -93,7 +113,7 @@
 					<div class="col-12" >
 						<div class="chat-box-tray">
 							{{-- <i style="cursor: pointer;" class="material-icons">sentiment_very_satisfied</i> --}}
-							<input type="text" v-model="compose_message" @keydown.enter="sendMessage" style="padding: 7px; color: #000000;" placeholder="Type your message here...">
+							<input type="text" v-model="compose_message" @keydown.enter="sendMessage" style="padding: 7px; color: #000000; height:50px;" placeholder="Type your message here...">
 							{{-- <i class="material-icons">mic</i> --}}
 							<i style="cursor: pointer;" class="material-icons" @click="sendMessage">send</i>
 						</div>
