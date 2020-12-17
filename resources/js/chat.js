@@ -93,8 +93,8 @@ var vm = new Vue({
 				this.selected_user_details = response.data.selected_user;
 				this.initializeChat();
 				this.searchText = '';
+				this.scrollToBottom();
 			});
-			//this.scrollToBottom();
 
 		},
 
@@ -116,6 +116,7 @@ var vm = new Vue({
 			.then(response=>{
 				this.compose_message = '';
 				this.getSelectedUser(this.selected_user);
+				this.scrollToBottom();
 			});
 		},
 		saveNewMessage(obj){
@@ -127,11 +128,12 @@ var vm = new Vue({
 		date: function (date) {
       return moment(date).format('MMMM Do YYYY, h:mm:ss a');
 		},
-		/* scrollToBottom() {
-			setTimeout(()=>{
-				this.$refs.messageWrapper.scrollTo = this.$refs.messageWrapper.scrollHeight - this.$refs.messageWrapper.clientHeight;
+		scrollToBottom() {
+			setTimeout(() => {
+					document.getElementById('messageWrapper').scrollTop = document.getElementById('messageWrapper').scrollHeight - document.getElementById('messageWrapper').clientHeight;
 			}, 50);
-    }, */
+		}
+
 	},
 
 });

@@ -12,7 +12,7 @@
 @endsection
 
 @section('content')
-	<div class="container" id="chat">
+	<div class="chat-container" id="chat" style="margin-top:-20px;">
 		<div class="row no-gutters">
 			<div class="col-md-4 border-right">
 				<div class="settings-tray">
@@ -62,7 +62,7 @@
 						</div>
 						<span class="settings-tray--right dropdown" v-if="selected_user">
 							<i class="material-icons" @click="getSelectedUser(selected_user)">cached</i>
-							<i class="material-icons">message</i>
+							{{-- <i class="material-icons">message</i> --}}
 							<i class="material-icons dropdown-toggle" data-toggle="dropdown" >menu</i>
 							<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 								<a class="dropdown-item" :href=`/activity-stream/profile/${selected_user_details.url}`>Contact info</a>
@@ -71,25 +71,22 @@
 						</span>
 					</div>
 				</div>
-				<div class="chat-panel conversation" >
-
-					<div class="row no-gutters" v-if="!selected_user">
-						<div class="col-md-8">
-							<div class="chat-bubble chat-bubble--left w-100 text-primary text-center">
-								Hello @{{auth_user.first_name}}, select a contact on your left to <strong>start a conversation</strong>
+				<div class="chat-panel conversation" id="messageWrapper">
+					<div class="row no-gutters"  v-if="!selected_user">
+							<div class="col-md-8">
+									<div class="chat-bubble chat-bubble--left w-100 text-primary text-center">
+											Hello @{{auth_user.first_name}}, select a contact on your left to <strong>start a conversation</strong>
+									</div>
 							</div>
-						</div>
 					</div>
-					<div class="row no-gutters" v-if="messages.length > 0" v-for="(msg,index) in messages">
-						<div ref="messageWrapper" style="min-width: 190px; padding: 7px; max-width: auto;" :class="auth_user.id == msg.to_id ? '' : 'offset-md-7'">
-							<div :class="auth_user.id == msg.to_id ? 'chat-bubble chat-bubble--left' : 'chat-bubble chat-bubble--right' ">
+					<div class="row no-gutters"  v-for="(msg,index) in messages">
+						<div :class="`col-md-5${msg.from_id != auth_user.id ? ' ' : ' offset-md-7'}`">
+							<div :class="`chat-bubble${msg.from_id != auth_user.id ? ' chat-bubble--left' : ' chat-bubble--right'}`" :key="msg.id">
 								@{{msg.message}}
-								<br>
-								<small class="float-right">@{{date(msg.created_at)}}</small>
+                <small class="ml-3 text-muted">@{{date(msg.created_at)}}</small>
 							</div>
 						</div>
 					</div>
-
 				</div>
 
 				<div class="row" >
