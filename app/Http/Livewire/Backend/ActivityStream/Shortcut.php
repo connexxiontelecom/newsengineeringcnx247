@@ -133,12 +133,22 @@ class Shortcut extends Component
 									})->orderByRaw('DATE_FORMAT(birth_date, "%m-%d")', 'ASC')
 									->take(5)
 									->get();
-        $events = Post::where('tenant_id', Auth::user()->tenant_id)
-																->where('post_type', 'event')
-																->whereDate('start_date', '>=', $now)
-                                ->orderBy('id', 'DESC')
-                                ->take(5)
-                                ->get();
+					$events = Post::where('post_type', 'event')
+									->where('tenant_id', Auth::user()->tenant_id)
+									->get();
+									$eventIds = [];
+									foreach($events as $event){
+									array_push($eventIds, $event->id);
+									}
+									$mine = ResponsiblePerson::where('tenant_id', Auth::user()->tenant_id)
+															->whereIn('post_id', $eventIds)->orWhere('post_id', 32)->get();
+									$mineIds = [];
+									foreach($mine as $m){
+									array_push($mineIds, $m->post_id);
+									}
+				$my_events = Post::where('tenant_id', Auth::user()->tenant_id)->whereIn('id', $mineIds)
+													->take(5)
+													->orderBy('end_date', 'DESC')->get();
         $this->ongoing = ResponsiblePerson::where('status','in-progress')
                                 ->where('tenant_id', Auth::user()->tenant_id)
                                 ->where('user_id', Auth::user()->id)
@@ -178,13 +188,7 @@ class Shortcut extends Component
 							}
             }
 				}
-				//return dd($userIds);
 				$ids_ordered = implode(',', $userIds);
-         /* $this->birthdays = User::where('tenant_id', Auth::user()->tenant_id)
-				 												->whereNotNull('birth_date')
-																->whereIn('id', $userIds)
-																->orderByRaw("FIELD(id, $ids_ordered)")
-																->get(); */
         $this->online = User::where('tenant_id', Auth::user()->tenant_id)->where('is_online', 1)->count();
         $this->workforce = User::where('tenant_id', Auth::user()->tenant_id)->count();
         return view('livewire.backend.activity-stream.shortcut',
@@ -194,7 +198,7 @@ class Shortcut extends Component
                     'announcements'=>Post::where('post_type', 'announcement')
                                 ->where('tenant_id', Auth::user()->tenant_id)
                                 ->orderBy('id', 'DESC')->take(5)->get(),
-                                'events'=>$events,
+                                'events'=>$my_events,
 																	'storage_capacity' => $storage,
 
         ]);
