@@ -2333,7 +2333,7 @@
 											<div class="card">
 													<div class="card-block">
 															@if (count($birthdays) > 0)
-																	@foreach ($birthdays as $birthday)
+																	@foreach ($birthdays->where('account_status',1) as $birthday)
 																		@if (\Carbon\Carbon::parse($birthday->birth_date)->format('m') == 11 || \Carbon\Carbon::parse($birthday->birth_date)->format('m') == 12)
 																			@if (date('d-m') ==  date('d-m', strtotime($birthday->birth_date)))
 																				<div class="user-box assign-user taskboard-right-users">
@@ -2410,7 +2410,7 @@
 																	@endforeach
 															@endif
 															@if (count($birthdays) < 5)
-																	@foreach ($next_birthdays as $birthday)
+																	@foreach ($next_birthdays->where('account_status',1) as $birthday)
 																		@if (\Carbon\Carbon::parse($birthday->birth_date)->format('m') == 11 || \Carbon\Carbon::parse($birthday->birth_date)->format('m') == 12)
 																			@if (date('d-m') ==  date('d-m', strtotime($birthday->birth_date)))
 																				<div class="user-box assign-user taskboard-right-users">

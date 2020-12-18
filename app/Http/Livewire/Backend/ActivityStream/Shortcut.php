@@ -116,7 +116,7 @@ class Shortcut extends Component
 				$now = Carbon::now();
 				$date = Carbon::now();
 				$this->birthdays = User::where('tenant_id', Auth::user()->tenant_id)
-																->where('account_status', 1)
+																->where('account_status', '=', 1)
 												->whereMonth('birth_date', '>', $date->month)
 										->orWhere(function($query) use ($date){
 										$query->WhereMonth('birth_date','=', $date->month)
@@ -125,7 +125,7 @@ class Shortcut extends Component
 									->take(5)
 									->get();
 			$this->next_birthdays = User::where('tenant_id', Auth::user()->tenant_id)
-												->where('account_status', 1)
+												->where('account_status','=', 1)
 												->whereMonth('birth_date', '=', $date->addMonths(1)->month)
 										->orWhere(function($query) use ($date){
 										$query->WhereMonth('birth_date','=', $date->month)
