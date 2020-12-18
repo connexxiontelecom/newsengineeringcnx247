@@ -150,7 +150,8 @@ class Shortcut extends Component
 													->take(5)
 													->orderBy('end_date', 'DESC')->get();
         $this->ongoing = ResponsiblePerson::where('status','in-progress')
-                                ->where('tenant_id', Auth::user()->tenant_id)
+																->where('tenant_id', Auth::user()->tenant_id)
+																->where('post_type', 'task')
                                 ->where('user_id', Auth::user()->id)
                                 ->count();
         $this->set_by_me = Post::where('user_id',Auth::user()->id)
