@@ -34,6 +34,7 @@ class Shortcut extends Component
     //public $posts = [];
     public $ongoing, $following, $assisting, $set_by_me;
     public $birthdays;
+    public $next_birthdays;
     //public $events;
     public $verificationCode;
     public $actionStatus = 0;
@@ -112,7 +113,26 @@ class Shortcut extends Component
 			endif;
 
 
-        $now = Carbon::now();
+				$now = Carbon::now();
+				$date = Carbon::now();
+				$this->birthdays = User::where('tenant_id', Auth::user()->tenant_id)
+																->where('account_status', 1)
+												->whereMonth('birth_date', '=', $date->month)
+										->orWhere(function($query) use ($date){
+										$query->WhereMonth('birth_date','=', $date->month)
+										->whereDay('birth_date', '>=', $date->day);
+									})->orderByRaw('DATE_FORMAT(birth_date, "%m-%d")', 'ASC')
+									->take(5)
+									->get();
+			$this->next_birthdays = User::where('tenant_id', Auth::user()->tenant_id)
+												->where('account_status', 1)
+												->whereMonth('birth_date', '=', $date->addMonths(1)->month)
+										->orWhere(function($query) use ($date){
+										$query->WhereMonth('birth_date','=', $date->month)
+										->whereDay('birth_date', '>=', $date->day);
+									})->orderByRaw('DATE_FORMAT(birth_date, "%m-%d")', 'ASC')
+									->take(5)
+									->get();
         $events = Post::where('tenant_id', Auth::user()->tenant_id)
 																->where('post_type', 'event')
 																->whereDate('start_date', '>=', $now)
@@ -144,8 +164,9 @@ class Shortcut extends Component
 
 				$users = User::where('tenant_id', Auth::user()->tenant_id)
 				 							->whereNotNull('birth_date')
-                        ->orderByRaw('DATE_FORMAT(birth_date, "%m-%d")', 'ASC')
+                        ->orderByRaw('DATE_FORMAT(birth_date, "%m-%d")', 'DESC')
 												->get();
+				//return dd($users);
         $userBirthDates = [];
 				$userIds = [];
         foreach($users as $user){
@@ -159,11 +180,11 @@ class Shortcut extends Component
 				}
 				//return dd($userIds);
 				$ids_ordered = implode(',', $userIds);
-         $this->birthdays = User::where('tenant_id', Auth::user()->tenant_id)
+         /* $this->birthdays = User::where('tenant_id', Auth::user()->tenant_id)
 				 												->whereNotNull('birth_date')
 																->whereIn('id', $userIds)
 																->orderByRaw("FIELD(id, $ids_ordered)")
-																->get();
+																->get(); */
         $this->online = User::where('tenant_id', Auth::user()->tenant_id)->where('is_online', 1)->count();
         $this->workforce = User::where('tenant_id', Auth::user()->tenant_id)->count();
         return view('livewire.backend.activity-stream.shortcut',
