@@ -82,15 +82,7 @@ class LoginController extends Controller
 		if(!empty($user)){
 			//this account is verified
 			if(Auth::attempt(['email'=>$request->email, 'password'=>$request->password, 'account_status'=>1], $request->remember)){
-				$users = User::where('tenant_id', Auth::user()->tenant_id)->whereNotNull('birth_date')->get();
-				$date = Carbon::now();
-				foreach($users as $user){
-					if($date->parse($user->birth_date)->format('m-d') >= $date->format('m-d')){
-							$days = $date->diffInDays($user->birth_date);
-							$user->next_birth_date = $date->parse($user->birth_date)->addDays($days);
-							$user->save();
-					}
-				}
+
 				//check if profile is not updated
 				if(empty(Auth::user()->department_id) ){
 					session()->flash("update_profile", "<strong>Notice: </strong> You're adviced to complete your profile");
