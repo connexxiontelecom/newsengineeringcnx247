@@ -164,38 +164,41 @@ class Shortcut extends Component
         $this->following = Observer::where('user_id',Auth::user()->id)
                                 ->where('tenant_id', Auth::user()->tenant_id)
                                 ->count();
-        //$duration = Carbon::parse($now->today())->diffInDays($now->addMonths(2));
         $current = strtotime($now->today());
-        $dates = [];
-        $stepVal = '+1 day';
-        while($current  <= strtotime($now->today()->addMonths(2)) ) {
-            $dates[] = date('m-d', $current);
-            $current = strtotime($stepVal, $current);
-         }
-
-				$users = User::where('tenant_id', Auth::user()->tenant_id)
-				 							->whereNotNull('birth_date')
-                        ->orderByRaw('DATE_FORMAT(birth_date, "%m-%d")', 'DESC')
-												->get();
-				//return dd($users);
-        $userBirthDates = [];
-				$userIds = [];
-        foreach($users as $user){
-            $n = 0;
-            array_push($userBirthDates, Carbon::parse($user->birth_date)->format('m-d'));
-            if(in_array(Carbon::parse($user->birth_date)->format('m-d'), $dates) ){
-							if(!is_null($user->birth_date)){
-                array_push($userIds, $user->id);
+				$posts = Post::where('tenant_id', Auth::user()->tenant_id)
+										->get();
+							$postIds = [];
+							foreach($posts as $post){
+							array_push($postIds, $post->id);
 							}
-            }
+				$created_by_me = Post::where('tenant_id', Auth::user()->tenant_id)->where('user_id', Auth::user()->id)->get();
+				//this IDs very important
+				$createdByMeIds = [];
+				foreach($created_by_me as $by_me){
+					array_push($createdByMeIds, $by_me->id);
 				}
-				$ids_ordered = implode(',', $userIds);
+				$mine = ResponsiblePerson::where('tenant_id', Auth::user()->tenant_id)->whereIn('post_id', $postIds)
+																	->orWhere('post_id', 32)->get();
+				//same with this
+				$mineIds = [];
+				foreach($mine as $m){
+				array_push($mineIds, $m->post_id);
+				}
+				//join the two IDs (post created by me and ones that I'm responsible for)
+				$mergedIds = array_unique(array_merge($createdByMeIds, $mineIds));
+
+				$my_posts = Post::select('post_title as title', 'start_date as start', 'end_date as end', 'post_color as color')
+													->where('post_type', 'event')
+													->where('tenant_id', Auth::user()->tenant_id)
+													->whereIn('id', $mineIds)->orderBy('end_date', 'DESC')->get();
+
+
         $this->online = User::where('tenant_id', Auth::user()->tenant_id)->where('is_online', 1)->count();
         $this->workforce = User::where('tenant_id', Auth::user()->tenant_id)->count();
         return view('livewire.backend.activity-stream.shortcut',
-                                ['posts'=> Post::where('tenant_id', Auth::user()->tenant_id)
+                                ['posts'=> Post::where('tenant_id', Auth::user()->tenant_id)->whereIn('id',$mergedIds)
                                 ->orderBy('id', 'DESC')
-                                ->paginate(10),
+                                ->paginate(3),
                     'announcements'=>Post::where('post_type', 'announcement')
                                 ->where('tenant_id', Auth::user()->tenant_id)
                                 ->orderBy('id', 'DESC')->take(5)->get(),
