@@ -17155,7 +17155,7 @@ window.hangUp = function () {
 
 /***/ }),
 
-/***/ 2:
+/***/ 3:
 /*!*********************************************!*\
   !*** multi ./resources/js/browser-calls.js ***!
   \*********************************************/
@@ -17167,4 +17167,4 @@ module.exports = __webpack_require__(/*! C:\Projects\connexxiontelecom\connexxio
 
 /***/ })
 
-},[[2,"/js/manifest","/js/vendor"]]]);
+},[[3,"/js/manifest","/js/vendor"]]]);

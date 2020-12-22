@@ -89,13 +89,6 @@ class ChatnCallsController extends Controller
             $filename = 'chat_'.uniqid().'_'.time().'_'.date('Ymd').'.'.$extension;
             $request->file('attachment')->move(public_path($dir), $filename);
         }
-
-/*         if($request->attachment){
-            $filename = 'chat_'.time().'.'.explode('/', explode(':', substr($request->attachment, 0, strpos($request->attachment, ';')))[1])[1];
-            //share attachment
-            //$file->move(base_path('\modo\images'),$file->getClientOriginalName());
-            \Image::make($request->attachment)->resize(52, 82)->save(public_path('assets/uploads/attachments/').$filename);
-        } */
         $message = new Message;
         $message->to_id = $request->to;
         $message->from_id = Auth::user()->id;
@@ -174,10 +167,6 @@ class ChatnCallsController extends Controller
         return $response;
 		}
 
-
-	/* 	public function chat(){
-			return view('backend.chat.view.chat');
-		} */
 
 		public function initializeChat(){
 			// get all users except the authenticated one

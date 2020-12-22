@@ -29,7 +29,8 @@ class ActivityStreamController extends Controller
     */
     public function index(){
 
-        return view('backend.activity-stream.index');
+			return view('backend.activity-stream.index');
+
     }
 
     /*
@@ -505,5 +506,47 @@ class ActivityStreamController extends Controller
         $out->status = 2; //out
         $out->save();
         return response()->json(['message'=>'Success! Clocked-out'], 200);
-    }
+		}
+
+
+		public function searchCNX247(Request $request){
+					$posts = Post::where('tenant_id', Auth::user()->tenant_id)
+					->get();
+						$postIds = [];
+						foreach($posts as $post){
+						array_push($postIds, $post->id);
+						}
+						$created_by_me = Post::where('tenant_id', Auth::user()->tenant_id)->where('user_id', Auth::user()->id)->get();
+						//this IDs very important
+						$createdByMeIds = [];
+						foreach($created_by_me as $by_me){
+						array_push($createdByMeIds, $by_me->id);
+						}
+
+						$mine = ResponsiblePerson::where('tenant_id', Auth::user()->tenant_id)->whereIn('post_id', $postIds)
+																->orWhere('post_id', 32)->get();
+						//same with this
+						$mineIds = [];
+						foreach($mine as $m){
+						array_push($mineIds, $m->post_id);
+						}
+						//join the two IDs (post created by me and ones that I'm responsible for)
+						$mergedIds = array_unique(array_merge($createdByMeIds, $mineIds));
+						$sort = arsort($mergedIds);
+
+			$results = Post::where('tenant_id', Auth::user()->tenant_id)
+														->where('post_title', 'like', "%{$request->search_phrase}%")
+														->orWhere('post_content', 'LIKE', "%{$request->search_phrase}%")
+														->whereIn('id', $mergedIds)
+														->get();
+		/* 	$results = Post::where('tenant_id', Auth::user()->tenant_id)
+														->where('post_title', 'like', "%{$request->search_phrase}%")
+														->orWhere('post_content', 'LIKE', "%{$request->search_phrase}%")
+														->whereIn('id', $mergedIds)
+														->get(); */
+			return view('backend.activity-stream.search-result', [
+				'posts'=>$results,
+				'search_phrase'=>$request->search_phrase
+				]);
+		}
 }

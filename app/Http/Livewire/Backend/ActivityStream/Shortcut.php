@@ -8,8 +8,6 @@ use App\WorkgroupAttachment;
 use Illuminate\Support\Facades\DB;
 use Livewire\WithPagination;
 use Livewire\Component;
-//use App\Mail\RequisitionVerificationMail;
-//use App\RequisitionVerification;
 use App\Notifications\NewPostNotification;
 use Carbon\Carbon;
 use Carbon\CarbonInterval;

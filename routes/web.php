@@ -302,12 +302,14 @@ Route::get('/feedbacks', 'CNX247\Backend\CRMController@feedbacks')->name('feedba
 Route::post('/feedback-status', 'CNX247\Backend\CRMController@feedbackStatus');
 #Activity stream routes
 Route::get('/activity-stream', 'CNX247\Backend\ActivityStreamController@index')->name('activity-stream');
+/* Route::post('/activity-stream/like-unlike-post', 'CNX247\Backend\ActivityStreamShortcutController@likeUnlikePost'); */
 Route::post('/activity-stream/message', 'CNX247\Backend\ActivityStreamController@sendMessage');
 
 Route::post('/activity-stream/new/task', 'CNX247\Backend\ActivityStreamController@storeTask');
 
 Route::post('/activity-stream/live-update', 'CNX247\Backend\ActivityStreamController@postView');
 Route::get('/activity-stream/post/{slug}', 'CNX247\Backend\ActivityStreamController@viewPost')->name('view-post-activity-stream');
+Route::get('/activity-stream/search', 'CNX247\Backend\ActivityStreamController@searchCNX247')->name('search-cnx247');
 Route::post('/event/new', 'CNX247\Backend\ActivityStreamController@createEvent');
 Route::post('/announcement/new', 'CNX247\Backend\ActivityStreamController@createAnnouncement');
 Route::post('/activity-stream/upload/attachment', 'CNX247\Backend\ActivityStreamController@shareFile');

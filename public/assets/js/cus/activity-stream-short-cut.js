@@ -10,7 +10,8 @@
         $('#event-persons-wrap').hide();
         $('#announcement-persons-wrap').hide();
         $('#file-persons-wrap').hide();
-        $('#appreciating-persons-wrap').hide();
+				$('#appreciating-persons-wrap').hide();
+				var comment = null;
         //processing files
         var message_attachments = null;
         var task_attachments = null;
@@ -380,6 +381,30 @@
                      $('#sendInvitationByEmail').removeAttr('disabled');
                 });
                 return false;
-            });
+						});
+						//capture comment
+						$(document).on('focus', '.commentControl', function(e){
+							e.preventDefault();
+							console.log('comment');
 
-    });
+						});
+
+		});
+
+		function leaveComment(id){
+			var comment = $(this).parents('.commentWrapper').first();
+			console.log(comment);
+		}
+
+		function likePost(id){
+			axios.post('/activity-stream/like-unlike-post',{post:id, status:'like'})
+				.then(response=>{
+
+				});
+		}
+		function unlikePost(id){
+			axios.post('/activity-stream/like-unlike-post',{post:id, status:'unlike'})
+				.then(response=>{
+
+				});
+		}
