@@ -196,7 +196,7 @@ class Shortcut extends Component
         return view('livewire.backend.activity-stream.shortcut',
                                 ['posts'=> Post::where('tenant_id', Auth::user()->tenant_id)->whereIn('id',$mergedIds)
                                 ->orderBy('id', 'DESC')
-                                ->paginate(3),
+                                ->paginate(10),
                     'announcements'=>Post::where('post_type', 'announcement')
                                 ->where('tenant_id', Auth::user()->tenant_id)
                                 ->orderBy('id', 'DESC')->take(5)->get(),
