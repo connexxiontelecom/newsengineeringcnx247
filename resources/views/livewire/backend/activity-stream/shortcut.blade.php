@@ -40,7 +40,7 @@
 																									<div class="card-block">
 
 																											<div class="timeline-details">
-																													<p class="text-muted">{!! $post->post_content ?? '' !!}</p>
+																												<p class="text-muted">{!! strlen(strip_tags($post->post_content)) > 339 ? substr(strip_tags($post->post_content), 0,339).'...<a href='.route('view-post-activity-stream', $post->post_url).'>Read more</a>' : strip_tags($post->post_content) !!}</p>
 																													@foreach ($post->postAttachment as $attach)
 																															@switch(pathinfo($attach->attachment, PATHINFO_EXTENSION))
 																																	@case('pptx')
@@ -184,7 +184,7 @@
 																													<div class="card-block">
 
 																															<div class="timeline-details">
-																																	<p class="text-muted">{!! $post->post_content ?? '' !!}</p>
+																																<p class="text-muted">{!! strlen(strip_tags($post->post_content)) > 339 ? substr(strip_tags($post->post_content), 0,339).'...<a href='.route('view-post-activity-stream', $post->post_url).'>Read more</a>' : strip_tags($post->post_content) !!}</p>
 																																	@foreach ($post->postAttachment as $attach)
 																																			@switch(pathinfo($attach->attachment, PATHINFO_EXTENSION))
 																																					@case('pptx')
@@ -332,7 +332,7 @@
 																												<a href="{{route('view-task', $post->post_url)}}">
 																														<h5 class="sub-title">{{$post->post_title ?? '-'}}</h5>
 																												</a>
-																												<p class="text-muted">{!! $post->post_content ?? '' !!}</p>
+																												<p class="text-muted">{!! strlen(strip_tags($post->post_content)) > 339 ? substr(strip_tags($post->post_content), 0,339).'...<a href='.route('view-post-activity-stream', $post->post_url).'>Read more</a>' : strip_tags($post->post_content) !!}</p>
 																												@foreach ($post->postAttachment as $attach)
 																														@switch(pathinfo($attach->attachment, PATHINFO_EXTENSION))
 																																@case('pptx')
@@ -477,7 +477,7 @@
 																																	<a href="{{route('view-task', $post->post_url)}}">
 																																			<h5 class="sub-title">{{$post->post_title ?? '-'}}</h5>
 																																	</a>
-																																	<p class="text-muted">{!! $post->post_content ?? '' !!}</p>
+																																	<p class="text-muted">{!! strlen(strip_tags($post->post_content)) > 339 ? substr(strip_tags($post->post_content), 0,339).'...<a href='.route('view-post-activity-stream', $post->post_url).'>Read more</a>' : strip_tags($post->post_content) !!}</p>
 																																	@foreach ($post->postAttachment as $attach)
 																																			@switch(pathinfo($attach->attachment, PATHINFO_EXTENSION))
 																																					@case('pptx')
@@ -629,7 +629,7 @@
 																														</a>
 																														<div class="row" style="overflow: hidden">
 																																<div class="col-md-12">
-																																		{!! $post->post_content ?? '' !!}
+																																	<p class="text-muted">{!! strlen(strip_tags($post->post_content)) > 339 ? substr(strip_tags($post->post_content), 0,339).'...<a href='.route('view-post-activity-stream', $post->post_url).'>Read more</a>' : strip_tags($post->post_content) !!}</p>
 																																</div>
 																														</div>
 
@@ -743,7 +743,7 @@
 																																				</a>
 																																				<div class="row" style="overflow: hidden">
 																																						<div class="col-md-12">
-																																								{!! $post->post_content ?? '' !!}
+																																							<p class="text-muted">{!! strlen(strip_tags($post->post_content)) > 339 ? substr(strip_tags($post->post_content), 0,339).'...<a href='.route('view-post-activity-stream', $post->post_url).'>Read more</a>' : strip_tags($post->post_content) !!}</p>
 																																						</div>
 																																				</div>
 
@@ -857,7 +857,7 @@
 																														<a href="{{route('view-post-activity-stream', $post->post_url)}}">
 																																<h5 class="sub-title">{{ $post->post_title ?? '' }}</h5>
 																														</a>
-																														<p class="text-muted">{!! $post->post_content ?? '' !!}</p>
+																														<p class="text-muted">{!! strlen(strip_tags($post->post_content)) > 339 ? substr(strip_tags($post->post_content), 0,339).'...<a href='.route('view-post-activity-stream', $post->post_url).'>Read more</a>' : strip_tags($post->post_content) !!}</p>
 																														@foreach ($post->postAttachment as $attach)
 																														@switch(pathinfo($attach->attachment, PATHINFO_EXTENSION))
 																																@case('pptx')
@@ -1002,7 +1002,7 @@
 																																			<a href="{{route('view-post-activity-stream', $post->post_url)}}">
 																																					<h5 class="sub-title">{{ $post->post_title ?? '' }}</h5>
 																																			</a>
-																																			<p class="text-muted">{!! $post->post_content ?? '' !!}</p>
+																																			<p class="text-muted">{!! strlen(strip_tags($post->post_content)) > 339 ? substr(strip_tags($post->post_content), 0,339).'...<a href='.route('view-post-activity-stream', $post->post_url).'>Read more</a>' : strip_tags($post->post_content) !!}</p>
 																																			@foreach ($post->postAttachment as $attach)
 																																			@switch(pathinfo($attach->attachment, PATHINFO_EXTENSION))
 																																					@case('pptx')
@@ -1149,7 +1149,7 @@
 																														<a href="{{route('view-post-activity-stream', $post->post_url)}}">
 																																<h5 class="sub-title">{{ $post->post_title ?? '' }}</h5>
 																														</a>
-																														<p class="text-muted">{!! $post->post_content ?? '' !!}</p>
+																														<p class="text-muted">{!! strlen(strip_tags($post->post_content)) > 339 ? substr(strip_tags($post->post_content), 0,339).'...<a href='.route('view-post-activity-stream', $post->post_url).'>Read more</a>' : strip_tags($post->post_content) !!}</p>
 																														@foreach ($post->postAttachment as $attach)
 																														@switch(pathinfo($attach->attachment, PATHINFO_EXTENSION))
 																																@case('pptx')
@@ -1294,7 +1294,7 @@
 																																		<a href="{{route('view-post-activity-stream', $post->post_url)}}">
 																																				<h5 class="sub-title">{{ $post->post_title ?? '' }}</h5>
 																																		</a>
-																																		<p class="text-muted">{!! $post->post_content ?? '' !!}</p>
+																																		<p class="text-muted">{!! strlen(strip_tags($post->post_content)) > 339 ? substr(strip_tags($post->post_content), 0,339).'...<a href='.route('view-post-activity-stream', $post->post_url).'>Read more</a>' : strip_tags($post->post_content) !!}</p>
 																																		@foreach ($post->postAttachment as $attach)
 																																		@switch(pathinfo($attach->attachment, PATHINFO_EXTENSION))
 																																				@case('pptx')
@@ -1442,7 +1442,7 @@
 																															<a href="{{route('view-post-activity-stream', $post->post_url)}}">
 																																	<h5 class="sub-title">{{ $post->post_title ?? '' }}</h5>
 																															</a>
-																															<p class="text-muted">{!! $post->post_content ?? '' !!}</p>
+																															<p class="text-muted">{!! strlen(strip_tags($post->post_content)) > 339 ? substr(strip_tags($post->post_content), 0,339).'...<a href='.route('view-post-activity-stream', $post->post_url).'>Read more</a>' : strip_tags($post->post_content) !!}</p>
 																															@foreach ($post->postAttachment as $attach)
 																															@switch(pathinfo($attach->attachment, PATHINFO_EXTENSION))
 																																	@case('pptx')
@@ -1587,7 +1587,7 @@
 																																			<a href="{{route('view-post-activity-stream', $post->post_url)}}">
 																																					<h5 class="sub-title">{{ $post->post_title ?? '' }}</h5>
 																																			</a>
-																																			<p class="text-muted">{!! $post->post_content ?? '' !!}</p>
+																																			<p class="text-muted">{!! strlen(strip_tags($post->post_content)) > 339 ? substr(strip_tags($post->post_content), 0,339).'...<a href='.route('view-post-activity-stream', $post->post_url).'>Read more</a>' : strip_tags($post->post_content) !!}</p>
 																																			@foreach ($post->postAttachment as $attach)
 																																			@switch(pathinfo($attach->attachment, PATHINFO_EXTENSION))
 																																					@case('pptx')
@@ -1735,7 +1735,7 @@
 																														<a href="{{route('view-post-activity-stream', $post->post_url)}}">
 																																<h5 class="sub-title">{{ $post->post_title ?? '' }}</h5>
 																														</a>
-																														<p class="text-muted">{!! $post->post_content ?? '' !!}</p>
+																														<p class="text-muted">{!! strlen(strip_tags($post->post_content)) > 339 ? substr(strip_tags($post->post_content), 0,339).'...<a href='.route('view-post-activity-stream', $post->post_url).'>Read more</a>' : strip_tags($post->post_content) !!}</p>
 																														@foreach ($post->postAttachment as $attach)
 																														@switch(pathinfo($attach->attachment, PATHINFO_EXTENSION))
 																																@case('pptx')
@@ -1880,7 +1880,7 @@
 																																			<a href="{{route('view-post-activity-stream', $post->post_url)}}">
 																																					<h5 class="sub-title">{{ $post->post_title ?? '' }}</h5>
 																																			</a>
-																																			<p class="text-muted">{!! $post->post_content ?? '' !!}</p>
+																																			<p class="text-muted">{!! strlen(strip_tags($post->post_content)) > 339 ? substr(strip_tags($post->post_content), 0,339).'...<a href='.route('view-post-activity-stream', $post->post_url).'>Read more</a>' : strip_tags($post->post_content) !!}</p>
 																																			@foreach ($post->postAttachment as $attach)
 																																			@switch(pathinfo($attach->attachment, PATHINFO_EXTENSION))
 																																					@case('pptx')
@@ -2072,7 +2072,7 @@
 																																					</div>
 																																			</div>
 																																	</div>
-																																	<p class="text-muted">{!! $post->post_content ?? '' !!}</p>
+																																	<p class="text-muted">{!! strlen(strip_tags($post->post_content)) > 339 ? substr(strip_tags($post->post_content), 0,339).'...<a href='.route('view-post-activity-stream', $post->post_url).'>Read more</a>' : strip_tags($post->post_content) !!}</p>
 																																	<div class="row">
 																																			<div class="col-md-12 d-flex justify-content-center">
 																																					<div class="btn-group">
@@ -2275,7 +2275,7 @@
 																																					</div>
 																																			</div>
 																																	</div>
-																																	<p class="text-muted">{!! $post->post_content ?? '' !!}</p>
+																																	<p class="text-muted">{!! strlen(strip_tags($post->post_content)) > 339 ? substr(strip_tags($post->post_content), 0,339).'...<a href='.route('view-post-activity-stream', $post->post_url).'>Read more</a>' : strip_tags($post->post_content) !!}</p>
 																																	<div class="row">
 																																			<div class="col-md-12 d-flex justify-content-center">
 																																					<div class="btn-group">
@@ -2478,7 +2478,7 @@
 																																					</div>
 																																			</div>
 																																	</div>
-																																	<p class="text-muted">{!! $post->post_content ?? '' !!}</p>
+																																	<p class="text-muted">{!! strlen(strip_tags($post->post_content)) > 339 ? substr(strip_tags($post->post_content), 0,339).'...<a href='.route('view-post-activity-stream', $post->post_url).'>Read more</a>' : strip_tags($post->post_content) !!}</p>
 																																	<div class="row">
 																																			<div class="col-md-12 d-flex justify-content-center">
 																																					<div class="btn-group">
@@ -2681,7 +2681,7 @@
 																																					</div>
 																																			</div>
 																																	</div>
-																																	<p class="text-muted">{!! $post->post_content ?? '' !!}</p>
+																																	<p class="text-muted">{!! strlen(strip_tags($post->post_content)) > 339 ? substr(strip_tags($post->post_content), 0,339).'...<a href='.route('view-post-activity-stream', $post->post_url).'>Read more</a>' : strip_tags($post->post_content) !!}</p>
 																																	<div class="btn-group">
 																																			<label for="" class="label label-primary">Start Date: {{date(Auth::user()->tenant->dateFormat->format ?? 'd F, Y', strtotime($post->start_date))}}</label>
 																																			<label for="" class="label label-danger">End Date: {{date(Auth::user()->tenant->dateFormat->format ?? 'd F, Y', strtotime($post->end_date))}}</label>
@@ -2888,7 +2888,7 @@
 																																					</div>
 																																			</div>
 																																	</div>
-																																	<p class="text-muted">{!! $post->post_content ?? '' !!}</p>
+																																	<p class="text-muted">{!! strlen(strip_tags($post->post_content)) > 339 ? substr(strip_tags($post->post_content), 0,339).'...<a href='.route('view-post-activity-stream', $post->post_url).'>Read more</a>' : strip_tags($post->post_content) !!}</p>
 																																	<div class="btn-group">
 																																			<label for="" class="label label-primary">Start Date: {{date(Auth::user()->tenant->dateFormat->format ?? 'd F, Y', strtotime($post->start_date))}}</label>
 																																			<label for="" class="label label-danger">End Date: {{date(Auth::user()->tenant->dateFormat->format ?? 'd F, Y', strtotime($post->end_date))}}</label>
@@ -3051,7 +3051,7 @@
 																														<a href="{{route('view-internal-memo', $post->post_url)}}">
 																																<h5 class="sub-title">{{ $post->post_title ?? '' }}</h5>
 																														</a>
-																														<p class="text-muted">{!! $post->post_content ?? '' !!}</p>
+																														<p class="text-muted">{!! strlen(strip_tags($post->post_content)) > 339 ? substr(strip_tags($post->post_content), 0,339).'...<a href='.route('view-post-activity-stream', $post->post_url).'>Read more</a>' : strip_tags($post->post_content) !!}</p>
 																														@foreach ($post->postAttachment as $attach)
 																														@switch(pathinfo($attach->attachment, PATHINFO_EXTENSION))
 																																@case('pptx')
@@ -3196,7 +3196,7 @@
 																																		<a href="{{route('view-internal-memo', $post->post_url)}}">
 																																				<h5 class="sub-title">{{ $post->post_title ?? '' }}</h5>
 																																		</a>
-																																		<p class="text-muted">{!! $post->post_content ?? '' !!}</p>
+																																		<p class="text-muted">{!! strlen(strip_tags($post->post_content)) > 339 ? substr(strip_tags($post->post_content), 0,339).'...<a href='.route('view-post-activity-stream', $post->post_url).'>Read more</a>' : strip_tags($post->post_content) !!}</p>
 																																		@foreach ($post->postAttachment as $attach)
 																																		@switch(pathinfo($attach->attachment, PATHINFO_EXTENSION))
 																																				@case('pptx')
