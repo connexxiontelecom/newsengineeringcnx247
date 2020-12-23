@@ -24,18 +24,25 @@ class WorkflowController extends Controller
     * Load index page [my assignments]
     */
     public function index(){
+			$responsible = ResponsiblePerson::where('tenant_id', Auth::user()->tenant_id)
+																			->where('user_id', Auth::user()->id)
+																			->whereIn('post_type',
+																						['purchase-request', 'expense-report',
+																								'leave-request', 'business-trip',
+																								'general-request'])
+																			->pluck('post_id');
 			$requests = Post::whereIn('post_type',
             ['purchase-request', 'expense-report',
                 'leave-request', 'business-trip',
                 'general-request'])
-            ->where('tenant_id',Auth::user()->tenant_id)
+						->where('tenant_id',Auth::user()->tenant_id)
+						->whereIn('id', $responsible)
 						->orderBy('id', 'DESC')
 						->paginate(10);
 			$my_requests = Post::whereIn('post_type',
 						['purchase-request', 'expense-report',
 						'leave-request', 'business-trip',
 						'general-request'])
-						//->where('post_status', 'in-progress')
 						->where('user_id', Auth::user()->id)
 						->where('tenant_id',Auth::user()->tenant_id)
 						->orderBy('id', 'DESC')
