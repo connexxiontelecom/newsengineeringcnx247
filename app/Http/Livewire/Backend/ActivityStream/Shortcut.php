@@ -162,26 +162,33 @@ class Shortcut extends Component
         $this->following = Observer::where('user_id',Auth::user()->id)
                                 ->where('tenant_id', Auth::user()->tenant_id)
                                 ->count();
-        $current = strtotime($now->today());
+				$current = strtotime($now->today());
+				//get all tenant posts
 				$posts = Post::where('tenant_id', Auth::user()->tenant_id)
 										->get();
 							$postIds = [];
 							foreach($posts as $post){
 							array_push($postIds, $post->id);
 							}
+
 				$created_by_me = Post::where('tenant_id', Auth::user()->tenant_id)->where('user_id', Auth::user()->id)->get();
+
 				//this IDs very important
 				$createdByMeIds = [];
 				foreach($created_by_me as $by_me){
 					array_push($createdByMeIds, $by_me->id);
 				}
+
 				$mine = ResponsiblePerson::where('tenant_id', Auth::user()->tenant_id)->whereIn('post_id', $postIds)
-																	->orWhere('post_id', 32)->get();
-				//same with this
+																	->where('user_id', Auth::user()->id)
+																	->orWhere('user_id', 32)->get();
+
+																														//same with this
 				$mineIds = [];
 				foreach($mine as $m){
 				array_push($mineIds, $m->post_id);
 				}
+
 				//join the two IDs (post created by me and ones that I'm responsible for)
 				$mergedIds = array_unique(array_merge($createdByMeIds, $mineIds));
 
@@ -192,7 +199,8 @@ class Shortcut extends Component
 
 
         $this->online = User::where('tenant_id', Auth::user()->tenant_id)->where('is_online', 1)->count();
-        $this->workforce = User::where('tenant_id', Auth::user()->tenant_id)->count();
+				$this->workforce = User::where('tenant_id', Auth::user()->tenant_id)->count();
+
         return view('livewire.backend.activity-stream.shortcut',
                                 ['posts'=> Post::where('tenant_id', Auth::user()->tenant_id)->whereIn('id',$mergedIds)
                                 ->orderBy('id', 'DESC')

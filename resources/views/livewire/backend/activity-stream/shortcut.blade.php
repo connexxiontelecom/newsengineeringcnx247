@@ -7,7 +7,7 @@
 									@include('backend.activity-stream.common._activity-stream-widget')
 							</div>
 					</div>
-					<div class="tab-pane active" id="timeline">{{--  wire:poll.5000ms="getContent" --}}
+					<div class="tab-pane active" id="timeline">
 									<div class="row">
 											<div class="col-md-12 timeline-dot">
 													@foreach($posts as $post)
@@ -598,9 +598,382 @@
 
 																	@endif
 															@elseif($post->post_type == 'event')
-																			@foreach ($post->responsiblePersons as $res)
-																					@if ($res->user_id == Auth::user()->id || $post->user_id == Auth::user()->id || $res->user_id == 32)
+																			@if ($post->user_id == Auth::user()->id)
+																			<div class="social-timelines p-relative rollover" data-live="{{$post->id}}">
+																				<div class="row timeline-right p-t-35">
+																						<div class="col-2 col-sm-2 col-xl-1">
+																								<div class="social-timelines-left">
+																										<img class="img-radius timeline-icon" src="/assets/images/avatars/thumbnails/{{ $post->user->avatar ?? 'avatar.png' }}" alt="">
+																								</div>
+																						</div>
+																						<div class="col-10 col-sm-10 col-xl-11 p-l-5 p-b-35">
+																								<div class="card">
 
+																										<div class="card-block post-timelines">
+																												<span class="dropdown-toggle addon-btn text-muted f-right service-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" role="tooltip"></span>
+
+																												<div class="chat-header f-w-600">{{$post->user->first_name ?? ''}} {{$post->user->surname ?? ''}} {<i class="ti-calendar text-inverse mr-1 ml-1"  data-toggle="tooltip" data-placement="top" title="" data-original-title="Event"></i>} <i class="zmdi zmdi-long-arrow-right text-primary"></i>
+
+																														@foreach($post->responsiblePersons as $res)
+																																		<small>{{ $res->user->first_name}} {{ $res->user->surname}}</small>,
+																														@endforeach
+
+																												</div>
+																												<div class="social-time text-muted">{{date('d F, Y', strtotime($post->created_at))}} | <small>{{ $post->created_at->diffForHumans()}}</small> </div>
+																										</div>
+																										<div class="card-block">
+
+																												<div class="timeline-details">
+																														<a href="{{route('view-post-activity-stream', $post->post_url)}}">
+																																<h5 class="sub-title">{{ $post->post_title ?? '' }}</h5>
+																														</a>
+																														<div class="row" style="overflow: hidden">
+																																<div class="col-md-12">
+																																		{!! $post->post_content ?? '' !!}
+																																</div>
+																														</div>
+
+
+																														<div>
+																																<div class="btn-group">
+																																		<strong>Start Date: </strong><label for="" class="label label-primary">{{ date('d F, Y', strtotime($post->start_date)) ?? '' }}</label>
+																																		<strong>End Date: </strong><label for="" class="label label-danger">{{ date('d F, Y', strtotime($post->end_date)) ?? '' }}</label>
+																																</div>
+																														</div>
+																														@foreach ($post->postAttachment as $attach)
+																																<a href="{{$attach->attachment}}">{{ $post->post_title ?? 'Download attachment'}}</a>
+																														@endforeach
+																												</div>
+																										</div>
+																										<div class="card-block b-b-theme b-t-theme social-msg">
+																												@if(!empty($post->postLikes()->where('user_id', Auth::user()->id)->first()))
+																														<a href="#" wire:click="unLike({{ $post->id }})"> <i class="icofont icofont-thumbs-down text-danger" ></i>
+																																<span class="b-r-muted">Unlike ({{ count($post->postLikes) }}) </span>
+																														</a>
+
+																												@elseif(empty($post->postLikes()->where('user_id', Auth::user()->id)->first()))
+																														<a href="#" wire:click="addLike({{ $post->id }})"> <i class="icofont icofont-like text-success" ></i>
+																																<span class="b-r-muted">Like ({{ count($post->postLikes) }}) </span>
+																														</a>
+																												@endif
+																												<a href="#"> <i class="icofont icofont-comment text-muted"></i> <span class="b-r-muted">Comments ({{ count($post->postComments) }})</span></a>
+																												<a href="javascript:void(0);" class="viewers dropdown-toggle" type="button" id="dropdown-{{$post->id}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"> <i class="ti-eye text-muted"></i> <span>View ({{number_format(count($post->postViews))}})</span>
+																														<div class="dropdown-menu" aria-labelledby="dropdown-{{$post->id}}" style="width:300px!important;" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut">
+																																@foreach ($post->postViews()->orderBy('id', 'DESC')->take(10)->get() as $viewer)
+																																		<a class="dropdown-item waves-light waves-effect" href="{{route('view-profile', $viewer->user->url)}}">
+																																				<img src="/assets/images/avatars/thumbnails/{{$viewer->user->avatar ?? 'avatar.png'}}" class="img-30 mr-2" alt="{{$viewer->user->first_name ?? ''}}"> {{$viewer->user->first_name ?? ''}} {{$viewer->user->surname ?? ''}}</a>
+																																		@endforeach
+																																<a class="dropdown-item waves-light waves-effect text-center" href="{{route('view-post-activity-stream', $post->post_url)}}">View all</a>
+																														</div>
+																												</a>
+																										</div>
+																										<div class="card-block user-box">
+																												<div class="p-b-30"> <span class="f-14"><a href="javascript:void(0);">Comments ({{ count($post->postComments) }})</a></span>
+
+																												</div>
+
+																												@foreach($post->postComments()->orderBy('id', 'DESC')->take(5)->get() as $comment)
+																														<div class="media m-b-2">
+																																<a class="media-left" href="{{ route('view-profile', $comment->user->url) }}">
+																																		<img class="media-object img-radius m-r-20" src="/assets/images/avatars/thumbnails/{{ $comment->user->avatar ?? 'avatar.png' }}" alt="{{ $comment->user->first_name }} {{ $comment->user->surname ?? '' }}">
+																																</a>
+																																<div class="media-body b-b-muted social-client-description">
+																																		<div class="chat-header"><a href="{{ route('view-profile', $comment->user->url) }}">{{ $comment->user->first_name }} {{ $comment->user->surname ?? '' }} </a> <span class="text-muted">{{date('d M, Y', strtotime($comment->created_at)) }} <small>({{ $comment->created_at->diffForHumans() }})</small></span></div>
+																																		<p class="text-muted"> {!! $comment->comment !!} </p>
+																																</div>
+																														</div>
+																												@endforeach
+																												@if (count($post->postComments) > 5 )
+																														<a href="{{route('view-post-activity-stream', $post->post_url)}}">
+																																<p class="text-center">+{{count($post->postComments) - 5}} others</p>
+																														</a>
+																												@endif
+
+																												<div class="media">
+																														<a class="media-left" href="{{ route('view-profile', Auth::user()->url) }}">
+																																<img class="media-object img-radius m-r-20" src="/assets/images/avatars/thumbnails/avatar.png" alt="Generic placeholder image">
+																														</a>
+																														<div class="media-body">
+
+																																<div class="">
+																																		<textarea wire:model.debounce.50000ms="comment" rows="5" cols="5" class="form-control" placeholder="Leave comment"></textarea>
+
+																																		<div class="text-right m-t-20">
+																																				<button class="btn btn-out-dashed btn-primary btn-square btn-sm" type="button" wire:click="comment({{ $post->id }})">Comment</button>
+																																		</div>
+																																</div>
+																														</div>
+																												</div>
+																										</div>
+																								</div>
+																						</div>
+																				</div>
+																		</div>
+																			@else
+																				@foreach ($post->responsiblePersons as $res)
+																						@if ($res->user_id == Auth::user()->id || $res->user_id == 32)
+
+																								<div class="social-timelines p-relative rollover" data-live="{{$post->id}}">
+																										<div class="row timeline-right p-t-35">
+																												<div class="col-2 col-sm-2 col-xl-1">
+																														<div class="social-timelines-left">
+																																<img class="img-radius timeline-icon" src="/assets/images/avatars/thumbnails/{{ $post->user->avatar ?? 'avatar.png' }}" alt="">
+																														</div>
+																												</div>
+																												<div class="col-10 col-sm-10 col-xl-11 p-l-5 p-b-35">
+																														<div class="card">
+
+																																<div class="card-block post-timelines">
+																																		<span class="dropdown-toggle addon-btn text-muted f-right service-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" role="tooltip"></span>
+
+																																		<div class="chat-header f-w-600">{{$post->user->first_name ?? ''}} {{$post->user->surname ?? ''}} {<i class="ti-calendar text-inverse mr-1 ml-1"  data-toggle="tooltip" data-placement="top" title="" data-original-title="Event"></i>} <i class="zmdi zmdi-long-arrow-right text-primary"></i>
+
+																																				@foreach($post->responsiblePersons as $res)
+																																								<small>{{ $res->user->first_name}} {{ $res->user->surname}}</small>,
+																																				@endforeach
+
+																																		</div>
+																																		<div class="social-time text-muted">{{date('d F, Y', strtotime($post->created_at))}} | <small>{{ $post->created_at->diffForHumans()}}</small> </div>
+																																</div>
+																																<div class="card-block">
+
+																																		<div class="timeline-details">
+																																				<a href="{{route('view-post-activity-stream', $post->post_url)}}">
+																																						<h5 class="sub-title">{{ $post->post_title ?? '' }}</h5>
+																																				</a>
+																																				<div class="row" style="overflow: hidden">
+																																						<div class="col-md-12">
+																																								{!! $post->post_content ?? '' !!}
+																																						</div>
+																																				</div>
+
+
+																																				<div>
+																																						<div class="btn-group">
+																																								<strong>Start Date: </strong><label for="" class="label label-primary">{{ date('d F, Y', strtotime($post->start_date)) ?? '' }}</label>
+																																								<strong>End Date: </strong><label for="" class="label label-danger">{{ date('d F, Y', strtotime($post->end_date)) ?? '' }}</label>
+																																						</div>
+																																				</div>
+																																				@foreach ($post->postAttachment as $attach)
+																																						<a href="{{$attach->attachment}}">{{ $post->post_title ?? 'Download attachment'}}</a>
+																																				@endforeach
+																																		</div>
+																																</div>
+																																<div class="card-block b-b-theme b-t-theme social-msg">
+																																		@if(!empty($post->postLikes()->where('user_id', Auth::user()->id)->first()))
+																																				<a href="#" wire:click="unLike({{ $post->id }})"> <i class="icofont icofont-thumbs-down text-danger" ></i>
+																																						<span class="b-r-muted">Unlike ({{ count($post->postLikes) }}) </span>
+																																				</a>
+
+																																		@elseif(empty($post->postLikes()->where('user_id', Auth::user()->id)->first()))
+																																				<a href="#" wire:click="addLike({{ $post->id }})"> <i class="icofont icofont-like text-success" ></i>
+																																						<span class="b-r-muted">Like ({{ count($post->postLikes) }}) </span>
+																																				</a>
+																																		@endif
+																																		<a href="#"> <i class="icofont icofont-comment text-muted"></i> <span class="b-r-muted">Comments ({{ count($post->postComments) }})</span></a>
+																																		<a href="javascript:void(0);" class="viewers dropdown-toggle" type="button" id="dropdown-{{$post->id}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"> <i class="ti-eye text-muted"></i> <span>View ({{number_format(count($post->postViews))}})</span>
+																																				<div class="dropdown-menu" aria-labelledby="dropdown-{{$post->id}}" style="width:300px!important;" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut">
+																																						@foreach ($post->postViews()->orderBy('id', 'DESC')->take(10)->get() as $viewer)
+																																								<a class="dropdown-item waves-light waves-effect" href="{{route('view-profile', $viewer->user->url)}}">
+																																										<img src="/assets/images/avatars/thumbnails/{{$viewer->user->avatar ?? 'avatar.png'}}" class="img-30 mr-2" alt="{{$viewer->user->first_name ?? ''}}"> {{$viewer->user->first_name ?? ''}} {{$viewer->user->surname ?? ''}}</a>
+																																								@endforeach
+																																						<a class="dropdown-item waves-light waves-effect text-center" href="{{route('view-post-activity-stream', $post->post_url)}}">View all</a>
+																																				</div>
+																																		</a>
+																																</div>
+																																<div class="card-block user-box">
+																																		<div class="p-b-30"> <span class="f-14"><a href="javascript:void(0);">Comments ({{ count($post->postComments) }})</a></span>
+
+																																		</div>
+
+																																		@foreach($post->postComments()->orderBy('id', 'DESC')->take(5)->get() as $comment)
+																																				<div class="media m-b-2">
+																																						<a class="media-left" href="{{ route('view-profile', $comment->user->url) }}">
+																																								<img class="media-object img-radius m-r-20" src="/assets/images/avatars/thumbnails/{{ $comment->user->avatar ?? 'avatar.png' }}" alt="{{ $comment->user->first_name }} {{ $comment->user->surname ?? '' }}">
+																																						</a>
+																																						<div class="media-body b-b-muted social-client-description">
+																																								<div class="chat-header"><a href="{{ route('view-profile', $comment->user->url) }}">{{ $comment->user->first_name }} {{ $comment->user->surname ?? '' }} </a> <span class="text-muted">{{date('d M, Y', strtotime($comment->created_at)) }} <small>({{ $comment->created_at->diffForHumans() }})</small></span></div>
+																																								<p class="text-muted"> {!! $comment->comment !!} </p>
+																																						</div>
+																																				</div>
+																																		@endforeach
+																																		@if (count($post->postComments) > 5 )
+																																				<a href="{{route('view-post-activity-stream', $post->post_url)}}">
+																																						<p class="text-center">+{{count($post->postComments) - 5}} others</p>
+																																				</a>
+																																		@endif
+
+																																		<div class="media">
+																																				<a class="media-left" href="{{ route('view-profile', Auth::user()->url) }}">
+																																						<img class="media-object img-radius m-r-20" src="/assets/images/avatars/thumbnails/avatar.png" alt="Generic placeholder image">
+																																				</a>
+																																				<div class="media-body">
+
+																																						<div class="">
+																																								<textarea wire:model.debounce.50000ms="comment" rows="5" cols="5" class="form-control" placeholder="Leave comment"></textarea>
+
+																																								<div class="text-right m-t-20">
+																																										<button class="btn btn-out-dashed btn-primary btn-square btn-sm" type="button" wire:click="comment({{ $post->id }})">Comment</button>
+																																								</div>
+																																						</div>
+																																				</div>
+																																		</div>
+																																</div>
+																														</div>
+																												</div>
+																										</div>
+																								</div>
+																						@endif
+																				@endforeach
+
+																			@endif
+															@elseif($post->post_type == 'announcement')
+																	@if ($post->user_id == Auth::user()->id)
+																			<div class="social-timelines p-relative rollover" data-live="{{$post->id}}">
+																				<div class="row timeline-right p-t-35">
+																						<div class="col-2 col-sm-2 col-xl-1">
+																								<div class="social-timelines-left">
+																										<img class="img-radius timeline-icon" src="/assets/images/avatars/thumbnails/{{ $post->user->avatar ?? 'avatar.png' }}" alt="">
+																								</div>
+																						</div>
+																						<div class="col-10 col-sm-10 col-xl-11 p-l-5 p-b-35">
+																								<div class="card">
+
+																										<div class="card-block post-timelines">
+																												<span class="dropdown-toggle addon-btn text-muted f-right service-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" role="tooltip"></span>
+
+																												<div class="chat-header f-w-600">{{$post->user->first_name ?? ''}} {{$post->user->surname ?? ''}} {<i class="ti-blackboard text-inverse mr-1 ml-1"  data-toggle="tooltip" data-placement="top" title="" data-original-title="Announcement"></i>} <i class="zmdi zmdi-long-arrow-right text-primary"></i>
+
+																														@foreach($post->responsiblePersons as $res)
+																																		<small>{{ $res->user->first_name}} {{ $res->user->surname}}</small>,
+																														@endforeach
+
+																												</div>
+																												<div class="social-time text-muted">{{date('d F, Y', strtotime($post->created_at))}} | <small>{{ $post->created_at->diffForHumans()}}</small> </div>
+																										</div>
+																										<div class="card-block">
+
+																												<div class="timeline-details">
+																														<a href="{{route('view-post-activity-stream', $post->post_url)}}">
+																																<h5 class="sub-title">{{ $post->post_title ?? '' }}</h5>
+																														</a>
+																														<p class="text-muted">{!! $post->post_content ?? '' !!}</p>
+																														@foreach ($post->postAttachment as $attach)
+																														@switch(pathinfo($attach->attachment, PATHINFO_EXTENSION))
+																																@case('pptx')
+																																<a href="/assets/uploads/attachments/{{$attach->attachment}}" data-toggle="tooltip" data-placement="top" title="{{$post->post_title ?? 'No name'}}" data-original-title="{{$post->post_title ?? 'Downlaod attachment'}}" style="cursor: pointer;">
+																																		<img src="/assets/formats/ppt.png" height="64" width="64" alt="{{$post->post_title ?? 'No name'}}"><br>
+																																		{{strlen($post->post_title ?? 'Download attachment') > 10 ? substr($post->post_title ?? 'No name',0,7).'...' : $post->post_title ?? 'Downlaod attachment'}}
+																																</a>
+																																@break
+																																@case('xls')
+																																<a href="/assets/uploads/attachments/{{$attach->attachment}}" data-toggle="tooltip" data-placement="top" title="{{$post->post_title ?? 'No name'}}" data-original-title="{{$post->post_title ?? 'Downlaod attachment'}}" style="cursor: pointer;">
+																																		<img src="/assets/formats/xls.png" height="64" width="64" alt="{{$post->post_title ?? 'No name'}}"><br>
+																																		{{strlen($post->post_title ?? 'Download attachment') > 10 ? substr($post->post_title ?? 'No name',0,7).'...' : $post->post_title ?? 'Downlaod attachment'}}
+																																</a>
+																																@break
+																																@case('xlsx')
+																																		<a href="/assets/uploads/attachments/{{$attach->attachment}}" data-toggle="tooltip" data-placement="top" title="{{$post->post_title ?? 'No name'}}" data-original-title="{{$post->post_title ?? 'Downlaod attachment'}}" style="cursor: pointer;">
+																																				<img src="/assets/formats/xls.png" height="64" width="64" alt="{{$post->post_title ?? 'No name'}}"><br>
+																																				{{strlen($post->post_title ?? 'Download attachment') > 10 ? substr($post->post_title ?? 'No name',0,7).'...' : $post->post_title ?? 'Downlaod attachment'}}
+																																		</a>
+																																@break
+																																@case('pdf')
+																																		<a href="/assets/uploads/attachments/{{$attach->attachment}}" data-toggle="tooltip" data-placement="top" title="{{$post->post_title ?? 'No name'}}" data-original-title="{{$post->post_title ?? 'Downlaod attachment'}}" style="cursor: pointer;">
+																																				<img src="/assets/formats/pdf.png" height="64" width="64" alt="{{$post->post_title ?? 'No name'}}"><br>
+																																				{{strlen($post->post_title ?? 'Download attachment') > 10 ? substr($post->post_title ?? 'No name',0,7).'...' : $post->post_title ?? 'Downlaod attachment'}}
+																																		</a>
+																																@break
+																																@case('doc')
+																																		<a href="/assets/uploads/attachments/{{$attach->attachment}}" data-toggle="tooltip" data-placement="top" title="{{$post->post_title ?? 'No name'}}" data-original-title="{{$post->post_title ?? 'Downlaod attachment'}}" style="cursor: pointer;">
+																																				<img src="/assets/formats/doc.png" height="64" width="64" alt="{{$post->post_title ?? 'No name'}}"><br>
+																																				{{strlen($post->post_title ?? 'Download attachment') > 10 ? substr($post->post_title ?? 'No name',0,7).'...' : $post->post_title ?? 'Downlaod attachment'}}
+																																		</a>
+																																@break
+																																@case('docx')
+																																		<a href="/assets/uploads/attachments/{{$attach->attachment}}" data-toggle="tooltip" data-placement="top" title="{{$post->post_title ?? 'No name'}}" data-original-title="{{$post->post_title ?? 'Downlaod attachment'}}" style="cursor: pointer;">
+																																				<img src="/assets/formats/doc.png" height="64" width="64" alt="{{$post->post_title ?? 'No name'}}"><br>
+																																				{{strlen($post->post_title ?? 'Download attachment') > 10 ? substr($post->post_title ?? 'No name',0,7).'...' : $post->post_title ?? 'Downlaod attachment'}}
+																																		</a>
+																																@break
+																																@default
+																																		<a href="/assets/uploads/attachments/{{$attach->attachment}}" data-toggle="tooltip" data-placement="top" title="{{$post->post_title ?? 'No name'}}" data-original-title="{{$post->post_title ?? 'Downlaod attachment'}}" style="cursor: pointer;">
+																																				<img src="/assets/formats/file.png" height="64" width="64" alt="{{$post->post_title ?? 'No name'}}"><br>
+																																				{{strlen($post->post_title ?? 'Download attachment') > 10 ? substr($post->post_title ?? 'No name',0,7).'...' : $post->post_title ?? 'Downlaod attachment'}}
+																																		</a>
+																																@break
+
+																														@endswitch
+																												@endforeach
+																												</div>
+																										</div>
+																										<div class="card-block b-b-theme b-t-theme social-msg">
+																												@if(!empty($post->postLikes()->where('user_id', Auth::user()->id)->first()))
+																														<a href="#" wire:click="unLike({{ $post->id }})"> <i class="icofont icofont-thumbs-down text-danger" ></i>
+																																<span class="b-r-muted">Unlike ({{ count($post->postLikes) }}) </span>
+																														</a>
+
+																												@elseif(empty($post->postLikes()->where('user_id', Auth::user()->id)->first()))
+																														<a href="#" wire:click="addLike({{ $post->id }})"> <i class="icofont icofont-like text-success" ></i>
+																																<span class="b-r-muted">Like ({{ count($post->postLikes) }}) </span>
+																														</a>
+																												@endif
+																												<a href="#"> <i class="icofont icofont-comment text-muted"></i> <span class="b-r-muted">Comments ({{ count($post->postComments) }})</span></a>
+																												<a href="javascript:void(0);" class="viewers dropdown-toggle" type="button" id="dropdown-{{$post->id}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"> <i class="ti-eye text-muted"></i> <span>View ({{number_format(count($post->postViews))}})</span>
+																														<div class="dropdown-menu" aria-labelledby="dropdown-{{$post->id}}" style="width:300px!important;" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut">
+																																@foreach ($post->postViews()->orderBy('id', 'DESC')->take(10)->get() as $viewer)
+																																		<a class="dropdown-item waves-light waves-effect" href="{{route('view-profile', $viewer->user->url)}}">
+																																				<img src="/assets/images/avatars/thumbnails/{{$viewer->user->avatar ?? 'avatar.png'}}" class="img-30 mr-2" alt="{{$viewer->user->first_name ?? ''}}"> {{$viewer->user->first_name ?? ''}} {{$viewer->user->surname ?? ''}}</a>
+																																		@endforeach
+																																<a class="dropdown-item waves-light waves-effect text-center" href="{{route('view-post-activity-stream', $post->post_url)}}">View all</a>
+																														</div>
+																												</a>
+																										</div>
+																										<div class="card-block user-box">
+																												<div class="p-b-30"> <span class="f-14"><a href="javascript:void(0);">Comments ({{ count($post->postComments) }})</a></span>
+
+																												</div>
+
+																												@foreach($post->postComments()->orderBy('id', 'DESC')->take(5)->get() as $comment)
+																														<div class="media m-b-2">
+																																<a class="media-left" href="{{ route('view-profile', $comment->user->url) }}">
+																																		<img class="media-object img-radius m-r-20" src="/assets/images/avatars/thumbnails/{{ $comment->user->avatar ?? 'avatar.png' }}" alt="{{ $comment->user->first_name }} {{ $comment->user->surname ?? '' }}">
+																																</a>
+																																<div class="media-body b-b-muted social-client-description">
+																																		<div class="chat-header"><a href="{{ route('view-profile', $comment->user->url) }}">{{ $comment->user->first_name }} {{ $comment->user->surname ?? '' }} </a> <span class="text-muted">{{date('d M, Y', strtotime($comment->created_at)) }} <small>({{ $comment->created_at->diffForHumans() }})</small></span></div>
+																																		<p class="text-muted"> {!! $comment->comment !!} </p>
+																																</div>
+																														</div>
+																												@endforeach
+																												@if (count($post->postComments) > 5 )
+																														<a href="{{route('view-post-activity-stream', $post->post_url)}}">
+																																<p class="text-center">+{{count($post->postComments) - 5}} others</p>
+																														</a>
+																												@endif
+
+																												<div class="media">
+																														<a class="media-left" href="{{ route('view-profile', Auth::user()->url) }}">
+																																<img class="media-object img-radius m-r-20" src="/assets/images/avatars/thumbnails/avatar.png" alt="Generic placeholder image">
+																														</a>
+																														<div class="media-body">
+
+																																<div class="">
+																																		<textarea wire:model.debounce.50000ms="comment" rows="5" cols="5" class="form-control" placeholder="Leave comment"></textarea>
+
+																																		<div class="text-right m-t-20">
+																																				<button class="btn btn-out-dashed btn-primary btn-square btn-sm" type="button" wire:click="comment({{ $post->id }})">Comment</button>
+																																		</div>
+																																</div>
+																														</div>
+																												</div>
+																										</div>
+																								</div>
+																						</div>
+																				</div>
+																		</div>
+																	@else
+																		@foreach ($post->responsiblePersons as $res)
+																					@if ($res->user_id == Auth::user()->id || $res->user_id == 32)
 																							<div class="social-timelines p-relative rollover" data-live="{{$post->id}}">
 																									<div class="row timeline-right p-t-35">
 																											<div class="col-2 col-sm-2 col-xl-1">
@@ -614,7 +987,7 @@
 																															<div class="card-block post-timelines">
 																																	<span class="dropdown-toggle addon-btn text-muted f-right service-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" role="tooltip"></span>
 
-																																	<div class="chat-header f-w-600">{{$post->user->first_name ?? ''}} {{$post->user->surname ?? ''}} {<i class="ti-calendar text-inverse mr-1 ml-1"  data-toggle="tooltip" data-placement="top" title="" data-original-title="Event"></i>} <i class="zmdi zmdi-long-arrow-right text-primary"></i>
+																																	<div class="chat-header f-w-600">{{$post->user->first_name ?? ''}} {{$post->user->surname ?? ''}} {<i class="ti-blackboard text-inverse mr-1 ml-1"  data-toggle="tooltip" data-placement="top" title="" data-original-title="Announcement"></i>} <i class="zmdi zmdi-long-arrow-right text-primary"></i>
 
 																																			@foreach($post->responsiblePersons as $res)
 																																							<small>{{ $res->user->first_name}} {{ $res->user->surname}}</small>,
@@ -629,22 +1002,54 @@
 																																			<a href="{{route('view-post-activity-stream', $post->post_url)}}">
 																																					<h5 class="sub-title">{{ $post->post_title ?? '' }}</h5>
 																																			</a>
-																																			<div class="row" style="overflow: hidden">
-																																					<div class="col-md-12">
-																																							{!! $post->post_content ?? '' !!}
-																																					</div>
-																																			</div>
-
-
-																																			<div>
-																																					<div class="btn-group">
-																																							<strong>Start Date: </strong><label for="" class="label label-primary">{{ date('d F, Y', strtotime($post->start_date)) ?? '' }}</label>
-																																							<strong>End Date: </strong><label for="" class="label label-danger">{{ date('d F, Y', strtotime($post->end_date)) ?? '' }}</label>
-																																					</div>
-																																			</div>
+																																			<p class="text-muted">{!! $post->post_content ?? '' !!}</p>
 																																			@foreach ($post->postAttachment as $attach)
-																																					<a href="{{$attach->attachment}}">{{ $post->post_title ?? 'Download attachment'}}</a>
-																																			@endforeach
+																																			@switch(pathinfo($attach->attachment, PATHINFO_EXTENSION))
+																																					@case('pptx')
+																																					<a href="/assets/uploads/attachments/{{$attach->attachment}}" data-toggle="tooltip" data-placement="top" title="{{$post->post_title ?? 'No name'}}" data-original-title="{{$post->post_title ?? 'Downlaod attachment'}}" style="cursor: pointer;">
+																																							<img src="/assets/formats/ppt.png" height="64" width="64" alt="{{$post->post_title ?? 'No name'}}"><br>
+																																							{{strlen($post->post_title ?? 'Download attachment') > 10 ? substr($post->post_title ?? 'No name',0,7).'...' : $post->post_title ?? 'Downlaod attachment'}}
+																																					</a>
+																																					@break
+																																					@case('xls')
+																																					<a href="/assets/uploads/attachments/{{$attach->attachment}}" data-toggle="tooltip" data-placement="top" title="{{$post->post_title ?? 'No name'}}" data-original-title="{{$post->post_title ?? 'Downlaod attachment'}}" style="cursor: pointer;">
+																																							<img src="/assets/formats/xls.png" height="64" width="64" alt="{{$post->post_title ?? 'No name'}}"><br>
+																																							{{strlen($post->post_title ?? 'Download attachment') > 10 ? substr($post->post_title ?? 'No name',0,7).'...' : $post->post_title ?? 'Downlaod attachment'}}
+																																					</a>
+																																					@break
+																																					@case('xlsx')
+																																							<a href="/assets/uploads/attachments/{{$attach->attachment}}" data-toggle="tooltip" data-placement="top" title="{{$post->post_title ?? 'No name'}}" data-original-title="{{$post->post_title ?? 'Downlaod attachment'}}" style="cursor: pointer;">
+																																									<img src="/assets/formats/xls.png" height="64" width="64" alt="{{$post->post_title ?? 'No name'}}"><br>
+																																									{{strlen($post->post_title ?? 'Download attachment') > 10 ? substr($post->post_title ?? 'No name',0,7).'...' : $post->post_title ?? 'Downlaod attachment'}}
+																																							</a>
+																																					@break
+																																					@case('pdf')
+																																							<a href="/assets/uploads/attachments/{{$attach->attachment}}" data-toggle="tooltip" data-placement="top" title="{{$post->post_title ?? 'No name'}}" data-original-title="{{$post->post_title ?? 'Downlaod attachment'}}" style="cursor: pointer;">
+																																									<img src="/assets/formats/pdf.png" height="64" width="64" alt="{{$post->post_title ?? 'No name'}}"><br>
+																																									{{strlen($post->post_title ?? 'Download attachment') > 10 ? substr($post->post_title ?? 'No name',0,7).'...' : $post->post_title ?? 'Downlaod attachment'}}
+																																							</a>
+																																					@break
+																																					@case('doc')
+																																							<a href="/assets/uploads/attachments/{{$attach->attachment}}" data-toggle="tooltip" data-placement="top" title="{{$post->post_title ?? 'No name'}}" data-original-title="{{$post->post_title ?? 'Downlaod attachment'}}" style="cursor: pointer;">
+																																									<img src="/assets/formats/doc.png" height="64" width="64" alt="{{$post->post_title ?? 'No name'}}"><br>
+																																									{{strlen($post->post_title ?? 'Download attachment') > 10 ? substr($post->post_title ?? 'No name',0,7).'...' : $post->post_title ?? 'Downlaod attachment'}}
+																																							</a>
+																																					@break
+																																					@case('docx')
+																																							<a href="/assets/uploads/attachments/{{$attach->attachment}}" data-toggle="tooltip" data-placement="top" title="{{$post->post_title ?? 'No name'}}" data-original-title="{{$post->post_title ?? 'Downlaod attachment'}}" style="cursor: pointer;">
+																																									<img src="/assets/formats/doc.png" height="64" width="64" alt="{{$post->post_title ?? 'No name'}}"><br>
+																																									{{strlen($post->post_title ?? 'Download attachment') > 10 ? substr($post->post_title ?? 'No name',0,7).'...' : $post->post_title ?? 'Downlaod attachment'}}
+																																							</a>
+																																					@break
+																																					@default
+																																							<a href="/assets/uploads/attachments/{{$attach->attachment}}" data-toggle="tooltip" data-placement="top" title="{{$post->post_title ?? 'No name'}}" data-original-title="{{$post->post_title ?? 'Downlaod attachment'}}" style="cursor: pointer;">
+																																									<img src="/assets/formats/file.png" height="64" width="64" alt="{{$post->post_title ?? 'No name'}}"><br>
+																																									{{strlen($post->post_title ?? 'Download attachment') > 10 ? substr($post->post_title ?? 'No name',0,7).'...' : $post->post_title ?? 'Downlaod attachment'}}
+																																							</a>
+																																					@break
+
+																																			@endswitch
+																																	@endforeach
 																																	</div>
 																															</div>
 																															<div class="card-block b-b-theme b-t-theme social-msg">
@@ -712,292 +1117,582 @@
 																									</div>
 																							</div>
 																					@endif
-																					@break
-																			@endforeach
-															@elseif($post->post_type == 'announcement')
-																	@foreach ($post->responsiblePersons as $res)
-																							@if ($res->user_id == Auth::user()->id || $post->user_id == Auth::user()->id || $res->user_id == 32)
-																									<div class="social-timelines p-relative rollover" data-live="{{$post->id}}">
-																											<div class="row timeline-right p-t-35">
-																													<div class="col-2 col-sm-2 col-xl-1">
-																															<div class="social-timelines-left">
-																																	<img class="img-radius timeline-icon" src="/assets/images/avatars/thumbnails/{{ $post->user->avatar ?? 'avatar.png' }}" alt="">
+																		@endforeach
+																	@endif
+															@elseif($post->post_type == 'file')
+																	@if ($post->user_id == Auth::user()->id)
+																			<div class="social-timelines p-relative rollover" data-live="{{$post->id}}">
+																				<div class="row timeline-right p-t-35">
+																						<div class="col-2 col-sm-2 col-xl-1">
+																								<div class="social-timelines-left">
+																										<img class="img-radius timeline-icon" src="/assets/images/avatars/thumbnails/{{ $post->user->avatar ?? 'avatar.png' }}" alt="">
+																								</div>
+																						</div>
+																						<div class="col-10 col-sm-10 col-xl-11 p-l-5 p-b-35">
+																								<div class="card">
+
+																										<div class="card-block post-timelines">
+																												<span class="dropdown-toggle addon-btn text-muted f-right service-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" role="tooltip"></span>
+
+																												<div class="chat-header f-w-600">{{$post->user->first_name ?? ''}} {{$post->user->surname ?? ''}} {<i class="ti-file text-inverse mr-1 ml-1"  data-toggle="tooltip" data-placement="top" title="" data-original-title="Attachment"></i>} <i class="zmdi zmdi-long-arrow-right text-primary"></i>
+
+																														@foreach($post->responsiblePersons as $res)
+																																		<small>{{ $res->user->first_name}} {{ $res->user->surname}}</small>,
+																														@endforeach
+
+																												</div>
+																												<div class="social-time text-muted">{{date('d F, Y', strtotime($post->created_at))}} | <small>{{ $post->created_at->diffForHumans()}}</small> </div>
+																										</div>
+																										<div class="card-block">
+
+																												<div class="timeline-details">
+																														<a href="{{route('view-post-activity-stream', $post->post_url)}}">
+																																<h5 class="sub-title">{{ $post->post_title ?? '' }}</h5>
+																														</a>
+																														<p class="text-muted">{!! $post->post_content ?? '' !!}</p>
+																														@foreach ($post->postAttachment as $attach)
+																														@switch(pathinfo($attach->attachment, PATHINFO_EXTENSION))
+																																@case('pptx')
+																																<a href="/assets/uploads/attachments/{{$attach->attachment}}" data-toggle="tooltip" data-placement="top" title="{{$post->post_title ?? 'No name'}}" data-original-title="{{$post->post_title ?? 'Downlaod attachment'}}" style="cursor: pointer;">
+																																		<img src="/assets/formats/ppt.png" height="64" width="64" alt="{{$post->post_title ?? 'No name'}}"><br>
+																																		{{strlen($post->post_title ?? 'Download attachment') > 10 ? substr($post->post_title ?? 'No name',0,7).'...' : $post->post_title ?? 'Downlaod attachment'}}
+																																</a>
+																																@break
+																																@case('xls')
+																																<a href="/assets/uploads/attachments/{{$attach->attachment}}" data-toggle="tooltip" data-placement="top" title="{{$post->post_title ?? 'No name'}}" data-original-title="{{$post->post_title ?? 'Downlaod attachment'}}" style="cursor: pointer;">
+																																		<img src="/assets/formats/xls.png" height="64" width="64" alt="{{$post->post_title ?? 'No name'}}"><br>
+																																		{{strlen($post->post_title ?? 'Download attachment') > 10 ? substr($post->post_title ?? 'No name',0,7).'...' : $post->post_title ?? 'Downlaod attachment'}}
+																																</a>
+																																@break
+																																@case('xlsx')
+																																		<a href="/assets/uploads/attachments/{{$attach->attachment}}" data-toggle="tooltip" data-placement="top" title="{{$post->post_title ?? 'No name'}}" data-original-title="{{$post->post_title ?? 'Downlaod attachment'}}" style="cursor: pointer;">
+																																				<img src="/assets/formats/xls.png" height="64" width="64" alt="{{$post->post_title ?? 'No name'}}"><br>
+																																				{{strlen($post->post_title ?? 'Download attachment') > 10 ? substr($post->post_title ?? 'No name',0,7).'...' : $post->post_title ?? 'Downlaod attachment'}}
+																																		</a>
+																																@break
+																																@case('pdf')
+																																		<a href="/assets/uploads/attachments/{{$attach->attachment}}" data-toggle="tooltip" data-placement="top" title="{{$post->post_title ?? 'No name'}}" data-original-title="{{$post->post_title ?? 'Downlaod attachment'}}" style="cursor: pointer;">
+																																				<img src="/assets/formats/pdf.png" height="64" width="64" alt="{{$post->post_title ?? 'No name'}}"><br>
+																																				{{strlen($post->post_title ?? 'Download attachment') > 10 ? substr($post->post_title ?? 'No name',0,7).'...' : $post->post_title ?? 'Downlaod attachment'}}
+																																		</a>
+																																@break
+																																@case('doc')
+																																		<a href="/assets/uploads/attachments/{{$attach->attachment}}" data-toggle="tooltip" data-placement="top" title="{{$post->post_title ?? 'No name'}}" data-original-title="{{$post->post_title ?? 'Downlaod attachment'}}" style="cursor: pointer;">
+																																				<img src="/assets/formats/doc.png" height="64" width="64" alt="{{$post->post_title ?? 'No name'}}"><br>
+																																				{{strlen($post->post_title ?? 'Download attachment') > 10 ? substr($post->post_title ?? 'No name',0,7).'...' : $post->post_title ?? 'Downlaod attachment'}}
+																																		</a>
+																																@break
+																																@case('docx')
+																																		<a href="/assets/uploads/attachments/{{$attach->attachment}}" data-toggle="tooltip" data-placement="top" title="{{$post->post_title ?? 'No name'}}" data-original-title="{{$post->post_title ?? 'Downlaod attachment'}}" style="cursor: pointer;">
+																																				<img src="/assets/formats/doc.png" height="64" width="64" alt="{{$post->post_title ?? 'No name'}}"><br>
+																																				{{strlen($post->post_title ?? 'Download attachment') > 10 ? substr($post->post_title ?? 'No name',0,7).'...' : $post->post_title ?? 'Downlaod attachment'}}
+																																		</a>
+																																@break
+																																@default
+																																		<a href="/assets/uploads/attachments/{{$attach->attachment}}" data-toggle="tooltip" data-placement="top" title="{{$post->post_title ?? 'No name'}}" data-original-title="{{$post->post_title ?? 'Downlaod attachment'}}" style="cursor: pointer;">
+																																				<img src="/assets/formats/file.png" height="64" width="64" alt="{{$post->post_title ?? 'No name'}}"><br>
+																																				{{strlen($post->post_title ?? 'Download attachment') > 10 ? substr($post->post_title ?? 'No name',0,7).'...' : $post->post_title ?? 'Downlaod attachment'}}
+																																		</a>
+																																@break
+
+																														@endswitch
+																												@endforeach
+																												</div>
+																										</div>
+																										<div class="card-block b-b-theme b-t-theme social-msg">
+																												@if(!empty($post->postLikes()->where('user_id', Auth::user()->id)->first()))
+																														<a href="#" wire:click="unLike({{ $post->id }})"> <i class="icofont icofont-thumbs-down text-danger" ></i>
+																																<span class="b-r-muted">Unlike ({{ count($post->postLikes) }}) </span>
+																														</a>
+
+																												@elseif(empty($post->postLikes()->where('user_id', Auth::user()->id)->first()))
+																														<a href="#" wire:click="addLike({{ $post->id }})"> <i class="icofont icofont-like text-success" ></i>
+																																<span class="b-r-muted">Like ({{ count($post->postLikes) }}) </span>
+																														</a>
+																												@endif
+																												<a href="#"> <i class="icofont icofont-comment text-muted"></i> <span class="b-r-muted">Comments ({{ count($post->postComments) }})</span></a>
+																												<a href="javascript:void(0);" class="viewers dropdown-toggle" type="button" id="dropdown-{{$post->id}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"> <i class="ti-eye text-muted"></i> <span>View ({{number_format(count($post->postViews))}})</span>
+																														<div class="dropdown-menu" aria-labelledby="dropdown-{{$post->id}}" style="width:300px!important;" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut">
+																																@foreach ($post->postViews()->orderBy('id', 'DESC')->take(10)->get() as $viewer)
+																																		<a class="dropdown-item waves-light waves-effect" href="{{route('view-profile', $viewer->user->url)}}">
+																																				<img src="/assets/images/avatars/thumbnails/{{$viewer->user->avatar ?? 'avatar.png'}}" class="img-30 mr-2" alt="{{$viewer->user->first_name ?? ''}}"> {{$viewer->user->first_name ?? ''}} {{$viewer->user->surname ?? ''}}</a>
+																																		@endforeach
+																																<a class="dropdown-item waves-light waves-effect text-center" href="{{route('view-post-activity-stream', $post->post_url)}}">View all</a>
+																														</div>
+																												</a>
+																										</div>
+																										<div class="card-block user-box">
+																												<div class="p-b-30"> <span class="f-14"><a href="javascript:void(0);">Comments ({{ count($post->postComments) }})</a></span>
+
+																												</div>
+
+																												@foreach($post->postComments()->orderBy('id', 'DESC')->take(5)->get() as $comment)
+																														<div class="media m-b-2">
+																																<a class="media-left" href="{{ route('view-profile', $comment->user->url) }}">
+																																		<img class="media-object img-radius m-r-20" src="/assets/images/avatars/thumbnails/{{ $comment->user->avatar ?? 'avatar.png' }}" alt="{{ $comment->user->first_name }} {{ $comment->user->surname ?? '' }}">
+																																</a>
+																																<div class="media-body b-b-muted social-client-description">
+																																		<div class="chat-header"><a href="{{ route('view-profile', $comment->user->url) }}">{{ $comment->user->first_name }} {{ $comment->user->surname ?? '' }} </a> <span class="text-muted">{{date('d M, Y', strtotime($comment->created_at)) }} <small>({{ $comment->created_at->diffForHumans() }})</small></span></div>
+																																		<p class="text-muted"> {!! $comment->comment !!} </p>
+																																</div>
+																														</div>
+																												@endforeach
+																												@if (count($post->postComments) > 5 )
+																														<a href="{{route('view-post-activity-stream', $post->post_url)}}">
+																																<p class="text-center">+{{count($post->postComments) - 5}} others</p>
+																														</a>
+																												@endif
+
+																												<div class="media">
+																														<a class="media-left" href="{{ route('view-profile', Auth::user()->url) }}">
+																																<img class="media-object img-radius m-r-20" src="/assets/images/avatars/thumbnails/avatar.png" alt="Generic placeholder image">
+																														</a>
+																														<div class="media-body">
+
+																																<div class="">
+																																		<textarea wire:model.debounce.50000ms="comment" rows="5" cols="5" class="form-control" placeholder="Leave comment"></textarea>
+
+																																		<div class="text-right m-t-20">
+																																				<button class="btn btn-out-dashed btn-primary btn-square btn-sm" type="button" wire:click="comment({{ $post->id }})">Comment</button>
+																																		</div>
+																																</div>
+																														</div>
+																												</div>
+																										</div>
+																								</div>
+																						</div>
+																				</div>
+																		</div>
+																	@else
+																		@foreach ($post->responsiblePersons as $res)
+																				@if ($res->user_id == Auth::user()->id || $res->user_id == 32)
+																						<div class="social-timelines p-relative rollover" data-live="{{$post->id}}">
+																								<div class="row timeline-right p-t-35">
+																										<div class="col-2 col-sm-2 col-xl-1">
+																												<div class="social-timelines-left">
+																														<img class="img-radius timeline-icon" src="/assets/images/avatars/thumbnails/{{ $post->user->avatar ?? 'avatar.png' }}" alt="">
+																												</div>
+																										</div>
+																										<div class="col-10 col-sm-10 col-xl-11 p-l-5 p-b-35">
+																												<div class="card">
+
+																														<div class="card-block post-timelines">
+																																<span class="dropdown-toggle addon-btn text-muted f-right service-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" role="tooltip"></span>
+
+																																<div class="chat-header f-w-600">{{$post->user->first_name ?? ''}} {{$post->user->surname ?? ''}} {<i class="ti-file text-inverse mr-1 ml-1"  data-toggle="tooltip" data-placement="top" title="" data-original-title="Attachment"></i>} <i class="zmdi zmdi-long-arrow-right text-primary"></i>
+
+																																		@foreach($post->responsiblePersons as $res)
+																																						<small>{{ $res->user->first_name}} {{ $res->user->surname}}</small>,
+																																		@endforeach
+
+																																</div>
+																																<div class="social-time text-muted">{{date('d F, Y', strtotime($post->created_at))}} | <small>{{ $post->created_at->diffForHumans()}}</small> </div>
+																														</div>
+																														<div class="card-block">
+
+																																<div class="timeline-details">
+																																		<a href="{{route('view-post-activity-stream', $post->post_url)}}">
+																																				<h5 class="sub-title">{{ $post->post_title ?? '' }}</h5>
+																																		</a>
+																																		<p class="text-muted">{!! $post->post_content ?? '' !!}</p>
+																																		@foreach ($post->postAttachment as $attach)
+																																		@switch(pathinfo($attach->attachment, PATHINFO_EXTENSION))
+																																				@case('pptx')
+																																				<a href="/assets/uploads/attachments/{{$attach->attachment}}" data-toggle="tooltip" data-placement="top" title="{{$post->post_title ?? 'No name'}}" data-original-title="{{$post->post_title ?? 'Downlaod attachment'}}" style="cursor: pointer;">
+																																						<img src="/assets/formats/ppt.png" height="64" width="64" alt="{{$post->post_title ?? 'No name'}}"><br>
+																																						{{strlen($post->post_title ?? 'Download attachment') > 10 ? substr($post->post_title ?? 'No name',0,7).'...' : $post->post_title ?? 'Downlaod attachment'}}
+																																				</a>
+																																				@break
+																																				@case('xls')
+																																				<a href="/assets/uploads/attachments/{{$attach->attachment}}" data-toggle="tooltip" data-placement="top" title="{{$post->post_title ?? 'No name'}}" data-original-title="{{$post->post_title ?? 'Downlaod attachment'}}" style="cursor: pointer;">
+																																						<img src="/assets/formats/xls.png" height="64" width="64" alt="{{$post->post_title ?? 'No name'}}"><br>
+																																						{{strlen($post->post_title ?? 'Download attachment') > 10 ? substr($post->post_title ?? 'No name',0,7).'...' : $post->post_title ?? 'Downlaod attachment'}}
+																																				</a>
+																																				@break
+																																				@case('xlsx')
+																																						<a href="/assets/uploads/attachments/{{$attach->attachment}}" data-toggle="tooltip" data-placement="top" title="{{$post->post_title ?? 'No name'}}" data-original-title="{{$post->post_title ?? 'Downlaod attachment'}}" style="cursor: pointer;">
+																																								<img src="/assets/formats/xls.png" height="64" width="64" alt="{{$post->post_title ?? 'No name'}}"><br>
+																																								{{strlen($post->post_title ?? 'Download attachment') > 10 ? substr($post->post_title ?? 'No name',0,7).'...' : $post->post_title ?? 'Downlaod attachment'}}
+																																						</a>
+																																				@break
+																																				@case('pdf')
+																																						<a href="/assets/uploads/attachments/{{$attach->attachment}}" data-toggle="tooltip" data-placement="top" title="{{$post->post_title ?? 'No name'}}" data-original-title="{{$post->post_title ?? 'Downlaod attachment'}}" style="cursor: pointer;">
+																																								<img src="/assets/formats/pdf.png" height="64" width="64" alt="{{$post->post_title ?? 'No name'}}"><br>
+																																								{{strlen($post->post_title ?? 'Download attachment') > 10 ? substr($post->post_title ?? 'No name',0,7).'...' : $post->post_title ?? 'Downlaod attachment'}}
+																																						</a>
+																																				@break
+																																				@case('doc')
+																																						<a href="/assets/uploads/attachments/{{$attach->attachment}}" data-toggle="tooltip" data-placement="top" title="{{$post->post_title ?? 'No name'}}" data-original-title="{{$post->post_title ?? 'Downlaod attachment'}}" style="cursor: pointer;">
+																																								<img src="/assets/formats/doc.png" height="64" width="64" alt="{{$post->post_title ?? 'No name'}}"><br>
+																																								{{strlen($post->post_title ?? 'Download attachment') > 10 ? substr($post->post_title ?? 'No name',0,7).'...' : $post->post_title ?? 'Downlaod attachment'}}
+																																						</a>
+																																				@break
+																																				@case('docx')
+																																						<a href="/assets/uploads/attachments/{{$attach->attachment}}" data-toggle="tooltip" data-placement="top" title="{{$post->post_title ?? 'No name'}}" data-original-title="{{$post->post_title ?? 'Downlaod attachment'}}" style="cursor: pointer;">
+																																								<img src="/assets/formats/doc.png" height="64" width="64" alt="{{$post->post_title ?? 'No name'}}"><br>
+																																								{{strlen($post->post_title ?? 'Download attachment') > 10 ? substr($post->post_title ?? 'No name',0,7).'...' : $post->post_title ?? 'Downlaod attachment'}}
+																																						</a>
+																																				@break
+																																				@default
+																																						<a href="/assets/uploads/attachments/{{$attach->attachment}}" data-toggle="tooltip" data-placement="top" title="{{$post->post_title ?? 'No name'}}" data-original-title="{{$post->post_title ?? 'Downlaod attachment'}}" style="cursor: pointer;">
+																																								<img src="/assets/formats/file.png" height="64" width="64" alt="{{$post->post_title ?? 'No name'}}"><br>
+																																								{{strlen($post->post_title ?? 'Download attachment') > 10 ? substr($post->post_title ?? 'No name',0,7).'...' : $post->post_title ?? 'Downlaod attachment'}}
+																																						</a>
+																																				@break
+
+																																		@endswitch
+																																@endforeach
+																																</div>
+																														</div>
+																														<div class="card-block b-b-theme b-t-theme social-msg">
+																																@if(!empty($post->postLikes()->where('user_id', Auth::user()->id)->first()))
+																																		<a href="#" wire:click="unLike({{ $post->id }})"> <i class="icofont icofont-thumbs-down text-danger" ></i>
+																																				<span class="b-r-muted">Unlike ({{ count($post->postLikes) }}) </span>
+																																		</a>
+
+																																@elseif(empty($post->postLikes()->where('user_id', Auth::user()->id)->first()))
+																																		<a href="#" wire:click="addLike({{ $post->id }})"> <i class="icofont icofont-like text-success" ></i>
+																																				<span class="b-r-muted">Like ({{ count($post->postLikes) }}) </span>
+																																		</a>
+																																@endif
+																																<a href="#"> <i class="icofont icofont-comment text-muted"></i> <span class="b-r-muted">Comments ({{ count($post->postComments) }})</span></a>
+																																<a href="javascript:void(0);" class="viewers dropdown-toggle" type="button" id="dropdown-{{$post->id}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"> <i class="ti-eye text-muted"></i> <span>View ({{number_format(count($post->postViews))}})</span>
+																																		<div class="dropdown-menu" aria-labelledby="dropdown-{{$post->id}}" style="width:300px!important;" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut">
+																																				@foreach ($post->postViews()->orderBy('id', 'DESC')->take(10)->get() as $viewer)
+																																						<a class="dropdown-item waves-light waves-effect" href="{{route('view-profile', $viewer->user->url)}}">
+																																								<img src="/assets/images/avatars/thumbnails/{{$viewer->user->avatar ?? 'avatar.png'}}" class="img-30 mr-2" alt="{{$viewer->user->first_name ?? ''}}"> {{$viewer->user->first_name ?? ''}} {{$viewer->user->surname ?? ''}}</a>
+																																						@endforeach
+																																				<a class="dropdown-item waves-light waves-effect text-center" href="{{route('view-post-activity-stream', $post->post_url)}}">View all</a>
+																																		</div>
+																																</a>
+																														</div>
+																														<div class="card-block user-box">
+																																<div class="p-b-30"> <span class="f-14"><a href="javascript:void(0);">Comments ({{ count($post->postComments) }})</a></span>
+
+																																</div>
+
+																																@foreach($post->postComments()->orderBy('id', 'DESC')->take(5)->get() as $comment)
+																																		<div class="media m-b-2">
+																																				<a class="media-left" href="{{ route('view-profile', $comment->user->url) }}">
+																																						<img class="media-object img-radius m-r-20" src="/assets/images/avatars/thumbnails/{{ $comment->user->avatar ?? 'avatar.png' }}" alt="{{ $comment->user->first_name }} {{ $comment->user->surname ?? '' }}">
+																																				</a>
+																																				<div class="media-body b-b-muted social-client-description">
+																																						<div class="chat-header"><a href="{{ route('view-profile', $comment->user->url) }}">{{ $comment->user->first_name }} {{ $comment->user->surname ?? '' }} </a> <span class="text-muted">{{date('d M, Y', strtotime($comment->created_at)) }} <small>({{ $comment->created_at->diffForHumans() }})</small></span></div>
+																																						<p class="text-muted"> {!! $comment->comment !!} </p>
+																																				</div>
+																																		</div>
+																																@endforeach
+																																@if (count($post->postComments) > 5 )
+																																		<a href="{{route('view-post-activity-stream', $post->post_url)}}">
+																																				<p class="text-center">+{{count($post->postComments) - 5}} others</p>
+																																		</a>
+																																@endif
+
+																																<div class="media">
+																																		<a class="media-left" href="{{ route('view-profile', Auth::user()->url) }}">
+																																				<img class="media-object img-radius m-r-20" src="/assets/images/avatars/thumbnails/avatar.png" alt="Generic placeholder image">
+																																		</a>
+																																		<div class="media-body">
+
+																																				<div class="">
+																																						<textarea wire:model.debounce.50000ms="comment" rows="5" cols="5" class="form-control" placeholder="Leave comment"></textarea>
+
+																																						<div class="text-right m-t-20">
+																																								<button class="btn btn-out-dashed btn-primary btn-square btn-sm" type="button" wire:click="comment({{ $post->id }})">Comment</button>
+																																						</div>
+																																				</div>
+																																		</div>
+																																</div>
+																														</div>
+																												</div>
+																										</div>
+																								</div>
+																						</div>
+																				@endif
+																		@endforeach
+
+																	@endif
+															@elseif($post->post_type == 'appreciation')
+																		@if ($post->user_id == Auth::user()->id)
+																				<div class="social-timelines p-relative rollover" data-live="{{$post->id}}">
+																					<div class="row timeline-right p-t-35">
+																							<div class="col-2 col-sm-2 col-xl-1">
+																									<div class="social-timelines-left">
+																											<img class="img-radius timeline-icon" src="/assets/images/avatars/thumbnails/{{ $post->user->avatar ?? 'avatar.png' }}" alt="">
+																									</div>
+																							</div>
+																							<div class="col-10 col-sm-10 col-xl-11 p-l-5 p-b-35">
+																									<div class="card">
+
+																											<div class="card-block post-timelines">
+																													<span class="dropdown-toggle addon-btn text-muted f-right service-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" role="tooltip"></span>
+
+																													<div class="chat-header f-w-600">{{$post->user->first_name ?? ''}} {{$post->user->surname ?? ''}} {<i class="ti-gift text-inverse mr-1 ml-1"  data-toggle="tooltip" data-placement="top" title="" data-original-title="Appreciation"></i>}<i class="zmdi zmdi-long-arrow-right text-primary"></i>
+
+																															@foreach($post->responsiblePersons as $res)
+																																			<small>{{ $res->user->first_name}} {{ $res->user->surname}}</small>,
+																															@endforeach
+
+																													</div>
+																													<div class="social-time text-muted">{{date('d F, Y', strtotime($post->created_at))}} | <small>{{ $post->created_at->diffForHumans()}}</small> </div>
+																											</div>
+																											<div class="card-block">
+
+																													<div class="timeline-details">
+																															<a href="{{route('view-post-activity-stream', $post->post_url)}}">
+																																	<h5 class="sub-title">{{ $post->post_title ?? '' }}</h5>
+																															</a>
+																															<p class="text-muted">{!! $post->post_content ?? '' !!}</p>
+																															@foreach ($post->postAttachment as $attach)
+																															@switch(pathinfo($attach->attachment, PATHINFO_EXTENSION))
+																																	@case('pptx')
+																																	<a href="/assets/uploads/attachments/{{$attach->attachment}}" data-toggle="tooltip" data-placement="top" title="{{$post->post_title ?? 'No name'}}" data-original-title="{{$post->post_title ?? 'Downlaod attachment'}}" style="cursor: pointer;">
+																																			<img src="/assets/formats/ppt.png" height="64" width="64" alt="{{$post->post_title ?? 'No name'}}"><br>
+																																			{{strlen($post->post_title ?? 'Download attachment') > 10 ? substr($post->post_title ?? 'No name',0,7).'...' : $post->post_title ?? 'Downlaod attachment'}}
+																																	</a>
+																																	@break
+																																	@case('xls')
+																																	<a href="/assets/uploads/attachments/{{$attach->attachment}}" data-toggle="tooltip" data-placement="top" title="{{$post->post_title ?? 'No name'}}" data-original-title="{{$post->post_title ?? 'Downlaod attachment'}}" style="cursor: pointer;">
+																																			<img src="/assets/formats/xls.png" height="64" width="64" alt="{{$post->post_title ?? 'No name'}}"><br>
+																																			{{strlen($post->post_title ?? 'Download attachment') > 10 ? substr($post->post_title ?? 'No name',0,7).'...' : $post->post_title ?? 'Downlaod attachment'}}
+																																	</a>
+																																	@break
+																																	@case('xlsx')
+																																			<a href="/assets/uploads/attachments/{{$attach->attachment}}" data-toggle="tooltip" data-placement="top" title="{{$post->post_title ?? 'No name'}}" data-original-title="{{$post->post_title ?? 'Downlaod attachment'}}" style="cursor: pointer;">
+																																					<img src="/assets/formats/xls.png" height="64" width="64" alt="{{$post->post_title ?? 'No name'}}"><br>
+																																					{{strlen($post->post_title ?? 'Download attachment') > 10 ? substr($post->post_title ?? 'No name',0,7).'...' : $post->post_title ?? 'Downlaod attachment'}}
+																																			</a>
+																																	@break
+																																	@case('pdf')
+																																			<a href="/assets/uploads/attachments/{{$attach->attachment}}" data-toggle="tooltip" data-placement="top" title="{{$post->post_title ?? 'No name'}}" data-original-title="{{$post->post_title ?? 'Downlaod attachment'}}" style="cursor: pointer;">
+																																					<img src="/assets/formats/pdf.png" height="64" width="64" alt="{{$post->post_title ?? 'No name'}}"><br>
+																																					{{strlen($post->post_title ?? 'Download attachment') > 10 ? substr($post->post_title ?? 'No name',0,7).'...' : $post->post_title ?? 'Downlaod attachment'}}
+																																			</a>
+																																	@break
+																																	@case('doc')
+																																			<a href="/assets/uploads/attachments/{{$attach->attachment}}" data-toggle="tooltip" data-placement="top" title="{{$post->post_title ?? 'No name'}}" data-original-title="{{$post->post_title ?? 'Downlaod attachment'}}" style="cursor: pointer;">
+																																					<img src="/assets/formats/doc.png" height="64" width="64" alt="{{$post->post_title ?? 'No name'}}"><br>
+																																					{{strlen($post->post_title ?? 'Download attachment') > 10 ? substr($post->post_title ?? 'No name',0,7).'...' : $post->post_title ?? 'Downlaod attachment'}}
+																																			</a>
+																																	@break
+																																	@case('docx')
+																																			<a href="/assets/uploads/attachments/{{$attach->attachment}}" data-toggle="tooltip" data-placement="top" title="{{$post->post_title ?? 'No name'}}" data-original-title="{{$post->post_title ?? 'Downlaod attachment'}}" style="cursor: pointer;">
+																																					<img src="/assets/formats/doc.png" height="64" width="64" alt="{{$post->post_title ?? 'No name'}}"><br>
+																																					{{strlen($post->post_title ?? 'Download attachment') > 10 ? substr($post->post_title ?? 'No name',0,7).'...' : $post->post_title ?? 'Downlaod attachment'}}
+																																			</a>
+																																	@break
+																																	@default
+																																			<a href="/assets/uploads/attachments/{{$attach->attachment}}" data-toggle="tooltip" data-placement="top" title="{{$post->post_title ?? 'No name'}}" data-original-title="{{$post->post_title ?? 'Downlaod attachment'}}" style="cursor: pointer;">
+																																					<img src="/assets/formats/file.png" height="64" width="64" alt="{{$post->post_title ?? 'No name'}}"><br>
+																																					{{strlen($post->post_title ?? 'Download attachment') > 10 ? substr($post->post_title ?? 'No name',0,7).'...' : $post->post_title ?? 'Downlaod attachment'}}
+																																			</a>
+																																	@break
+
+																															@endswitch
+																													@endforeach
+																													</div>
+																											</div>
+																											<div class="card-block b-b-theme b-t-theme social-msg">
+																													@if(!empty($post->postLikes()->where('user_id', Auth::user()->id)->first()))
+																															<a href="#" wire:click="unLike({{ $post->id }})"> <i class="icofont icofont-thumbs-down text-danger" ></i>
+																																	<span class="b-r-muted">Unlike ({{ count($post->postLikes) }}) </span>
+																															</a>
+
+																													@elseif(empty($post->postLikes()->where('user_id', Auth::user()->id)->first()))
+																															<a href="#" wire:click="addLike({{ $post->id }})"> <i class="icofont icofont-like text-success" ></i>
+																																	<span class="b-r-muted">Like ({{ count($post->postLikes) }}) </span>
+																															</a>
+																													@endif
+																													<a href="#"> <i class="icofont icofont-comment text-muted"></i> <span class="b-r-muted">Comments ({{ count($post->postComments) }})</span></a>
+																													<a href="javascript:void(0);" class="viewers dropdown-toggle" type="button" id="dropdown-{{$post->id}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"> <i class="ti-eye text-muted"></i> <span>View ({{number_format(count($post->postViews))}})</span>
+																															<div class="dropdown-menu" aria-labelledby="dropdown-{{$post->id}}" style="width:300px!important;" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut">
+																																	@foreach ($post->postViews()->orderBy('id', 'DESC')->take(10)->get() as $viewer)
+																																			<a class="dropdown-item waves-light waves-effect" href="{{route('view-profile', $viewer->user->url)}}">
+																																					<img src="/assets/images/avatars/thumbnails/{{$viewer->user->avatar ?? 'avatar.png'}}" class="img-30 mr-2" alt="{{$viewer->user->first_name ?? ''}}"> {{$viewer->user->first_name ?? ''}} {{$viewer->user->surname ?? ''}}</a>
+																																			@endforeach
+																																	<a class="dropdown-item waves-light waves-effect text-center" href="{{route('view-post-activity-stream', $post->post_url)}}">View all</a>
+																															</div>
+																													</a>
+																											</div>
+																											<div class="card-block user-box">
+																													<div class="p-b-30"> <span class="f-14"><a href="javascript:void(0);">Comments ({{ count($post->postComments) }})</a></span>
+
+																													</div>
+
+																													@foreach($post->postComments()->orderBy('id', 'DESC')->take(5)->get() as $comment)
+																															<div class="media m-b-2">
+																																	<a class="media-left" href="{{ route('view-profile', $comment->user->url) }}">
+																																			<img class="media-object img-radius m-r-20" src="/assets/images/avatars/thumbnails/{{ $comment->user->avatar ?? 'avatar.png' }}" alt="{{ $comment->user->first_name }} {{ $comment->user->surname ?? '' }}">
+																																	</a>
+																																	<div class="media-body b-b-muted social-client-description">
+																																			<div class="chat-header"><a href="{{ route('view-profile', $comment->user->url) }}">{{ $comment->user->first_name }} {{ $comment->user->surname ?? '' }} </a> <span class="text-muted">{{date('d M, Y', strtotime($comment->created_at)) }} <small>({{ $comment->created_at->diffForHumans() }})</small></span></div>
+																																			<p class="text-muted"> {!! $comment->comment !!} </p>
+																																	</div>
+																															</div>
+																													@endforeach
+																													@if (count($post->postComments) > 5 )
+																															<a href="{{route('view-post-activity-stream', $post->post_url)}}">
+																																	<p class="text-center">+{{count($post->postComments) - 5}} others</p>
+																															</a>
+																													@endif
+
+																													<div class="media">
+																															<a class="media-left" href="{{ route('view-profile', Auth::user()->url) }}">
+																																	<img class="media-object img-radius m-r-20" src="/assets/images/avatars/thumbnails/avatar.png" alt="Generic placeholder image">
+																															</a>
+																															<div class="media-body">
+
+																																	<div class="">
+																																			<textarea wire:model.debounce.50000ms="comment" rows="5" cols="5" class="form-control" placeholder="Leave comment"></textarea>
+
+																																			<div class="text-right m-t-20">
+																																					<button class="btn btn-out-dashed btn-primary btn-square btn-sm" type="button" wire:click="comment({{ $post->id }})">Comment</button>
+																																			</div>
+																																	</div>
 																															</div>
 																													</div>
-																													<div class="col-10 col-sm-10 col-xl-11 p-l-5 p-b-35">
-																															<div class="card">
+																											</div>
+																									</div>
+																							</div>
+																					</div>
+																			</div>
+																		@else
+																			@foreach ($post->responsiblePersons as $res)
+																					@if ($res->user_id == Auth::user()->id || $res->user_id == 32)
+																							<div class="social-timelines p-relative rollover" data-live="{{$post->id}}">
+																									<div class="row timeline-right p-t-35">
+																											<div class="col-2 col-sm-2 col-xl-1">
+																													<div class="social-timelines-left">
+																															<img class="img-radius timeline-icon" src="/assets/images/avatars/thumbnails/{{ $post->user->avatar ?? 'avatar.png' }}" alt="">
+																													</div>
+																											</div>
+																											<div class="col-10 col-sm-10 col-xl-11 p-l-5 p-b-35">
+																													<div class="card">
 
-																																	<div class="card-block post-timelines">
-																																			<span class="dropdown-toggle addon-btn text-muted f-right service-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" role="tooltip"></span>
+																															<div class="card-block post-timelines">
+																																	<span class="dropdown-toggle addon-btn text-muted f-right service-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" role="tooltip"></span>
 
-																																			<div class="chat-header f-w-600">{{$post->user->first_name ?? ''}} {{$post->user->surname ?? ''}} {<i class="ti-blackboard text-inverse mr-1 ml-1"  data-toggle="tooltip" data-placement="top" title="" data-original-title="Announcement"></i>} <i class="zmdi zmdi-long-arrow-right text-primary"></i>
+																																	<div class="chat-header f-w-600">{{$post->user->first_name ?? ''}} {{$post->user->surname ?? ''}} {<i class="ti-gift text-inverse mr-1 ml-1"  data-toggle="tooltip" data-placement="top" title="" data-original-title="Appreciation"></i>}<i class="zmdi zmdi-long-arrow-right text-primary"></i>
 
-																																					@foreach($post->responsiblePersons as $res)
-																																									<small>{{ $res->user->first_name}} {{ $res->user->surname}}</small>,
-																																					@endforeach
+																																			@foreach($post->responsiblePersons as $res)
+																																							<small>{{ $res->user->first_name}} {{ $res->user->surname}}</small>,
+																																			@endforeach
 
-																																			</div>
-																																			<div class="social-time text-muted">{{date('d F, Y', strtotime($post->created_at))}} | <small>{{ $post->created_at->diffForHumans()}}</small> </div>
 																																	</div>
-																																	<div class="card-block">
+																																	<div class="social-time text-muted">{{date('d F, Y', strtotime($post->created_at))}} | <small>{{ $post->created_at->diffForHumans()}}</small> </div>
+																															</div>
+																															<div class="card-block">
 
-																																			<div class="timeline-details">
-																																					<a href="{{route('view-post-activity-stream', $post->post_url)}}">
-																																							<h5 class="sub-title">{{ $post->post_title ?? '' }}</h5>
+																																	<div class="timeline-details">
+																																			<a href="{{route('view-post-activity-stream', $post->post_url)}}">
+																																					<h5 class="sub-title">{{ $post->post_title ?? '' }}</h5>
+																																			</a>
+																																			<p class="text-muted">{!! $post->post_content ?? '' !!}</p>
+																																			@foreach ($post->postAttachment as $attach)
+																																			@switch(pathinfo($attach->attachment, PATHINFO_EXTENSION))
+																																					@case('pptx')
+																																					<a href="/assets/uploads/attachments/{{$attach->attachment}}" data-toggle="tooltip" data-placement="top" title="{{$post->post_title ?? 'No name'}}" data-original-title="{{$post->post_title ?? 'Downlaod attachment'}}" style="cursor: pointer;">
+																																							<img src="/assets/formats/ppt.png" height="64" width="64" alt="{{$post->post_title ?? 'No name'}}"><br>
+																																							{{strlen($post->post_title ?? 'Download attachment') > 10 ? substr($post->post_title ?? 'No name',0,7).'...' : $post->post_title ?? 'Downlaod attachment'}}
 																																					</a>
-																																					<p class="text-muted">{!! $post->post_content ?? '' !!}</p>
-																																					@foreach ($post->postAttachment as $attach)
-																																					@switch(pathinfo($attach->attachment, PATHINFO_EXTENSION))
-																																							@case('pptx')
-																																							<a href="/assets/uploads/attachments/{{$attach->attachment}}" data-toggle="tooltip" data-placement="top" title="{{$post->post_title ?? 'No name'}}" data-original-title="{{$post->post_title ?? 'Downlaod attachment'}}" style="cursor: pointer;">
-																																									<img src="/assets/formats/ppt.png" height="64" width="64" alt="{{$post->post_title ?? 'No name'}}"><br>
-																																									{{strlen($post->post_title ?? 'Download attachment') > 10 ? substr($post->post_title ?? 'No name',0,7).'...' : $post->post_title ?? 'Downlaod attachment'}}
-																																							</a>
-																																							@break
-																																							@case('xls')
+																																					@break
+																																					@case('xls')
+																																					<a href="/assets/uploads/attachments/{{$attach->attachment}}" data-toggle="tooltip" data-placement="top" title="{{$post->post_title ?? 'No name'}}" data-original-title="{{$post->post_title ?? 'Downlaod attachment'}}" style="cursor: pointer;">
+																																							<img src="/assets/formats/xls.png" height="64" width="64" alt="{{$post->post_title ?? 'No name'}}"><br>
+																																							{{strlen($post->post_title ?? 'Download attachment') > 10 ? substr($post->post_title ?? 'No name',0,7).'...' : $post->post_title ?? 'Downlaod attachment'}}
+																																					</a>
+																																					@break
+																																					@case('xlsx')
 																																							<a href="/assets/uploads/attachments/{{$attach->attachment}}" data-toggle="tooltip" data-placement="top" title="{{$post->post_title ?? 'No name'}}" data-original-title="{{$post->post_title ?? 'Downlaod attachment'}}" style="cursor: pointer;">
 																																									<img src="/assets/formats/xls.png" height="64" width="64" alt="{{$post->post_title ?? 'No name'}}"><br>
 																																									{{strlen($post->post_title ?? 'Download attachment') > 10 ? substr($post->post_title ?? 'No name',0,7).'...' : $post->post_title ?? 'Downlaod attachment'}}
 																																							</a>
-																																							@break
-																																							@case('xlsx')
-																																									<a href="/assets/uploads/attachments/{{$attach->attachment}}" data-toggle="tooltip" data-placement="top" title="{{$post->post_title ?? 'No name'}}" data-original-title="{{$post->post_title ?? 'Downlaod attachment'}}" style="cursor: pointer;">
-																																											<img src="/assets/formats/xls.png" height="64" width="64" alt="{{$post->post_title ?? 'No name'}}"><br>
-																																											{{strlen($post->post_title ?? 'Download attachment') > 10 ? substr($post->post_title ?? 'No name',0,7).'...' : $post->post_title ?? 'Downlaod attachment'}}
-																																									</a>
-																																							@break
-																																							@case('pdf')
-																																									<a href="/assets/uploads/attachments/{{$attach->attachment}}" data-toggle="tooltip" data-placement="top" title="{{$post->post_title ?? 'No name'}}" data-original-title="{{$post->post_title ?? 'Downlaod attachment'}}" style="cursor: pointer;">
-																																											<img src="/assets/formats/pdf.png" height="64" width="64" alt="{{$post->post_title ?? 'No name'}}"><br>
-																																											{{strlen($post->post_title ?? 'Download attachment') > 10 ? substr($post->post_title ?? 'No name',0,7).'...' : $post->post_title ?? 'Downlaod attachment'}}
-																																									</a>
-																																							@break
-																																							@case('doc')
-																																									<a href="/assets/uploads/attachments/{{$attach->attachment}}" data-toggle="tooltip" data-placement="top" title="{{$post->post_title ?? 'No name'}}" data-original-title="{{$post->post_title ?? 'Downlaod attachment'}}" style="cursor: pointer;">
-																																											<img src="/assets/formats/doc.png" height="64" width="64" alt="{{$post->post_title ?? 'No name'}}"><br>
-																																											{{strlen($post->post_title ?? 'Download attachment') > 10 ? substr($post->post_title ?? 'No name',0,7).'...' : $post->post_title ?? 'Downlaod attachment'}}
-																																									</a>
-																																							@break
-																																							@case('docx')
-																																									<a href="/assets/uploads/attachments/{{$attach->attachment}}" data-toggle="tooltip" data-placement="top" title="{{$post->post_title ?? 'No name'}}" data-original-title="{{$post->post_title ?? 'Downlaod attachment'}}" style="cursor: pointer;">
-																																											<img src="/assets/formats/doc.png" height="64" width="64" alt="{{$post->post_title ?? 'No name'}}"><br>
-																																											{{strlen($post->post_title ?? 'Download attachment') > 10 ? substr($post->post_title ?? 'No name',0,7).'...' : $post->post_title ?? 'Downlaod attachment'}}
-																																									</a>
-																																							@break
-																																							@default
-																																									<a href="/assets/uploads/attachments/{{$attach->attachment}}" data-toggle="tooltip" data-placement="top" title="{{$post->post_title ?? 'No name'}}" data-original-title="{{$post->post_title ?? 'Downlaod attachment'}}" style="cursor: pointer;">
-																																											<img src="/assets/formats/file.png" height="64" width="64" alt="{{$post->post_title ?? 'No name'}}"><br>
-																																											{{strlen($post->post_title ?? 'Download attachment') > 10 ? substr($post->post_title ?? 'No name',0,7).'...' : $post->post_title ?? 'Downlaod attachment'}}
-																																									</a>
-																																							@break
-
-																																					@endswitch
-																																			@endforeach
-																																			</div>
-																																	</div>
-																																	<div class="card-block b-b-theme b-t-theme social-msg">
-																																			@if(!empty($post->postLikes()->where('user_id', Auth::user()->id)->first()))
-																																					<a href="#" wire:click="unLike({{ $post->id }})"> <i class="icofont icofont-thumbs-down text-danger" ></i>
-																																							<span class="b-r-muted">Unlike ({{ count($post->postLikes) }}) </span>
-																																					</a>
-
-																																			@elseif(empty($post->postLikes()->where('user_id', Auth::user()->id)->first()))
-																																					<a href="#" wire:click="addLike({{ $post->id }})"> <i class="icofont icofont-like text-success" ></i>
-																																							<span class="b-r-muted">Like ({{ count($post->postLikes) }}) </span>
-																																					</a>
-																																			@endif
-																																			<a href="#"> <i class="icofont icofont-comment text-muted"></i> <span class="b-r-muted">Comments ({{ count($post->postComments) }})</span></a>
-																																			<a href="javascript:void(0);" class="viewers dropdown-toggle" type="button" id="dropdown-{{$post->id}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"> <i class="ti-eye text-muted"></i> <span>View ({{number_format(count($post->postViews))}})</span>
-																																					<div class="dropdown-menu" aria-labelledby="dropdown-{{$post->id}}" style="width:300px!important;" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut">
-																																							@foreach ($post->postViews()->orderBy('id', 'DESC')->take(10)->get() as $viewer)
-																																									<a class="dropdown-item waves-light waves-effect" href="{{route('view-profile', $viewer->user->url)}}">
-																																											<img src="/assets/images/avatars/thumbnails/{{$viewer->user->avatar ?? 'avatar.png'}}" class="img-30 mr-2" alt="{{$viewer->user->first_name ?? ''}}"> {{$viewer->user->first_name ?? ''}} {{$viewer->user->surname ?? ''}}</a>
-																																									@endforeach
-																																							<a class="dropdown-item waves-light waves-effect text-center" href="{{route('view-post-activity-stream', $post->post_url)}}">View all</a>
-																																					</div>
-																																			</a>
-																																	</div>
-																																	<div class="card-block user-box">
-																																			<div class="p-b-30"> <span class="f-14"><a href="javascript:void(0);">Comments ({{ count($post->postComments) }})</a></span>
-
-																																			</div>
-
-																																			@foreach($post->postComments()->orderBy('id', 'DESC')->take(5)->get() as $comment)
-																																					<div class="media m-b-2">
-																																							<a class="media-left" href="{{ route('view-profile', $comment->user->url) }}">
-																																									<img class="media-object img-radius m-r-20" src="/assets/images/avatars/thumbnails/{{ $comment->user->avatar ?? 'avatar.png' }}" alt="{{ $comment->user->first_name }} {{ $comment->user->surname ?? '' }}">
+																																					@break
+																																					@case('pdf')
+																																							<a href="/assets/uploads/attachments/{{$attach->attachment}}" data-toggle="tooltip" data-placement="top" title="{{$post->post_title ?? 'No name'}}" data-original-title="{{$post->post_title ?? 'Downlaod attachment'}}" style="cursor: pointer;">
+																																									<img src="/assets/formats/pdf.png" height="64" width="64" alt="{{$post->post_title ?? 'No name'}}"><br>
+																																									{{strlen($post->post_title ?? 'Download attachment') > 10 ? substr($post->post_title ?? 'No name',0,7).'...' : $post->post_title ?? 'Downlaod attachment'}}
 																																							</a>
-																																							<div class="media-body b-b-muted social-client-description">
-																																									<div class="chat-header"><a href="{{ route('view-profile', $comment->user->url) }}">{{ $comment->user->first_name }} {{ $comment->user->surname ?? '' }} </a> <span class="text-muted">{{date('d M, Y', strtotime($comment->created_at)) }} <small>({{ $comment->created_at->diffForHumans() }})</small></span></div>
-																																									<p class="text-muted"> {!! $comment->comment !!} </p>
-																																							</div>
-																																					</div>
-																																			@endforeach
-																																			@if (count($post->postComments) > 5 )
-																																					<a href="{{route('view-post-activity-stream', $post->post_url)}}">
-																																							<p class="text-center">+{{count($post->postComments) - 5}} others</p>
-																																					</a>
-																																			@endif
+																																					@break
+																																					@case('doc')
+																																							<a href="/assets/uploads/attachments/{{$attach->attachment}}" data-toggle="tooltip" data-placement="top" title="{{$post->post_title ?? 'No name'}}" data-original-title="{{$post->post_title ?? 'Downlaod attachment'}}" style="cursor: pointer;">
+																																									<img src="/assets/formats/doc.png" height="64" width="64" alt="{{$post->post_title ?? 'No name'}}"><br>
+																																									{{strlen($post->post_title ?? 'Download attachment') > 10 ? substr($post->post_title ?? 'No name',0,7).'...' : $post->post_title ?? 'Downlaod attachment'}}
+																																							</a>
+																																					@break
+																																					@case('docx')
+																																							<a href="/assets/uploads/attachments/{{$attach->attachment}}" data-toggle="tooltip" data-placement="top" title="{{$post->post_title ?? 'No name'}}" data-original-title="{{$post->post_title ?? 'Downlaod attachment'}}" style="cursor: pointer;">
+																																									<img src="/assets/formats/doc.png" height="64" width="64" alt="{{$post->post_title ?? 'No name'}}"><br>
+																																									{{strlen($post->post_title ?? 'Download attachment') > 10 ? substr($post->post_title ?? 'No name',0,7).'...' : $post->post_title ?? 'Downlaod attachment'}}
+																																							</a>
+																																					@break
+																																					@default
+																																							<a href="/assets/uploads/attachments/{{$attach->attachment}}" data-toggle="tooltip" data-placement="top" title="{{$post->post_title ?? 'No name'}}" data-original-title="{{$post->post_title ?? 'Downlaod attachment'}}" style="cursor: pointer;">
+																																									<img src="/assets/formats/file.png" height="64" width="64" alt="{{$post->post_title ?? 'No name'}}"><br>
+																																									{{strlen($post->post_title ?? 'Download attachment') > 10 ? substr($post->post_title ?? 'No name',0,7).'...' : $post->post_title ?? 'Downlaod attachment'}}
+																																							</a>
+																																					@break
 
-																																			<div class="media">
-																																					<a class="media-left" href="{{ route('view-profile', Auth::user()->url) }}">
-																																							<img class="media-object img-radius m-r-20" src="/assets/images/avatars/thumbnails/avatar.png" alt="Generic placeholder image">
-																																					</a>
-																																					<div class="media-body">
-
-																																							<div class="">
-																																									<textarea wire:model.debounce.50000ms="comment" rows="5" cols="5" class="form-control" placeholder="Leave comment"></textarea>
-
-																																									<div class="text-right m-t-20">
-																																											<button class="btn btn-out-dashed btn-primary btn-square btn-sm" type="button" wire:click="comment({{ $post->id }})">Comment</button>
-																																									</div>
-																																							</div>
-																																					</div>
-																																			</div>
-																																	</div>
-																															</div>
-																													</div>
-																											</div>
-																									</div>
-																							@endif
-																							@break
-																	 @endforeach
-															@elseif($post->post_type == 'file')
-																	@foreach ($post->responsiblePersons as $res)
-																			@if ($res->user_id == Auth::user()->id || $post->user_id == Auth::user()->id || $res->user_id == 32)
-																					<div class="social-timelines p-relative rollover" data-live="{{$post->id}}">
-																							<div class="row timeline-right p-t-35">
-																									<div class="col-2 col-sm-2 col-xl-1">
-																											<div class="social-timelines-left">
-																													<img class="img-radius timeline-icon" src="/assets/images/avatars/thumbnails/{{ $post->user->avatar ?? 'avatar.png' }}" alt="">
-																											</div>
-																									</div>
-																									<div class="col-10 col-sm-10 col-xl-11 p-l-5 p-b-35">
-																											<div class="card">
-
-																													<div class="card-block post-timelines">
-																															<span class="dropdown-toggle addon-btn text-muted f-right service-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" role="tooltip"></span>
-
-																															<div class="chat-header f-w-600">{{$post->user->first_name ?? ''}} {{$post->user->surname ?? ''}} {<i class="ti-file text-inverse mr-1 ml-1"  data-toggle="tooltip" data-placement="top" title="" data-original-title="Attachment"></i>} <i class="zmdi zmdi-long-arrow-right text-primary"></i>
-
-																																	@foreach($post->responsiblePersons as $res)
-																																					<small>{{ $res->user->first_name}} {{ $res->user->surname}}</small>,
+																																			@endswitch
 																																	@endforeach
-
-																															</div>
-																															<div class="social-time text-muted">{{date('d F, Y', strtotime($post->created_at))}} | <small>{{ $post->created_at->diffForHumans()}}</small> </div>
-																													</div>
-																													<div class="card-block">
-
-																															<div class="timeline-details">
-																																	<a href="{{route('view-post-activity-stream', $post->post_url)}}">
-																																			<h5 class="sub-title">{{ $post->post_title ?? '' }}</h5>
-																																	</a>
-																																	<p class="text-muted">{!! $post->post_content ?? '' !!}</p>
-																																	@foreach ($post->postAttachment as $attach)
-																																	@switch(pathinfo($attach->attachment, PATHINFO_EXTENSION))
-																																			@case('pptx')
-																																			<a href="/assets/uploads/attachments/{{$attach->attachment}}" data-toggle="tooltip" data-placement="top" title="{{$post->post_title ?? 'No name'}}" data-original-title="{{$post->post_title ?? 'Downlaod attachment'}}" style="cursor: pointer;">
-																																					<img src="/assets/formats/ppt.png" height="64" width="64" alt="{{$post->post_title ?? 'No name'}}"><br>
-																																					{{strlen($post->post_title ?? 'Download attachment') > 10 ? substr($post->post_title ?? 'No name',0,7).'...' : $post->post_title ?? 'Downlaod attachment'}}
-																																			</a>
-																																			@break
-																																			@case('xls')
-																																			<a href="/assets/uploads/attachments/{{$attach->attachment}}" data-toggle="tooltip" data-placement="top" title="{{$post->post_title ?? 'No name'}}" data-original-title="{{$post->post_title ?? 'Downlaod attachment'}}" style="cursor: pointer;">
-																																					<img src="/assets/formats/xls.png" height="64" width="64" alt="{{$post->post_title ?? 'No name'}}"><br>
-																																					{{strlen($post->post_title ?? 'Download attachment') > 10 ? substr($post->post_title ?? 'No name',0,7).'...' : $post->post_title ?? 'Downlaod attachment'}}
-																																			</a>
-																																			@break
-																																			@case('xlsx')
-																																					<a href="/assets/uploads/attachments/{{$attach->attachment}}" data-toggle="tooltip" data-placement="top" title="{{$post->post_title ?? 'No name'}}" data-original-title="{{$post->post_title ?? 'Downlaod attachment'}}" style="cursor: pointer;">
-																																							<img src="/assets/formats/xls.png" height="64" width="64" alt="{{$post->post_title ?? 'No name'}}"><br>
-																																							{{strlen($post->post_title ?? 'Download attachment') > 10 ? substr($post->post_title ?? 'No name',0,7).'...' : $post->post_title ?? 'Downlaod attachment'}}
-																																					</a>
-																																			@break
-																																			@case('pdf')
-																																					<a href="/assets/uploads/attachments/{{$attach->attachment}}" data-toggle="tooltip" data-placement="top" title="{{$post->post_title ?? 'No name'}}" data-original-title="{{$post->post_title ?? 'Downlaod attachment'}}" style="cursor: pointer;">
-																																							<img src="/assets/formats/pdf.png" height="64" width="64" alt="{{$post->post_title ?? 'No name'}}"><br>
-																																							{{strlen($post->post_title ?? 'Download attachment') > 10 ? substr($post->post_title ?? 'No name',0,7).'...' : $post->post_title ?? 'Downlaod attachment'}}
-																																					</a>
-																																			@break
-																																			@case('doc')
-																																					<a href="/assets/uploads/attachments/{{$attach->attachment}}" data-toggle="tooltip" data-placement="top" title="{{$post->post_title ?? 'No name'}}" data-original-title="{{$post->post_title ?? 'Downlaod attachment'}}" style="cursor: pointer;">
-																																							<img src="/assets/formats/doc.png" height="64" width="64" alt="{{$post->post_title ?? 'No name'}}"><br>
-																																							{{strlen($post->post_title ?? 'Download attachment') > 10 ? substr($post->post_title ?? 'No name',0,7).'...' : $post->post_title ?? 'Downlaod attachment'}}
-																																					</a>
-																																			@break
-																																			@case('docx')
-																																					<a href="/assets/uploads/attachments/{{$attach->attachment}}" data-toggle="tooltip" data-placement="top" title="{{$post->post_title ?? 'No name'}}" data-original-title="{{$post->post_title ?? 'Downlaod attachment'}}" style="cursor: pointer;">
-																																							<img src="/assets/formats/doc.png" height="64" width="64" alt="{{$post->post_title ?? 'No name'}}"><br>
-																																							{{strlen($post->post_title ?? 'Download attachment') > 10 ? substr($post->post_title ?? 'No name',0,7).'...' : $post->post_title ?? 'Downlaod attachment'}}
-																																					</a>
-																																			@break
-																																			@default
-																																					<a href="/assets/uploads/attachments/{{$attach->attachment}}" data-toggle="tooltip" data-placement="top" title="{{$post->post_title ?? 'No name'}}" data-original-title="{{$post->post_title ?? 'Downlaod attachment'}}" style="cursor: pointer;">
-																																							<img src="/assets/formats/file.png" height="64" width="64" alt="{{$post->post_title ?? 'No name'}}"><br>
-																																							{{strlen($post->post_title ?? 'Download attachment') > 10 ? substr($post->post_title ?? 'No name',0,7).'...' : $post->post_title ?? 'Downlaod attachment'}}
-																																					</a>
-																																			@break
-
-																																	@endswitch
-																															@endforeach
-																															</div>
-																													</div>
-																													<div class="card-block b-b-theme b-t-theme social-msg">
-																															@if(!empty($post->postLikes()->where('user_id', Auth::user()->id)->first()))
-																																	<a href="#" wire:click="unLike({{ $post->id }})"> <i class="icofont icofont-thumbs-down text-danger" ></i>
-																																			<span class="b-r-muted">Unlike ({{ count($post->postLikes) }}) </span>
-																																	</a>
-
-																															@elseif(empty($post->postLikes()->where('user_id', Auth::user()->id)->first()))
-																																	<a href="#" wire:click="addLike({{ $post->id }})"> <i class="icofont icofont-like text-success" ></i>
-																																			<span class="b-r-muted">Like ({{ count($post->postLikes) }}) </span>
-																																	</a>
-																															@endif
-																															<a href="#"> <i class="icofont icofont-comment text-muted"></i> <span class="b-r-muted">Comments ({{ count($post->postComments) }})</span></a>
-																															<a href="javascript:void(0);" class="viewers dropdown-toggle" type="button" id="dropdown-{{$post->id}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"> <i class="ti-eye text-muted"></i> <span>View ({{number_format(count($post->postViews))}})</span>
-																																	<div class="dropdown-menu" aria-labelledby="dropdown-{{$post->id}}" style="width:300px!important;" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut">
-																																			@foreach ($post->postViews()->orderBy('id', 'DESC')->take(10)->get() as $viewer)
-																																					<a class="dropdown-item waves-light waves-effect" href="{{route('view-profile', $viewer->user->url)}}">
-																																							<img src="/assets/images/avatars/thumbnails/{{$viewer->user->avatar ?? 'avatar.png'}}" class="img-30 mr-2" alt="{{$viewer->user->first_name ?? ''}}"> {{$viewer->user->first_name ?? ''}} {{$viewer->user->surname ?? ''}}</a>
-																																					@endforeach
-																																			<a class="dropdown-item waves-light waves-effect text-center" href="{{route('view-post-activity-stream', $post->post_url)}}">View all</a>
 																																	</div>
-																															</a>
-																													</div>
-																													<div class="card-block user-box">
-																															<div class="p-b-30"> <span class="f-14"><a href="javascript:void(0);">Comments ({{ count($post->postComments) }})</a></span>
-
 																															</div>
-
-																															@foreach($post->postComments()->orderBy('id', 'DESC')->take(5)->get() as $comment)
-																																	<div class="media m-b-2">
-																																			<a class="media-left" href="{{ route('view-profile', $comment->user->url) }}">
-																																					<img class="media-object img-radius m-r-20" src="/assets/images/avatars/thumbnails/{{ $comment->user->avatar ?? 'avatar.png' }}" alt="{{ $comment->user->first_name }} {{ $comment->user->surname ?? '' }}">
+																															<div class="card-block b-b-theme b-t-theme social-msg">
+																																	@if(!empty($post->postLikes()->where('user_id', Auth::user()->id)->first()))
+																																			<a href="#" wire:click="unLike({{ $post->id }})"> <i class="icofont icofont-thumbs-down text-danger" ></i>
+																																					<span class="b-r-muted">Unlike ({{ count($post->postLikes) }}) </span>
 																																			</a>
-																																			<div class="media-body b-b-muted social-client-description">
-																																					<div class="chat-header"><a href="{{ route('view-profile', $comment->user->url) }}">{{ $comment->user->first_name }} {{ $comment->user->surname ?? '' }} </a> <span class="text-muted">{{date('d M, Y', strtotime($comment->created_at)) }} <small>({{ $comment->created_at->diffForHumans() }})</small></span></div>
-																																					<p class="text-muted"> {!! $comment->comment !!} </p>
+
+																																	@elseif(empty($post->postLikes()->where('user_id', Auth::user()->id)->first()))
+																																			<a href="#" wire:click="addLike({{ $post->id }})"> <i class="icofont icofont-like text-success" ></i>
+																																					<span class="b-r-muted">Like ({{ count($post->postLikes) }}) </span>
+																																			</a>
+																																	@endif
+																																	<a href="#"> <i class="icofont icofont-comment text-muted"></i> <span class="b-r-muted">Comments ({{ count($post->postComments) }})</span></a>
+																																	<a href="javascript:void(0);" class="viewers dropdown-toggle" type="button" id="dropdown-{{$post->id}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"> <i class="ti-eye text-muted"></i> <span>View ({{number_format(count($post->postViews))}})</span>
+																																			<div class="dropdown-menu" aria-labelledby="dropdown-{{$post->id}}" style="width:300px!important;" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut">
+																																					@foreach ($post->postViews()->orderBy('id', 'DESC')->take(10)->get() as $viewer)
+																																							<a class="dropdown-item waves-light waves-effect" href="{{route('view-profile', $viewer->user->url)}}">
+																																									<img src="/assets/images/avatars/thumbnails/{{$viewer->user->avatar ?? 'avatar.png'}}" class="img-30 mr-2" alt="{{$viewer->user->first_name ?? ''}}"> {{$viewer->user->first_name ?? ''}} {{$viewer->user->surname ?? ''}}</a>
+																																							@endforeach
+																																					<a class="dropdown-item waves-light waves-effect text-center" href="{{route('view-post-activity-stream', $post->post_url)}}">View all</a>
 																																			</div>
+																																	</a>
+																															</div>
+																															<div class="card-block user-box">
+																																	<div class="p-b-30"> <span class="f-14"><a href="javascript:void(0);">Comments ({{ count($post->postComments) }})</a></span>
+
 																																	</div>
-																															@endforeach
-																															@if (count($post->postComments) > 5 )
-																																	<a href="{{route('view-post-activity-stream', $post->post_url)}}">
-																																			<p class="text-center">+{{count($post->postComments) - 5}} others</p>
-																																	</a>
-																															@endif
 
-																															<div class="media">
-																																	<a class="media-left" href="{{ route('view-profile', Auth::user()->url) }}">
-																																			<img class="media-object img-radius m-r-20" src="/assets/images/avatars/thumbnails/avatar.png" alt="Generic placeholder image">
-																																	</a>
-																																	<div class="media-body">
+																																	@foreach($post->postComments()->orderBy('id', 'DESC')->take(5)->get() as $comment)
+																																			<div class="media m-b-2">
+																																					<a class="media-left" href="{{ route('view-profile', $comment->user->url) }}">
+																																							<img class="media-object img-radius m-r-20" src="/assets/images/avatars/thumbnails/{{ $comment->user->avatar ?? 'avatar.png' }}" alt="{{ $comment->user->first_name }} {{ $comment->user->surname ?? '' }}">
+																																					</a>
+																																					<div class="media-body b-b-muted social-client-description">
+																																							<div class="chat-header"><a href="{{ route('view-profile', $comment->user->url) }}">{{ $comment->user->first_name }} {{ $comment->user->surname ?? '' }} </a> <span class="text-muted">{{date('d M, Y', strtotime($comment->created_at)) }} <small>({{ $comment->created_at->diffForHumans() }})</small></span></div>
+																																							<p class="text-muted"> {!! $comment->comment !!} </p>
+																																					</div>
+																																			</div>
+																																	@endforeach
+																																	@if (count($post->postComments) > 5 )
+																																			<a href="{{route('view-post-activity-stream', $post->post_url)}}">
+																																					<p class="text-center">+{{count($post->postComments) - 5}} others</p>
+																																			</a>
+																																	@endif
 
-																																			<div class="">
-																																					<textarea wire:model.debounce.50000ms="comment" rows="5" cols="5" class="form-control" placeholder="Leave comment"></textarea>
+																																	<div class="media">
+																																			<a class="media-left" href="{{ route('view-profile', Auth::user()->url) }}">
+																																					<img class="media-object img-radius m-r-20" src="/assets/images/avatars/thumbnails/avatar.png" alt="Generic placeholder image">
+																																			</a>
+																																			<div class="media-body">
 
-																																					<div class="text-right m-t-20">
-																																							<button class="btn btn-out-dashed btn-primary btn-square btn-sm" type="button" wire:click="comment({{ $post->id }})">Comment</button>
+																																					<div class="">
+																																							<textarea wire:model.debounce.50000ms="comment" rows="5" cols="5" class="form-control" placeholder="Leave comment"></textarea>
+
+																																							<div class="text-right m-t-20">
+																																									<button class="btn btn-out-dashed btn-primary btn-square btn-sm" type="button" wire:click="comment({{ $post->id }})">Comment</button>
+																																							</div>
 																																					</div>
 																																			</div>
 																																	</div>
@@ -1006,294 +1701,291 @@
 																											</div>
 																									</div>
 																							</div>
-																					</div>
-																			@endif
-																			@break
-																	@endforeach
-															@elseif($post->post_type == 'appreciation')
-																	@foreach ($post->responsiblePersons as $res)
-																			@if ($res->user_id == Auth::user()->id || $post->user_id == Auth::user()->id || $res->user_id == 32)
-																					<div class="social-timelines p-relative rollover" data-live="{{$post->id}}">
-																							<div class="row timeline-right p-t-35">
-																									<div class="col-2 col-sm-2 col-xl-1">
-																											<div class="social-timelines-left">
-																													<img class="img-radius timeline-icon" src="/assets/images/avatars/thumbnails/{{ $post->user->avatar ?? 'avatar.png' }}" alt="">
-																											</div>
-																									</div>
-																									<div class="col-10 col-sm-10 col-xl-11 p-l-5 p-b-35">
-																											<div class="card">
+																					@endif
+																			@endforeach
 
-																													<div class="card-block post-timelines">
-																															<span class="dropdown-toggle addon-btn text-muted f-right service-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" role="tooltip"></span>
-
-																															<div class="chat-header f-w-600">{{$post->user->first_name ?? ''}} {{$post->user->surname ?? ''}} {<i class="ti-gift text-inverse mr-1 ml-1"  data-toggle="tooltip" data-placement="top" title="" data-original-title="Appreciation"></i>}<i class="zmdi zmdi-long-arrow-right text-primary"></i>
-
-																																	@foreach($post->responsiblePersons as $res)
-																																					<small>{{ $res->user->first_name}} {{ $res->user->surname}}</small>,
-																																	@endforeach
-
-																															</div>
-																															<div class="social-time text-muted">{{date('d F, Y', strtotime($post->created_at))}} | <small>{{ $post->created_at->diffForHumans()}}</small> </div>
-																													</div>
-																													<div class="card-block">
-
-																															<div class="timeline-details">
-																																	<a href="{{route('view-post-activity-stream', $post->post_url)}}">
-																																			<h5 class="sub-title">{{ $post->post_title ?? '' }}</h5>
-																																	</a>
-																																	<p class="text-muted">{!! $post->post_content ?? '' !!}</p>
-																																	@foreach ($post->postAttachment as $attach)
-																																	@switch(pathinfo($attach->attachment, PATHINFO_EXTENSION))
-																																			@case('pptx')
-																																			<a href="/assets/uploads/attachments/{{$attach->attachment}}" data-toggle="tooltip" data-placement="top" title="{{$post->post_title ?? 'No name'}}" data-original-title="{{$post->post_title ?? 'Downlaod attachment'}}" style="cursor: pointer;">
-																																					<img src="/assets/formats/ppt.png" height="64" width="64" alt="{{$post->post_title ?? 'No name'}}"><br>
-																																					{{strlen($post->post_title ?? 'Download attachment') > 10 ? substr($post->post_title ?? 'No name',0,7).'...' : $post->post_title ?? 'Downlaod attachment'}}
-																																			</a>
-																																			@break
-																																			@case('xls')
-																																			<a href="/assets/uploads/attachments/{{$attach->attachment}}" data-toggle="tooltip" data-placement="top" title="{{$post->post_title ?? 'No name'}}" data-original-title="{{$post->post_title ?? 'Downlaod attachment'}}" style="cursor: pointer;">
-																																					<img src="/assets/formats/xls.png" height="64" width="64" alt="{{$post->post_title ?? 'No name'}}"><br>
-																																					{{strlen($post->post_title ?? 'Download attachment') > 10 ? substr($post->post_title ?? 'No name',0,7).'...' : $post->post_title ?? 'Downlaod attachment'}}
-																																			</a>
-																																			@break
-																																			@case('xlsx')
-																																					<a href="/assets/uploads/attachments/{{$attach->attachment}}" data-toggle="tooltip" data-placement="top" title="{{$post->post_title ?? 'No name'}}" data-original-title="{{$post->post_title ?? 'Downlaod attachment'}}" style="cursor: pointer;">
-																																							<img src="/assets/formats/xls.png" height="64" width="64" alt="{{$post->post_title ?? 'No name'}}"><br>
-																																							{{strlen($post->post_title ?? 'Download attachment') > 10 ? substr($post->post_title ?? 'No name',0,7).'...' : $post->post_title ?? 'Downlaod attachment'}}
-																																					</a>
-																																			@break
-																																			@case('pdf')
-																																					<a href="/assets/uploads/attachments/{{$attach->attachment}}" data-toggle="tooltip" data-placement="top" title="{{$post->post_title ?? 'No name'}}" data-original-title="{{$post->post_title ?? 'Downlaod attachment'}}" style="cursor: pointer;">
-																																							<img src="/assets/formats/pdf.png" height="64" width="64" alt="{{$post->post_title ?? 'No name'}}"><br>
-																																							{{strlen($post->post_title ?? 'Download attachment') > 10 ? substr($post->post_title ?? 'No name',0,7).'...' : $post->post_title ?? 'Downlaod attachment'}}
-																																					</a>
-																																			@break
-																																			@case('doc')
-																																					<a href="/assets/uploads/attachments/{{$attach->attachment}}" data-toggle="tooltip" data-placement="top" title="{{$post->post_title ?? 'No name'}}" data-original-title="{{$post->post_title ?? 'Downlaod attachment'}}" style="cursor: pointer;">
-																																							<img src="/assets/formats/doc.png" height="64" width="64" alt="{{$post->post_title ?? 'No name'}}"><br>
-																																							{{strlen($post->post_title ?? 'Download attachment') > 10 ? substr($post->post_title ?? 'No name',0,7).'...' : $post->post_title ?? 'Downlaod attachment'}}
-																																					</a>
-																																			@break
-																																			@case('docx')
-																																					<a href="/assets/uploads/attachments/{{$attach->attachment}}" data-toggle="tooltip" data-placement="top" title="{{$post->post_title ?? 'No name'}}" data-original-title="{{$post->post_title ?? 'Downlaod attachment'}}" style="cursor: pointer;">
-																																							<img src="/assets/formats/doc.png" height="64" width="64" alt="{{$post->post_title ?? 'No name'}}"><br>
-																																							{{strlen($post->post_title ?? 'Download attachment') > 10 ? substr($post->post_title ?? 'No name',0,7).'...' : $post->post_title ?? 'Downlaod attachment'}}
-																																					</a>
-																																			@break
-																																			@default
-																																					<a href="/assets/uploads/attachments/{{$attach->attachment}}" data-toggle="tooltip" data-placement="top" title="{{$post->post_title ?? 'No name'}}" data-original-title="{{$post->post_title ?? 'Downlaod attachment'}}" style="cursor: pointer;">
-																																							<img src="/assets/formats/file.png" height="64" width="64" alt="{{$post->post_title ?? 'No name'}}"><br>
-																																							{{strlen($post->post_title ?? 'Download attachment') > 10 ? substr($post->post_title ?? 'No name',0,7).'...' : $post->post_title ?? 'Downlaod attachment'}}
-																																					</a>
-																																			@break
-
-																																	@endswitch
-																															@endforeach
-																															</div>
-																													</div>
-																													<div class="card-block b-b-theme b-t-theme social-msg">
-																															@if(!empty($post->postLikes()->where('user_id', Auth::user()->id)->first()))
-																																	<a href="#" wire:click="unLike({{ $post->id }})"> <i class="icofont icofont-thumbs-down text-danger" ></i>
-																																			<span class="b-r-muted">Unlike ({{ count($post->postLikes) }}) </span>
-																																	</a>
-
-																															@elseif(empty($post->postLikes()->where('user_id', Auth::user()->id)->first()))
-																																	<a href="#" wire:click="addLike({{ $post->id }})"> <i class="icofont icofont-like text-success" ></i>
-																																			<span class="b-r-muted">Like ({{ count($post->postLikes) }}) </span>
-																																	</a>
-																															@endif
-																															<a href="#"> <i class="icofont icofont-comment text-muted"></i> <span class="b-r-muted">Comments ({{ count($post->postComments) }})</span></a>
-																															<a href="javascript:void(0);" class="viewers dropdown-toggle" type="button" id="dropdown-{{$post->id}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"> <i class="ti-eye text-muted"></i> <span>View ({{number_format(count($post->postViews))}})</span>
-																																	<div class="dropdown-menu" aria-labelledby="dropdown-{{$post->id}}" style="width:300px!important;" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut">
-																																			@foreach ($post->postViews()->orderBy('id', 'DESC')->take(10)->get() as $viewer)
-																																					<a class="dropdown-item waves-light waves-effect" href="{{route('view-profile', $viewer->user->url)}}">
-																																							<img src="/assets/images/avatars/thumbnails/{{$viewer->user->avatar ?? 'avatar.png'}}" class="img-30 mr-2" alt="{{$viewer->user->first_name ?? ''}}"> {{$viewer->user->first_name ?? ''}} {{$viewer->user->surname ?? ''}}</a>
-																																					@endforeach
-																																			<a class="dropdown-item waves-light waves-effect text-center" href="{{route('view-post-activity-stream', $post->post_url)}}">View all</a>
-																																	</div>
-																															</a>
-																													</div>
-																													<div class="card-block user-box">
-																															<div class="p-b-30"> <span class="f-14"><a href="javascript:void(0);">Comments ({{ count($post->postComments) }})</a></span>
-
-																															</div>
-
-																															@foreach($post->postComments()->orderBy('id', 'DESC')->take(5)->get() as $comment)
-																																	<div class="media m-b-2">
-																																			<a class="media-left" href="{{ route('view-profile', $comment->user->url) }}">
-																																					<img class="media-object img-radius m-r-20" src="/assets/images/avatars/thumbnails/{{ $comment->user->avatar ?? 'avatar.png' }}" alt="{{ $comment->user->first_name }} {{ $comment->user->surname ?? '' }}">
-																																			</a>
-																																			<div class="media-body b-b-muted social-client-description">
-																																					<div class="chat-header"><a href="{{ route('view-profile', $comment->user->url) }}">{{ $comment->user->first_name }} {{ $comment->user->surname ?? '' }} </a> <span class="text-muted">{{date('d M, Y', strtotime($comment->created_at)) }} <small>({{ $comment->created_at->diffForHumans() }})</small></span></div>
-																																					<p class="text-muted"> {!! $comment->comment !!} </p>
-																																			</div>
-																																	</div>
-																															@endforeach
-																															@if (count($post->postComments) > 5 )
-																																	<a href="{{route('view-post-activity-stream', $post->post_url)}}">
-																																			<p class="text-center">+{{count($post->postComments) - 5}} others</p>
-																																	</a>
-																															@endif
-
-																															<div class="media">
-																																	<a class="media-left" href="{{ route('view-profile', Auth::user()->url) }}">
-																																			<img class="media-object img-radius m-r-20" src="/assets/images/avatars/thumbnails/avatar.png" alt="Generic placeholder image">
-																																	</a>
-																																	<div class="media-body">
-
-																																			<div class="">
-																																					<textarea wire:model.debounce.50000ms="comment" rows="5" cols="5" class="form-control" placeholder="Leave comment"></textarea>
-
-																																					<div class="text-right m-t-20">
-																																							<button class="btn btn-out-dashed btn-primary btn-square btn-sm" type="button" wire:click="comment({{ $post->id }})">Comment</button>
-																																					</div>
-																																			</div>
-																																	</div>
-																															</div>
-																													</div>
-																											</div>
-																									</div>
-																							</div>
-																					</div>
-																			@endif
-																			@break
-																	@endforeach
+																		@endif
 															@elseif($post->post_type == 'project')
-																	@foreach ($post->responsiblePersons as $res)
-																			@if ($res->user_id == Auth::user()->id || $post->user_id == Auth::user()->id || $res->user_id == 32)
-																					<div class="social-timelines p-relative rollover" data-live="{{$post->id}}">
-																							<div class="row timeline-right p-t-35">
-																									<div class="col-2 col-sm-2 col-xl-1">
-																											<div class="social-timelines-left">
-																													<img class="img-radius timeline-icon" src="/assets/images/avatars/thumbnails/{{ $post->user->avatar ?? 'avatar.png' }}" alt="">
-																											</div>
-																									</div>
-																									<div class="col-10 col-sm-10 col-xl-11 p-l-5 p-b-35">
-																											<div class="card">
+																		@if ($post->user_id == Auth::user()->id)
+																			<div class="social-timelines p-relative rollover" data-live="{{$post->id}}">
+																				<div class="row timeline-right p-t-35">
+																						<div class="col-2 col-sm-2 col-xl-1">
+																								<div class="social-timelines-left">
+																										<img class="img-radius timeline-icon" src="/assets/images/avatars/thumbnails/{{ $post->user->avatar ?? 'avatar.png' }}" alt="">
+																								</div>
+																						</div>
+																						<div class="col-10 col-sm-10 col-xl-11 p-l-5 p-b-35">
+																								<div class="card">
 
-																													<div class="card-block post-timelines">
-																															<span class="dropdown-toggle addon-btn text-muted f-right service-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" role="tooltip"></span>
+																										<div class="card-block post-timelines">
+																												<span class="dropdown-toggle addon-btn text-muted f-right service-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" role="tooltip"></span>
 
-																															<div class="chat-header f-w-600">{{$post->user->first_name ?? ''}} {{$post->user->surname ?? ''}} {<i class="ti-briefcase text-inverse mr-1 ml-1"  data-toggle="tooltip" data-placement="top" title="" data-original-title="Project"></i>}<i class="zmdi zmdi-long-arrow-right text-primary"></i>
+																												<div class="chat-header f-w-600">{{$post->user->first_name ?? ''}} {{$post->user->surname ?? ''}} {<i class="ti-briefcase text-inverse mr-1 ml-1"  data-toggle="tooltip" data-placement="top" title="" data-original-title="Project"></i>}<i class="zmdi zmdi-long-arrow-right text-primary"></i>
 
-																																	@foreach($post->responsiblePersons as $res)
-																																					<small>{{ $res->user->first_name}} {{ $res->user->surname}}</small>,
-																																	@endforeach
+																														@foreach($post->responsiblePersons as $res)
+																																		<small>{{ $res->user->first_name}} {{ $res->user->surname}}</small>,
+																														@endforeach
 
-																															</div>
-																															<div class="social-time text-muted">{{date('d F, Y', strtotime($post->created_at))}} | <small>{{ $post->created_at->diffForHumans()}}</small> </div>
+																												</div>
+																												<div class="social-time text-muted">{{date('d F, Y', strtotime($post->created_at))}} | <small>{{ $post->created_at->diffForHumans()}}</small> </div>
+																										</div>
+																										<div class="card-block">
+
+																												<div class="timeline-details">
+																														<a href="{{route('view-post-activity-stream', $post->post_url)}}">
+																																<h5 class="sub-title">{{ $post->post_title ?? '' }}</h5>
+																														</a>
+																														<p class="text-muted">{!! $post->post_content ?? '' !!}</p>
+																														@foreach ($post->postAttachment as $attach)
+																														@switch(pathinfo($attach->attachment, PATHINFO_EXTENSION))
+																																@case('pptx')
+																																<a href="/assets/uploads/attachments/{{$attach->attachment}}" data-toggle="tooltip" data-placement="top" title="{{$post->post_title ?? 'No name'}}" data-original-title="{{$post->post_title ?? 'Downlaod attachment'}}" style="cursor: pointer;">
+																																		<img src="/assets/formats/ppt.png" height="64" width="64" alt="{{$post->post_title ?? 'No name'}}"><br>
+																																		{{strlen($post->post_title ?? 'Download attachment') > 10 ? substr($post->post_title ?? 'No name',0,7).'...' : $post->post_title ?? 'Downlaod attachment'}}
+																																</a>
+																																@break
+																																@case('xls')
+																																<a href="/assets/uploads/attachments/{{$attach->attachment}}" data-toggle="tooltip" data-placement="top" title="{{$post->post_title ?? 'No name'}}" data-original-title="{{$post->post_title ?? 'Downlaod attachment'}}" style="cursor: pointer;">
+																																		<img src="/assets/formats/xls.png" height="64" width="64" alt="{{$post->post_title ?? 'No name'}}"><br>
+																																		{{strlen($post->post_title ?? 'Download attachment') > 10 ? substr($post->post_title ?? 'No name',0,7).'...' : $post->post_title ?? 'Downlaod attachment'}}
+																																</a>
+																																@break
+																																@case('xlsx')
+																																		<a href="/assets/uploads/attachments/{{$attach->attachment}}" data-toggle="tooltip" data-placement="top" title="{{$post->post_title ?? 'No name'}}" data-original-title="{{$post->post_title ?? 'Downlaod attachment'}}" style="cursor: pointer;">
+																																				<img src="/assets/formats/xls.png" height="64" width="64" alt="{{$post->post_title ?? 'No name'}}"><br>
+																																				{{strlen($post->post_title ?? 'Download attachment') > 10 ? substr($post->post_title ?? 'No name',0,7).'...' : $post->post_title ?? 'Downlaod attachment'}}
+																																		</a>
+																																@break
+																																@case('pdf')
+																																		<a href="/assets/uploads/attachments/{{$attach->attachment}}" data-toggle="tooltip" data-placement="top" title="{{$post->post_title ?? 'No name'}}" data-original-title="{{$post->post_title ?? 'Downlaod attachment'}}" style="cursor: pointer;">
+																																				<img src="/assets/formats/pdf.png" height="64" width="64" alt="{{$post->post_title ?? 'No name'}}"><br>
+																																				{{strlen($post->post_title ?? 'Download attachment') > 10 ? substr($post->post_title ?? 'No name',0,7).'...' : $post->post_title ?? 'Downlaod attachment'}}
+																																		</a>
+																																@break
+																																@case('doc')
+																																		<a href="/assets/uploads/attachments/{{$attach->attachment}}" data-toggle="tooltip" data-placement="top" title="{{$post->post_title ?? 'No name'}}" data-original-title="{{$post->post_title ?? 'Downlaod attachment'}}" style="cursor: pointer;">
+																																				<img src="/assets/formats/doc.png" height="64" width="64" alt="{{$post->post_title ?? 'No name'}}"><br>
+																																				{{strlen($post->post_title ?? 'Download attachment') > 10 ? substr($post->post_title ?? 'No name',0,7).'...' : $post->post_title ?? 'Downlaod attachment'}}
+																																		</a>
+																																@break
+																																@case('docx')
+																																		<a href="/assets/uploads/attachments/{{$attach->attachment}}" data-toggle="tooltip" data-placement="top" title="{{$post->post_title ?? 'No name'}}" data-original-title="{{$post->post_title ?? 'Downlaod attachment'}}" style="cursor: pointer;">
+																																				<img src="/assets/formats/doc.png" height="64" width="64" alt="{{$post->post_title ?? 'No name'}}"><br>
+																																				{{strlen($post->post_title ?? 'Download attachment') > 10 ? substr($post->post_title ?? 'No name',0,7).'...' : $post->post_title ?? 'Downlaod attachment'}}
+																																		</a>
+																																@break
+																																@default
+																																		<a href="/assets/uploads/attachments/{{$attach->attachment}}" data-toggle="tooltip" data-placement="top" title="{{$post->post_title ?? 'No name'}}" data-original-title="{{$post->post_title ?? 'Downlaod attachment'}}" style="cursor: pointer;">
+																																				<img src="/assets/formats/file.png" height="64" width="64" alt="{{$post->post_title ?? 'No name'}}"><br>
+																																				{{strlen($post->post_title ?? 'Download attachment') > 10 ? substr($post->post_title ?? 'No name',0,7).'...' : $post->post_title ?? 'Downlaod attachment'}}
+																																		</a>
+																																@break
+
+																														@endswitch
+																												@endforeach
+																												</div>
+																										</div>
+																										<div class="card-block b-b-theme b-t-theme social-msg">
+																												@if(!empty($post->postLikes()->where('user_id', Auth::user()->id)->first()))
+																														<a href="#" wire:click="unLike({{ $post->id }})"> <i class="icofont icofont-thumbs-down text-danger" ></i>
+																																<span class="b-r-muted">Unlike ({{ count($post->postLikes) }}) </span>
+																														</a>
+
+																												@elseif(empty($post->postLikes()->where('user_id', Auth::user()->id)->first()))
+																														<a href="#" wire:click="addLike({{ $post->id }})"> <i class="icofont icofont-like text-success" ></i>
+																																<span class="b-r-muted">Like ({{ count($post->postLikes) }}) </span>
+																														</a>
+																												@endif
+																												<a href="#"> <i class="icofont icofont-comment text-muted"></i> <span class="b-r-muted">Comments ({{ count($post->postComments) }})</span></a>
+																												<a href="javascript:void(0);" class="viewers dropdown-toggle" type="button" id="dropdown-{{$post->id}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"> <i class="ti-eye text-muted"></i> <span>View ({{number_format(count($post->postViews))}})</span>
+																														<div class="dropdown-menu" aria-labelledby="dropdown-{{$post->id}}" style="width:300px!important;" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut">
+																																@foreach ($post->postViews()->orderBy('id', 'DESC')->take(10)->get() as $viewer)
+																																		<a class="dropdown-item waves-light waves-effect" href="{{route('view-profile', $viewer->user->url)}}">
+																																				<img src="/assets/images/avatars/thumbnails/{{$viewer->user->avatar ?? 'avatar.png'}}" class="img-30 mr-2" alt="{{$viewer->user->first_name ?? ''}}"> {{$viewer->user->first_name ?? ''}} {{$viewer->user->surname ?? ''}}</a>
+																																		@endforeach
+																																<a class="dropdown-item waves-light waves-effect text-center" href="{{route('view-post-activity-stream', $post->post_url)}}">View all</a>
+																														</div>
+																												</a>
+																										</div>
+																										<div class="card-block user-box">
+																												<div class="p-b-30"> <span class="f-14"><a href="javascript:void(0);">Comments ({{ count($post->postComments) }})</a></span>
+
+																												</div>
+
+																												@foreach($post->postComments()->orderBy('id', 'DESC')->take(5)->get() as $comment)
+																														<div class="media m-b-2">
+																																<a class="media-left" href="{{ route('view-profile', $comment->user->url) }}">
+																																		<img class="media-object img-radius m-r-20" src="/assets/images/avatars/thumbnails/{{ $comment->user->avatar ?? 'avatar.png' }}" alt="{{ $comment->user->first_name }} {{ $comment->user->surname ?? '' }}">
+																																</a>
+																																<div class="media-body b-b-muted social-client-description">
+																																		<div class="chat-header"><a href="{{ route('view-profile', $comment->user->url) }}">{{ $comment->user->first_name }} {{ $comment->user->surname ?? '' }} </a> <span class="text-muted">{{date('d M, Y', strtotime($comment->created_at)) }} <small>({{ $comment->created_at->diffForHumans() }})</small></span></div>
+																																		<p class="text-muted"> {!! $comment->comment !!} </p>
+																																</div>
+																														</div>
+																												@endforeach
+																												@if (count($post->postComments) > 5 )
+																														<a href="{{route('view-post-activity-stream', $post->post_url)}}">
+																																<p class="text-center">+{{count($post->postComments) - 5}} others</p>
+																														</a>
+																												@endif
+
+																												<div class="media">
+																														<a class="media-left" href="{{ route('view-profile', Auth::user()->url) }}">
+																																<img class="media-object img-radius m-r-20" src="/assets/images/avatars/thumbnails/avatar.png" alt="Generic placeholder image">
+																														</a>
+																														<div class="media-body">
+
+																																<div class="">
+																																		<textarea wire:model.debounce.50000ms="comment" rows="5" cols="5" class="form-control" placeholder="Leave comment"></textarea>
+
+																																		<div class="text-right m-t-20">
+																																				<button class="btn btn-out-dashed btn-primary btn-square btn-sm" type="button" wire:click="comment({{ $post->id }})">Comment</button>
+																																		</div>
+																																</div>
+																														</div>
+																												</div>
+																										</div>
+																								</div>
+																						</div>
+																				</div>
+																		</div>
+																		@else
+																			@foreach ($post->responsiblePersons as $res)
+																					@if ($res->user_id == Auth::user()->id || $res->user_id == 32)
+																							<div class="social-timelines p-relative rollover" data-live="{{$post->id}}">
+																									<div class="row timeline-right p-t-35">
+																											<div class="col-2 col-sm-2 col-xl-1">
+																													<div class="social-timelines-left">
+																															<img class="img-radius timeline-icon" src="/assets/images/avatars/thumbnails/{{ $post->user->avatar ?? 'avatar.png' }}" alt="">
 																													</div>
-																													<div class="card-block">
+																											</div>
+																											<div class="col-10 col-sm-10 col-xl-11 p-l-5 p-b-35">
+																													<div class="card">
 
-																															<div class="timeline-details">
-																																	<a href="{{route('view-post-activity-stream', $post->post_url)}}">
-																																			<h5 class="sub-title">{{ $post->post_title ?? '' }}</h5>
-																																	</a>
-																																	<p class="text-muted">{!! $post->post_content ?? '' !!}</p>
-																																	@foreach ($post->postAttachment as $attach)
-																																	@switch(pathinfo($attach->attachment, PATHINFO_EXTENSION))
-																																			@case('pptx')
-																																			<a href="/assets/uploads/attachments/{{$attach->attachment}}" data-toggle="tooltip" data-placement="top" title="{{$post->post_title ?? 'No name'}}" data-original-title="{{$post->post_title ?? 'Downlaod attachment'}}" style="cursor: pointer;">
-																																					<img src="/assets/formats/ppt.png" height="64" width="64" alt="{{$post->post_title ?? 'No name'}}"><br>
-																																					{{strlen($post->post_title ?? 'Download attachment') > 10 ? substr($post->post_title ?? 'No name',0,7).'...' : $post->post_title ?? 'Downlaod attachment'}}
+																															<div class="card-block post-timelines">
+																																	<span class="dropdown-toggle addon-btn text-muted f-right service-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" role="tooltip"></span>
+
+																																	<div class="chat-header f-w-600">{{$post->user->first_name ?? ''}} {{$post->user->surname ?? ''}} {<i class="ti-briefcase text-inverse mr-1 ml-1"  data-toggle="tooltip" data-placement="top" title="" data-original-title="Project"></i>}<i class="zmdi zmdi-long-arrow-right text-primary"></i>
+
+																																			@foreach($post->responsiblePersons as $res)
+																																							<small>{{ $res->user->first_name}} {{ $res->user->surname}}</small>,
+																																			@endforeach
+
+																																	</div>
+																																	<div class="social-time text-muted">{{date('d F, Y', strtotime($post->created_at))}} | <small>{{ $post->created_at->diffForHumans()}}</small> </div>
+																															</div>
+																															<div class="card-block">
+
+																																	<div class="timeline-details">
+																																			<a href="{{route('view-post-activity-stream', $post->post_url)}}">
+																																					<h5 class="sub-title">{{ $post->post_title ?? '' }}</h5>
 																																			</a>
-																																			@break
-																																			@case('xls')
-																																			<a href="/assets/uploads/attachments/{{$attach->attachment}}" data-toggle="tooltip" data-placement="top" title="{{$post->post_title ?? 'No name'}}" data-original-title="{{$post->post_title ?? 'Downlaod attachment'}}" style="cursor: pointer;">
-																																					<img src="/assets/formats/xls.png" height="64" width="64" alt="{{$post->post_title ?? 'No name'}}"><br>
-																																					{{strlen($post->post_title ?? 'Download attachment') > 10 ? substr($post->post_title ?? 'No name',0,7).'...' : $post->post_title ?? 'Downlaod attachment'}}
-																																			</a>
-																																			@break
-																																			@case('xlsx')
+																																			<p class="text-muted">{!! $post->post_content ?? '' !!}</p>
+																																			@foreach ($post->postAttachment as $attach)
+																																			@switch(pathinfo($attach->attachment, PATHINFO_EXTENSION))
+																																					@case('pptx')
+																																					<a href="/assets/uploads/attachments/{{$attach->attachment}}" data-toggle="tooltip" data-placement="top" title="{{$post->post_title ?? 'No name'}}" data-original-title="{{$post->post_title ?? 'Downlaod attachment'}}" style="cursor: pointer;">
+																																							<img src="/assets/formats/ppt.png" height="64" width="64" alt="{{$post->post_title ?? 'No name'}}"><br>
+																																							{{strlen($post->post_title ?? 'Download attachment') > 10 ? substr($post->post_title ?? 'No name',0,7).'...' : $post->post_title ?? 'Downlaod attachment'}}
+																																					</a>
+																																					@break
+																																					@case('xls')
 																																					<a href="/assets/uploads/attachments/{{$attach->attachment}}" data-toggle="tooltip" data-placement="top" title="{{$post->post_title ?? 'No name'}}" data-original-title="{{$post->post_title ?? 'Downlaod attachment'}}" style="cursor: pointer;">
 																																							<img src="/assets/formats/xls.png" height="64" width="64" alt="{{$post->post_title ?? 'No name'}}"><br>
 																																							{{strlen($post->post_title ?? 'Download attachment') > 10 ? substr($post->post_title ?? 'No name',0,7).'...' : $post->post_title ?? 'Downlaod attachment'}}
 																																					</a>
-																																			@break
-																																			@case('pdf')
-																																					<a href="/assets/uploads/attachments/{{$attach->attachment}}" data-toggle="tooltip" data-placement="top" title="{{$post->post_title ?? 'No name'}}" data-original-title="{{$post->post_title ?? 'Downlaod attachment'}}" style="cursor: pointer;">
-																																							<img src="/assets/formats/pdf.png" height="64" width="64" alt="{{$post->post_title ?? 'No name'}}"><br>
-																																							{{strlen($post->post_title ?? 'Download attachment') > 10 ? substr($post->post_title ?? 'No name',0,7).'...' : $post->post_title ?? 'Downlaod attachment'}}
-																																					</a>
-																																			@break
-																																			@case('doc')
-																																					<a href="/assets/uploads/attachments/{{$attach->attachment}}" data-toggle="tooltip" data-placement="top" title="{{$post->post_title ?? 'No name'}}" data-original-title="{{$post->post_title ?? 'Downlaod attachment'}}" style="cursor: pointer;">
-																																							<img src="/assets/formats/doc.png" height="64" width="64" alt="{{$post->post_title ?? 'No name'}}"><br>
-																																							{{strlen($post->post_title ?? 'Download attachment') > 10 ? substr($post->post_title ?? 'No name',0,7).'...' : $post->post_title ?? 'Downlaod attachment'}}
-																																					</a>
-																																			@break
-																																			@case('docx')
-																																					<a href="/assets/uploads/attachments/{{$attach->attachment}}" data-toggle="tooltip" data-placement="top" title="{{$post->post_title ?? 'No name'}}" data-original-title="{{$post->post_title ?? 'Downlaod attachment'}}" style="cursor: pointer;">
-																																							<img src="/assets/formats/doc.png" height="64" width="64" alt="{{$post->post_title ?? 'No name'}}"><br>
-																																							{{strlen($post->post_title ?? 'Download attachment') > 10 ? substr($post->post_title ?? 'No name',0,7).'...' : $post->post_title ?? 'Downlaod attachment'}}
-																																					</a>
-																																			@break
-																																			@default
-																																					<a href="/assets/uploads/attachments/{{$attach->attachment}}" data-toggle="tooltip" data-placement="top" title="{{$post->post_title ?? 'No name'}}" data-original-title="{{$post->post_title ?? 'Downlaod attachment'}}" style="cursor: pointer;">
-																																							<img src="/assets/formats/file.png" height="64" width="64" alt="{{$post->post_title ?? 'No name'}}"><br>
-																																							{{strlen($post->post_title ?? 'Download attachment') > 10 ? substr($post->post_title ?? 'No name',0,7).'...' : $post->post_title ?? 'Downlaod attachment'}}
-																																					</a>
-																																			@break
+																																					@break
+																																					@case('xlsx')
+																																							<a href="/assets/uploads/attachments/{{$attach->attachment}}" data-toggle="tooltip" data-placement="top" title="{{$post->post_title ?? 'No name'}}" data-original-title="{{$post->post_title ?? 'Downlaod attachment'}}" style="cursor: pointer;">
+																																									<img src="/assets/formats/xls.png" height="64" width="64" alt="{{$post->post_title ?? 'No name'}}"><br>
+																																									{{strlen($post->post_title ?? 'Download attachment') > 10 ? substr($post->post_title ?? 'No name',0,7).'...' : $post->post_title ?? 'Downlaod attachment'}}
+																																							</a>
+																																					@break
+																																					@case('pdf')
+																																							<a href="/assets/uploads/attachments/{{$attach->attachment}}" data-toggle="tooltip" data-placement="top" title="{{$post->post_title ?? 'No name'}}" data-original-title="{{$post->post_title ?? 'Downlaod attachment'}}" style="cursor: pointer;">
+																																									<img src="/assets/formats/pdf.png" height="64" width="64" alt="{{$post->post_title ?? 'No name'}}"><br>
+																																									{{strlen($post->post_title ?? 'Download attachment') > 10 ? substr($post->post_title ?? 'No name',0,7).'...' : $post->post_title ?? 'Downlaod attachment'}}
+																																							</a>
+																																					@break
+																																					@case('doc')
+																																							<a href="/assets/uploads/attachments/{{$attach->attachment}}" data-toggle="tooltip" data-placement="top" title="{{$post->post_title ?? 'No name'}}" data-original-title="{{$post->post_title ?? 'Downlaod attachment'}}" style="cursor: pointer;">
+																																									<img src="/assets/formats/doc.png" height="64" width="64" alt="{{$post->post_title ?? 'No name'}}"><br>
+																																									{{strlen($post->post_title ?? 'Download attachment') > 10 ? substr($post->post_title ?? 'No name',0,7).'...' : $post->post_title ?? 'Downlaod attachment'}}
+																																							</a>
+																																					@break
+																																					@case('docx')
+																																							<a href="/assets/uploads/attachments/{{$attach->attachment}}" data-toggle="tooltip" data-placement="top" title="{{$post->post_title ?? 'No name'}}" data-original-title="{{$post->post_title ?? 'Downlaod attachment'}}" style="cursor: pointer;">
+																																									<img src="/assets/formats/doc.png" height="64" width="64" alt="{{$post->post_title ?? 'No name'}}"><br>
+																																									{{strlen($post->post_title ?? 'Download attachment') > 10 ? substr($post->post_title ?? 'No name',0,7).'...' : $post->post_title ?? 'Downlaod attachment'}}
+																																							</a>
+																																					@break
+																																					@default
+																																							<a href="/assets/uploads/attachments/{{$attach->attachment}}" data-toggle="tooltip" data-placement="top" title="{{$post->post_title ?? 'No name'}}" data-original-title="{{$post->post_title ?? 'Downlaod attachment'}}" style="cursor: pointer;">
+																																									<img src="/assets/formats/file.png" height="64" width="64" alt="{{$post->post_title ?? 'No name'}}"><br>
+																																									{{strlen($post->post_title ?? 'Download attachment') > 10 ? substr($post->post_title ?? 'No name',0,7).'...' : $post->post_title ?? 'Downlaod attachment'}}
+																																							</a>
+																																					@break
 
-																																	@endswitch
-																															@endforeach
-																															</div>
-																													</div>
-																													<div class="card-block b-b-theme b-t-theme social-msg">
-																															@if(!empty($post->postLikes()->where('user_id', Auth::user()->id)->first()))
-																																	<a href="#" wire:click="unLike({{ $post->id }})"> <i class="icofont icofont-thumbs-down text-danger" ></i>
-																																			<span class="b-r-muted">Unlike ({{ count($post->postLikes) }}) </span>
-																																	</a>
-
-																															@elseif(empty($post->postLikes()->where('user_id', Auth::user()->id)->first()))
-																																	<a href="#" wire:click="addLike({{ $post->id }})"> <i class="icofont icofont-like text-success" ></i>
-																																			<span class="b-r-muted">Like ({{ count($post->postLikes) }}) </span>
-																																	</a>
-																															@endif
-																															<a href="#"> <i class="icofont icofont-comment text-muted"></i> <span class="b-r-muted">Comments ({{ count($post->postComments) }})</span></a>
-																															<a href="javascript:void(0);" class="viewers dropdown-toggle" type="button" id="dropdown-{{$post->id}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"> <i class="ti-eye text-muted"></i> <span>View ({{number_format(count($post->postViews))}})</span>
-																																	<div class="dropdown-menu" aria-labelledby="dropdown-{{$post->id}}" style="width:300px!important;" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut">
-																																			@foreach ($post->postViews()->orderBy('id', 'DESC')->take(10)->get() as $viewer)
-																																					<a class="dropdown-item waves-light waves-effect" href="{{route('view-profile', $viewer->user->url)}}">
-																																							<img src="/assets/images/avatars/thumbnails/{{$viewer->user->avatar ?? 'avatar.png'}}" class="img-30 mr-2" alt="{{$viewer->user->first_name ?? ''}}"> {{$viewer->user->first_name ?? ''}} {{$viewer->user->surname ?? ''}}</a>
-																																					@endforeach
-																																			<a class="dropdown-item waves-light waves-effect text-center" href="{{route('view-post-activity-stream', $post->post_url)}}">View all</a>
+																																			@endswitch
+																																	@endforeach
 																																	</div>
-																															</a>
-																													</div>
-																													<div class="card-block user-box">
-																															<div class="p-b-30"> <span class="f-14"><a href="javascript:void(0);">Comments ({{ count($post->postComments) }})</a></span>
-
 																															</div>
-
-																															@foreach($post->postComments()->orderBy('id', 'DESC')->take(5)->get() as $comment)
-																																	<div class="media m-b-2">
-																																			<a class="media-left" href="{{ route('view-profile', $comment->user->url) }}">
-																																					<img class="media-object img-radius m-r-20" src="/assets/images/avatars/thumbnails/{{ $comment->user->avatar ?? 'avatar.png' }}" alt="{{ $comment->user->first_name }} {{ $comment->user->surname ?? '' }}">
+																															<div class="card-block b-b-theme b-t-theme social-msg">
+																																	@if(!empty($post->postLikes()->where('user_id', Auth::user()->id)->first()))
+																																			<a href="#" wire:click="unLike({{ $post->id }})"> <i class="icofont icofont-thumbs-down text-danger" ></i>
+																																					<span class="b-r-muted">Unlike ({{ count($post->postLikes) }}) </span>
 																																			</a>
-																																			<div class="media-body b-b-muted social-client-description">
-																																					<div class="chat-header"><a href="{{ route('view-profile', $comment->user->url) }}">{{ $comment->user->first_name }} {{ $comment->user->surname ?? '' }} </a> <span class="text-muted">{{date('d M, Y', strtotime($comment->created_at)) }} <small>({{ $comment->created_at->diffForHumans() }})</small></span></div>
-																																					<p class="text-muted"> {!! $comment->comment !!} </p>
+
+																																	@elseif(empty($post->postLikes()->where('user_id', Auth::user()->id)->first()))
+																																			<a href="#" wire:click="addLike({{ $post->id }})"> <i class="icofont icofont-like text-success" ></i>
+																																					<span class="b-r-muted">Like ({{ count($post->postLikes) }}) </span>
+																																			</a>
+																																	@endif
+																																	<a href="#"> <i class="icofont icofont-comment text-muted"></i> <span class="b-r-muted">Comments ({{ count($post->postComments) }})</span></a>
+																																	<a href="javascript:void(0);" class="viewers dropdown-toggle" type="button" id="dropdown-{{$post->id}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"> <i class="ti-eye text-muted"></i> <span>View ({{number_format(count($post->postViews))}})</span>
+																																			<div class="dropdown-menu" aria-labelledby="dropdown-{{$post->id}}" style="width:300px!important;" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut">
+																																					@foreach ($post->postViews()->orderBy('id', 'DESC')->take(10)->get() as $viewer)
+																																							<a class="dropdown-item waves-light waves-effect" href="{{route('view-profile', $viewer->user->url)}}">
+																																									<img src="/assets/images/avatars/thumbnails/{{$viewer->user->avatar ?? 'avatar.png'}}" class="img-30 mr-2" alt="{{$viewer->user->first_name ?? ''}}"> {{$viewer->user->first_name ?? ''}} {{$viewer->user->surname ?? ''}}</a>
+																																							@endforeach
+																																					<a class="dropdown-item waves-light waves-effect text-center" href="{{route('view-post-activity-stream', $post->post_url)}}">View all</a>
 																																			</div>
+																																	</a>
+																															</div>
+																															<div class="card-block user-box">
+																																	<div class="p-b-30"> <span class="f-14"><a href="javascript:void(0);">Comments ({{ count($post->postComments) }})</a></span>
+
 																																	</div>
-																															@endforeach
-																															@if (count($post->postComments) > 5 )
-																																	<a href="{{route('view-post-activity-stream', $post->post_url)}}">
-																																			<p class="text-center">+{{count($post->postComments) - 5}} others</p>
-																																	</a>
-																															@endif
 
-																															<div class="media">
-																																	<a class="media-left" href="{{ route('view-profile', Auth::user()->url) }}">
-																																			<img class="media-object img-radius m-r-20" src="/assets/images/avatars/thumbnails/avatar.png" alt="Generic placeholder image">
-																																	</a>
-																																	<div class="media-body">
+																																	@foreach($post->postComments()->orderBy('id', 'DESC')->take(5)->get() as $comment)
+																																			<div class="media m-b-2">
+																																					<a class="media-left" href="{{ route('view-profile', $comment->user->url) }}">
+																																							<img class="media-object img-radius m-r-20" src="/assets/images/avatars/thumbnails/{{ $comment->user->avatar ?? 'avatar.png' }}" alt="{{ $comment->user->first_name }} {{ $comment->user->surname ?? '' }}">
+																																					</a>
+																																					<div class="media-body b-b-muted social-client-description">
+																																							<div class="chat-header"><a href="{{ route('view-profile', $comment->user->url) }}">{{ $comment->user->first_name }} {{ $comment->user->surname ?? '' }} </a> <span class="text-muted">{{date('d M, Y', strtotime($comment->created_at)) }} <small>({{ $comment->created_at->diffForHumans() }})</small></span></div>
+																																							<p class="text-muted"> {!! $comment->comment !!} </p>
+																																					</div>
+																																			</div>
+																																	@endforeach
+																																	@if (count($post->postComments) > 5 )
+																																			<a href="{{route('view-post-activity-stream', $post->post_url)}}">
+																																					<p class="text-center">+{{count($post->postComments) - 5}} others</p>
+																																			</a>
+																																	@endif
 
-																																			<div class="">
-																																					<textarea wire:model.debounce.50000ms="comment" rows="5" cols="5" class="form-control" placeholder="Leave comment"></textarea>
+																																	<div class="media">
+																																			<a class="media-left" href="{{ route('view-profile', Auth::user()->url) }}">
+																																					<img class="media-object img-radius m-r-20" src="/assets/images/avatars/thumbnails/avatar.png" alt="Generic placeholder image">
+																																			</a>
+																																			<div class="media-body">
 
-																																					<div class="text-right m-t-20">
-																																							<button class="btn btn-out-dashed btn-primary btn-square btn-sm" type="button" wire:click="comment({{ $post->id }})">Comment</button>
+																																					<div class="">
+																																							<textarea wire:model.debounce.50000ms="comment" rows="5" cols="5" class="form-control" placeholder="Leave comment"></textarea>
+
+																																							<div class="text-right m-t-20">
+																																									<button class="btn btn-out-dashed btn-primary btn-square btn-sm" type="button" wire:click="comment({{ $post->id }})">Comment</button>
+																																							</div>
 																																					</div>
 																																			</div>
 																																	</div>
@@ -1302,10 +1994,10 @@
 																											</div>
 																									</div>
 																							</div>
-																					</div>
-																			@endif
-																			@break
-																	@endforeach
+																					@endif
+																			@endforeach
+
+																		@endif
 															@elseif($post->post_type == 'expense-report')
 																	@foreach ($post->responsiblePersons as $person)
 																			@if($person->user_id == Auth::user()->id || $post->user_id == Auth::user()->id)
@@ -2330,153 +3022,297 @@
 																			@break
 																	@endforeach
 															@elseif($post->post_type == 'memo')
-																	@foreach ($post->responsiblePersons as $res)
-																			@if ($res->user_id == Auth::user()->id || $post->user_id == Auth::user()->id || $res->user_id == 32)
-																					<div class="social-timelines p-relative rollover" data-live="{{$post->id}}">
-																							<div class="row timeline-right p-t-35">
-																									<div class="col-2 col-sm-2 col-xl-1">
-																											<div class="social-timelines-left">
-																													<img class="img-radius timeline-icon" src="/assets/images/avatars/thumbnails/{{ $post->user->avatar ?? 'avatar.png' }}" alt="">
-																											</div>
-																									</div>
-																									<div class="col-10 col-sm-10 col-xl-11 p-l-5 p-b-35">
-																											<div class="card">
+																		@if ($post->user_id == Auth::user()->id)
+																			<div class="social-timelines p-relative rollover" data-live="{{$post->id}}">
+																				<div class="row timeline-right p-t-35">
+																						<div class="col-2 col-sm-2 col-xl-1">
+																								<div class="social-timelines-left">
+																										<img class="img-radius timeline-icon" src="/assets/images/avatars/thumbnails/{{ $post->user->avatar ?? 'avatar.png' }}" alt="">
+																								</div>
+																						</div>
+																						<div class="col-10 col-sm-10 col-xl-11 p-l-5 p-b-35">
+																								<div class="card">
 
-																													<div class="card-block post-timelines">
-																															<span class="dropdown-toggle addon-btn text-muted f-right service-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" role="tooltip"></span>
+																										<div class="card-block post-timelines">
+																												<span class="dropdown-toggle addon-btn text-muted f-right service-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" role="tooltip"></span>
 
-																															<div class="chat-header f-w-600">{{$post->user->first_name ?? ''}} {{$post->user->surname ?? ''}} {<i class="ti-clipboard text-inverse mr-1 ml-1"  data-toggle="tooltip" data-placement="top" title="" data-original-title="Internal memo"></i>} <i class="zmdi zmdi-long-arrow-right text-primary"></i>
+																												<div class="chat-header f-w-600">{{$post->user->first_name ?? ''}} {{$post->user->surname ?? ''}} {<i class="ti-clipboard text-inverse mr-1 ml-1"  data-toggle="tooltip" data-placement="top" title="" data-original-title="Internal memo"></i>} <i class="zmdi zmdi-long-arrow-right text-primary"></i>
 
-																																	@foreach($post->responsiblePersons as $res)
-																																					<small>{{ $res->user->first_name}} {{ $res->user->surname}}</small>,
-																																	@endforeach
+																														@foreach($post->responsiblePersons as $res)
+																																		<small>{{ $res->user->first_name}} {{ $res->user->surname}}</small>,
+																														@endforeach
 
-																															</div>
-																															<div class="social-time text-muted">{{date('d F, Y', strtotime($post->created_at))}} | <small>{{ $post->created_at->diffForHumans()}}</small> </div>
-																													</div>
-																													<div class="card-block">
+																												</div>
+																												<div class="social-time text-muted">{{date('d F, Y', strtotime($post->created_at))}} | <small>{{ $post->created_at->diffForHumans()}}</small> </div>
+																										</div>
+																										<div class="card-block">
 
-																															<div class="timeline-details">
-																																	<a href="{{route('view-internal-memo', $post->post_url)}}">
-																																			<h5 class="sub-title">{{ $post->post_title ?? '' }}</h5>
-																																	</a>
-																																	<p class="text-muted">{!! $post->post_content ?? '' !!}</p>
-																																	@foreach ($post->postAttachment as $attach)
-																																	@switch(pathinfo($attach->attachment, PATHINFO_EXTENSION))
-																																			@case('pptx')
-																																			<a href="/assets/uploads/attachments/{{$attach->attachment}}" data-toggle="tooltip" data-placement="top" title="{{$post->post_title ?? 'No name'}}" data-original-title="{{$post->post_title ?? 'Downlaod attachment'}}" style="cursor: pointer;">
-																																					<img src="/assets/formats/ppt.png" height="64" width="64" alt="{{$post->post_title ?? 'No name'}}"><br>
-																																					{{strlen($post->post_title ?? 'Download attachment') > 10 ? substr($post->post_title ?? 'No name',0,7).'...' : $post->post_title ?? 'Downlaod attachment'}}
-																																			</a>
-																																			@break
-																																			@case('xls')
-																																			<a href="/assets/uploads/attachments/{{$attach->attachment}}" data-toggle="tooltip" data-placement="top" title="{{$post->post_title ?? 'No name'}}" data-original-title="{{$post->post_title ?? 'Downlaod attachment'}}" style="cursor: pointer;">
-																																					<img src="/assets/formats/xls.png" height="64" width="64" alt="{{$post->post_title ?? 'No name'}}"><br>
-																																					{{strlen($post->post_title ?? 'Download attachment') > 10 ? substr($post->post_title ?? 'No name',0,7).'...' : $post->post_title ?? 'Downlaod attachment'}}
-																																			</a>
-																																			@break
-																																			@case('xlsx')
-																																					<a href="/assets/uploads/attachments/{{$attach->attachment}}" data-toggle="tooltip" data-placement="top" title="{{$post->post_title ?? 'No name'}}" data-original-title="{{$post->post_title ?? 'Downlaod attachment'}}" style="cursor: pointer;">
-																																							<img src="/assets/formats/xls.png" height="64" width="64" alt="{{$post->post_title ?? 'No name'}}"><br>
-																																							{{strlen($post->post_title ?? 'Download attachment') > 10 ? substr($post->post_title ?? 'No name',0,7).'...' : $post->post_title ?? 'Downlaod attachment'}}
-																																					</a>
-																																			@break
-																																			@case('pdf')
-																																					<a href="/assets/uploads/attachments/{{$attach->attachment}}" data-toggle="tooltip" data-placement="top" title="{{$post->post_title ?? 'No name'}}" data-original-title="{{$post->post_title ?? 'Downlaod attachment'}}" style="cursor: pointer;">
-																																							<img src="/assets/formats/pdf.png" height="64" width="64" alt="{{$post->post_title ?? 'No name'}}"><br>
-																																							{{strlen($post->post_title ?? 'Download attachment') > 10 ? substr($post->post_title ?? 'No name',0,7).'...' : $post->post_title ?? 'Downlaod attachment'}}
-																																					</a>
-																																			@break
-																																			@case('doc')
-																																					<a href="/assets/uploads/attachments/{{$attach->attachment}}" data-toggle="tooltip" data-placement="top" title="{{$post->post_title ?? 'No name'}}" data-original-title="{{$post->post_title ?? 'Downlaod attachment'}}" style="cursor: pointer;">
-																																							<img src="/assets/formats/doc.png" height="64" width="64" alt="{{$post->post_title ?? 'No name'}}"><br>
-																																							{{strlen($post->post_title ?? 'Download attachment') > 10 ? substr($post->post_title ?? 'No name',0,7).'...' : $post->post_title ?? 'Downlaod attachment'}}
-																																					</a>
-																																			@break
-																																			@case('docx')
-																																					<a href="/assets/uploads/attachments/{{$attach->attachment}}" data-toggle="tooltip" data-placement="top" title="{{$post->post_title ?? 'No name'}}" data-original-title="{{$post->post_title ?? 'Downlaod attachment'}}" style="cursor: pointer;">
-																																							<img src="/assets/formats/doc.png" height="64" width="64" alt="{{$post->post_title ?? 'No name'}}"><br>
-																																							{{strlen($post->post_title ?? 'Download attachment') > 10 ? substr($post->post_title ?? 'No name',0,7).'...' : $post->post_title ?? 'Downlaod attachment'}}
-																																					</a>
-																																			@break
-																																			@default
-																																					<a href="/assets/uploads/attachments/{{$attach->attachment}}" data-toggle="tooltip" data-placement="top" title="{{$post->post_title ?? 'No name'}}" data-original-title="{{$post->post_title ?? 'Downlaod attachment'}}" style="cursor: pointer;">
-																																							<img src="/assets/formats/file.png" height="64" width="64" alt="{{$post->post_title ?? 'No name'}}"><br>
-																																							{{strlen($post->post_title ?? 'Download attachment') > 10 ? substr($post->post_title ?? 'No name',0,7).'...' : $post->post_title ?? 'Downlaod attachment'}}
-																																					</a>
-																																			@break
+																												<div class="timeline-details">
+																														<a href="{{route('view-internal-memo', $post->post_url)}}">
+																																<h5 class="sub-title">{{ $post->post_title ?? '' }}</h5>
+																														</a>
+																														<p class="text-muted">{!! $post->post_content ?? '' !!}</p>
+																														@foreach ($post->postAttachment as $attach)
+																														@switch(pathinfo($attach->attachment, PATHINFO_EXTENSION))
+																																@case('pptx')
+																																<a href="/assets/uploads/attachments/{{$attach->attachment}}" data-toggle="tooltip" data-placement="top" title="{{$post->post_title ?? 'No name'}}" data-original-title="{{$post->post_title ?? 'Downlaod attachment'}}" style="cursor: pointer;">
+																																		<img src="/assets/formats/ppt.png" height="64" width="64" alt="{{$post->post_title ?? 'No name'}}"><br>
+																																		{{strlen($post->post_title ?? 'Download attachment') > 10 ? substr($post->post_title ?? 'No name',0,7).'...' : $post->post_title ?? 'Downlaod attachment'}}
+																																</a>
+																																@break
+																																@case('xls')
+																																<a href="/assets/uploads/attachments/{{$attach->attachment}}" data-toggle="tooltip" data-placement="top" title="{{$post->post_title ?? 'No name'}}" data-original-title="{{$post->post_title ?? 'Downlaod attachment'}}" style="cursor: pointer;">
+																																		<img src="/assets/formats/xls.png" height="64" width="64" alt="{{$post->post_title ?? 'No name'}}"><br>
+																																		{{strlen($post->post_title ?? 'Download attachment') > 10 ? substr($post->post_title ?? 'No name',0,7).'...' : $post->post_title ?? 'Downlaod attachment'}}
+																																</a>
+																																@break
+																																@case('xlsx')
+																																		<a href="/assets/uploads/attachments/{{$attach->attachment}}" data-toggle="tooltip" data-placement="top" title="{{$post->post_title ?? 'No name'}}" data-original-title="{{$post->post_title ?? 'Downlaod attachment'}}" style="cursor: pointer;">
+																																				<img src="/assets/formats/xls.png" height="64" width="64" alt="{{$post->post_title ?? 'No name'}}"><br>
+																																				{{strlen($post->post_title ?? 'Download attachment') > 10 ? substr($post->post_title ?? 'No name',0,7).'...' : $post->post_title ?? 'Downlaod attachment'}}
+																																		</a>
+																																@break
+																																@case('pdf')
+																																		<a href="/assets/uploads/attachments/{{$attach->attachment}}" data-toggle="tooltip" data-placement="top" title="{{$post->post_title ?? 'No name'}}" data-original-title="{{$post->post_title ?? 'Downlaod attachment'}}" style="cursor: pointer;">
+																																				<img src="/assets/formats/pdf.png" height="64" width="64" alt="{{$post->post_title ?? 'No name'}}"><br>
+																																				{{strlen($post->post_title ?? 'Download attachment') > 10 ? substr($post->post_title ?? 'No name',0,7).'...' : $post->post_title ?? 'Downlaod attachment'}}
+																																		</a>
+																																@break
+																																@case('doc')
+																																		<a href="/assets/uploads/attachments/{{$attach->attachment}}" data-toggle="tooltip" data-placement="top" title="{{$post->post_title ?? 'No name'}}" data-original-title="{{$post->post_title ?? 'Downlaod attachment'}}" style="cursor: pointer;">
+																																				<img src="/assets/formats/doc.png" height="64" width="64" alt="{{$post->post_title ?? 'No name'}}"><br>
+																																				{{strlen($post->post_title ?? 'Download attachment') > 10 ? substr($post->post_title ?? 'No name',0,7).'...' : $post->post_title ?? 'Downlaod attachment'}}
+																																		</a>
+																																@break
+																																@case('docx')
+																																		<a href="/assets/uploads/attachments/{{$attach->attachment}}" data-toggle="tooltip" data-placement="top" title="{{$post->post_title ?? 'No name'}}" data-original-title="{{$post->post_title ?? 'Downlaod attachment'}}" style="cursor: pointer;">
+																																				<img src="/assets/formats/doc.png" height="64" width="64" alt="{{$post->post_title ?? 'No name'}}"><br>
+																																				{{strlen($post->post_title ?? 'Download attachment') > 10 ? substr($post->post_title ?? 'No name',0,7).'...' : $post->post_title ?? 'Downlaod attachment'}}
+																																		</a>
+																																@break
+																																@default
+																																		<a href="/assets/uploads/attachments/{{$attach->attachment}}" data-toggle="tooltip" data-placement="top" title="{{$post->post_title ?? 'No name'}}" data-original-title="{{$post->post_title ?? 'Downlaod attachment'}}" style="cursor: pointer;">
+																																				<img src="/assets/formats/file.png" height="64" width="64" alt="{{$post->post_title ?? 'No name'}}"><br>
+																																				{{strlen($post->post_title ?? 'Download attachment') > 10 ? substr($post->post_title ?? 'No name',0,7).'...' : $post->post_title ?? 'Downlaod attachment'}}
+																																		</a>
+																																@break
 
-																																	@endswitch
-																															@endforeach
-																															</div>
-																													</div>
-																													<div class="card-block b-b-theme b-t-theme social-msg">
-																															@if(!empty($post->postLikes()->where('user_id', Auth::user()->id)->first()))
-																																	<a href="#" wire:click="unLike({{ $post->id }})"> <i class="icofont icofont-thumbs-down text-danger" ></i>
-																																			<span class="b-r-muted">Unlike ({{ count($post->postLikes) }}) </span>
-																																	</a>
+																														@endswitch
+																												@endforeach
+																												</div>
+																										</div>
+																										<div class="card-block b-b-theme b-t-theme social-msg">
+																												@if(!empty($post->postLikes()->where('user_id', Auth::user()->id)->first()))
+																														<a href="#" wire:click="unLike({{ $post->id }})"> <i class="icofont icofont-thumbs-down text-danger" ></i>
+																																<span class="b-r-muted">Unlike ({{ count($post->postLikes) }}) </span>
+																														</a>
 
-																															@elseif(empty($post->postLikes()->where('user_id', Auth::user()->id)->first()))
-																																	<a href="#" wire:click="addLike({{ $post->id }})"> <i class="icofont icofont-like text-success" ></i>
-																																			<span class="b-r-muted">Like ({{ count($post->postLikes) }}) </span>
-																																	</a>
-																															@endif
-																															<a href="#"> <i class="icofont icofont-comment text-muted"></i> <span class="b-r-muted">Comments ({{ count($post->postComments) }})</span></a>
-																															<a href="javascript:void(0);" class="viewers dropdown-toggle" type="button" id="dropdown-{{$post->id}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"> <i class="ti-eye text-muted"></i> <span>View ({{number_format(count($post->postViews))}})</span>
-																																	<div class="dropdown-menu" aria-labelledby="dropdown-{{$post->id}}" style="width:300px!important;" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut">
-																																			@foreach ($post->postViews()->orderBy('id', 'DESC')->take(10)->get() as $viewer)
-																																					<a class="dropdown-item waves-light waves-effect" href="{{route('view-profile', $viewer->user->url)}}">
-																																							<img src="/assets/images/avatars/thumbnails/{{$viewer->user->avatar ?? 'avatar.png'}}" class="img-30 mr-2" alt="{{$viewer->user->first_name ?? ''}}"> {{$viewer->user->first_name ?? ''}} {{$viewer->user->surname ?? ''}}</a>
-																																					@endforeach
-																																			<a class="dropdown-item waves-light waves-effect text-center" href="{{route('view-post-activity-stream', $post->post_url)}}">View all</a>
-																																	</div>
-																															</a>
-																													</div>
-																													<div class="card-block user-box">
-																															<div class="p-b-30"> <span class="f-14"><a href="javascript:void(0);">Comments ({{ count($post->postComments) }})</a></span>
+																												@elseif(empty($post->postLikes()->where('user_id', Auth::user()->id)->first()))
+																														<a href="#" wire:click="addLike({{ $post->id }})"> <i class="icofont icofont-like text-success" ></i>
+																																<span class="b-r-muted">Like ({{ count($post->postLikes) }}) </span>
+																														</a>
+																												@endif
+																												<a href="#"> <i class="icofont icofont-comment text-muted"></i> <span class="b-r-muted">Comments ({{ count($post->postComments) }})</span></a>
+																												<a href="javascript:void(0);" class="viewers dropdown-toggle" type="button" id="dropdown-{{$post->id}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"> <i class="ti-eye text-muted"></i> <span>View ({{number_format(count($post->postViews))}})</span>
+																														<div class="dropdown-menu" aria-labelledby="dropdown-{{$post->id}}" style="width:300px!important;" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut">
+																																@foreach ($post->postViews()->orderBy('id', 'DESC')->take(10)->get() as $viewer)
+																																		<a class="dropdown-item waves-light waves-effect" href="{{route('view-profile', $viewer->user->url)}}">
+																																				<img src="/assets/images/avatars/thumbnails/{{$viewer->user->avatar ?? 'avatar.png'}}" class="img-30 mr-2" alt="{{$viewer->user->first_name ?? ''}}"> {{$viewer->user->first_name ?? ''}} {{$viewer->user->surname ?? ''}}</a>
+																																		@endforeach
+																																<a class="dropdown-item waves-light waves-effect text-center" href="{{route('view-post-activity-stream', $post->post_url)}}">View all</a>
+																														</div>
+																												</a>
+																										</div>
+																										<div class="card-block user-box">
+																												<div class="p-b-30"> <span class="f-14"><a href="javascript:void(0);">Comments ({{ count($post->postComments) }})</a></span>
 
-																															</div>
+																												</div>
 
-																															@foreach($post->postComments()->orderBy('id', 'DESC')->take(5)->get() as $comment)
-																																	<div class="media m-b-2">
-																																			<a class="media-left" href="{{ route('view-profile', $comment->user->url) }}">
-																																					<img class="media-object img-radius m-r-20" src="/assets/images/avatars/thumbnails/{{ $comment->user->avatar ?? 'avatar.png' }}" alt="{{ $comment->user->first_name }} {{ $comment->user->surname ?? '' }}">
-																																			</a>
-																																			<div class="media-body b-b-muted social-client-description">
-																																					<div class="chat-header"><a href="{{ route('view-profile', $comment->user->url) }}">{{ $comment->user->first_name }} {{ $comment->user->surname ?? '' }} </a> <span class="text-muted">{{date('d M, Y', strtotime($comment->created_at)) }} <small>({{ $comment->created_at->diffForHumans() }})</small></span></div>
-																																					<p class="text-muted"> {!! $comment->comment !!} </p>
-																																			</div>
-																																	</div>
-																															@endforeach
-																															@if (count($post->postComments) > 5 )
-																																	<a href="{{route('view-post-activity-stream', $post->post_url)}}">
-																																			<p class="text-center">+{{count($post->postComments) - 5}} others</p>
-																																	</a>
-																															@endif
+																												@foreach($post->postComments()->orderBy('id', 'DESC')->take(5)->get() as $comment)
+																														<div class="media m-b-2">
+																																<a class="media-left" href="{{ route('view-profile', $comment->user->url) }}">
+																																		<img class="media-object img-radius m-r-20" src="/assets/images/avatars/thumbnails/{{ $comment->user->avatar ?? 'avatar.png' }}" alt="{{ $comment->user->first_name }} {{ $comment->user->surname ?? '' }}">
+																																</a>
+																																<div class="media-body b-b-muted social-client-description">
+																																		<div class="chat-header"><a href="{{ route('view-profile', $comment->user->url) }}">{{ $comment->user->first_name }} {{ $comment->user->surname ?? '' }} </a> <span class="text-muted">{{date('d M, Y', strtotime($comment->created_at)) }} <small>({{ $comment->created_at->diffForHumans() }})</small></span></div>
+																																		<p class="text-muted"> {!! $comment->comment !!} </p>
+																																</div>
+																														</div>
+																												@endforeach
+																												@if (count($post->postComments) > 5 )
+																														<a href="{{route('view-post-activity-stream', $post->post_url)}}">
+																																<p class="text-center">+{{count($post->postComments) - 5}} others</p>
+																														</a>
+																												@endif
 
-																															<div class="media">
-																																	<a class="media-left" href="{{ route('view-profile', Auth::user()->url) }}">
-																																			<img class="media-object img-radius m-r-20" src="/assets/images/avatars/thumbnails/avatar.png" alt="Generic placeholder image">
-																																	</a>
-																																	<div class="media-body">
+																												<div class="media">
+																														<a class="media-left" href="{{ route('view-profile', Auth::user()->url) }}">
+																																<img class="media-object img-radius m-r-20" src="/assets/images/avatars/thumbnails/avatar.png" alt="Generic placeholder image">
+																														</a>
+																														<div class="media-body">
 
-																																			<div class="">
-																																					<textarea wire:model.debounce.50000ms="comment" rows="5" cols="5" class="form-control" placeholder="Leave comment"></textarea>
+																																<div class="">
+																																		<textarea wire:model.debounce.50000ms="comment" rows="5" cols="5" class="form-control" placeholder="Leave comment"></textarea>
 
-																																					<div class="text-right m-t-20">
-																																							<button class="btn btn-out-dashed btn-primary btn-square btn-sm" type="button" wire:click="comment({{ $post->id }})">Comment</button>
-																																					</div>
-																																			</div>
-																																	</div>
-																															</div>
-																													</div>
-																											</div>
-																									</div>
-																							</div>
-																					</div>
-																			@endif
-																			@break
-																	@endforeach
+																																		<div class="text-right m-t-20">
+																																				<button class="btn btn-out-dashed btn-primary btn-square btn-sm" type="button" wire:click="comment({{ $post->id }})">Comment</button>
+																																		</div>
+																																</div>
+																														</div>
+																												</div>
+																										</div>
+																								</div>
+																						</div>
+																				</div>
+																		</div>
+																		@else
+																		@foreach ($post->responsiblePersons as $res)
+																				@if ($res->user_id == Auth::user()->id || $res->user_id == 32)
+																						<div class="social-timelines p-relative rollover" data-live="{{$post->id}}">
+																								<div class="row timeline-right p-t-35">
+																										<div class="col-2 col-sm-2 col-xl-1">
+																												<div class="social-timelines-left">
+																														<img class="img-radius timeline-icon" src="/assets/images/avatars/thumbnails/{{ $post->user->avatar ?? 'avatar.png' }}" alt="">
+																												</div>
+																										</div>
+																										<div class="col-10 col-sm-10 col-xl-11 p-l-5 p-b-35">
+																												<div class="card">
+
+																														<div class="card-block post-timelines">
+																																<span class="dropdown-toggle addon-btn text-muted f-right service-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" role="tooltip"></span>
+
+																																<div class="chat-header f-w-600">{{$post->user->first_name ?? ''}} {{$post->user->surname ?? ''}} {<i class="ti-clipboard text-inverse mr-1 ml-1"  data-toggle="tooltip" data-placement="top" title="" data-original-title="Internal memo"></i>} <i class="zmdi zmdi-long-arrow-right text-primary"></i>
+
+																																		@foreach($post->responsiblePersons as $res)
+																																						<small>{{ $res->user->first_name}} {{ $res->user->surname}}</small>,
+																																		@endforeach
+
+																																</div>
+																																<div class="social-time text-muted">{{date('d F, Y', strtotime($post->created_at))}} | <small>{{ $post->created_at->diffForHumans()}}</small> </div>
+																														</div>
+																														<div class="card-block">
+
+																																<div class="timeline-details">
+																																		<a href="{{route('view-internal-memo', $post->post_url)}}">
+																																				<h5 class="sub-title">{{ $post->post_title ?? '' }}</h5>
+																																		</a>
+																																		<p class="text-muted">{!! $post->post_content ?? '' !!}</p>
+																																		@foreach ($post->postAttachment as $attach)
+																																		@switch(pathinfo($attach->attachment, PATHINFO_EXTENSION))
+																																				@case('pptx')
+																																				<a href="/assets/uploads/attachments/{{$attach->attachment}}" data-toggle="tooltip" data-placement="top" title="{{$post->post_title ?? 'No name'}}" data-original-title="{{$post->post_title ?? 'Downlaod attachment'}}" style="cursor: pointer;">
+																																						<img src="/assets/formats/ppt.png" height="64" width="64" alt="{{$post->post_title ?? 'No name'}}"><br>
+																																						{{strlen($post->post_title ?? 'Download attachment') > 10 ? substr($post->post_title ?? 'No name',0,7).'...' : $post->post_title ?? 'Downlaod attachment'}}
+																																				</a>
+																																				@break
+																																				@case('xls')
+																																				<a href="/assets/uploads/attachments/{{$attach->attachment}}" data-toggle="tooltip" data-placement="top" title="{{$post->post_title ?? 'No name'}}" data-original-title="{{$post->post_title ?? 'Downlaod attachment'}}" style="cursor: pointer;">
+																																						<img src="/assets/formats/xls.png" height="64" width="64" alt="{{$post->post_title ?? 'No name'}}"><br>
+																																						{{strlen($post->post_title ?? 'Download attachment') > 10 ? substr($post->post_title ?? 'No name',0,7).'...' : $post->post_title ?? 'Downlaod attachment'}}
+																																				</a>
+																																				@break
+																																				@case('xlsx')
+																																						<a href="/assets/uploads/attachments/{{$attach->attachment}}" data-toggle="tooltip" data-placement="top" title="{{$post->post_title ?? 'No name'}}" data-original-title="{{$post->post_title ?? 'Downlaod attachment'}}" style="cursor: pointer;">
+																																								<img src="/assets/formats/xls.png" height="64" width="64" alt="{{$post->post_title ?? 'No name'}}"><br>
+																																								{{strlen($post->post_title ?? 'Download attachment') > 10 ? substr($post->post_title ?? 'No name',0,7).'...' : $post->post_title ?? 'Downlaod attachment'}}
+																																						</a>
+																																				@break
+																																				@case('pdf')
+																																						<a href="/assets/uploads/attachments/{{$attach->attachment}}" data-toggle="tooltip" data-placement="top" title="{{$post->post_title ?? 'No name'}}" data-original-title="{{$post->post_title ?? 'Downlaod attachment'}}" style="cursor: pointer;">
+																																								<img src="/assets/formats/pdf.png" height="64" width="64" alt="{{$post->post_title ?? 'No name'}}"><br>
+																																								{{strlen($post->post_title ?? 'Download attachment') > 10 ? substr($post->post_title ?? 'No name',0,7).'...' : $post->post_title ?? 'Downlaod attachment'}}
+																																						</a>
+																																				@break
+																																				@case('doc')
+																																						<a href="/assets/uploads/attachments/{{$attach->attachment}}" data-toggle="tooltip" data-placement="top" title="{{$post->post_title ?? 'No name'}}" data-original-title="{{$post->post_title ?? 'Downlaod attachment'}}" style="cursor: pointer;">
+																																								<img src="/assets/formats/doc.png" height="64" width="64" alt="{{$post->post_title ?? 'No name'}}"><br>
+																																								{{strlen($post->post_title ?? 'Download attachment') > 10 ? substr($post->post_title ?? 'No name',0,7).'...' : $post->post_title ?? 'Downlaod attachment'}}
+																																						</a>
+																																				@break
+																																				@case('docx')
+																																						<a href="/assets/uploads/attachments/{{$attach->attachment}}" data-toggle="tooltip" data-placement="top" title="{{$post->post_title ?? 'No name'}}" data-original-title="{{$post->post_title ?? 'Downlaod attachment'}}" style="cursor: pointer;">
+																																								<img src="/assets/formats/doc.png" height="64" width="64" alt="{{$post->post_title ?? 'No name'}}"><br>
+																																								{{strlen($post->post_title ?? 'Download attachment') > 10 ? substr($post->post_title ?? 'No name',0,7).'...' : $post->post_title ?? 'Downlaod attachment'}}
+																																						</a>
+																																				@break
+																																				@default
+																																						<a href="/assets/uploads/attachments/{{$attach->attachment}}" data-toggle="tooltip" data-placement="top" title="{{$post->post_title ?? 'No name'}}" data-original-title="{{$post->post_title ?? 'Downlaod attachment'}}" style="cursor: pointer;">
+																																								<img src="/assets/formats/file.png" height="64" width="64" alt="{{$post->post_title ?? 'No name'}}"><br>
+																																								{{strlen($post->post_title ?? 'Download attachment') > 10 ? substr($post->post_title ?? 'No name',0,7).'...' : $post->post_title ?? 'Downlaod attachment'}}
+																																						</a>
+																																				@break
+
+																																		@endswitch
+																																@endforeach
+																																</div>
+																														</div>
+																														<div class="card-block b-b-theme b-t-theme social-msg">
+																																@if(!empty($post->postLikes()->where('user_id', Auth::user()->id)->first()))
+																																		<a href="#" wire:click="unLike({{ $post->id }})"> <i class="icofont icofont-thumbs-down text-danger" ></i>
+																																				<span class="b-r-muted">Unlike ({{ count($post->postLikes) }}) </span>
+																																		</a>
+
+																																@elseif(empty($post->postLikes()->where('user_id', Auth::user()->id)->first()))
+																																		<a href="#" wire:click="addLike({{ $post->id }})"> <i class="icofont icofont-like text-success" ></i>
+																																				<span class="b-r-muted">Like ({{ count($post->postLikes) }}) </span>
+																																		</a>
+																																@endif
+																																<a href="#"> <i class="icofont icofont-comment text-muted"></i> <span class="b-r-muted">Comments ({{ count($post->postComments) }})</span></a>
+																																<a href="javascript:void(0);" class="viewers dropdown-toggle" type="button" id="dropdown-{{$post->id}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"> <i class="ti-eye text-muted"></i> <span>View ({{number_format(count($post->postViews))}})</span>
+																																		<div class="dropdown-menu" aria-labelledby="dropdown-{{$post->id}}" style="width:300px!important;" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut">
+																																				@foreach ($post->postViews()->orderBy('id', 'DESC')->take(10)->get() as $viewer)
+																																						<a class="dropdown-item waves-light waves-effect" href="{{route('view-profile', $viewer->user->url)}}">
+																																								<img src="/assets/images/avatars/thumbnails/{{$viewer->user->avatar ?? 'avatar.png'}}" class="img-30 mr-2" alt="{{$viewer->user->first_name ?? ''}}"> {{$viewer->user->first_name ?? ''}} {{$viewer->user->surname ?? ''}}</a>
+																																						@endforeach
+																																				<a class="dropdown-item waves-light waves-effect text-center" href="{{route('view-post-activity-stream', $post->post_url)}}">View all</a>
+																																		</div>
+																																</a>
+																														</div>
+																														<div class="card-block user-box">
+																																<div class="p-b-30"> <span class="f-14"><a href="javascript:void(0);">Comments ({{ count($post->postComments) }})</a></span>
+
+																																</div>
+
+																																@foreach($post->postComments()->orderBy('id', 'DESC')->take(5)->get() as $comment)
+																																		<div class="media m-b-2">
+																																				<a class="media-left" href="{{ route('view-profile', $comment->user->url) }}">
+																																						<img class="media-object img-radius m-r-20" src="/assets/images/avatars/thumbnails/{{ $comment->user->avatar ?? 'avatar.png' }}" alt="{{ $comment->user->first_name }} {{ $comment->user->surname ?? '' }}">
+																																				</a>
+																																				<div class="media-body b-b-muted social-client-description">
+																																						<div class="chat-header"><a href="{{ route('view-profile', $comment->user->url) }}">{{ $comment->user->first_name }} {{ $comment->user->surname ?? '' }} </a> <span class="text-muted">{{date('d M, Y', strtotime($comment->created_at)) }} <small>({{ $comment->created_at->diffForHumans() }})</small></span></div>
+																																						<p class="text-muted"> {!! $comment->comment !!} </p>
+																																				</div>
+																																		</div>
+																																@endforeach
+																																@if (count($post->postComments) > 5 )
+																																		<a href="{{route('view-post-activity-stream', $post->post_url)}}">
+																																				<p class="text-center">+{{count($post->postComments) - 5}} others</p>
+																																		</a>
+																																@endif
+
+																																<div class="media">
+																																		<a class="media-left" href="{{ route('view-profile', Auth::user()->url) }}">
+																																				<img class="media-object img-radius m-r-20" src="/assets/images/avatars/thumbnails/avatar.png" alt="Generic placeholder image">
+																																		</a>
+																																		<div class="media-body">
+
+																																				<div class="">
+																																						<textarea wire:model.debounce.50000ms="comment" rows="5" cols="5" class="form-control" placeholder="Leave comment"></textarea>
+
+																																						<div class="text-right m-t-20">
+																																								<button class="btn btn-out-dashed btn-primary btn-square btn-sm" type="button" wire:click="comment({{ $post->id }})">Comment</button>
+																																						</div>
+																																				</div>
+																																		</div>
+																																</div>
+																														</div>
+																												</div>
+																										</div>
+																								</div>
+																						</div>
+																				@endif
+																		@endforeach
+																		@endif
 															@endif
 													@endforeach
 
