@@ -3445,7 +3445,7 @@
 															@endforeach
 															<p class="text-center text-muted"><a href="{{route('my-event-list')}}">View All Events</a></p>
 															@else
-																	<p class="text-center text-muted">There're no events</p>
+																	<p class="text-center text-muted">No up-coming event</p>
 															@endif
 
 													</div>

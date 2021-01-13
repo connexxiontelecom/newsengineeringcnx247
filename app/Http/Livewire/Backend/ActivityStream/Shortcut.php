@@ -145,6 +145,7 @@ class Shortcut extends Component
 									array_push($mineIds, $m->post_id);
 									}
 				$my_events = Post::where('tenant_id', Auth::user()->tenant_id)->whereIn('id', $mineIds)
+													->whereDate('start_date', '>', now())
 													->take(5)
 													->orderBy('end_date', 'DESC')->get();
         $this->ongoing = ResponsiblePerson::where('status','in-progress')
