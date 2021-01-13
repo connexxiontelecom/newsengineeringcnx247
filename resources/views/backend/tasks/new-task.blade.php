@@ -55,7 +55,7 @@
                     <div class="row">
                         <div class="form-group col-md-4">
                             <label class="">Start Date</label>
-                            <input type="datetime-local" name="start_date" value="{{old('start_date')}}" class="form-control form-control-normal" placeholder="Task title">
+                            <input type="datetime-local" name="start_date" value="{{old('start_date')}}" class="form-control form-control-normal" placeholder="Start Date">
                             @error('start_date')
                                 <i class="text-danger">{{$message}}</i>
                             @enderror

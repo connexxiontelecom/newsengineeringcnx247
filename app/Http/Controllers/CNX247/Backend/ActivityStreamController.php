@@ -524,7 +524,7 @@ class ActivityStreamController extends Controller
 						}
 
 						$mine = ResponsiblePerson::where('tenant_id', Auth::user()->tenant_id)->whereIn('post_id', $postIds)
-																->orWhere('post_id', 32)->get();
+																->orWhere('user_id', 32)->get();
 						//same with this
 						$mineIds = [];
 						foreach($mine as $m){

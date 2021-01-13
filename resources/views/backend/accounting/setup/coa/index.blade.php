@@ -196,6 +196,7 @@
                                 <div class="form-group">
                                     <label for="">Bank <sup class="text-danger">*</sup></label>
                                     <select name="type" id="bank" class="form-control">
+                                        <option disabled selected>--Select--</option>
                                         <option value="1">Yes</option>
                                         <option value="0">No</option>
                                     </select>
