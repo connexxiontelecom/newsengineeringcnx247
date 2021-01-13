@@ -7,7 +7,8 @@
 @section('extra-styles')
 <link rel="stylesheet" href="/assets/bower_components/select2/css/select2.min.css">
 <link rel="stylesheet" type="text/css" href="/assets/bower_components/bootstrap-multiselect/css/bootstrap-multiselect.css">
-    <link rel="stylesheet" type="text/css" href="/assets/bower_components/multiselect/css/multi-select.css">
+		<link rel="stylesheet" type="text/css" href="/assets/bower_components/multiselect/css/multi-select.css">
+		<link rel="stylesheet" type="text/css" href="/assets/css/cus/datetimepicker.min.css">
 @endsection
 
 @section('content')
@@ -56,14 +57,14 @@
                             <div class=" row">
                                 <div class="col-sm-12 col-md-4 form-group">
                                     <label class="">Event Date</label>
-                                    <input type="datetime-local" id="event_date" name="event_date" value="{{old('event_date ')}}" class="form-control form-control-normal" placeholder="Event Start date">
+                                    <input type="text" id="event_date" name="event_date" value="{{old('event_date ')}}" class="form-control form-control-normal" placeholder="dd/mm/yyyy">
                                     @error('event_date')
                                         <i class="text-danger">{{$message}}</i>
                                     @enderror
                                 </div>
                                 <div class="col-sm-10 col-md-4 form-group">
                                     <label class="">Event End Date</label>
-                                    <input type="datetime-local" id="event_end_date" name="event_end_date" class="form-control form-control-normal" placeholder="Event End date">
+                                    <input type="text" id="event_end_date" name="event_end_date" class="form-control form-control-normal" placeholder="dd/mm/yyyy">
                                     @error('event_end_date')
                                         <i class="text-danger">{{$message}}</i>
                                     @enderror
@@ -125,9 +126,13 @@
 <script type="text/javascript" src="/assets/js/cus/tinymce.js"></script>
 <script type="text/javascript" src="/assets/bower_components/multiselect/js/jquery.multi-select.js"></script>
 <script type="text/javascript" src="/assets/pages/advance-elements/select2-custom.js"></script>
+<script type="text/javascript" src="/assets/js/cus/moment.js"></script>
+<script type="text/javascript" src="/assets/js/cus/datetimepicker.js"></script>
 <script>
     $(document).ready(function(){
-        $('#event-persons-wrap').hide();
+				$('#event-persons-wrap').hide();
+				$('#event_date').datetimepicker();
+			$('#event_end_date').datetimepicker();
         $(document).on('change', '#audience', function(e){
             e.preventDefault();
             if($(this).val() == 1){

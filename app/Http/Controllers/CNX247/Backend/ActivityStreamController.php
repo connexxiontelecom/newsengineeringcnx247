@@ -14,6 +14,7 @@ use App\Invitation;
 use App\Clocker as ClockInOut;
 use App\Observer;
 use App\User;
+use DateTime;
 use DB;
 use Auth;
 
@@ -29,8 +30,7 @@ class ActivityStreamController extends Controller
     */
     public function index(){
 
-			return view('backend.activity-stream.index');
-
+        return view('backend.activity-stream.index');
     }
 
     /*
@@ -137,9 +137,15 @@ class ActivityStreamController extends Controller
         $task->post_content = $request->task_description;
         $task->post_color = $request->color;
         $task->post_type = 'task';
-        $task->post_url = $url;
-        $task->start_date = $request->start_date ?? '';
-        $task->end_date = $request->due_date;
+				$task->post_url = $url;
+
+				$startDateInstance = new DateTime($request->start_date);
+				$task->start_date = $startDateInstance->format('Y-m-d H:i:s');
+
+					$dueDateInstance = new DateTime($request->due_date);
+				$task->end_date = $dueDateInstance->format('Y-m-d H:i:s');
+
+
         $task->post_priority = $request->priority;
         $task->tenant_id = Auth::user()->tenant_id;
         $task->save();
@@ -222,9 +228,14 @@ class ActivityStreamController extends Controller
         $event->post_content = $request->event_description;
         $event->post_type = 'event';
         $event->post_url = $url;
-        $event->tenant_id = Auth::user()->tenant_id;
-        $event->start_date = $request->event_start_date ?? '';
-        $event->end_date = $request->event_end_date ?? '';
+				$event->tenant_id = Auth::user()->tenant_id;
+
+				$startDateInstance = new DateTime($request->event_start_date);
+				$event->start_date = $startDateInstance->format('Y-m-d H:i:s');
+
+					$dueDateInstance = new DateTime($request->event_end_date);
+				$event->end_date = $dueDateInstance->format('Y-m-d H:i:s');
+
         $event->save();
         $event_id = $event->id;
         //send notification
@@ -262,9 +273,7 @@ class ActivityStreamController extends Controller
             return response()->json(['error'=>'Success! Ooops! Something went wrong. Try again.'], 400);
 
         }
-		}
-
-
+    }
 
     /*
     * Create announcement
@@ -506,47 +515,5 @@ class ActivityStreamController extends Controller
         $out->status = 2; //out
         $out->save();
         return response()->json(['message'=>'Success! Clocked-out'], 200);
-		}
-
-
-		public function searchCNX247(Request $request){
-					$posts = Post::where('tenant_id', Auth::user()->tenant_id)
-					->get();
-						$postIds = [];
-						foreach($posts as $post){
-						array_push($postIds, $post->id);
-						}
-						$created_by_me = Post::where('tenant_id', Auth::user()->tenant_id)->where('user_id', Auth::user()->id)->get();
-						//this IDs very important
-						$createdByMeIds = [];
-						foreach($created_by_me as $by_me){
-						array_push($createdByMeIds, $by_me->id);
-						}
-
-						$mine = ResponsiblePerson::where('tenant_id', Auth::user()->tenant_id)->whereIn('post_id', $postIds)
-																->orWhere('user_id', 32)->get();
-						//same with this
-						$mineIds = [];
-						foreach($mine as $m){
-						array_push($mineIds, $m->post_id);
-						}
-						//join the two IDs (post created by me and ones that I'm responsible for)
-						$mergedIds = array_unique(array_merge($createdByMeIds, $mineIds));
-						$sort = arsort($mergedIds);
-
-			$results = Post::where('tenant_id', Auth::user()->tenant_id)
-														->where('post_title', 'like', "%{$request->search_phrase}%")
-														->orWhere('post_content', 'LIKE', "%{$request->search_phrase}%")
-														->whereIn('id', $mergedIds)
-														->get();
-		/* 	$results = Post::where('tenant_id', Auth::user()->tenant_id)
-														->where('post_title', 'like', "%{$request->search_phrase}%")
-														->orWhere('post_content', 'LIKE', "%{$request->search_phrase}%")
-														->whereIn('id', $mergedIds)
-														->get(); */
-			return view('backend.activity-stream.search-result', [
-				'posts'=>$results,
-				'search_phrase'=>$request->search_phrase
-				]);
-		}
+    }
 }
