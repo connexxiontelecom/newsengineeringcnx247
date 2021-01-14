@@ -5,7 +5,7 @@
 @endsection
 
 @section('extra-styles')
-
+<link rel="stylesheet" type="text/css" href="/assets/css/cus/datetimepicker.min.css">
 @endsection
 
 @section('content')
@@ -57,7 +57,7 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="">Registration Date<sup class="text-danger">*</sup></label>
-                                                <input type="date" name="registration_date" value="{{old('registration_date')}}" placeholder="Registration Date"  class="form-control">
+                                                <input type="text" name="registration_date" id="registration_date" value="{{old('registration_date')}}" placeholder="dd/mm/yyyy"  class="form-control">
                                                 @error('registration_date')
                                                     <i class="text-danger">{{$message}}</i>
                                                 @enderror
@@ -125,5 +125,11 @@
 @endsection
 
 @section('extra-scripts')
-
+<script type="text/javascript" src="/assets/js/cus/moment.js"></script>
+<script type="text/javascript" src="/assets/js/cus/datetimepicker.js"></script>
+<script>
+	$(document).ready(function(){
+		$('#registration_date').datetimepicker();
+	});
+</script>
 @endsection

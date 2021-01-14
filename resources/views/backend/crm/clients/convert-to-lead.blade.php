@@ -8,7 +8,8 @@ Convert to Lead
 <link rel="stylesheet" type="text/css" href="/assets/css/component.css">
 <link rel="stylesheet" type="text/css" href="/assets/bower_components/bootstrap-multiselect/css/bootstrap-multiselect.css">
     <link rel="stylesheet" type="text/css" href="/assets/bower_components/multiselect/css/multi-select.css">
-    <link rel="stylesheet" href="/assets/bower_components/select2/css/select2.min.css">
+		<link rel="stylesheet" href="/assets/bower_components/select2/css/select2.min.css">
+		<link rel="stylesheet" type="text/css" href="/assets/css/cus/datetimepicker.min.css">
 <style>
 /* The heart of the matter */
 
@@ -86,7 +87,7 @@ Convert to Lead
                             <tr>
                                 <th>Issue Date :</th>
                                 <td>
-                                    <input type="date" name="issue_date" placeholder="Date" class="form-control">
+                                    <input type="text" id="issue_date" name="issue_date" placeholder="dd/mm/yyyy" class="form-control">
                                     @error('issue_date')
                                         <i class="text-danger mt-2">{{$message}}</i>
                                     @enderror
@@ -95,7 +96,7 @@ Convert to Lead
                             <tr>
                                 <th>Due Date :</th>
                                 <td>
-                                    <input type="date" name="due_date" class="form-control" placeholder="Due Date">
+                                    <input type="text" id="due_date" name="due_date" class="form-control" placeholder="dd/mm/yyyy">
                                     @error('due_date')
                                         <i class="text-danger mt-2">{{$message}}</i>
                                     @enderror
@@ -107,7 +108,7 @@ Convert to Lead
                 <div class="col-md-4 col-sm-6">
                     <h6 class="m-b-20">Invoice Number <span>#INV{{$invoice_no}}</span></h6>
                     <h6 class="text-uppercase text-primary">Balance :
-                        <span>{{Auth::user()->tenant->currency->symbol ?? 'N'}}</span> <span class="balance"></span>
+                        <span></span> <span class="balance"></span>
                     </h6>
                     @if ($status == 1 && empty($client->glcode))
                     <div class="form-group">
@@ -189,7 +190,7 @@ Convert to Lead
                         <tbody>
                             <tr>
                                 <th>Sub Total :</th>
-                                <td>{{Auth::user()->tenant->currency->symbol ?? 'N'}} <span  class="sub-total">0.00</span> </td>
+                                <td> <span  class="sub-total">0.00</span> </td>
                             </tr>
                             <tr>
                                 <th>Taxes (%) :</th>
@@ -232,7 +233,7 @@ Convert to Lead
                                 </td>
                                 <td>
                                     <hr>
-                                    <h5 class="text-primary"> <span>{{Auth::user()->tenant->currency->symbol ?? 'N'}}</span> <span class="total">0.00</span></h5>
+                                    <h5 class="text-primary"> <span></span> <span class="total">0.00</span></h5>
                                 </td>
                             </tr>
                         </tbody>
@@ -290,9 +291,13 @@ Convert to Lead
 <script type="text/javascript" src="/assets/bower_components/multiselect/js/jquery.multi-select.js"></script>
 <script type="text/javascript" src="/assets/bower_components/bootstrap-multiselect/js/bootstrap-multiselect.js"></script>
 <script type="text/javascript" src="/assets/pages/advance-elements/select2-custom.js"></script>
+<script type="text/javascript" src="/assets/js/cus/moment.js"></script>
+<script type="text/javascript" src="/assets/js/cus/datetimepicker.js"></script>
 <script>
 
     $(document).ready(function(){
+			$('#issue_date').datetimepicker();
+			$('#due_date').datetimepicker();
 			var defaultCurrency = "{{Auth::user()->tenant->currency->id}}";
 			var string = null;
         $(".select-product").select2({
@@ -322,7 +327,10 @@ Convert to Lead
 							axios.get(url)
 							.then(response=>{
 								console.log(response.data);
-								$('#exchange_rate').val(response.data[string]);
+								$('#exchange_rate').val(response.data[string].toFixed(2));
+								var equivalent = (Number(response.data[string].toFixed(2)) * Number($('#totalAmount').val() ));
+								$('.total').text(equivalent.toLocaleString()) ;
+								$('#totalAmount').val(equivalent);
 							});
 							$('.exchange-rate').show();
 						}else{
