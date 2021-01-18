@@ -79,7 +79,6 @@
 								</li>
 
 				</ul>
-				@can('human resource')
 					<div class="pcoded-navigatio-lavel">Human Resource</div>
 					<ul class="pcoded-item pcoded-left-item">
 							<li class="pcoded-hasmenu">
@@ -221,8 +220,6 @@
 							</li>
 					</ul>
 
-				@endcan
-				@can('marketing')
 					<div class="pcoded-navigatio-lavel">Marketing</div>
 					<ul class="pcoded-item pcoded-left-item">
 							<li class="pcoded-hasmenu">
@@ -278,7 +275,6 @@
 							</li>
 					</ul>
 
-				@endcan
 				@can('accounting')
 					<div class="pcoded-navigatio-lavel">Accounting</div>
 					<ul class="pcoded-item pcoded-left-item">
