@@ -92,51 +92,78 @@
                     <span class="pcoded-mtext">HR</span>
                 </a>
                 <ul class="pcoded-submenu">
-                    <li class=" ">
-                        <a href="{{route('hr-dashboard')}}">
-                            <span class="pcoded-mtext">HR Dashboard</span>
-                        </a>
-                    </li>
-                    <li class=" ">
-                        <a href="{{route('employees')}}">
-                            <span class="pcoded-mtext">Employees</span>
-                        </a>
-                    </li>
-                    <li class=" ">
-                        <a href="{{ route('appreciation') }}">
-                            <span class="pcoded-mtext">Appreciation</span>
-                        </a>
-                    </li>
-                    <li class=" ">
-                        <a href="{{ route('resignation') }}">
-                            <span class="pcoded-mtext">Resignation</span>
-                        </a>
-                    </li>
-                    <li class=" ">
-                        <a href="{{ route('terminated-employment') }}">
-                            <span class="pcoded-mtext">Termination</span>
-                        </a>
-                    </li>
-                    <li class=" ">
-                        <a href="{{route('hr-ideabox')}}">
-                            <span class="pcoded-mtext">IdeaBox</span>
-                        </a>
-                    </li>
-                    <li class=" ">
-                        <a href="{{route('queries')}}">
-                            <span class="pcoded-mtext">Queries</span>
-                        </a>
-                    </li>
-                    <li class=" ">
-                        <a href="{{route('on-boarding')}}">
-                            <span class="pcoded-mtext">onBoarding</span>
-                        </a>
-                    </li>
-                    <li class=" ">
-                        <a href="{{route('hr-configurations')}}">
-                            <span class="pcoded-mtext">HR Configurations</span>
-                        </a>
-                    </li>
+									@can('hr dashboard')
+
+									<li class=" ">
+											<a href="{{route('hr-dashboard')}}">
+													<span class="pcoded-mtext">HR Dashboard</span>
+											</a>
+									</li>
+									@endcan
+									@can('view employees')
+										<li class=" ">
+												<a href="{{route('employees')}}">
+														<span class="pcoded-mtext">Employees</span>
+												</a>
+										</li>
+
+									@endcan
+									@can('view appreciation')
+
+									<li class=" ">
+											<a href="{{ route('appreciation') }}">
+													<span class="pcoded-mtext">Appreciation</span>
+											</a>
+									</li>
+									@endcan
+									@can('view resignation')
+
+									<li class=" ">
+											<a href="{{ route('resignation') }}">
+													<span class="pcoded-mtext">Resignation</span>
+											</a>
+									</li>
+									@endcan
+									@can('view termination')
+
+									<li class=" ">
+											<a href="{{ route('terminated-employment') }}">
+													<span class="pcoded-mtext">Termination</span>
+											</a>
+									</li>
+									@endcan
+									@can('view ideabox')
+
+									<li class=" ">
+											<a href="{{route('hr-ideabox')}}">
+													<span class="pcoded-mtext">IdeaBox</span>
+											</a>
+									</li>
+									@endcan
+									@can('view queries')
+
+									<li class=" ">
+											<a href="{{route('queries')}}">
+													<span class="pcoded-mtext">Queries</span>
+											</a>
+									</li>
+									@endcan
+									@can('onboard employee')
+
+									<li class=" ">
+											<a href="{{route('on-boarding')}}">
+													<span class="pcoded-mtext">onBoarding</span>
+											</a>
+									</li>
+									@endcan
+									@can('view hr config')
+
+									<li class=" ">
+											<a href="{{route('hr-configurations')}}">
+													<span class="pcoded-mtext">HR Configurations</span>
+											</a>
+									</li>
+									@endcan
 
                 </ul>
             </li>
@@ -146,21 +173,30 @@
                     <span class="pcoded-mtext">Timesheet</span>
                 </a>
                 <ul class="pcoded-submenu">
-                    <li class=" ">
-                        <a href="{{route('attendance')}}">
-                            <span class="pcoded-mtext">Attendance</span>
-                        </a>
-                    </li>
-                    <li class=" ">
-                        <a href="{{ route('leave-management') }}">
-                            <span class="pcoded-mtext">Leave Management</span>
-                        </a>
-                    </li>
-                    <li class=" ">
-                        <a href="{{ route('leave-type') }}">
-                            <span class="pcoded-mtext">Leave Types</span>
-                        </a>
-                    </li>
+									@can('view attendance')
+
+									<li class=" ">
+											<a href="{{route('attendance')}}">
+													<span class="pcoded-mtext">Attendance</span>
+											</a>
+									</li>
+									@endcan
+									@can('manage leave')
+
+									<li class=" ">
+											<a href="{{ route('leave-management') }}">
+													<span class="pcoded-mtext">Leave Management</span>
+											</a>
+									</li>
+									@endcan
+									@can('set leave type')
+
+									<li class=" ">
+											<a href="{{ route('leave-type') }}">
+													<span class="pcoded-mtext">Leave Types</span>
+											</a>
+									</li>
+									@endcan
                 </ul>
             </li>
             <li class="pcoded-hasmenu">
@@ -169,16 +205,22 @@
                     <span class="pcoded-mtext">Performance</span>
                 </a>
                 <ul class="pcoded-submenu">
-                    <li class=" ">
-                        <a href="{{route('performance-indicator')}}">
-                            <span class="pcoded-mtext">Performance Indicator</span>
-                        </a>
-                    </li>
-                    <li class=" ">
-                        <a href="{{route('employees-appraisal')}}">
-                            <span class="pcoded-mtext">Employee Appraisal</span>
-                        </a>
-                    </li>
+									@can('set performance indicator')
+
+									<li class=" ">
+											<a href="{{route('performance-indicator')}}">
+													<span class="pcoded-mtext">Performance Indicator</span>
+											</a>
+									</li>
+									@endcan
+									@can('employee appraisal')
+
+									<li class=" ">
+											<a href="{{route('employees-appraisal')}}">
+													<span class="pcoded-mtext">Employee Appraisal</span>
+											</a>
+									</li>
+									@endcan
                 </ul>
             </li>
         </ul>
@@ -190,11 +232,14 @@
                     <span class="pcoded-mtext">CRM</span>
                 </a>
                 <ul class="pcoded-submenu">
-                    <li class=" ">
-                        <a href="{{route('crm-dashboard')}}">
-                            <span class="pcoded-mtext">Dashboard</span>
-                        </a>
-                    </li>
+									@can('crm dashboard')
+										<li class=" ">
+												<a href="{{route('crm-dashboard')}}">
+														<span class="pcoded-mtext">Dashboard</span>
+												</a>
+										</li>
+
+									@endcan
                     <li class=" ">
                         <a href="{{route('clients')}}">
                             <span class="pcoded-mtext">Clients</span>

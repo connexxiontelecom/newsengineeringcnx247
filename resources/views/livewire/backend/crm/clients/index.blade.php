@@ -26,7 +26,10 @@
         <div class="card">
             <div class="card-block p-b-0">
                 <div class="btn-group float-right">
-                    <a href="{{route('new-client')}}" class="btn btn-primary btn-mini"> <i class="ti-plus mr-2"></i> Add New Client</a>
+									@can('add new client')
+
+									<a href="{{route('new-client')}}" class="btn btn-primary btn-mini"> <i class="ti-plus mr-2"></i> Add New Client</a>
+									@endcan
                 </div>
                 <h5 class="sub-title">Clients</h5>
                 <div class="row">
@@ -64,7 +67,10 @@
                                             <div class="row">
                                                 <div class="col-md-12 d-flex justify-content-end">
                                                     <div class="btn-group mr-3">
-                                                        <a href="{{route('edit-client', $client->slug)}}"><i class="ti-pencil text-warning p-2"></i></a>
+																											@can('edit client')
+
+																											<a href="{{route('edit-client', $client->slug)}}"><i class="ti-pencil text-warning p-2"></i></a>
+																											@endcan
                                                         <a href="{{route('view-client', $client->slug)}}"><i class="ti-eye text-primary p-2"></i></a>
                                                     </div>
                                                 </div>

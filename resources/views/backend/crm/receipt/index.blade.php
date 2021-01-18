@@ -74,68 +74,71 @@
             </div>
         </div>
         <div class="col-xl-9 col-lg-12 pull-xl-3 filter-bar">
-            <div class="row">
-                <div class="col-xl-3 col-md-6">
-                    <div class="card">
-                        <div class="card-block">
-                            <div class="row align-items-center m-l-0">
-                                <div class="col-auto">
-                                    <i class="icofont icofont-ui-calendar f-30 text-c-lite-green"></i>
-                                </div>
-                                <div class="col-auto">
-                                    <h6 class="text-muted m-b-10">This Year</h6>
-                                    <h5 class="m-b-0">{{Auth::user()->tenant->currency->symbol ?? '₦'}}{{number_format($thisYear,2)}}</h5>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-3 col-md-6">
-                    <div class="card">
-                        <div class="card-block">
-                            <div class="row align-items-center m-l-0">
-                                <div class="col-auto">
-                                    <i class="icofont icofont-ui-calendar f-30 text-c-lite-green"></i>
-                                </div>
-                                <div class="col-auto">
-                                    <h6 class="text-muted m-b-10">Last Month</h6>
-                                    <h5 class="m-b-0">{{Auth::user()->tenant->currency->symbol ?? '₦'}}{{number_format($last_month,2)}}</h5>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-3 col-md-6">
-                    <div class="card">
-                        <div class="card-block">
-                            <div class="row align-items-center m-l-0">
-                                <div class="col-auto">
-                                    <i class="icofont icofont-ui-calendar f-30 text-c-lite-green"></i>
-                                </div>
-                                <div class="col-auto">
-                                    <h6 class="text-muted m-b-10">This Month</h6>
-                                    <h5 class="m-b-0">{{Auth::user()->tenant->currency->symbol ?? '₦'}}{{number_format($monthly,2)}}</h5>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-3 col-md-6">
-                    <div class="card">
-                        <div class="card-block">
-                            <div class="row align-items-center m-l-0">
-                                <div class="col-auto">
-                                    <i class="icofont icofont-ui-calendar f-30 text-c-lite-green"></i>
-                                </div>
-                                <div class="col-auto">
-                                    <h6 class="text-muted m-b-10">This Week</h6>
-                                    <h5 class="m-b-0">{{Auth::user()->tenant->currency->symbol ?? '₦'}}{{number_format($this_week,2)}}</h5>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+					@can('view receipt report')
+						<div class="row">
+								<div class="col-xl-3 col-md-6">
+										<div class="card">
+												<div class="card-block">
+														<div class="row align-items-center m-l-0">
+																<div class="col-auto">
+																		<i class="icofont icofont-ui-calendar f-30 text-c-lite-green"></i>
+																</div>
+																<div class="col-auto">
+																		<h6 class="text-muted m-b-10">This Year</h6>
+																		<h5 class="m-b-0">{{Auth::user()->tenant->currency->symbol ?? '₦'}}{{number_format($thisYear,2)}}</h5>
+																</div>
+														</div>
+												</div>
+										</div>
+								</div>
+								<div class="col-xl-3 col-md-6">
+										<div class="card">
+												<div class="card-block">
+														<div class="row align-items-center m-l-0">
+																<div class="col-auto">
+																		<i class="icofont icofont-ui-calendar f-30 text-c-lite-green"></i>
+																</div>
+																<div class="col-auto">
+																		<h6 class="text-muted m-b-10">Last Month</h6>
+																		<h5 class="m-b-0">{{Auth::user()->tenant->currency->symbol ?? '₦'}}{{number_format($last_month,2)}}</h5>
+																</div>
+														</div>
+												</div>
+										</div>
+								</div>
+								<div class="col-xl-3 col-md-6">
+										<div class="card">
+												<div class="card-block">
+														<div class="row align-items-center m-l-0">
+																<div class="col-auto">
+																		<i class="icofont icofont-ui-calendar f-30 text-c-lite-green"></i>
+																</div>
+																<div class="col-auto">
+																		<h6 class="text-muted m-b-10">This Month</h6>
+																		<h5 class="m-b-0">{{Auth::user()->tenant->currency->symbol ?? '₦'}}{{number_format($monthly,2)}}</h5>
+																</div>
+														</div>
+												</div>
+										</div>
+								</div>
+								<div class="col-xl-3 col-md-6">
+										<div class="card">
+												<div class="card-block">
+														<div class="row align-items-center m-l-0">
+																<div class="col-auto">
+																		<i class="icofont icofont-ui-calendar f-30 text-c-lite-green"></i>
+																</div>
+																<div class="col-auto">
+																		<h6 class="text-muted m-b-10">This Week</h6>
+																		<h5 class="m-b-0">{{Auth::user()->tenant->currency->symbol ?? '₦'}}{{number_format($this_week,2)}}</h5>
+																</div>
+														</div>
+												</div>
+										</div>
+								</div>
+						</div>
+
+					@endcan
             <div class="row">
                 @foreach ($receipts as $receipt)
                     <div class="col-sm-6">
