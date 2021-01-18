@@ -8,7 +8,6 @@
 										<span class="pcoded-mtext">Activity Stream</span>
 								</a>
 						</li>
-						@can('workflows')
 
             <li class="">
                 <a href="{{route('workflow-tasks')}}">
@@ -20,8 +19,6 @@
                     </span>
                 </a>
             </li>
-						@endcan
-						@can('chat and calls')
 
             <li class="">
                 <a href="{{ route('chat-n-calls') }}">
@@ -33,17 +30,12 @@
                     </span>
                 </a>
 						</li>
-						@endcan
-						@can('access cnx247stream')
 							<li class="">
 									<a href="{{ route('cnx247-stream') }}">
 											<span class="pcoded-micon"><i class="ti-video-camera"></i></span>
 											<span class="pcoded-mtext">CNX247 Stream</span>
 									</a>
 							</li>
-
-						@endcan
-						@can('view projects')
 							<li class="">
 									<a href="{{ route('project-board')  }}">
 											<span class="pcoded-micon"><i class="ti-briefcase"></i></span>
@@ -55,8 +47,6 @@
 									</a>
 							</li>
 
-						@endcan
-						@can('view tasks')
 							<li class="">
 									<a href="{{ route('task-board')  }}">
 											<span class="pcoded-micon"><i class="ti-check-box"></i></span>
@@ -68,16 +58,12 @@
 									</a>
 							</li>
 
-						@endcan
-							@can('view workgroups')
 								<li class="">
 										<a href="{{route('workgroups')}}">
 												<span class="pcoded-micon"><i class="ti-infinite"></i></span>
 												<span class="pcoded-mtext">Workgroups</span>
 										</a>
 								</li>
-							@endcan
-							@can('cnx247 drive')
 								<li class="">
 										<a href="{{ route('cnx247-drive') }}">
 												<span class="pcoded-micon"><i class="ti-harddrive"></i></span>
@@ -85,8 +71,6 @@
 										</a>
 								</li>
 
-							@endcan
-							@can('events')
 								<li class="">
 										<a href="{{route('my-event-list')}}">
 												<span class="pcoded-micon"><i class="ti-calendar"></i></span>
@@ -94,7 +78,6 @@
 										</a>
 								</li>
 
-							@endcan
 				</ul>
 				@can('human resource')
 					<div class="pcoded-navigatio-lavel">Human Resource</div>
