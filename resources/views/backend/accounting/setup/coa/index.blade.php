@@ -32,8 +32,11 @@
     <div class="col-lg-12 col-md-12 col-sm-12">
         <div class="card">
             <div class="card-header">
-                <h5 class="card-header-text">Chart of Accounts</h5>
+								<h5 class="card-header-text">Chart of Accounts</h5>
+								@can('add new account')
+
                 <button class="btn btn-mini btn-primary float-right" type="button" data-toggle="modal" data-target="#addNewAccountModal"><i class="ti-plus mr-2"></i>Add New Account</button>
+								@endcan
             </div>
             <div class="card-block accordion-block">
                 <div class="col-xs-12 col-sm-12">
