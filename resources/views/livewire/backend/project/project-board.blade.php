@@ -131,13 +131,19 @@
                                                             <a class="dropdown-item waves-light waves-effect" href="{{route('view-project', $task->post_url)}}">
                                                                 <i class="ti-eye text-primary"></i> View project
                                                             </a>
-                                                            @if($task->user_id == Auth::user()->id)
-                                                                <a class="dropdown-item waves-light waves-effect" href="{{route('edit-project', $task->post_url)}}">
-                                                                    <i class="icofont icofont-ui-edit text-warning"></i> Edit project
-                                                                </a>
-                                                                <a href="javascript:void(0);" class="dropdown-item waves-light waves-effect delete-project" data-toggle="modal" data-target="#projectDeleteModal" data-project-name="{{$task->post_title}}" data-project-id="{{$task->id}}">
-                                                                    <i class="ti-trash text-danger"></i> Delete project
-                                                                </a>
+																														@if($task->user_id == Auth::user()->id)
+																															@can('edit project')
+																																<a class="dropdown-item waves-light waves-effect" href="{{route('edit-project', $task->post_url)}}">
+																																		<i class="icofont icofont-ui-edit text-warning"></i> Edit project
+																																</a>
+
+																															@endcan
+																															@can('delete project')
+																																<a href="javascript:void(0);" class="dropdown-item waves-light waves-effect delete-project" data-toggle="modal" data-target="#projectDeleteModal" data-project-name="{{$task->post_title}}" data-project-id="{{$task->id}}">
+																																		<i class="ti-trash text-danger"></i> Delete project
+																																</a>
+
+																															@endcan
                                                             @endif
                                                         </div>
                                                     </div>

@@ -2,12 +2,12 @@
     <div class="pcoded-inner-navbar main-menu" style="background: none;">
         <div class="pcoded-navigatio-lavel">Navigation</div>
         <ul class="pcoded-item pcoded-left-item">
-            <li class="">
-                <a href="{{route('activity-stream')}}">
-                    <span class="pcoded-micon"><i class="ti-layers-alt"></i></span>
-                    <span class="pcoded-mtext">Activity Stream</span>
-                </a>
-            </li>
+						<li class="">
+								<a href="{{route('activity-stream')}}">
+										<span class="pcoded-micon"><i class="ti-layers-alt"></i></span>
+										<span class="pcoded-mtext">Activity Stream</span>
+								</a>
+						</li>
             <li class="">
                 <a href="{{route('workflow-tasks')}}">
                     <span class="pcoded-micon"><i class="ti-menu"></i></span>
@@ -27,42 +27,50 @@
                     @endif
                     </span>
                 </a>
-            </li>
-            <li class="">
-                <a href="{{ route('cnx247-stream') }}">
-                    <span class="pcoded-micon"><i class="ti-video-camera"></i></span>
-                    <span class="pcoded-mtext">CNX247 Stream</span>
-                </a>
-            </li>
+						</li>
+						@can('access cnx247stream')
+							<li class="">
+									<a href="{{ route('cnx247-stream') }}">
+											<span class="pcoded-micon"><i class="ti-video-camera"></i></span>
+											<span class="pcoded-mtext">CNX247 Stream</span>
+									</a>
+							</li>
 
-                <li class="">
-                    <a href="{{ route('project-board')  }}">
-                        <span class="pcoded-micon"><i class="ti-briefcase"></i></span>
-                        <span class="pcoded-mtext">Projects
-                            @if(count(Auth::user()->myResponsibilities()->where('post_type', 'project')->where('status', 'in-progress')->get()) > 0)
-                                <label for="" class="badge badge-danger">{{count(Auth::user()->myResponsibilities()->where('post_type', 'project')->where('status', 'in-progress')->get())}}</label>
-                            @endif
-                        </span>
-                    </a>
-                </li>
+						@endcan
+						@can('view projects')
+							<li class="">
+									<a href="{{ route('project-board')  }}">
+											<span class="pcoded-micon"><i class="ti-briefcase"></i></span>
+											<span class="pcoded-mtext">Projects
+													@if(count(Auth::user()->myResponsibilities()->where('post_type', 'project')->where('status', 'in-progress')->get()) > 0)
+															<label for="" class="badge badge-danger">{{count(Auth::user()->myResponsibilities()->where('post_type', 'project')->where('status', 'in-progress')->get())}}</label>
+													@endif
+											</span>
+									</a>
+							</li>
 
-                <li class="">
-                    <a href="{{ route('task-board')  }}">
-                        <span class="pcoded-micon"><i class="ti-check-box"></i></span>
-                        <span class="pcoded-mtext">Tasks
-                            @if(count(Auth::user()->myResponsibilities()->where('post_type', 'task')->where('status', 'in-progress')->get()) > 0)
-                                <label for="" class="badge badge-danger">{{count(Auth::user()->myResponsibilities()->where('post_type', 'task')->where('status', 'in-progress')->get())}}</label>
-                            @endif
-                        </span>
-                    </a>
-                </li>
+						@endcan
+						@can('view tasks')
+							<li class="">
+									<a href="{{ route('task-board')  }}">
+											<span class="pcoded-micon"><i class="ti-check-box"></i></span>
+											<span class="pcoded-mtext">Tasks
+													@if(count(Auth::user()->myResponsibilities()->where('post_type', 'task')->where('status', 'in-progress')->get()) > 0)
+															<label for="" class="badge badge-danger">{{count(Auth::user()->myResponsibilities()->where('post_type', 'task')->where('status', 'in-progress')->get())}}</label>
+													@endif
+											</span>
+									</a>
+							</li>
 
-            <li class="">
-                <a href="{{route('workgroups')}}">
-                    <span class="pcoded-micon"><i class="ti-infinite"></i></span>
-                    <span class="pcoded-mtext">Workgroups</span>
-                </a>
-            </li>
+						@endcan
+							@can('view workgroups')
+								<li class="">
+										<a href="{{route('workgroups')}}">
+												<span class="pcoded-micon"><i class="ti-infinite"></i></span>
+												<span class="pcoded-mtext">Workgroups</span>
+										</a>
+								</li>
+							@endcan
             <li class="">
                 <a href="{{ route('cnx247-drive') }}">
                     <span class="pcoded-micon"><i class="ti-harddrive"></i></span>

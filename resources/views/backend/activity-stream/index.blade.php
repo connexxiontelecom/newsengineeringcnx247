@@ -17,7 +17,8 @@
 @endsection
 
 @section('content')
-        @livewire('backend.activity-stream.shortcut')
+
+			@livewire('backend.activity-stream.shortcut')
 
 @endsection
 

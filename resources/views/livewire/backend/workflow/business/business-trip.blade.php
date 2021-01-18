@@ -19,7 +19,10 @@
                             <div class="card-block">
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <button class="btn btn-mini btn-primary float-right mb-3" data-target="#requestModal" data-toggle="modal"><i class="ti-plus mr-2"></i>Add New Business Trip</button>
+																			@can('raise business trip')
+																			<button class="btn btn-mini btn-primary float-right mb-3" data-target="#requestModal" data-toggle="modal"><i class="ti-plus mr-2"></i>Add New Business Trip</button>
+
+																			@endcan
                                         @if(session()->has('success'))
                                             <div class="alert alert-success border-success" style="padding:5px;">
                                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">

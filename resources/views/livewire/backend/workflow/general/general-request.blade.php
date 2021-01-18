@@ -17,7 +17,10 @@
 
                          <div class="card">
                             <div class="card-block">
-                                <button class="btn btn-mini btn-primary float-right mb-3" data-target="#requestModal" data-toggle="modal"><i class="ti-plus mr-2"></i>Add New General Request</button>
+															@can('raise general request')
+															<button class="btn btn-mini btn-primary float-right mb-3" data-target="#requestModal" data-toggle="modal"><i class="ti-plus mr-2"></i>Add New General Request</button>
+
+															@endcan
                                 @if(session()->has('success'))
                                     <div class="alert alert-success backgroun-success" style="padding:5px;">
                                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">

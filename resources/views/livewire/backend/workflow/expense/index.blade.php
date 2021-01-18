@@ -5,8 +5,10 @@
     <div class="col-md-12">
         <div class="card">
             <div class="card-block">
-                <h5 class="sub-title">Expense Report</h5>
-                <button class="btn btn-mini btn-primary float-right mb-3" data-target="#newExpenseRequestModal" data-toggle="modal"><i class="ti-plus mr-2"></i>Add New Expense Report</button>
+								<h5 class="sub-title">Expense Report</h5>
+								@can('raise expense report')
+                	<button class="btn btn-mini btn-primary float-right mb-3" data-target="#newExpenseRequestModal" data-toggle="modal"><i class="ti-plus mr-2"></i>Add New Expense Report</button>
+								@endcan
                 <ul class="nav nav-tabs md-tabs" role="tablist">
                     <li class="nav-item">
                         <a class="nav-link active" data-toggle="tab" href="#expenseReportTab" role="tab">Expense Report</a>
