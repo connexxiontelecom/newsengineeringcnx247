@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\CNX247\Backend;
-
+use PhpOffice\PhpWord\TemplateProcessor;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
@@ -549,6 +549,46 @@ class CRMController extends Controller
         if(!empty($invoice)){
 
             return view('backend.crm.invoice.print-invoice', ['invoice'=>$invoice]);
+        }else{
+            return "Invoice not found";
+        }
+    }
+    /*
+    * Print invoice
+    */
+    public function exportInvoiceAsWord($slug){
+        $invoice = Invoice::where('slug', $slug)->where('tenant_id', Auth::user()->tenant_id)->first();
+        if(!empty($invoice)){
+					$templateProcessor = new TemplateProcessor('assets/word-template/invoice.docx');
+					$templateProcessor->setValue('company_name', Auth::user()->tenant->company_name ?? 'Company Name');
+					$templateProcessor->setValue('company_email', Auth::user()->tenant->email ?? 'Company Email');
+					$templateProcessor->setValue('company_phone', Auth::user()->tenant->phone ?? 'Company Phone');
+					$templateProcessor->setValue('company_address', Auth::user()->tenant->street_1 ?? 'Company Address');
+					$templateProcessor->setValue('invoice_no', $invoice->invoice_no);
+					$templateProcessor->setValue('ref_no', $invoice->ref_no);
+					$templateProcessor->setValue('client_name', $invoice->client->company_name);
+					$templateProcessor->setValue('client_address', $invoice->client->street_1);
+					$templateProcessor->setValue('client_phone', $invoice->client->mobile_no);
+					$templateProcessor->setValue('client_email', $invoice->client->email);
+					$templateProcessor->setValue('balance_due', $invoice->getCurrency->symbol.''.number_format(($invoice->total - $invoice->paid_amount)/$invoice->exchange_rate,2));
+
+					/* $templateProcessor->setValue('account_name', Auth::user()->tenantBankDetails->account_name);
+					$templateProcessor->setValue('account_no', Auth::user()->tenantBankDetails->account_number);
+					$templateProcessor->setValue('bank', Auth::user()->tenantBankDetails->bank_name);
+					 */
+					$templateProcessor->setValue('status', $invoice->status == 0 ? 'Pending' : 'Completed');
+					$templateProcessor->setValue('issue_date', date('d M, Y', strtotime($invoice->issue_date)));
+					$templateProcessor->setValue('due_date', date('d M, Y', strtotime($invoice->due_date)));
+					foreach($invoice->invoiceItem as $item){
+						$templateProcessor->setValue('description', $item->description);
+						$templateProcessor->setValue('quantity', $item->quantity);
+						$templateProcessor->setValue('amount', $invoice->getCurrency->symbol.''.number_format($item->unit_cost, 2));
+						$templateProcessor->setValue('total', $invoice->getCurrency->symbol.''.number_format($item->total/$invoice->exchange_rate, 2));
+					}
+					$fileName = $invoice->invoice_no;
+					$templateProcessor->saveAs($fileName.'.docx');
+					return response()->download($fileName.'.docx')->deleteFileAfterSend(true);
+            //return view('backend.crm.invoice.print-invoice', ['invoice'=>$invoice]);
         }else{
             return "Invoice not found";
         }

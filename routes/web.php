@@ -246,6 +246,7 @@ Route::get('/crm/deal/view/{slug}', 'CNX247\Backend\CRMController@viewDeal')->na
 #Invoice list
 Route::get('/invoice-list', 'CNX247\Backend\CRMController@invoiceList')->name('invoice-list');
 Route::get('/print/invoice/{slug}', 'CNX247\Backend\CRMController@printInvoice')->name('print-invoice');
+Route::get('/export/invoice/{slug}', 'CNX247\Backend\CRMController@exportInvoiceAsWord')->name('export-invoice');
 Route::post('/send/invoice/email', 'CNX247\Backend\CRMController@sendInvoiceViaEmail');
 Route::get('/invoice/decline-invoice/{slug}', 'CNX247\Backend\CRMController@declineInvoice')->name('decline-invoice');
 #Receipt list
