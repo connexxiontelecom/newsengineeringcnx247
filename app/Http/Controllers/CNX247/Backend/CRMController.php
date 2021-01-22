@@ -559,7 +559,7 @@ class CRMController extends Controller
     public function exportInvoiceAsWord($slug){
         $invoice = Invoice::where('slug', $slug)->where('tenant_id', Auth::user()->tenant_id)->first();
         if(!empty($invoice)){
-					$templateProcessor = new TemplateProcessor('assets/word-template/invoice.docx');
+					$templateProcessor = new TemplateProcessor(public_path('assets/word-template/invoice.docx'));
 					$templateProcessor->setValue('company_name', Auth::user()->tenant->company_name ?? 'Company Name');
 					$templateProcessor->setValue('company_email', Auth::user()->tenant->email ?? 'Company Email');
 					$templateProcessor->setValue('company_phone', Auth::user()->tenant->phone ?? 'Company Phone');
@@ -588,7 +588,6 @@ class CRMController extends Controller
 					$fileName = $invoice->invoice_no;
 					$templateProcessor->saveAs($fileName.'.docx');
 					return response()->download($fileName.'.docx')->deleteFileAfterSend(true);
-            //return view('backend.crm.invoice.print-invoice', ['invoice'=>$invoice]);
         }else{
             return "Invoice not found";
         }
