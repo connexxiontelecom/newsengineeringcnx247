@@ -250,11 +250,11 @@ class CRMController extends Controller
 				$invoice->due_date = $dueDateInstance->format('Y-m-d H:i:s');
 
         $invoice->total = $request->currency != Auth::user()->tenant->currency->id ? ($totalAmount * $request->exchange_rate + ($totalAmount*$request->tax_rate)/100 * $request->exchange_rate ) : ($totalAmount + ($totalAmount*$request->tax_rate)/100 ) ;
-        $invoice->sub_total = $request->currency != Auth::user()->tenant->currency->id ? $request->subTotal * $request->exchange_rate : $request->subTotal;
+        $invoice->sub_total = $request->currency != Auth::user()->tenant->currency->id ? ($request->subTotal * $request->exchange_rate) ?? 0 : $request->subTotal ?? 0;
         $invoice->tax_rate = $request->tax_rate ?? 0;
-        $invoice->tax_value = $request->currency != Auth::user()->tenant->currency->id ?  $request->tax_amount * $request->exchange_rate : $request->tax_amount;
-				$invoice->currency_id = $request->currency;
-				$invoice->exchange_rate = $request->exchange_rate ?? 1;
+        $invoice->tax_value = $request->currency != Auth::user()->tenant->currency->id ?  ($request->tax_amount * $request->exchange_rate) ?? 0 : $request->tax_amount ?? 0;
+		$invoice->currency_id = $request->currency;
+		$invoice->exchange_rate = $request->exchange_rate ?? 1;
         $invoice->slug = substr(sha1(time()), 23,40);
         $invoice->save();
         #invoiceId
@@ -267,7 +267,7 @@ class CRMController extends Controller
             $item->product_id = $pro->id;
             $item->quantity = $request->quantity[$i];
             $item->unit_cost = $request->unit_cost[$i];
-            $item->total = $request->currency != Auth::user()->tenant->currency->id ? (($request->quantity[$i] * $request->unit_cost[$i]) * $request->exchange_rate) : $request->quantity[$i] * $request->unit_cost[$i];
+            $item->total = $request->currency != Auth::user()->tenant->currency->id ? (($request->quantity[$i] * $request->unit_cost[$i]) * $request->exchange_rate) ?? 0 : ($request->quantity[$i] * $request->unit_cost[$i]) ?? 0;
             $item->invoice_id = $invoiceId;
             $item->client_id = $request->clientId;
             $item->tenant_id = Auth::user()->tenant_id;
@@ -287,7 +287,7 @@ class CRMController extends Controller
                     'glcode' => $client->glcode,
                     'posted_by' => Auth::user()->id,
                     'narration' => 'Invoice generation for ' . $invoice->client->company_name ?? '',
-                    'dr_amount' => $request->currency != Auth::user()->tenant->currency->id ? ($totalAmount * $request->exchange_rate + ($totalAmount*$request->tax_rate)/100 * $request->exchange_rate ) :  ($totalAmount + ($totalAmount*$request->tax_rate)/100 ) ,
+                    'dr_amount' => $request->currency != Auth::user()->tenant->currency->id ? ($totalAmount * $request->exchange_rate + ($totalAmount*$request->tax_rate)/100 * $request->exchange_rate ) ?? 0 :  ($totalAmount + ($totalAmount*$request->tax_rate)/100 ) ?? 0 ,
                     'cr_amount' => 0,
                     'ref_no' => $ref_no,
                     'bank' => 0,
@@ -301,7 +301,7 @@ class CRMController extends Controller
                     'posted_by' => Auth::user()->id,
                     'narration' => 'VAT on invoice no. '.$invoice->invoice_no.' for '.$invoice->client->company_name,
                     'dr_amount' => 0,
-                    'cr_amount' => $request->currency != Auth::user()->tenant->currency->id ?  $request->tax_amount * $request->exchange_rate : $request->tax_amount,
+                    'cr_amount' => $request->currency != Auth::user()->tenant->currency->id ?  ($request->tax_amount * $request->exchange_rate) ?? 0 : $request->tax_amount ?? 0,
                     'ref_no' => $ref_no,
                     'bank' => 0,
                     'ob' => 0,
@@ -315,7 +315,7 @@ class CRMController extends Controller
                         'posted_by' => Auth::user()->id,
                         'narration' => 'Invoice generation for ' . $d->description,
                         'dr_amount' => 0,
-                        'cr_amount' => $request->currency != Auth::user()->tenant->currency->id ? (($d->quantity * $d->unit_cost) * $request->exchange_rate) : $d->quantity * $d->unit_cost,
+                        'cr_amount' => $request->currency != Auth::user()->tenant->currency->id ? (($d->quantity * $d->unit_cost) * $request->exchange_rate) ?? 0 : ($d->quantity * $d->unit_cost) ?? 0,
                         'ref_no' => $ref_no,
                         'bank' => 0,
                         'ob' => 0,
