@@ -76,14 +76,14 @@
 							<div class="col-md-6">
 								<div class="card-header">
 									<div class="btn-group float-left">
-										@can('create folder', Model::class)
+
 
 										<button type="button" class=" btn btn-warning btn-mini waves-effect waves-light" data-toggle="modal" data-target="#new_folder"><i class="ti-plus mr-2"></i>New Folder</button>
-										@endcan
-										@can('upload file')
+
+
 
 										<button type="button" class="btn btn-primary btn-mini waves-effect waves-light" data-toggle="modal" data-target="#new-file"><i class="ti-plus mr-2"></i>Upload File</button>
-										@endcan
+
 									</div>
 								</div>
 
