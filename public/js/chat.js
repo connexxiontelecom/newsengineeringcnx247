@@ -33027,6 +33027,7 @@ var vm = new Vue({
       selected_user_details: '',
       searchText: '',
       noRecord: false,
+      file: '',
       options: {
         height: '500px'
       },
@@ -33088,6 +33089,26 @@ var vm = new Vue({
         _this2.auth_user = response.data.auth_user;
       });
     },
+    triggerFileUpload: function triggerFileUpload() {
+      this.handleFileUpload();
+    },
+    handleFileUpload: function handleFileUpload() {
+      var _this3 = this;
+
+      this.$refs.attachment.click();
+      this.file = this.$refs.attachment.files[0]; //	if(this.file != null){
+
+      var formData = new FormData();
+      formData.append('attachment', this.file);
+      formData.append('to', this.selected_user);
+      axios.post('/conversation/attachment', formData).then(function (response) {
+        _this3.file = '';
+
+        _this3.getSelectedUser(_this3.selected_user);
+
+        _this3.scrollToBottom();
+      }); //}
+    },
     handleIncoming: function handleIncoming(message) {
       if (this.selected_user && message.from_id == $this.selected_user) {
         this.saveNewMessage(message); //this.messages.push(message);
@@ -33097,30 +33118,30 @@ var vm = new Vue({
 
     },
     getSelectedUser: function getSelectedUser(id) {
-      var _this3 = this;
+      var _this4 = this;
 
       this.selected_user = id;
       axios.get('/chat-with/' + id).then(function (response) {
-        _this3.messages = '';
-        _this3.messages = response.data.messages;
-        _this3.selected_user_details = response.data.selected_user;
+        _this4.messages = '';
+        _this4.messages = response.data.messages;
+        _this4.selected_user_details = response.data.selected_user;
 
-        _this3.initializeChat();
+        _this4.initializeChat();
 
-        _this3.searchText = '';
+        _this4.searchText = '';
 
-        _this3.scrollToBottom();
+        _this4.scrollToBottom();
       });
     },
     clearMessages: function clearMessages(id) {
-      var _this4 = this;
+      var _this5 = this;
 
       axios.get('/clear-messages/' + id).then(function (response) {
-        _this4.getSelectedUser(id);
+        _this5.getSelectedUser(id);
       });
     },
     sendMessage: function sendMessage() {
-      var _this5 = this;
+      var _this6 = this;
 
       if (!this.selected_user) {
         return;
@@ -33130,11 +33151,11 @@ var vm = new Vue({
         message: this.compose_message,
         receiver: this.selected_user
       }).then(function (response) {
-        _this5.compose_message = '';
+        _this6.compose_message = '';
 
-        _this5.getSelectedUser(_this5.selected_user);
+        _this6.getSelectedUser(_this6.selected_user);
 
-        _this5.scrollToBottom();
+        _this6.scrollToBottom();
       });
     },
     saveNewMessage: function saveNewMessage(obj) {
@@ -33160,6 +33181,18 @@ var vm = new Vue({
       setTimeout(function () {
         document.getElementById('messageWrapper').scrollTop = document.getElementById('messageWrapper').scrollHeight - document.getElementById('messageWrapper').clientHeight;
       }, 50);
+    },
+    setupClient: function setupClient() {
+      axios.post("/conversation/compatibility-token", {
+        forPage: window.location.pathname,
+        _token: $('meta[name="csrf-token"]').attr('content')
+      }).then(function (response) {//console.log(re);
+        //device = new Device();
+        //device.setup(data.token);
+        //setupHandlers(device);
+      })["catch"](function (error) {
+        updateCallStatus("Could not get a token from server!");
+      });
     }
   }
 });

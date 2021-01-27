@@ -82,7 +82,7 @@
 						</div>
 						<span class="settings-tray--right dropdown" v-if="selected_user">
 							<i class="material-icons" @click="getSelectedUser(selected_user)">cached</i>
-							{{-- <i class="material-icons">message</i> --}}
+						{{-- 	<i class="material-icons">call</i> --}}
 							<i class="material-icons dropdown-toggle" data-toggle="dropdown" >menu</i>
 							<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 								<a class="dropdown-item" :href=`/activity-stream/profile/${selected_user_details.url}`>Contact info</a>
@@ -102,17 +102,26 @@
 					<div class="row no-gutters"  v-for="(msg,index) in messages">
 						<div :class="`col-md-5${msg.from_id != auth_user.id ? ' ' : ' offset-md-7'}`">
 							<div :class="`chat-bubble${msg.from_id != auth_user.id ? ' chat-bubble--left' : ' chat-bubble--right'}`" :key="msg.id">
-								@{{msg.message}} <br>
-                <small class="ml-3 text-muted">@{{date(msg.created_at)}}</small>
+								<div v-if="msg.message">
+									@{{msg.message}} <br>
+									<small class="ml-3 text-muted">@{{date(msg.created_at)}}</small>
+								</div>
+								<div v-else>
+									<a :href="'/assets/uploads/attachments/'+msg.attachment" target="_blank" style="cursor: pointer;" data-toggle="tooltip" data-placement="top" >
+										<img src="/assets/formats/file.png" height="32" width="32" >
+									</a>
+									<small class="ml-3 text-muted">@{{date(msg.created_at)}}</small>
+								</div>
 							</div>
 						</div>
 					</div>
 				</div>
 
 				<div class="row" >
-					<div class="col-12" >
+					<div class="col-12" v-if="selected_user">
 						<div class="chat-box-tray">
-							{{-- <i style="cursor: pointer;" class="material-icons">sentiment_very_satisfied</i> --}}
+							<i style="cursor: pointer;" class="material-icons"  @click="triggerFileUpload">attachment</i>
+							<input type="file" hidden id="attachment" ref="attachment" >
 							<input type="text" v-model="compose_message" @keydown.enter="sendMessage" style="padding: 7px; color: #000000; height:50px;" placeholder="Type your message here...">
 							{{-- <i class="material-icons">mic</i> --}}
 							<i style="cursor: pointer;" class="material-icons" @click="sendMessage">send</i>
