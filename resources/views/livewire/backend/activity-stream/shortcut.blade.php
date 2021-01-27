@@ -1,13 +1,11 @@
 <div>
 	<div class="row mb-4">
 			<div class="col-lg-9 col-md-9">
-				@can('access shortcut')
 					<div class="col-sm-12">
 							<div class="card">
 									@include('backend.activity-stream.common._activity-stream-widget')
 							</div>
 					</div>
-				@endcan
 					<div class="tab-pane active" id="timeline">
 									<div class="row">
 											<div class="col-md-12 timeline-dot">
