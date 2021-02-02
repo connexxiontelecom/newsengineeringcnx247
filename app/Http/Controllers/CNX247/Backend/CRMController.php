@@ -733,8 +733,9 @@ class CRMController extends Controller
     */
     public function printReceipt($slug){
         $receipt = Receipt::where('slug', $slug)->where('tenant_id', Auth::user()->tenant_id)->first();
+        $receipt_invoice = ReceiptInvoice::where('receipt_id', $receipt->id)->first();
         if(!empty($receipt)){
-						$invoices = ReceiptItem::where('tenant_id', Auth::user()->tenant_id)->where('receipt_id', $receipt->id)->get();
+						$invoices = ReceiptItem::where('tenant_id', Auth::user()->tenant_id)->where('invoice_id', $receipt_invoice->invoice_id)->get();
 						$invoiceIds = [];
 						foreach($invoices as $in){
 							array_push($invoiceIds, $in->invoice_id);
@@ -743,7 +744,6 @@ class CRMController extends Controller
 																			->where('client_id', $receipt->client_id)
 																			->whereIn('id', $invoiceIds)
 																			->get();
-
 						return view('backend.crm.receipt.print-receipt',
 						['receipt'=>$receipt,
 						'invoices'=>$invoices,

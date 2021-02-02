@@ -117,17 +117,17 @@
                                 </tr>
                             </thead>
                             <tbody>
-																@foreach ($invoices as $item)
-																		@foreach ($item->getInvoiceDescription as $desc)
-																			<tr>
-																					<td>
-																							<p>{!! $desc->description ?? '' !!}</p>
-																					</td>
-																					<td>{{ $receipt->getCurrency->symbol ?? Auth::user()->tenant->currency->symbol}}{{number_format($item->payment/$receipt->exchange_rate)}}</td>
-																			</tr>
-																		@endforeach
-
+                            @foreach ($invoices as $item)
+                                @foreach ($item->getInvoiceDescription as $desc)
+                                    <tr>
+                                            <td>
+                                                    <p>{!! $desc->description ?? '' !!}</p>
+                                            </td>
+                                            <td>{{ $receipt->getCurrency->symbol ?? Auth::user()->tenant->currency->symbol}}{{number_format($item->payment/$receipt->exchange_rate)}}</td>
+                                    </tr>
                                 @endforeach
+
+                            @endforeach
                             </tbody>
                         </table>
                     </div>
@@ -136,6 +136,25 @@
             <div class="row">
                 <div class="col-sm-12">
                     <table class="table table-responsive invoice-table invoice-total">
+											<tbody class="float-left pl-3">
+                            <tr>
+                                <th class="text-left"> <strong>Account Name:</strong> </th>
+                                <td>{{Auth::user()->tenantBankDetails->account_name ?? ''}}</td>
+                            </tr>
+                           @if(!is_null(Auth::user()->tenantBankDetails->sort_code))<tr>
+                                <th class="text-left"><strong>Sort Code:</strong> </th>
+                                <td>{{Auth::user()->tenantBankDetails->sort_code ?? ''}}</td>
+														</tr>
+														@endif
+                            <tr>
+                                <th class="text-left"><strong>Account Number:</strong> </th>
+                                <td>{{Auth::user()->tenantBankDetails->account_number ?? ''}}</td>
+                            </tr>
+                            <tr>
+                                <th class="text-left"><strong>Bank:</strong> </th>
+                                <td>{{Auth::user()->tenantBankDetails->bank_name ?? ''}}</td>
+                            </tr>
+                        </tbody>
                         <tbody>
 
                             <tr class="text-info">
@@ -165,7 +184,7 @@
                                 </td>
                                 <td>
                                     <hr>
-                                    <strong class="text-primary">{{ $receipt->getCurrency->symbol ?? Auth::user()->tenant->currency->symbol}} {{number_format(($invoiceBalance->sum('total') / $receipt->exchange_rate) - ($receipt->amount/$receipt->exchange_rate),2) }}</strong>
+                                    <strong class="text-primary">{{ $receipt->getCurrency->symbol ?? Auth::user()->tenant->currency->symbol}} {{number_format(($invoiceBalance->sum('total') / $receipt->exchange_rate) - ($invoices->sum('payment')/$receipt->exchange_rate),2) }}</strong>
                                 </td>
                             </tr>
                         </tbody>
@@ -178,17 +197,17 @@
                     <p>{!! Auth::user()->tenant->receipt_terms !!}</p>
                 </div>
             </div>
-            <div class="row text-center">
-                <div class="col-sm-12 invoice-btn-group text-center">
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-success btn-mini btn-print-invoice m-b-10 btn-sm waves-effect waves-light m-r-20" value="{{$receipt->id}}" id="sendInvoiceViaEmail"> <i class="icofont icofont-email mr-2"></i> <span id="sendEmailAddon">Send as Email</span> </button>
-                        <button type="button" class="btn btn-primary btn-mini btn-print-invoice m-b-10 btn-sm waves-effect waves-light m-r-20" type="button" id="printInvoice"><i class="icofont icofont-printer mr-2"></i> Print</button>
-                        <a href="{{url()->previous()}}" class="btn btn-secondary btn-mini waves-effect m-b-10 btn-sm waves-light"><i class="ti-arrow-left mr-2"></i> Back</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+					</div>
+				</div>
+				<div class="row text-center">
+						<div class="col-sm-12 invoice-btn-group text-center">
+								<div class="btn-group">
+										<button type="button" class="btn btn-success btn-mini btn-print-invoice m-b-10 btn-sm waves-effect waves-light m-r-20" value="{{$receipt->id}}" id="sendInvoiceViaEmail"> <i class="icofont icofont-email mr-2"></i> <span id="sendEmailAddon">Send as Email</span> </button>
+										<button type="button" class="btn btn-primary btn-mini btn-print-invoice m-b-10 btn-sm waves-effect waves-light m-r-20" type="button" id="printInvoice"><i class="icofont icofont-printer mr-2"></i> Print</button>
+										<a href="{{url()->previous()}}" class="btn btn-secondary btn-mini waves-effect m-b-10 btn-sm waves-light"><i class="ti-arrow-left mr-2"></i> Back</a>
+								</div>
+						</div>
+				</div>
 @endsection
 
 @section('dialog-section')

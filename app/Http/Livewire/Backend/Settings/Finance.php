@@ -11,7 +11,7 @@ class Finance extends Component
 {
     public $invoice_terms, $receipt_terms, $preferred_currency, $currency_position;
     //public $currencies;
-    public $bank_name, $account_name, $account_number, $account_type;
+    public $bank_name, $account_name, $account_number, $account_type, $sort_code;
     public function render()
     {
         return view('livewire.backend.settings.finance', ['currencies'=>Currency::all()]);
@@ -50,6 +50,7 @@ class Finance extends Component
         $bank->account_name = $this->account_name;
         $bank->account_number = $this->account_number;
         $bank->account_type = $this->account_type;
+        $bank->sort_code = $this->sort_code;
         $bank->added_by = Auth::user()->id;
         $bank->tenant_id = Auth::user()->tenant_id;
         $bank->save();

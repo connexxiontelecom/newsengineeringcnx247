@@ -242,6 +242,11 @@ Convert to Lead
                                 <th class="text-left"> <strong>Account Name:</strong> </th>
                                 <td>{{Auth::user()->tenantBankDetails->account_name ?? ''}}</td>
                             </tr>
+                            @if(!is_null(Auth::user()->tenantBankDetails->sort_code))<tr>
+                                <th class="text-left"><strong>Sort Code:</strong> </th>
+                                <td>{{Auth::user()->tenantBankDetails->sort_code ?? ''}}</td>
+														</tr>
+														@endif
                             <tr>
                                 <th class="text-left"><strong>Account Number:</strong> </th>
                                 <td>{{Auth::user()->tenantBankDetails->account_number ?? ''}}</td>
