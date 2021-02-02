@@ -18,6 +18,11 @@ class Finance extends Component
     }
 
     public function mount(){
+			$this->bank_name = Auth::user()->tenantBankDetails->bank_name ?? '';
+			$this->account_name = Auth::user()->tenantBankDetails->account_name ?? '';
+			$this->account_number = Auth::user()->tenantBankDetails->account_number ?? '';
+			$this->sort_code = Auth::user()->tenantBankDetails->sort_code ?? '';
+			$this->account_type = 0;
     }
 
     //submit finance
@@ -44,16 +49,29 @@ class Finance extends Component
             'account_number'=>'required',
             'bank_name'=>'required',
             'account_type'=>'required'
-        ]);
-        $bank = new TenantBankDetail;
-        $bank->bank_name = $this->bank_name;
-        $bank->account_name = $this->account_name;
-        $bank->account_number = $this->account_number;
-        $bank->account_type = $this->account_type;
-        $bank->sort_code = $this->sort_code;
-        $bank->added_by = Auth::user()->id;
-        $bank->tenant_id = Auth::user()->tenant_id;
-        $bank->save();
-        session()->flash("bank-success", "<strong>Success!</strong> Bank details saved.");
+				]);
+				$tenant = TenantBankDetail::where('tenant_id', Auth::user()->tenant_id)->first();
+				if(!empty($tenant)){
+					$tenant->bank_name = $this->bank_name;
+					$tenant->account_name = $this->account_name;
+					$tenant->account_number = $this->account_number;
+					$tenant->account_type = $this->account_type;
+					$tenant->sort_code = $this->sort_code;
+					$tenant->added_by = Auth::user()->id;
+					$tenant->tenant_id = Auth::user()->tenant_id;
+					$tenant->save();
+					session()->flash("bank-success", "<strong>Success!</strong> Bank changes saved.");
+				}else{
+						$bank = new TenantBankDetail;
+						$bank->bank_name = $this->bank_name;
+						$bank->account_name = $this->account_name;
+						$bank->account_number = $this->account_number;
+						$bank->account_type = $this->account_type;
+						$bank->sort_code = $this->sort_code;
+						$bank->added_by = Auth::user()->id;
+						$bank->tenant_id = Auth::user()->tenant_id;
+						$bank->save();
+						session()->flash("bank-success", "<strong>Success!</strong> Bank details saved.");
+				}
     }
 }
