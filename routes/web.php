@@ -37,7 +37,7 @@ Route::livewire('/workflows', 'workflows')->name('workflows'); */
 #Base [Frontend routes]
 Route::get('/test', function(){
     $unread = Auth::user()->unReadNotifications;
-    return dd($unread);
+    //return dd($unread);
 });
 Route::get('/', 'CNX247\Frontend\BaseController@homepage')->name('home');
 
