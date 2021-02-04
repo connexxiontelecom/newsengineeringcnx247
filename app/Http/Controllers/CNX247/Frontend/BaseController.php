@@ -16,8 +16,8 @@ class BaseController extends Controller
 {
     #load homepage
     public function homepage(){
-/* 			return redirect()->route('signin');
-        $permissionObj = DB::table('role_has_permissions')
+ 			return redirect()->route('signin');
+     /*   $permissionObj = DB::table('role_has_permissions')
         ->select('permission_id')
         ->distinct()
         ->get();
