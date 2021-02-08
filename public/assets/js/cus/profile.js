@@ -1,6 +1,7 @@
      $(document).ready(function(){
          $(document).on('click', '#avatarHandler', function(e){
-             e.preventDefault();
+					 e.preventDefault();
+					 e.stopImmediatePropagation();
              $('#avatar').click();
              $('#avatar').change(function(ev){
                  let file = ev.target.files[0];
@@ -23,7 +24,8 @@
                 });
          });
          $(document).on('click', '#coverPhotoHandle', function(e){
-             e.preventDefault();
+					 e.preventDefault();
+					 e.stopImmediatePropagation();
              $('#cover_photo').click();
              $('#cover_photo').change(function(ev){
                  let file = ev.target.files[0];
