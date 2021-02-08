@@ -50,5 +50,5 @@
     </div>
 </div>
 @push('profile-script')
- <script src="{{asset('/assets/js/cus/profile.js')}}"></script>
+
 @endpush
