@@ -229,49 +229,55 @@ class WorkflowController extends Controller
 			'search_item'=>'required'
 		]);
 		$responsible = ResponsiblePerson::where('tenant_id', Auth::user()->tenant_id)
-																			->where('user_id', Auth::user()->id)
-																			->whereIn('post_type',
-																						['purchase-request', 'expense-report',
-																								'leave-request', 'business-trip',
-																								'general-request'])
-																			->pluck('post_id');
-		/* 	$requests = Post::whereIn('post_type',
-            ['purchase-request', 'expense-report',
+									->where('user_id', Auth::user()->id)
+									->whereIn('post_type',
+												['purchase-request', 'expense-report',
+														'leave-request', 'business-trip',
+														'general-request'])
+									->pluck('post_id');
+
+						$resIds = [];
+			foreach($responsible as $res){
+				if($res->user_id == Auth::user()->id){
+					array_push($resId, $res->user_id);
+				}
+			}
+		$results = DB::table('posts as p')
+							->join('users as u', 'p.user_id','=', 'u.id')
+							->select('p.id as postId', 'u.first_name', 'p.*', 'u.*')
+							->where('u.first_name', 'LIKE', '%'.$request->search_item.'%')
+							->orWhere('p.post_title', 'LIKE', '%'.$request->search_item.'%')
+							->orWhere('p.post_content', 'LIKE', '%'.$request->search_item.'%')
+							->where('u.tenant_id',Auth::user()->tenant_id)
+							->whereIn('u.id',$resIds)
+						 	->whereIn('p.post_type',
+            	['purchase-request', 'expense-report',
                 'leave-request', 'business-trip',
-                'general-request'])
-						->where('tenant_id',Auth::user()->tenant_id)
-						->whereIn('id', $responsible)
-						->orderBy('id', 'DESC')
-						->paginate(10);
-						 */
+								'general-request'])
+							->get();
+
+				return view('backend.workflow.search-result',['results'=>$results,'search'=>$request->search_item]);
+	}
+	public function searchWorkflowMyRequests(Request $request){
+		$request->validate([
+			'search_item'=>'required'
+		]);
+
 		$results = DB::table('posts as p')
 							->join('users as u', 'p.user_id','=', 'u.id')
 							->select('p.id as postId', 'u.first_name', 'p.*', 'u.*')
 							->where('u.tenant_id',Auth::user()->tenant_id)
-							->whereIn('p.post_type',
+							->where('u.id',Auth::user()->id)
+						 	->whereIn('p.post_type',
             	['purchase-request', 'expense-report',
                 'leave-request', 'business-trip',
 								'general-request'])
-							//->whereIn('')
 							->where('u.first_name', 'LIKE', '%'.$request->search_item.'%')
 							->orWhere('p.post_title', 'LIKE', '%'.$request->search_item.'%')
-							->orWhere('p.post_content', 'LIKE', '%'.$request->search_item.'%')
+							//->orWhere('p.post_content', 'LIKE', '%'.$request->search_item.'%')
 							->get();
-			/* return $results;
-			$requestIds = [];
-			foreach($results as $result){
-				array_push($requestIds, $result->postId);
-			} */
-/*
-		$requests = Post::whereIn('post_type',
-            ['purchase-request', 'expense-report',
-                'leave-request', 'business-trip',
-                'general-request'])
-						->where('tenant_id',Auth::user()->tenant_id)
-						->whereIn('id', $requestIds)
-						->orderBy('id', 'DESC')
-						->paginate(10); */
-				return view('backend.workflow.search-result',['results'=>$results]);
+
+				return view('backend.workflow.my-request-search-result',['results'=>$results,'search'=>$request->seach_item]);
 	}
 
 

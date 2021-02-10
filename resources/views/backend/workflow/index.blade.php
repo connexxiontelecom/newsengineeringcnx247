@@ -151,6 +151,20 @@
 									<h5 class="sub-title">My Requests</h5>
 									@include('backend.workflow.common._run-business-process')
 										<div id="datatable-assignment" class="table table-stripped table-bordered nowrap mt-4">
+											<div class="row">
+												<div class="col-md-6">
+													<form action="{{route('search-workflow-my-requests')}}" method="post">
+														@csrf
+														<div class="input-group input-group-button">
+																<input type="text" class="form-control" placeholder="Search item" name="search_item" id="search_item">
+																<button type="submit" class="input-group-addon btn btn-primary" id="basic-addon10">
+																		<span class="">Search</span>
+																</button>
+														</div>
+
+													</form>
+												</div>
+											</div>
 											<div class="form-group col-sm-2 col-md-2 mb-3">
 												<label for="">Filter</label>
 												<select name="filter" id="filter-my-request" class="form-control">

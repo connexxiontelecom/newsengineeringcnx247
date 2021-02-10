@@ -67,7 +67,7 @@
             <div class="row invoive-info">
                 <div class="col-md-4 col-xs-12 invoice-client-info">
                     <h6>Client Information :</h6>
-                    <h6 class="m-0">{{$receipt->client->first_name ?? ''}} {{$receipt->client->surname ?? ''}}</h6>
+                    <h6 class="m-0">{{$receipt->client->company_name ?? ''}}</h6>
                     <p class="m-0 m-t-10">{{$receipt->client->street_1 ?? ''}}, {{$receipt->client->postal_code ?? ''}} {{$receipt->client->city ?? ''}}</p>
                     <p class="m-0">{{$receipt->client->mobile_no ?? ''}}</p>
                     <p><a href="mailto:{{$receipt->client->email ?? ''}}" class="__cf_email__" data-cfemail="eb8f8e8684ab939291c5888486">[{{$receipt->client->email ?? ''}}]</a></p>

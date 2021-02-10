@@ -86,6 +86,7 @@ Route::get('/workflow-business-process', 'CNX247\Backend\WorkflowController@busi
 Route::post('/workflow/business-process', 'CNX247\Backend\WorkflowController@setBusinessProcess');
 Route::post('/workflow/approve-or-decline-request', 'CNX247\Backend\WorkflowController@approveOrDeclineRequest');
 Route::post('/search-workflow-assignment', 'CNX247\Backend\WorkflowController@searchWorkflowAssignment')->name('search-workflow-assignment');
+Route::post('/search-workflow-my-requests', 'CNX247\Backend\WorkflowController@searchWorkflowMyRequests')->name('search-workflow-my-requests');
 #Expense report route
 Route::get('/expense-report', 'CNX247\Backend\ExpenseController@index')->name('expense-report');
 Route::post('/expense-report', 'CNX247\Backend\ExpenseController@store');
