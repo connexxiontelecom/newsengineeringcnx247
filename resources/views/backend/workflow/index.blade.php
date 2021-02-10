@@ -44,6 +44,20 @@
 											{!! session('success') !!}
 									</div>
 									@endif
+									<div class="row">
+									<div class="col-md-6">
+										<form action="{{route('search-workflow-assignment')}}" method="post">
+											@csrf
+											<div class="input-group input-group-button">
+													<input type="text" class="form-control" placeholder="Search item" name="search_item" id="search_item">
+													<button type="submit" class="input-group-addon btn btn-primary" id="basic-addon10">
+															<span class="">Search</span>
+													</button>
+											</div>
+
+										</form>
+									</div>
+								</div>
 									<div class="form-group col-sm-2 col-md-2 mb-3">
 										<label for="">Filter</label>
 										<select name="filter" id="filter-assignments" class="form-control">
@@ -359,6 +373,18 @@
 										$('.table-row').hide();
 									}
 								});
+						});
+
+						$(document).on('blur', '#search_item', function(e){
+							e.preventDefault();
+							var term = $(this).val();
+							axios.post('/search-workflow-assignment',{term:term})
+							.then(response=>{
+								console.log(response.data)
+							})
+							.catch(error=>{
+
+							});
 						});
 
 						$(document).on('click', '#verifyThenAct', function(e){
