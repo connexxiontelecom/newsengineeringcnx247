@@ -16,10 +16,8 @@
 					 @endcan
         </div>
 		</div>
-		@can('create project')
+
 			<div class="nav-item nav-grid">
 					<a href="{{route('new-project')}}" class="btn btn-primary btn-mini waves-effect waves-light"><i class="ti-plus mr-2"></i>New Project</a>
 			</div>
-
-		@endcan
 </nav>

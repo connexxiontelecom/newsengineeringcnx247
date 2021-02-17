@@ -237,8 +237,9 @@ class WorkflowController extends Controller
 									->pluck('post_id');
 
 						$resIds = [];
+
 			foreach($responsible as $res){
-				if($res->user_id == Auth::user()->id){
+				if($res == Auth::user()->id){
 					array_push($resId, $res->user_id);
 				}
 			}

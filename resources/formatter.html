@@ -1,350 +1,1530 @@
 <!DOCTYPE html>
 <html lang="en">
+    <!-- Mirrored from mironmahmud.com/classicads/assets/rightbar-details.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 11 Feb 2021 23:22:52 GMT -->
+    <!-- Added by HTTrack -->
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <!-- /Added by HTTrack -->
     <head>
-        <!-- Meta -->
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="description" content="">
-        <meta name="author" content="">
-        <meta name="keywords" content="Classified ads">
-        <meta name="robots" content="all">
-        <title>{{config('app.name')}} | @yield('title')</title>
-        <!-- Bootstrap Core CSS -->
-        <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
-        <!-- Customizable CSS -->
-        <link rel="stylesheet" href="/assets/css/main.css">
-        <link rel="stylesheet" href="/assets/css/blue.css">
-        @yield('extra-styles')
-        <!-- Icons/Glyphs -->
-        <link rel="stylesheet" href="/assets/css/font-awesome.css">
-        <!-- Fonts -->
-        <link href="https://fonts.googleapis.com/css?family=Barlow:200,300,300i,400,400i,500,500i,600,700,800" rel="stylesheet">
-        <link href="http://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet" type="text/css">
-        <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,400italic,600,600italic,700,700italic,800" rel="stylesheet" type="text/css">
-        <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="author" content="Mironcoder">
+        <meta name="email" content="mironcoder@gmail.com">
+        <meta name="profile" content="https://themeforest.net/user/mironcoder">
+        <meta name="name" content="Classicads">
+        <meta name="type" content="Classified Advertising">
+        <meta name="title" content="Classicads - Classified Ads HTML Template">
+        <meta name="keywords" content="classicads, classified, ads, classified ads, listing, business, directory, jobs, marketing, portal, advertising, local, posting, ad listing, ad posting,">
+        <title>Classicads - Rightbar Details</title>
+        <link rel="icon" href="images/favicon.png">
+        <link rel="stylesheet" href="fonts/flaticon/flaticon.css">
+        <link rel="stylesheet" href="../../../cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css">
+        <link rel="stylesheet" href="css/vendor/jquery-ui.min.css">
+        <link rel="stylesheet" href="css/vendor/slick.min.css">
+        <link rel="stylesheet" href="css/vendor/bootstrap.min.css">
+        <link rel="stylesheet" href="css/custom/main.css">
+        <link rel="stylesheet" href="css/custom/rightbar-details.css">
     </head>
-    <body class="cnt-home">
-        <!-- ============================================== HEADER ============================================== -->
-        <header class="header-style-1">
-            <!-- ============================================== TOP MENU ============================================== -->
-            <div class="top-bar animate-dropdown">
-                <div class="container">
-                    <div class="header-top-inner">
-                        <div class="cnt-account">
-                            <ul class="list-unstyled">
-                                <li>
-                                    <a href="{{route('my-adverts')}}">
-                                        <i class="icon fa fa-user"></i>My Adverts
-                                    </a>
+    <body>
+        <header class="header-part">
+            <div class="container">
+                <div class="header-content">
+                    <div class="header-left">
+                        <ul class="header-widget">
+                            <li>
+                                <button type="button" class="header-menu">
+                                    <i class="fas fa-align-left"></i>
+                                </button>
+                            </li>
+                            <li>
+                                <a href="index.html" class="header-logo">
+                                    <img src="images/logo.png" alt="logo">
+                                </a>
+                            </li>
+                            <li>
+                                <a href="user-form.html" class="header-user">
+                                    <i class="fas fa-user"></i>
+                                    <span>Login</span>
+                                </a>
+                            </li>
+                            <li>
+                                <button type="button" class="header-src">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+                    <form class="header-search">
+                        <div class="header-main-search">
+                            <button type="submit" class="header-search-btn">
+                                <i class="fas fa-search"></i>
+                            </button>
+                            <input type="text" class="form-control" placeholder="Search, Whatever you needs...">
+                            <button type="button" class="header-option-btn tooltip">
+                                <i class="fas fa-sliders-h"></i>
+                                <span class="tooltext left">FilterOption</span>
+                            </button>
+                        </div>
+                        <div class="header-search-option">
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" placeholder="City">
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" placeholder="State">
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" placeholder="Category">
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <input type="number" class="form-control" placeholder="Price">
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-btn">
+                                        <button type="submit" class="btn btn-inline">
+                                            <i class="fas fa-search"></i>
+                                            <span>Search Here</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="header-right">
+                        <ul class="header-widget">
+                            <li>
+                                <button class="header-favourite">
+                                    <i class="fas fa-heart"></i>
+                                    <sup>0</sup>
+                                </button>
+                            </li>
+                            <li>
+                                <button class="header-notify">
+                                    <i class="fas fa-bell"></i>
+                                    <sup>0</sup>
+                                </button>
+                            </li>
+                            <li>
+                                <button class="header-message">
+                                    <i class="fas fa-envelope"></i>
+                                    <sup>0</sup>
+                                </button>
+                            </li>
+                        </ul>
+                        <a href="ad-post.html" class="btn btn-inline">
+                            <i class="fas fa-plus-circle"></i>
+                            <span>post your ad</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="sidebar-part">
+            <div class="sidebar-body">
+                <div class="sidebar-header">
+                    <a href="index.html" class="sidebar-logo">
+                        <img src="images/logo.png" alt="logo">
+                    </a>
+                    <button class="sidebar-cross">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="sidebar-content">
+                    <div class="sidebar-profile">
+                        <a href="#" class="sidebar-avatar">
+                            <img src="images/avatar/01.jpg" alt="avatar">
+                        </a>
+                        <h4>
+                            <a href="#" class="sidebar-name">Jackon Honson</a>
+                        </h4>
+                        <a href="ad-post.html" class="btn btn-inline sidebar-btn">
+                            <i class="fas fa-plus-circle"></i>
+                            <span>post your ad</span>
+                        </a>
+                    </div>
+                    <div class="sidebar-menu">
+                        <ul class="nav nav-tabs">
+                            <li>
+                                <a href="#main-menu" class="nav-link active" data-toggle="tab">Main Menu</a>
+                            </li>
+                            <li>
+                                <a href="#author-menu" class="nav-link" data-toggle="tab">Author Menu</a>
+                            </li>
+                        </ul>
+                        <div class="tab-pane active" id="main-menu">
+                            <ul class="navbar-list">
+                                <li class="navbar-item">
+                                    <a class="navbar-link" href="index.html">Home</a>
                                 </li>
-                                <li>
-                                    <a href="#">
-                                        <i class="icon fa fa-heart"></i>Wishlist
+                                <li class="navbar-item navbar-dropdown">
+                                    <a class="navbar-link" href="#">
+                                        <span>Categories</span>
+                                        <i class="fas fa-plus"></i>
                                     </a>
+                                    <ul class="dropdown-list">
+                                        <li>
+                                            <a class="dropdown-link" href="category-list.html">category list</a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-link" href="category-details.html">category details</a>
+                                        </li>
+                                    </ul>
                                 </li>
-                                <li>
-                                    <a href="#">
-                                        <i class="icon fa fa-shopping-cart"></i>My Cart
+                                <li class="navbar-item navbar-dropdown">
+                                    <a class="navbar-link" href="#">
+                                        <span>Advertise List</span>
+                                        <i class="fas fa-plus"></i>
                                     </a>
+                                    <ul class="dropdown-list">
+                                        <li>
+                                            <a class="dropdown-link" href="grid-list.html">grid list</a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-link" href="leftbar-list.html">leftbar list</a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-link" href="rightbar-list.html">rightbar list</a>
+                                        </li>
+                                    </ul>
                                 </li>
-                                <li>
-                                    <a href="#">
-                                        <i class="icon fa fa-check"></i>Checkout
+                                <li class="navbar-item navbar-dropdown">
+                                    <a class="navbar-link" href="#">
+                                        <span>Advertise details</span>
+                                        <i class="fas fa-plus"></i>
                                     </a>
+                                    <ul class="dropdown-list">
+                                        <li>
+                                            <a class="dropdown-link" href="grid-details.html">grid details</a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-link" href="leftbar-details.html">leftbar details</a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-link" href="rightbar-details.html">rightbar details</a>
+                                        </li>
+                                    </ul>
                                 </li>
-                                <li>
-                                    <a href="sign-in.html">
-                                        <i class="icon fa fa-lock"></i>Become a Vendor
+                                <li class="navbar-item navbar-dropdown">
+                                    <a class="navbar-link" href="#">
+                                        <span>Pages</span>
+                                        <i class="fas fa-plus"></i>
                                     </a>
+                                    <ul class="dropdown-list">
+                                        <li>
+                                            <a class="dropdown-link" href="about.html">About Us</a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-link" href="compare.html">Ad Compare</a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-link" href="cities.html">Ad by Cities</a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-link" href="price.html">Pricing Plan</a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-link" href="user-form.html">User Form</a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-link" href="404.html">404</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="navbar-item navbar-dropdown">
+                                    <a class="navbar-link" href="#">
+                                        <span>blogs</span>
+                                        <i class="fas fa-plus"></i>
+                                    </a>
+                                    <ul class="dropdown-list">
+                                        <li>
+                                            <a class="dropdown-link" href="blog-list.html">Blog list</a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-link" href="blog-details.html">blog details</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="navbar-item">
+                                    <a class="navbar-link" href="contact.html">Contact</a>
                                 </li>
                             </ul>
                         </div>
-                        <!-- /.cnt-account -->
-                        <!-- /.cnt-cart -->
-                        <div class="clearfix"></div>
-                    </div>
-                    <!-- /.header-top-inner -->
-                </div>
-                <!-- /.container -->
-            </div>
-            <!-- /.header-top -->
-            <!-- ============================================== TOP MENU : END ============================================== -->
-            <div class="main-header">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-xs-12 col-sm-12 col-md-2 logo-holder">
-                            <!-- ============================================================= LOGO ============================================================= -->
-                            <div class="logo">
-                                <a href="home.html">
-                                    <img src="assets/images/logo.png" alt="logo">
-                                </a>
-                            </div>
-                            <!-- /.logo -->
-                            <!-- ============================================================= LOGO : END ============================================================= -->
-                        </div>
-                        <!-- /.logo-holder -->
-                        <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12 top-search-holder">
-                            <!-- /.contact-row -->
-                            <!-- ============================================================= SEARCH AREA ============================================================= -->
-                            <div class="search-area">
-                                <form>
-                                    <div class="control-group">
-                                        <input class="search-field" placeholder="Search here...">
-                                        <a class="search-button" href="#"></a>
-                                    </div>
-                                </form>
-                            </div>
-                            <!-- /.search-area -->
-                            <!-- ============================================================= SEARCH AREA : END ============================================================= -->
-                        </div>
-                        <!-- /.top-search-holder -->
-                        <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12 navmenu">
-                            <div class="yamm navbar navbar-default" role="navigation">
-                                <div class="navbar-header">
-                                    <button
-                                        data-target="#mc-horizontal-menu-collapse"
-                                        data-toggle="collapse"
-                                        class="navbar-toggle collapsed"
-                                        type="button"
-                                    >
-                                        <span class="sr-only">Toggle navigation</span>
-                                        <span class="icon-bar"></span>
-                                        <span class="icon-bar"></span>
-                                        <span class="icon-bar"></span>
-                                    </button>
-                                </div>
-                                <div class="nav-bg-class">
-                                    <div class="navbar-collapse collapse" id="mc-horizontal-menu-collapse">
-                                        <div class="nav-outer">
-                                            <ul class="nav navbar-nav">
-                                                <li class="dropdown">
-                                                    <a
-                                                        href="#"
-                                                        class="dropdown-toggle"
-                                                        data-hover="dropdown"
-                                                        data-toggle="dropdown"
-                                                    >Deals</a>
-                                                    <ul class="dropdown-menu pages">
-                                                        <li>
-                                                            <div class="yamm-content">
-                                                                <div class="row">
-                                                                    <div class="col-xs-12 col-menu">
-                                                                        <ul class="links">
-                                                                            <li>
-                                                                                <a href="deals-grid.html">Grid/List View</a>
-                                                                            </li>
-                                                                            <li>
-                                                                                <a href="deals-deals-detail.html">Deal Detail</a>
-                                                                            </li>
-                                                                        </ul>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </li>
-                                                    </ul>
-                                                </li>
-                                                <li class="dropdown">
-                                                    <a
-                                                        href="#"
-                                                        class="dropdown-toggle"
-                                                        data-hover="dropdown"
-                                                        data-toggle="dropdown"
-                                                    >Coupons</a>
-                                                    <ul class="dropdown-menu pages">
-                                                        <li>
-                                                            <div class="yamm-content">
-                                                                <div class="row">
-                                                                    <div class="col-xs-12 col-menu">
-                                                                        <ul class="links">
-                                                                            <li>
-                                                                                <a href="coupons.html">Coupons Grid</a>
-                                                                            </li>
-                                                                            <li>
-                                                                                <a href="coupons-sidebar.html">Grid Sidebar</a>
-                                                                            </li>
-                                                                        </ul>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </li>
-                                                    </ul>
-                                                </li>
-                                                <li class="dropdown">
-                                                    <a
-                                                        href="#"
-                                                        class="dropdown-toggle"
-                                                        data-hover="dropdown"
-                                                        data-toggle="dropdown"
-                                                    >Stores</a>
-                                                    <ul class="dropdown-menu pages">
-                                                        <li>
-                                                            <div class="yamm-content">
-                                                                <div class="row">
-                                                                    <div class="col-xs-12 col-menu">
-                                                                        <ul class="links">
-                                                                            <li>
-                                                                                <a href="stores.html">Stores Grid</a>
-                                                                            </li>
-                                                                            <li>
-                                                                                <a href="store-detail.html">Store Details</a>
-                                                                            </li>
-                                                                        </ul>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </li>
-                                                    </ul>
-                                                </li>
-                                                <li class="dropdown">
-                                                    <a
-                                                        href="#"
-                                                        class="dropdown-toggle"
-                                                        data-hover="dropdown"
-                                                        data-toggle="dropdown"
-                                                    >Pages</a>
-                                                    <ul class="dropdown-menu pages">
-                                                        <li>
-                                                            <div class="yamm-content">
-                                                                <div class="row">
-                                                                    <div class="col-xs-12 col-menu">
-                                                                        <ul class="links">
-                                                                            <li>
-                                                                                <a href="home.html">Home</a>
-                                                                            </li>
-                                                                            <li>
-                                                                                <a href="deals-grid.html">Shop</a>
-                                                                            </li>
-                                                                            <li>
-                                                                                <a href="shopping-cart.html">Shopping Cart Summary</a>
-                                                                            </li>
-                                                                            <li>
-                                                                                <a href="checkout.html">Checkout</a>
-                                                                            </li>
-                                                                            <li>
-                                                                                <a href="blog.html">Blog</a>
-                                                                            </li>
-                                                                            <li>
-                                                                                <a href="blog-details.html">Blog Detail</a>
-                                                                            </li>
-                                                                            <li>
-                                                                                <a href="contact.html">Contact</a>
-                                                                            </li>
-                                                                            <li>
-                                                                                <a href="sign-in.html">Sign In</a>
-                                                                            </li>
-                                                                            <li>
-                                                                                <a href="my-wishlist.html">Wishlist</a>
-                                                                            </li>
-                                                                            <li>
-                                                                                <a href="terms-conditions.html">Terms and Condition</a>
-                                                                            </li>
-                                                                            <li>
-                                                                                <a href="track-orders.html">Track Orders</a>
-                                                                            </li>
-                                                                            <li>
-                                                                                <a href="product-comparison.html">Product-Comparison</a>
-                                                                            </li>
-                                                                            <li>
-                                                                                <a href="faq.html">FAQ</a>
-                                                                            </li>
-                                                                            <li>
-                                                                                <a href="404.html">404</a>
-                                                                            </li>
-                                                                        </ul>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </li>
-                                                    </ul>
-                                                </li>
-                                            </ul>
-                                            <!-- /.navbar-nav -->
-                                            <div class="clearfix"></div>
-                                        </div>
-                                        <!-- /.nav-outer -->
-                                    </div>
-                                    <!-- /.navbar-collapse -->
-                                </div>
-                                <!-- /.nav-bg-class -->
-                            </div>
-                            <!-- /.navbar-default -->
-                            <div class="top-cart-row">
-                                <!-- ============================================================= SHOPPING CART DROPDOWN ============================================================= -->
-                                <div class="dropdown dropdown-cart">
-                                    <a href="{{route('post-ads')}}" class="dropdown-toggle lnk-cart" data-toggle="dropdown">
-                                        <div class="items-cart-inner">
-                                            <div class="basket">
-                                                <i class="glyphicon glyphicon-shopping-cart"></i>
-                                            </div>
-                                            <div class="basket-item-count">
-                                                <span class="count">2</span>
-                                            </div>
-                                            <div class="total-price-basket">
-                                                <span class="lbl">My Cart</span>
-                                            </div>
-                                        </div>
+                        <div class="tab-pane" id="author-menu">
+                            <ul class="navbar-list">
+                                <li class="navbar-item">
+                                    <a class="navbar-link" href="dashboard.html">Dashboard</a>
+                                </li>
+                                <li class="navbar-item">
+                                    <a class="navbar-link" href="profile.html">Profile</a>
+                                </li>
+                                <li class="navbar-item">
+                                    <a class="navbar-link" href="ad-post.html">Ad Post</a>
+                                </li>
+                                <li class="navbar-item">
+                                    <a class="navbar-link" href="my-ads.html">My Ads</a>
+                                </li>
+                                <li class="navbar-item">
+                                    <a class="navbar-link" href="setting.html">Settings</a>
+                                </li>
+                                <li class="navbar-item navbar-dropdown">
+                                    <a class="navbar-link" href="bookmark.html">
+                                        <span>bookmark</span>
+                                        <span>0</span>
                                     </a>
-                                    <ul class="dropdown-menu">
-                                        <li>
-                                            <div class="cart-item product-summary">
-                                                <div class="row">
-                                                    <div class="col-xs-4">
-                                                        <div class="image">
-                                                            <a href="deals-detail.html">
-                                                                <img src="assets/images/cart.jpg" alt="">
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-xs-7">
-                                                        <h3 class="name">
-                                                            <a href="#">New and Refurbished Lenovo Laptops</a>
-                                                        </h3>
-                                                        <div class="price">$600.00</div>
-                                                    </div>
-                                                    <div class="col-xs-1 action">
+                                </li>
+                                <li class="navbar-item navbar-dropdown">
+                                    <a class="navbar-link" href="#">
+                                        <span>Message</span>
+                                        <span>0</span>
+                                    </a>
+                                </li>
+                                <li class="navbar-item navbar-dropdown">
+                                    <a class="navbar-link" href="#">
+                                        <span>Notification</span>
+                                        <span>0</span>
+                                    </a>
+                                </li>
+                                <li class="navbar-item">
+                                    <a class="navbar-link" href="user-form.html">Logout</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="sidebar-footer">
+                        <p>All Rights Reserved By
+                            <a href="#">Classicads</a>
+                        </p>
+                        <p>Developed By
+                            <a href="https://themeforest.net/user/mironcoder">Mironcoder</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="btmbar-part">
+            <div class="container">
+                <ul class="btmbar-widget">
+                    <li>
+                        <a href="user-form.html">
+                            <i class="fas fa-user"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="fas fa-star"></i>
+                            <sup>0</sup>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="plus-btn" href="ad-post.html">
+                            <i class="fas fa-plus"></i>
+                            <span>Ad Your Post</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="fas fa-bell"></i>
+                            <sup>0</sup>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="fas fa-envelope"></i>
+                            <sup>0</sup>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <section class="single-banner">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="single-content">
+                            <h2>rightbar ad details</h2>
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item">
+                                    <a href="index.html">Home</a>
+                                </li>
+                                <li class="breadcrumb-item">
+                                    <a href="rightbar-list.html">rightbar list</a>
+                                </li>
+                                <li class="breadcrumb-item active" aria-current="page">rightbar details</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="ad-details-part">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-8">
+                        <div class="ad-details-card">
+                            <div class="ad-details-breadcrumb">
+                                <ol class="breadcrumb">
+                                    <li>
+                                        <span class="flat-badge sale">for sales</span>
+                                    </li>
+                                    <li class="breadcrumb-item">
+                                        <a href="#">Property</a>
+                                    </li>
+                                    <li class="breadcrumb-item active" aria-current="page">house</li>
+                                </ol>
+                            </div>
+                            <div class="ad-details-heading">
+                                <h2>
+                                    <a href="#">Lorem ipsum dolor sit amet consectetur adipisicing elit Maxime ab nesciunt dignissimos.</a>
+                                </h2>
+                            </div>
+                            <ul class="ad-details-meta">
+                                <li>
+                                    <a href="#">
+                                        <i class="fas fa-eye"></i>
+                                        <p>preview
+                                            <span>(134)</span>
+                                        </p>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <i class="fas fa-mouse"></i>
+                                        <p>click
+                                            <span>(76)</span>
+                                        </p>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <i class="fas fa-star"></i>
+                                        <p>review
+                                            <span>(29)</span>
+                                        </p>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <i class="fas fa-heart"></i>
+                                        <p>bookmark
+                                            <span>(15)</span>
+                                        </p>
+                                    </a>
+                                </li>
+                            </ul>
+                            <div class="ad-details-slider slider-arrow">
+                                <div>
+                                    <img src="images/product/01.jpg" alt="details">
+                                </div>
+                                <div>
+                                    <img src="images/product/01.jpg" alt="details">
+                                </div>
+                                <div>
+                                    <img src="images/product/01.jpg" alt="details">
+                                </div>
+                                <div>
+                                    <img src="images/product/01.jpg" alt="details">
+                                </div>
+                            </div>
+                            <div class="ad-thumb-slider">
+                                <div>
+                                    <img src="images/product/01.jpg" alt="details">
+                                </div>
+                                <div>
+                                    <img src="images/product/01.jpg" alt="details">
+                                </div>
+                                <div>
+                                    <img src="images/product/01.jpg" alt="details">
+                                </div>
+                                <div>
+                                    <img src="images/product/01.jpg" alt="details">
+                                </div>
+                            </div>
+                            <div class="ad-details-action">
+                                <ul>
+                                    <li>
+                                        <button type="button">
+                                            <i class="fas fa-heart"></i>
+                                            <span>bookmark</span>
+                                        </button>
+                                    </li>
+                                    <li>
+                                        <button type="button">
+                                            <i class="fas fa-exclamation-triangle"></i>
+                                            <span>report</span>
+                                        </button>
+                                    </li>
+                                    <li>
+                                        <button type="button">
+                                            <i class="fas fa-share-alt"></i>
+                                            <span>share</span>
+                                        </button>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="ad-details-card">
+                            <div class="ad-details-title">
+                                <h5>Specification</h5>
+                            </div>
+                            <div class="ad-details-specific">
+                                <ul>
+                                    <li>
+                                        <h6>price:</h6>
+                                        <p>$2,347</p>
+                                    </li>
+                                    <li>
+                                        <h6>seller type:</h6>
+                                        <p>personal</p>
+                                    </li>
+                                    <li>
+                                        <h6>published:</h6>
+                                        <p>february 02, 2021</p>
+                                    </li>
+                                    <li>
+                                        <h6>location:</h6>
+                                        <p>jalkuri, narayanganj</p>
+                                    </li>
+                                    <li>
+                                        <h6>category:</h6>
+                                        <p>property</p>
+                                    </li>
+                                    <li>
+                                        <h6>condition:</h6>
+                                        <p>used</p>
+                                    </li>
+                                    <li>
+                                        <h6>price type:</h6>
+                                        <p>negotiable</p>
+                                    </li>
+                                    <li>
+                                        <h6>ad type:</h6>
+                                        <p>sales</p>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="ad-details-card">
+                            <div class="ad-details-title">
+                                <h5>description</h5>
+                            </div>
+                            <div class="ad-details-descrip">
+                                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit Sunt totam necessitatibus laudantium at animi error iste cumque consequuntur soluta excepturi quo odio voluptatum voluptas omnis illum architecto ab libero obcaecati suscipit quidem nam, in maiores sed Consequatur porro totam perferendis eum. Velit quam voluptate repellat corrupti reiciendis.
+                                    <span>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Incidunt qui cum iure enim ut deleniti, eaque, tempore ex recusandae sunt, reprehenderit fugiat dolores nostrum sequi.</span>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="ad-details-card">
+                            <div class="ad-details-title">
+                                <h5>reviews (2)</h5>
+                            </div>
+                            <div class="ad-details-review">
+                                <ul class="review-list">
+                                    <li class="review-item">
+                                        <div class="review">
+                                            <div class="review-head">
+                                                <div class="review-author">
+                                                    <div class="review-avatar">
                                                         <a href="#">
-                                                            <i class="fa fa-trash"></i>
+                                                            <img src="images/avatar/02.jpg" alt="review">
                                                         </a>
                                                     </div>
+                                                    <div class="review-meta">
+                                                        <h6>
+                                                            <a href="#">labonno khan -</a>
+                                                            <span>June 02, 2020</span>
+                                                        </h6>
+                                                        <ul>
+                                                            <li>
+                                                                <i class="fas fa-star active"></i>
+                                                            </li>
+                                                            <li>
+                                                                <i class="fas fa-star active"></i>
+                                                            </li>
+                                                            <li>
+                                                                <i class="fas fa-star active"></i>
+                                                            </li>
+                                                            <li>
+                                                                <i class="fas fa-star active"></i>
+                                                            </li>
+                                                            <li>
+                                                                <i class="fas fa-star"></i>
+                                                            </li>
+                                                            <li>
+                                                                <h5>- for product quality</h5>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
                                                 </div>
                                             </div>
-                                            <!-- /.cart-item -->
-                                            <div class="clearfix"></div>
-                                            <hr>
-                                            <div class="clearfix cart-total">
-                                                <div class="pull-right">
-                                                    <span class="text">Sub Total :</span>
-                                                    <span class="price">$600.00</span>
-                                                </div>
-                                                <div class="clearfix"></div>
-                                                <a href="shopping-cart.html" class="btn btn-upper btn-primary btn-block m-t-20">View Cart</a>
-                                                <a href="checkout.html" class="btn btn-upper btn-primary btn-block m-t-20 btn-check">Checkout</a>
+                                            <div class="review-content">
+                                                <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit Non quibusdam harum ipsum dolor cumque quas magni voluptatibus cupiditate minima quis.</p>
                                             </div>
-                                            <!-- /.cart-total-->
-                                        </li>
-                                    </ul>
-                                    <!-- /.dropdown-menu-->
+                                        </div>
+                                        <div class="review">
+                                            <div class="review-head">
+                                                <div class="review-author">
+                                                    <div class="review-avatar">
+                                                        <a href="#">
+                                                            <img src="images/avatar/04.jpg" alt="review">
+                                                        </a>
+                                                    </div>
+                                                    <div class="review-meta">
+                                                        <h6>
+                                                            <a href="#">Miron Mahmud</a>
+                                                        </h6>
+                                                        <h6>Author -
+                                                            <span>June 02, 2020</span>
+                                                        </h6>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="review-content">
+                                                <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit Non quibusdam harum ipsum dolor cumque quas magni voluptatibus cupiditate minima.</p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="review-item">
+                                        <div class="review">
+                                            <div class="review-head">
+                                                <div class="review-author">
+                                                    <div class="review-avatar">
+                                                        <a href="#">
+                                                            <img src="images/avatar/03.jpg" alt="review">
+                                                        </a>
+                                                    </div>
+                                                    <div class="review-meta">
+                                                        <h6>
+                                                            <a href="#">miron mahmud</a>-
+                                                            <span>June 02, 2020</span>
+                                                        </h6>
+                                                        <ul>
+                                                            <li>
+                                                                <i class="fas fa-star active"></i>
+                                                            </li>
+                                                            <li>
+                                                                <i class="fas fa-star active"></i>
+                                                            </li>
+                                                            <li>
+                                                                <i class="fas fa-star active"></i>
+                                                            </li>
+                                                            <li>
+                                                                <i class="fas fa-star active"></i>
+                                                            </li>
+                                                            <li>
+                                                                <i class="fas fa-star active"></i>
+                                                            </li>
+                                                            <li>
+                                                                <h5>- for delivery system</h5>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="review-content">
+                                                <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit Non quibusdam harum ipsum dolor cumque quas magni voluptatibus cupiditate minima quis.</p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                                <form class="ad-review-form">
+                                    <div class="star-rating">
+                                        <input type="radio" name="rating" id="star-1">
+                                        <label for="star-1"></label>
+                                        <input type="radio" name="rating" id="star-2">
+                                        <label for="star-2"></label>
+                                        <input type="radio" name="rating" id="star-3">
+                                        <label for="star-3"></label>
+                                        <input type="radio" name="rating" id="star-4">
+                                        <label for="star-4"></label>
+                                        <input type="radio" name="rating" id="star-5">
+                                        <label for="star-5"></label>
+                                    </div>
+                                    <div class="ad-review-form-grid">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" placeholder="Name">
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="email" class="form-control" placeholder="Email">
+                                        </div>
+                                        <div class="form-group">
+                                            <select class="form-control custom-select">
+                                                <option selected>Qoute</option>
+                                                <option value="1">delivery system</option>
+                                                <option value="2">product quality</option>
+                                                <option value="3">payment issue</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <textarea class="form-control" placeholder="Describe"></textarea>
+                                    </div>
+                                    <button class="btn btn-inline">
+                                        <i class="fas fa-tint"></i>
+                                        <span>drop your review</span>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="ad-details-price">
+                            <h5>$2347</h5>
+                            <span>/negotiable</span>
+                            <i class="flaticon-bargain"></i>
+                        </div>
+                        <button class="ad-details-number">
+                            <i class="fas fa-phone-alt"></i>
+                            <span>Click to show the number</span>
+                        </button>
+                        <div class="ad-details-card">
+                            <div class="ad-details-title">
+                                <h5>author info</h5>
+                            </div>
+                            <div class="ad-details-profile">
+                                <div class="author-img">
+                                    <a href="#">
+                                        <img src="images/avatar/01.jpg" alt="avatar">
+                                        <span class="author-status"></span>
+                                    </a>
+                                </div>
+                                <div class="author-intro">
+                                    <h4>
+                                        <a href="#">Jackon Honson</a>
+                                    </h4>
+                                    <h5>new seller</h5>
+                                    <p>Corporis dolore libero temporibus minus tempora quia voluptas nesciunt.</p>
+                                </div>
+                                <ul class="author-widget">
+                                    <li>
+                                        <a href="#">
+                                            <i class="fas fa-phone-alt"></i>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <i class="fas fa-envelope"></i>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <i class="fas fa-heart"></i>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <i class="fas fa-share-alt"></i>
+                                        </a>
+                                    </li>
+                                </ul>
+                                <ul class="author-list">
+                                    <li>
+                                        <h6>total ads</h6>
+                                        <p>134</p>
+                                    </li>
+                                    <li>
+                                        <h6>total ratings</h6>
+                                        <p>78</p>
+                                    </li>
+                                    <li>
+                                        <h6>bookmark</h6>
+                                        <p>56</p>
+                                    </li>
+                                </ul>
+                                <div class="author-details">
+                                    <h6>joined:february 02, 2021</h6>
+                                    <h6>address:jalkuri, Narayanganj</h6>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ad-details-card">
+                            <div class="ad-details-title">
+                                <h5>opening hour</h5>
+                            </div>
+                            <div class="ad-details-opening">
+                                <ul>
+                                    <li>
+                                        <h6>Saturday</h6>
+                                        <p>09:00am - 05:00pm</p>
+                                    </li>
+                                    <li>
+                                        <h6>Sunday</h6>
+                                        <p>09:00am - 05:00pm</p>
+                                    </li>
+                                    <li>
+                                        <h6>monday</h6>
+                                        <p>09:00am - 05:00pm</p>
+                                    </li>
+                                    <li>
+                                        <h6>tuesday</h6>
+                                        <p>09:00am - 05:00pm</p>
+                                    </li>
+                                    <li>
+                                        <h6>wednesday</h6>
+                                        <p>09:00am - 05:00pm</p>
+                                    </li>
+                                    <li>
+                                        <h6>thursday</h6>
+                                        <p>09:00am - 05:00pm</p>
+                                    </li>
+                                    <li>
+                                        <h6>friday</h6>
+                                        <p>closed</p>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="ad-details-card">
+                            <div class="ad-details-title">
+                                <h5>location</h5>
+                            </div>
+                            <div class="ad-details-location">
+                                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3654.3406974350205!2d90.48469931445422!3d23.663771197998262!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3755b0d5983f048d%3A0x754f30c82bcad3cd!2sJalkuri%20Bus%20Stop!5e0!3m2!1sen!2sbd!4v1610539261654!5m2!1sen!2sbd"></iframe>
+                            </div>
+                        </div>
+                        <div class="ad-details-card">
+                            <div class="ad-details-title">
+                                <h5>safety tips</h5>
+                            </div>
+                            <div class="ad-details-safety">
+                                <ul>
+                                    <li>
+                                        <i class="fas fa-dot-circle"></i>
+                                        <p>Check the item before you buy</p>
+                                    </li>
+                                    <li>
+                                        <i class="fas fa-dot-circle"></i>
+                                        <p>Pay only after collecting item</p>
+                                    </li>
+                                    <li>
+                                        <i class="fas fa-dot-circle"></i>
+                                        <p>Beware of unrealistic offers</p>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="ad-details-card">
+                            <div class="ad-details-title">
+                                <h5>featured ads</h5>
+                            </div>
+                            <div class="ad-details-feature slider-arrow">
+                                <div class="feature-card">
+                                    <div class="feature-img">
+                                        <a href="#">
+                                            <img src="images/product/10.jpg" alt="feature">
+                                        </a>
+                                    </div>
+                                    <div class="feature-badge">
+                                        <p>Featured</p>
+                                    </div>
+                                    <div class="feature-bookmark">
+                                        <button type="button">
+                                            <i class="fas fa-heart"></i>
+                                        </button>
+                                    </div>
+                                    <div class="feature-content">
+                                        <ol class="breadcrumb">
+                                            <li>
+                                                <span class="feature-cate rent">Rent</span>
+                                            </li>
+                                            <li class="breadcrumb-item">
+                                                <a href="#">automobile</a>
+                                            </li>
+                                            <li class="breadcrumb-item active" aria-current="page">Private Car</li>
+                                        </ol>
+                                        <div class="feature-title">
+                                            <h3>
+                                                <a href="#">Unde eveniet ducimus nostrum maiores soluta temporibus ipsum dolor sit amet.</a>
+                                            </h3>
+                                        </div>
+                                        <ul class="feature-meta">
+                                            <li>
+                                                <span>$1200
+                                                    <small>/Monthly</small>
+                                                </span>
+                                            </li>
+                                            <li>
+                                                <i class="fas fa-clock"></i>
+                                                <span>56 minute ago!</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="feature-card">
+                                    <div class="feature-img">
+                                        <a href="#">
+                                            <img src="images/product/01.jpg" alt="feature">
+                                        </a>
+                                    </div>
+                                    <div class="feature-badge">
+                                        <p>Featured</p>
+                                    </div>
+                                    <div class="feature-bookmark">
+                                        <button type="button">
+                                            <i class="fas fa-heart"></i>
+                                        </button>
+                                    </div>
+                                    <div class="feature-content">
+                                        <ol class="breadcrumb">
+                                            <li>
+                                                <span class="feature-cate booking">Booking</span>
+                                            </li>
+                                            <li class="breadcrumb-item">
+                                                <a href="#">Property</a>
+                                            </li>
+                                            <li class="breadcrumb-item active" aria-current="page">House</li>
+                                        </ol>
+                                        <div class="feature-title">
+                                            <h3>
+                                                <a href="#">Unde eveniet ducimus nostrum maiores soluta temporibus ipsum dolor sit amet.</a>
+                                            </h3>
+                                        </div>
+                                        <ul class="feature-meta">
+                                            <li>
+                                                <span>$800
+                                                    <small>/Per Day</small>
+                                                </span>
+                                            </li>
+                                            <li>
+                                                <i class="fas fa-clock"></i>
+                                                <span>56 minute ago!</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="feature-card">
+                                    <div class="feature-img">
+                                        <a href="#">
+                                            <img src="images/product/08.jpg" alt="feature">
+                                        </a>
+                                    </div>
+                                    <div class="feature-badge">
+                                        <p>Featured</p>
+                                    </div>
+                                    <div class="feature-bookmark">
+                                        <button type="button">
+                                            <i class="fas fa-heart"></i>
+                                        </button>
+                                    </div>
+                                    <div class="feature-content">
+                                        <ol class="breadcrumb">
+                                            <li>
+                                                <span class="feature-cate sale">sale</span>
+                                            </li>
+                                            <li class="breadcrumb-item">
+                                                <a href="#">Gadget</a>
+                                            </li>
+                                            <li class="breadcrumb-item active" aria-current="page">Iphone</li>
+                                        </ol>
+                                        <div class="feature-title">
+                                            <h3>
+                                                <a href="#">Unde eveniet ducimus nostrum maiores soluta temporibus ipsum dolor sit amet.</a>
+                                            </h3>
+                                        </div>
+                                        <ul class="feature-meta">
+                                            <li>
+                                                <span>$1150
+                                                    <small>/Negotiable</small>
+                                                </span>
+                                            </li>
+                                            <li>
+                                                <i class="fas fa-clock"></i>
+                                                <span>56 minute ago!</span>
+                                            </li>
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </header>
-            <div class="breadcrumb">
+            </div>
+        </section>
+        <section class="related-part">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="section-center-heading">
+                            <h2>Our Related
+                                <span>Ads</span>
+                            </h2>
+                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit aspernatur illum vel sunt libero voluptatum repudiandae veniam maxime tenetur.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="related-slider slider-arrow">
+                            <div class="product-card">
+                                <div class="product-head">
+                                    <div class="product-img" style="background:url(images/product/01.jpg) no-repeat center; background-size:cover;">
+                                        <i class="cross-badge fas fa-bolt"></i>
+                                        <span class="flat-badge booking">booking</span>
+                                        <ul class="product-meta">
+                                            <li>
+                                                <i class="fas fa-eye"></i>
+                                                <p>264</p>
+                                            </li>
+                                            <li>
+                                                <i class="fas fa-mouse"></i>
+                                                <p>134</p>
+                                            </li>
+                                            <li>
+                                                <i class="fas fa-star"></i>
+                                                <p>4.5/7</p>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="product-info">
+                                    <div class="product-tag">
+                                        <i class="fas fa-tags"></i>
+                                        <ol class="breadcrumb">
+                                            <li class="breadcrumb-item">
+                                                <a href="#">Luxury</a>
+                                            </li>
+                                            <li class="breadcrumb-item active" aria-current="page">Duplex House</li>
+                                        </ol>
+                                    </div>
+                                    <div class="product-title">
+                                        <h5>
+                                            <a href="rightbar-details.html">Lorem ipsum dolor sit amet consect adipisicing elit</a>
+                                        </h5>
+                                        <ul class="product-location">
+                                            <li>
+                                                <i class="fas fa-map-marker-alt"></i>
+                                                <p>Uttara, Dhaka</p>
+                                            </li>
+                                            <li>
+                                                <i class="fas fa-clock"></i>
+                                                <p>30 min ago!</p>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="product-details">
+                                        <div class="product-price">
+                                            <h5>$1500</h5>
+                                            <span>/Per Day</span>
+                                        </div>
+                                        <ul class="product-widget">
+                                            <li>
+                                                <a href="compare.html" class="tooltip">
+                                                    <i class="fas fa-compress"></i>
+                                                    <span class="tooltext top">compare</span>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <button class="tooltip">
+                                                    <i class="far fa-heart"></i>
+                                                    <span class="tooltext top">bookmark</span>
+                                                </button>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="product-card">
+                                <div class="product-head">
+                                    <div class="product-img" style="background:url(images/product/03.jpg) no-repeat center; background-size:cover;">
+                                        <i class="cross-badge fas fa-bolt"></i>
+                                        <span class="flat-badge sale">sale</span>
+                                        <ul class="product-meta">
+                                            <li>
+                                                <i class="fas fa-eye"></i>
+                                                <p>264</p>
+                                            </li>
+                                            <li>
+                                                <i class="fas fa-mouse"></i>
+                                                <p>134</p>
+                                            </li>
+                                            <li>
+                                                <i class="fas fa-star"></i>
+                                                <p>4.5/7</p>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="product-info">
+                                    <div class="product-tag">
+                                        <i class="fas fa-tags"></i>
+                                        <ol class="breadcrumb">
+                                            <li class="breadcrumb-item">
+                                                <a href="#">Stationary</a>
+                                            </li>
+                                            <li class="breadcrumb-item active" aria-current="page">books</li>
+                                        </ol>
+                                    </div>
+                                    <div class="product-title">
+                                        <h5>
+                                            <a href="rightbar-details.html">Lorem ipsum dolor sit amet consect adipisicing elit</a>
+                                        </h5>
+                                        <ul class="product-location">
+                                            <li>
+                                                <i class="fas fa-map-marker-alt"></i>
+                                                <p>Uttara, Dhaka</p>
+                                            </li>
+                                            <li>
+                                                <i class="fas fa-clock"></i>
+                                                <p>30 min ago!</p>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="product-details">
+                                        <div class="product-price">
+                                            <h5>$470</h5>
+                                            <span>/fixed</span>
+                                        </div>
+                                        <ul class="product-widget">
+                                            <li>
+                                                <a href="compare.html" class="tooltip">
+                                                    <i class="fas fa-compress"></i>
+                                                    <span class="tooltext top">compare</span>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <button class="tooltip">
+                                                    <i class="far fa-heart"></i>
+                                                    <span class="tooltext top">bookmark</span>
+                                                </button>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="product-card">
+                                <div class="product-head">
+                                    <div class="product-img" style="background:url(images/product/10.jpg) no-repeat center; background-size:cover;">
+                                        <i class="cross-badge fas fa-bolt"></i>
+                                        <span class="flat-badge rent">rent</span>
+                                        <ul class="product-meta">
+                                            <li>
+                                                <i class="fas fa-eye"></i>
+                                                <p>264</p>
+                                            </li>
+                                            <li>
+                                                <i class="fas fa-mouse"></i>
+                                                <p>134</p>
+                                            </li>
+                                            <li>
+                                                <i class="fas fa-star"></i>
+                                                <p>4.5/7</p>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="product-info">
+                                    <div class="product-tag">
+                                        <i class="fas fa-tags"></i>
+                                        <ol class="breadcrumb">
+                                            <li class="breadcrumb-item">
+                                                <a href="#">automobile</a>
+                                            </li>
+                                            <li class="breadcrumb-item active" aria-current="page">private car</li>
+                                        </ol>
+                                    </div>
+                                    <div class="product-title">
+                                        <h5>
+                                            <a href="rightbar-details.html">Lorem ipsum dolor sit amet consect adipisicing elit</a>
+                                        </h5>
+                                        <ul class="product-location">
+                                            <li>
+                                                <i class="fas fa-map-marker-alt"></i>
+                                                <p>Uttara, Dhaka</p>
+                                            </li>
+                                            <li>
+                                                <i class="fas fa-clock"></i>
+                                                <p>30 min ago!</p>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="product-details">
+                                        <div class="product-price">
+                                            <h5>$3300</h5>
+                                            <span>/per month</span>
+                                        </div>
+                                        <ul class="product-widget">
+                                            <li>
+                                                <a href="compare.html" class="tooltip">
+                                                    <i class="fas fa-compress"></i>
+                                                    <span class="tooltext top">compare</span>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <button class="tooltip">
+                                                    <i class="far fa-heart"></i>
+                                                    <span class="tooltext top">bookmark</span>
+                                                </button>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="product-card">
+                                <div class="product-head">
+                                    <div class="product-img" style="background:url(images/product/09.jpg) no-repeat center; background-size:cover;">
+                                        <i class="cross-badge fas fa-bolt"></i>
+                                        <span class="flat-badge sale">sale</span>
+                                        <ul class="product-meta">
+                                            <li>
+                                                <i class="fas fa-eye"></i>
+                                                <p>264</p>
+                                            </li>
+                                            <li>
+                                                <i class="fas fa-mouse"></i>
+                                                <p>134</p>
+                                            </li>
+                                            <li>
+                                                <i class="fas fa-star"></i>
+                                                <p>4.5/7</p>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="product-info">
+                                    <div class="product-tag">
+                                        <i class="fas fa-tags"></i>
+                                        <ol class="breadcrumb">
+                                            <li class="breadcrumb-item">
+                                                <a href="#">animals</a>
+                                            </li>
+                                            <li class="breadcrumb-item active" aria-current="page">cat</li>
+                                        </ol>
+                                    </div>
+                                    <div class="product-title">
+                                        <h5>
+                                            <a href="rightbar-details.html">Lorem ipsum dolor sit amet consect adipisicing elit</a>
+                                        </h5>
+                                        <ul class="product-location">
+                                            <li>
+                                                <i class="fas fa-map-marker-alt"></i>
+                                                <p>Uttara, Dhaka</p>
+                                            </li>
+                                            <li>
+                                                <i class="fas fa-clock"></i>
+                                                <p>30 min ago!</p>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="product-details">
+                                        <div class="product-price">
+                                            <h5>$900</h5>
+                                            <span>/Negotiable</span>
+                                        </div>
+                                        <ul class="product-widget">
+                                            <li>
+                                                <a href="compare.html" class="tooltip">
+                                                    <i class="fas fa-compress"></i>
+                                                    <span class="tooltext top">compare</span>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <button class="tooltip">
+                                                    <i class="far fa-heart"></i>
+                                                    <span class="tooltext top">bookmark</span>
+                                                </button>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="product-card">
+                                <div class="product-head">
+                                    <div class="product-img" style="background:url(images/product/02.jpg) no-repeat center; background-size:cover;">
+                                        <i class="cross-badge fas fa-bolt"></i>
+                                        <span class="flat-badge sale">sale</span>
+                                        <ul class="product-meta">
+                                            <li>
+                                                <i class="fas fa-eye"></i>
+                                                <p>264</p>
+                                            </li>
+                                            <li>
+                                                <i class="fas fa-mouse"></i>
+                                                <p>134</p>
+                                            </li>
+                                            <li>
+                                                <i class="fas fa-star"></i>
+                                                <p>4.5/7</p>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="product-info">
+                                    <div class="product-tag">
+                                        <i class="fas fa-tags"></i>
+                                        <ol class="breadcrumb">
+                                            <li class="breadcrumb-item">
+                                                <a href="#">fashion</a>
+                                            </li>
+                                            <li class="breadcrumb-item active" aria-current="page">shoes</li>
+                                        </ol>
+                                    </div>
+                                    <div class="product-title">
+                                        <h5>
+                                            <a href="rightbar-details.html">Lorem ipsum dolor sit amet consect adipisicing elit</a>
+                                        </h5>
+                                        <ul class="product-location">
+                                            <li>
+                                                <i class="fas fa-map-marker-alt"></i>
+                                                <p>Uttara, Dhaka</p>
+                                            </li>
+                                            <li>
+                                                <i class="fas fa-clock"></i>
+                                                <p>30 min ago!</p>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="product-details">
+                                        <div class="product-price">
+                                            <h5>$460</h5>
+                                            <span>/fixed</span>
+                                        </div>
+                                        <ul class="product-widget">
+                                            <li>
+                                                <a href="compare.html" class="tooltip">
+                                                    <i class="fas fa-compress"></i>
+                                                    <span class="tooltext top">compare</span>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <button class="tooltip">
+                                                    <i class="far fa-heart"></i>
+                                                    <span class="tooltext top">bookmark</span>
+                                                </button>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="center-50">
+                            <a href="rightbar-list.html" class="btn btn-inline">
+                                <i class="fas fa-eye"></i>
+                                <span>view all related</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <footer class="footer-part">
+            <div class="container">
+                <div class="row newsletter">
+                    <div class="col-lg-6">
+                        <div class="news-content">
+                            <h2>Subscribe for Latest Offers</h2>
+                            <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Laboriosam, aliquid reiciendis! Exercitationem soluta provident non.</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <form class="news-form">
+                            <input type="text" placeholder="Enter Your Email Address">
+                            <button class="btn btn-inline">
+                                <i class="fas fa-envelope"></i>
+                                <span>Subscribe</span>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6 col-md-6 col-lg-3">
+                        <div class="footer-content">
+                            <h3>Contact Us</h3>
+                            <ul class="footer-address">
+                                <li>
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <p>1420 West Jalkuri Fatullah,
+                                        <span>Narayanganj, BD</span>
+                                    </p>
+                                </li>
+                                <li>
+                                    <i class="fas fa-envelope"></i>
+                                    <p>support@classicads.com
+                                        <span>info@classicads.com</span>
+                                    </p>
+                                </li>
+                                <li>
+                                    <i class="fas fa-phone-alt"></i>
+                                    <p>+8801838288389
+                                        <span>+8801941101915</span>
+                                    </p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-6 col-lg-3">
+                        <div class="footer-content">
+                            <h3>Quick Links</h3>
+                            <ul class="footer-widget">
+                                <li>
+                                    <a href="#">Store Location</a>
+                                </li>
+                                <li>
+                                    <a href="#">Orders Tracking</a>
+                                </li>
+                                <li>
+                                    <a href="#">My Account</a>
+                                </li>
+                                <li>
+                                    <a href="#">Size Guide</a>
+                                </li>
+                                <li>
+                                    <a href="#">Faq</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-6 col-lg-3">
+                        <div class="footer-content">
+                            <h3>Information</h3>
+                            <ul class="footer-widget">
+                                <li>
+                                    <a href="#">About Us</a>
+                                </li>
+                                <li>
+                                    <a href="#">Delivery System</a>
+                                </li>
+                                <li>
+                                    <a href="#">Secure Payment</a>
+                                </li>
+                                <li>
+                                    <a href="#">Contact Us</a>
+                                </li>
+                                <li>
+                                    <a href="#">Sitemap</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-6 col-lg-3">
+                        <div class="footer-info">
+                            <a href="#">
+                                <img src="images/logo.png" alt="logo">
+                            </a>
+                            <ul class="footer-count">
+                                <li>
+                                    <h5>929,238</h5>
+                                    <p>Registered Users</p>
+                                </li>
+                                <li>
+                                    <h5>242,789</h5>
+                                    <p>Community Ads</p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="footer-card-content">
+                            <div class="footer-payment">
+                                <a href="#">
+                                    <img src="images/pay-card/01.jpg" alt="01">
+                                </a>
+                                <a href="#">
+                                    <img src="images/pay-card/02.jpg" alt="02">
+                                </a>
+                                <a href="#">
+                                    <img src="images/pay-card/03.jpg" alt="03">
+                                </a>
+                                <a href="#">
+                                    <img src="images/pay-card/04.jpg" alt="04">
+                                </a>
+                            </div>
+                            <div class="footer-option">
+                                <button type="button">
+                                    <i class="fas fa-globe"></i>English
+                                </button>
+                                <button type="button">
+                                    <i class="fas fa-dollar-sign"></i>USD
+                                </button>
+                            </div>
+                            <div class="footer-app">
+                                <a href="#">
+                                    <img src="images/play-store.png" alt="play-store">
+                                </a>
+                                <a href="#">
+                                    <img src="images/app-store.png" alt="app-store">
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-end">
                 <div class="container">
-                    <div class="breadcrumb-inner">
-                        <ul class="list-inline list-unstyled">
+                    <div class="footer-end-content">
+                        <p>All Copyrights Reserved &copy; 2021 - Developed by
+                            <a href="#">Mironcoder</a>
+                        </p>
+                        <ul class="social-transparent footer-social">
                             <li>
-                                <a href="/">Home</a>
+                                <a href="#">
+                                    <i class="fab fa-facebook-f"></i>
+                                </a>
                             </li>
-                            <li class="active">@yield('current-page')</li>
+                            <li>
+                                <a href="#">
+                                    <i class="fab fa-twitter"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <i class="fab fa-linkedin-in"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <i class="fab fa-google-plus-g"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <i class="fab fa-youtube"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <i class="fab fa-pinterest-p"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <i class="fab fa-instagram"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <i class="fab fa-dribbble"></i>
+                                </a>
+                            </li>
                         </ul>
                     </div>
                 </div>
             </div>
-            <div class="body-content outer-top-ts">
-                <div class="container">
-                    @yield('main-content')
-                </div>
-            </div>
-            @include('partials._footer')
+        </footer>
+        <script src="js/vendor/jquery-1.12.4.min.js"></script>
+        <script src="js/vendor/popper.min.js"></script>
+        <script src="js/vendor/bootstrap.min.js"></script>
+        <script src="js/vendor/jquery-ui.min.js"></script>
+        <script src="js/custom/price-range.js"></script>
+        <script src="js/vendor/slick.min.js"></script>
+        <script src="js/custom/slick.js"></script>
+        <script src="js/custom/main.js"></script>
+    </body>
+    <!-- Mirrored from mironmahmud.com/classicads/assets/rightbar-details.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 11 Feb 2021 23:22:52 GMT -->
+</html>
