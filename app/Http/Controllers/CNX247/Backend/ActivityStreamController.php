@@ -517,20 +517,9 @@ class ActivityStreamController extends Controller
         return response()->json(['message'=>'Success! Clocked-out'], 200);
 		}
 
-		public function searchCNX247(){
-			return "hello";
-			return dd($request->all());
+		public function searchCNX247(Request $request){
 			$posts = Post::where('post_title', 'LIKE', '%'.$request->search_phrase.'%')
 										->orWhere('post_content', 'LIKE', '%'.$request->search_phrase.'%')->get();
-			/* DB::table('posts as p')
-							->join('users as u', 'p.user_id','=', 'u.id')
-							->select('p.id as postId', 'u.first_name', 'p.*', 'u.*')
-							->where('u.first_name', 'LIKE', '%'.$request->search_item.'%')
-							->orWhere('p.post_title', 'LIKE', '%'.$request->search_item.'%')
-							->orWhere('p.post_content', 'LIKE', '%'.$request->search_item.'%')
-							->where('u.tenant_id',Auth::user()->tenant_id)
-							->whereIn('u.id',$resIds)
-							->get(); */
-			return view('backend.activity-stream.search-result',['posts'=>$posts]);
+			return view('backend.activity-stream.search-result',['posts'=>$posts,'search_phrase'=>$request->search_phrase]);
 		}
 }
