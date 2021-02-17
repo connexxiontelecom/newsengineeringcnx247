@@ -16,7 +16,7 @@
         <div class="navbar-container container-fluid">
             <ul class="nav-left">
                 <li class="header-search">
-									<form action="{{route('search-cnx247')}}" method="post" >
+									<form action="{{route('search-cnx247')}}" method="get" >
                     <div class="main-search morphsearch-search">
                         <div class="input-group">
                             <span class="input-group-addon search-close"><i class="feather icon-x"></i></span>

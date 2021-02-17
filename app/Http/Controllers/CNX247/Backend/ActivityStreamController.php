@@ -517,7 +517,8 @@ class ActivityStreamController extends Controller
         return response()->json(['message'=>'Success! Clocked-out'], 200);
 		}
 
-		public function searchCNX247(Request $request){
+		public function searchCNX247(){
+			return "hello";
 			return dd($request->all());
 			$posts = Post::where('post_title', 'LIKE', '%'.$request->search_phrase.'%')
 										->orWhere('post_content', 'LIKE', '%'.$request->search_phrase.'%')->get();
