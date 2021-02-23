@@ -70,7 +70,7 @@
                             </ul>
                         </div>
                     </li>
-                    @livewire('backend.user.notifications')
+										@livewire('backend.user.notifications')
                     <li class="header-notification">
                         <div class="dropdown-primary dropdown">
                             <div class="dropdown-toggle" data-toggle="dropdown">

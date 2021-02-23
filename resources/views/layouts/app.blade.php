@@ -40,7 +40,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@600&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" type="text/css" href="/assets/bower_components/offline/css/offline-theme-slide.css">
-    <link rel="stylesheet" type="text/css" href="/assets/bower_components/offline/css/offline-language-english.css">
+		<link rel="stylesheet" type="text/css" href="/assets/bower_components/offline/css/offline-language-english.css">
+		<link rel="stylesheet" type="text/css" href="/assets/pages/notification/notification.css">
     <link rel="stylesheet" href="{{asset('assets/css/cus/parsley.css')}}">
     <link rel="stylesheet" href="{{asset('assets/css/cus/toastify.min.css')}}">
     <link rel="stylesheet" href="{{asset('assets/css/cus/progressBar.css')}}">
@@ -207,6 +208,8 @@
 <script src="https://js.pusher.com/6.0/pusher.min.js"></script>
 <script src="{{asset('/assets/js/cus/parsley.min.js')}}"></script>
 <script src="{{asset('/assets/js/cus/progressBar.js')}}"></script>
+<script type="text/javascript" src="/assets/js/bootstrap-growl.min.js"></script>
+    <script type="text/javascript" src="/assets/pages/notification/notification.js"></script>
 @stack('dialer-script')
 <script src="{{asset('/assets/js/cus/twilio.min.js')}}"></script>
 <script>

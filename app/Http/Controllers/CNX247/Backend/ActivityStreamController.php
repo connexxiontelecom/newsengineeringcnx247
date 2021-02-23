@@ -450,7 +450,11 @@ class ActivityStreamController extends Controller
                     $part->save();
                      //send notification
                      $user = User::find($person);
-                     $user->notify(new NewPostNotification($app));
+										 $user->notify(new NewPostNotification($app));
+										 /* if($person == Auth::user()->id){
+											$audio = "<script> var audio = new Audio('/assets/sounds/s1.mp3'); audio.play(); </script>";
+											echo $audio;
+										 } */
                 }
             }
         }
