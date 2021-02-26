@@ -7,10 +7,10 @@
         <div class="card">
             <div class="card-block">
 								<div class="sub-title">Purchase Request</div>
-								@can('raise purchase request')
+
       	          <button class="btn btn-mini btn-primary float-right mb-3" data-target="#requestModal" data-toggle="modal"><i class="ti-plus mr-2"></i>Add New Purchase Request</button>
 
-								@endcan
+
                 <ul class="nav nav-tabs md-tabs" role="tablist">
                     <li class="nav-item">
                         <a class="nav-link active" data-toggle="tab" href="#expenseReportTab" role="tab">Purchase Request</a>

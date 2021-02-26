@@ -128,7 +128,7 @@
             },
             spacing: 10,
             z_index: 999999,
-            delay: 2500,
+            delay: 5000,
             timer: 1000,
             url_target: '_blank',
             mouse_over: false,
