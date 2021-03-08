@@ -163,19 +163,18 @@
                                         <div class="dropdown-secondary dropdown float-right">
                                             <button class="btn btn-default btn-mini dropdown-toggle waves-light b-none txt-muted" type="button" id="dropdown6" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="icofont icofont-navigation-menu"></i></button>
                                             <div class="dropdown-menu" aria-labelledby="dropdown6" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 24px, 0px); top: 0px; left: 0px; will-change: transform;">
-																							@can('download file')
+
 
 																							<a class="dropdown-item waves-light waves-effect" href="/assets/uploads/cnxdrive/{{$file->filename}}"><i class="ti-download text-success mr-2"></i> Download</a>
-																							@endcan
-																								@can('share file')
+
 
 																								<a class="dropdown-item waves-light waves-effect shareFile" data-toggle="modal" data-target="#shareFileModal" data-directory="{{$file->filename}}" data-file="{{$file->name ?? 'File name'}}" data-unique="{{$file->id}}" href="javascript:void(0);"><i class="ti-sharethis text-warning mr-2"></i> Share</a>
-																								@endcan
+
 																								<div class="dropdown-divider"></div>
-																								@can('delete file')
+
 
                                                 <a class="dropdown-item waves-light waves-effect deleteFile" data-toggle="modal" data-target="#deleteFileModal" data-directory="{{$file->filename}}" data-file="{{$file->name ?? 'File name'}}" data-unique="{{$file->id}}" href="javascript:void(0);"><i class="ti-trash mr-2 text-danger"></i> Delete</a>
-																								@endcan
+
                                             </div>
                                         </div>
                                     </div>
@@ -190,19 +189,16 @@
                                         <div class="dropdown-secondary dropdown float-right">
                                             <button class="btn btn-default btn-mini dropdown-toggle waves-light b-none txt-muted" type="button" id="dropdown6" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="icofont icofont-navigation-menu"></i></button>
                                             <div class="dropdown-menu" aria-labelledby="dropdown6" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 24px, 0px); top: 0px; left: 0px; will-change: transform;">
-																							@can('download file')
+
 
 																							<a class="dropdown-item waves-light waves-effect" href="/assets/uploads/cnxdrive/{{$file->filename}}"><i class="ti-download text-success mr-2"></i> Download</a>
-																							@endcan
-																								@can('share file')
+
 
 																								<a class="dropdown-item waves-light waves-effect shareFile" data-toggle="modal" data-target="#shareFileModal" data-directory="{{$file->filename}}" data-file="{{$file->name ?? 'File name'}}" data-unique="{{$file->id}}" href="javascript:void(0);"><i class="ti-sharethis text-warning mr-2"></i> Share</a>
-																								@endcan
-																								@can('delete file')
 
                                                 <div class="dropdown-divider"></div>
                                                 <a class="dropdown-item waves-light waves-effect deleteFile" data-toggle="modal" data-target="#deleteFileModal" data-directory="{{$file->filename}}" data-file="{{$file->name ?? 'File name'}}" data-unique="{{$file->id}}" href="javascript:void(0);"><i class="ti-trash mr-2 text-danger"></i> Delete</a>
-																								@endcan
+
                                             </div>
                                         </div>
                                     </div>
@@ -217,19 +213,15 @@
                                         <div class="dropdown-secondary dropdown float-right">
                                             <button class="btn btn-default btn-mini dropdown-toggle waves-light b-none txt-muted" type="button" id="dropdown6" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="icofont icofont-navigation-menu"></i></button>
                                             <div class="dropdown-menu" aria-labelledby="dropdown6" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 24px, 0px); top: 0px; left: 0px; will-change: transform;">
-																							@can('download file')
+
 
 																							<a class="dropdown-item waves-light waves-effect" href="/assets/uploads/cnxdrive/{{$file->filename}}"><i class="ti-download text-success mr-2"></i> Download</a>
-																							@endcan
-																								@can('share file')
 
 																								<a class="dropdown-item waves-light waves-effect shareFile" data-toggle="modal" data-target="#shareFileModal" data-directory="{{$file->filename}}" data-file="{{$file->name ?? 'File name'}}" data-unique="{{$file->id}}" href="javascript:void(0);"><i class="ti-sharethis text-warning mr-2"></i> Share</a>
-																								@endcan
-																								@can('delete file')
 
                                                 <div class="dropdown-divider"></div>
                                                 <a class="dropdown-item waves-light waves-effect deleteFile" data-toggle="modal" data-target="#deleteFileModal" data-directory="{{$file->filename}}" data-file="{{$file->name ?? 'File name'}}" data-unique="{{$file->id}}" href="javascript:void(0);"><i class="ti-trash mr-2 text-danger"></i> Delete</a>
-																								@endcan
+
                                             </div>
                                         </div>
                                     </div>
@@ -243,19 +235,15 @@
                                         <div class="dropdown-secondary dropdown float-right">
                                             <button class="btn btn-default btn-mini dropdown-toggle waves-light b-none txt-muted" type="button" id="dropdown6" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="icofont icofont-navigation-menu"></i></button>
                                             <div class="dropdown-menu" aria-labelledby="dropdown6" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 24px, 0px); top: 0px; left: 0px; will-change: transform;">
-																							@can('download file')
+
 
 																							<a class="dropdown-item waves-light waves-effect" href="/assets/uploads/cnxdrive/{{$file->filename}}"><i class="ti-download text-success mr-2"></i> Download</a>
-																							@endcan
-																								@can('share file')
 
 																								<a class="dropdown-item waves-light waves-effect shareFile" data-toggle="modal" data-target="#shareFileModal" data-directory="{{$file->filename}}" data-file="{{$file->name ?? 'File name'}}" data-unique="{{$file->id}}" href="javascript:void(0);"><i class="ti-sharethis text-warning mr-2"></i> Share</a>
-																								@endcan
-																								@can('delete file')
 
                                                 <div class="dropdown-divider"></div>
                                                 <a class="dropdown-item waves-light waves-effect deleteFile" data-toggle="modal" data-target="#deleteFileModal" data-directory="{{$file->filename}}" data-file="{{$file->name ?? 'File name'}}" data-unique="{{$file->id}}" href="javascript:void(0);"><i class="ti-trash mr-2 text-danger"></i> Delete</a>
-																								@endcan
+
                                             </div>
                                         </div>
                                     </div>
@@ -269,19 +257,16 @@
                                         <div class="dropdown-secondary dropdown float-right">
                                             <button class="btn btn-default btn-mini dropdown-toggle waves-light b-none txt-muted" type="button" id="dropdown6" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="icofont icofont-navigation-menu"></i></button>
                                             <div class="dropdown-menu" aria-labelledby="dropdown6" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 24px, 0px); top: 0px; left: 0px; will-change: transform;">
-																							@can('download file')
+
 
 																							<a class="dropdown-item waves-light waves-effect" href="/assets/uploads/cnxdrive/{{$file->filename}}"><i class="ti-download text-success mr-2"></i> Download</a>
-																							@endcan
-																								@can('share file')
 
 																								<a class="dropdown-item waves-light waves-effect shareFile" data-toggle="modal" data-target="#shareFileModal" data-directory="{{$file->filename}}" data-file="{{$file->name ?? 'File name'}}" data-unique="{{$file->id}}" href="javascript:void(0);"><i class="ti-sharethis text-warning mr-2"></i> Share</a>
-																								@endcan
-																								@can('delete file')
+
 
                                                 <div class="dropdown-divider"></div>
                                                 <a class="dropdown-item waves-light waves-effect deleteFile" data-toggle="modal" data-target="#deleteFileModal" data-directory="{{$file->filename}}" data-file="{{$file->name ?? 'File name'}}" data-unique="{{$file->id}}" href="javascript:void(0);"><i class="ti-trash mr-2 text-danger"></i> Delete</a>
-																								@endcan
+
                                             </div>
                                         </div>
                                     </div>
@@ -296,20 +281,19 @@
                                             <button class="btn btn-default btn-mini dropdown-toggle waves-light b-none txt-muted" type="button" id="dropdown6" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="icofont icofont-navigation-menu"></i></button>
                                             <div class="dropdown-menu" aria-labelledby="dropdown6" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 24px, 0px); top: 0px; left: 0px; will-change: transform;">
                                                 @if (file_exists(public_path("/assets/uploads/cnxdrive/".$file->filename)))
-																								@can('download file')
+
 
 																								<a class="dropdown-item waves-light waves-effect" href="/assets/uploads/cnxdrive/{{$file->filename}}"><i class="ti-download text-success mr-2"></i> Download</a>
-																								@endcan
+
 																								@endif
-																								@can('share file')
+
 
                                                 <a class="dropdown-item waves-light waves-effect shareFile" data-toggle="modal" data-target="#shareFileModal" data-directory="{{$file->filename}}" data-file="{{$file->name ?? 'File name'}}" data-unique="{{$file->id}}" href="javascript:void(0);"><i class="ti-sharethis text-warning mr-2"></i> Share</a>
-																								@endcan
-																								@can('delete file')
+
 																								<div class="dropdown-divider"></div>
 
                                                 <a class="dropdown-item waves-light waves-effect deleteFile" data-toggle="modal" data-target="#deleteFileModal" data-directory="{{$file->filename}}" data-file="{{$file->name ?? 'File name'}}" data-unique="{{$file->id}}" href="javascript:void(0);"><i class="ti-trash mr-2 text-danger"></i> Delete</a>
-																								@endcan
+
                                             </div>
                                         </div>
                                     </div>
@@ -323,19 +307,17 @@
                                         <div class="dropdown-secondary dropdown float-right">
                                             <button class="btn btn-default btn-mini dropdown-toggle waves-light b-none txt-muted" type="button" id="dropdown6" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="icofont icofont-navigation-menu"></i></button>
                                             <div class="dropdown-menu" aria-labelledby="dropdown6" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 24px, 0px); top: 0px; left: 0px; will-change: transform;">
-																							@can('download file')
+
 
 																							<a class="dropdown-item waves-light waves-effect" href="/assets/uploads/cnxdrive/{{$file->filename}}"><i class="ti-download text-success mr-2"></i> Download</a>
-																							@endcan
-																								@can('share file')
+
 
 																								<a class="dropdown-item waves-light waves-effect shareFile" data-toggle="modal" data-target="#shareFileModal" data-directory="{{$file->filename}}" data-file="{{$file->name ?? 'File name'}}" data-unique="{{$file->id}}" href="javascript:void(0);"><i class="ti-sharethis text-warning mr-2"></i> Share</a>
-																								@endcan
-																								@can('delete file')
+
 																								<div class="dropdown-divider"></div>
 
                                                 <a class="dropdown-item waves-light waves-effect deleteFile" data-toggle="modal" data-target="#deleteFileModal" data-directory="{{$file->filename}}" data-file="{{$file->name ?? 'File name'}}" data-unique="{{$file->id}}" href="javascript:void(0);"><i class="ti-trash mr-2 text-danger"></i> Delete</a>
-																								@endcan
+
                                             </div>
                                         </div>
                                     </div>
@@ -349,20 +331,19 @@
                                         <div class="dropdown-secondary dropdown float-right">
                                             <button class="btn btn-default btn-mini dropdown-toggle waves-light b-none txt-muted" type="button" id="dropdown6" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="icofont icofont-navigation-menu"></i></button>
                                             <div class="dropdown-menu" aria-labelledby="dropdown6" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 24px, 0px); top: 0px; left: 0px; will-change: transform;">
-																							@can('download file')
+
 
 																							<a class="dropdown-item waves-light waves-effect" href="/assets/uploads/cnxdrive/{{$file->filename}}"><i class="ti-download text-success mr-2"></i> Download</a>
-																							@endcan
-																								@can('share file')
+
 
 																								<a class="dropdown-item waves-light waves-effect shareFile" data-toggle="modal" data-target="#shareFileModal" data-directory="{{$file->filename}}" data-file="{{$file->name ?? 'File name'}}" data-unique="{{$file->id}}" href="javascript:void(0);"><i class="ti-sharethis text-warning mr-2"></i> Share</a>
-																								@endcan
 
-																								@can('delete file', Model::class)
+
+
                                                 <div class="dropdown-divider"></div>
 
 																								<a class="dropdown-item waves-light waves-effect deleteFile" data-toggle="modal" data-target="#deleteFileModal" data-directory="{{$file->filename}}" data-file="{{$file->name ?? 'File name'}}" data-unique="{{$file->id}}" href="javascript:void(0);"><i class="ti-trash mr-2 text-danger"></i> Delete</a>
-																								@endcan
+
                                             </div>
                                         </div>
                                     </div>
@@ -376,19 +357,17 @@
                                             <div class="dropdown-secondary dropdown float-right">
                                                 <button class="btn btn-default btn-mini dropdown-toggle waves-light b-none txt-muted" type="button" id="dropdown6" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="icofont icofont-navigation-menu"></i></button>
                                                 <div class="dropdown-menu" aria-labelledby="dropdown6" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 24px, 0px); top: 0px; left: 0px; will-change: transform;">
-																									@can('download file')
+
 
 																									<a class="dropdown-item waves-light waves-effect" href="/assets/uploads/cnxdrive/{{$file->filename}}"><i class="ti-download text-success mr-2"></i> Download</a>
-																									@endcan
-																										@can('share file')
+
 
 																										<a class="dropdown-item waves-light waves-effect shareFile" data-toggle="modal" data-target="#shareFileModal" data-directory="{{$file->filename}}" data-file="{{$file->name ?? 'File name'}}" data-unique="{{$file->id}}" href="javascript:void(0);"><i class="ti-sharethis text-warning mr-2"></i> Share</a>
-																										@endcan
-																										@can('delete file')
+
 																										<div class="dropdown-divider"></div>
 
                                                     <a class="dropdown-item waves-light waves-effect deleteFile" data-toggle="modal" data-target="#deleteFileModal" data-directory="{{$file->filename}}" data-file="{{$file->name ?? 'File name'}}" data-unique="{{$file->id}}" href="javascript:void(0);"><i class="ti-trash mr-2 text-danger"></i> Delete</a>
-																										@endcan
+
                                                 </div>
                                             </div>
                                         </div>
@@ -402,19 +381,17 @@
                                         <div class="dropdown-secondary dropdown float-right">
                                             <button class="btn btn-default btn-mini dropdown-toggle waves-light b-none txt-muted" type="button" id="dropdown6" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="icofont icofont-navigation-menu"></i></button>
                                             <div class="dropdown-menu" aria-labelledby="dropdown6" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 24px, 0px); top: 0px; left: 0px; will-change: transform;">
-																							@can('download file')
+
 
 																							<a class="dropdown-item waves-light waves-effect" href="/assets/uploads/cnxdrive/{{$file->filename}}"><i class="ti-download text-success mr-2"></i> Download</a>
-																							@endcan
-																								@can('share file')
+
 
 																								<a class="dropdown-item waves-light waves-effect shareFile" data-toggle="modal" data-target="#shareFileModal" data-directory="{{$file->filename}}" data-file="{{$file->name ?? 'File name'}}" data-unique="{{$file->id}}" href="javascript:void(0);"><i class="ti-sharethis text-warning mr-2"></i> Share</a>
-																								@endcan
-																								@can('delete file')
+
 																								<div class="dropdown-divider"></div>
 
                                                 <a class="dropdown-item waves-light waves-effect deleteFile" data-toggle="modal" data-target="#deleteFileModal" data-directory="{{$file->filename}}" data-file="{{$file->name ?? 'File name'}}" data-unique="{{$file->id}}" href="javascript:void(0);"><i class="ti-trash mr-2 text-danger"></i> Delete</a>
-																								@endcan
+
                                             </div>
                                         </div>
                                     </div>
@@ -428,19 +405,17 @@
                                         <div class="dropdown-secondary dropdown float-right">
                                             <button class="btn btn-default btn-mini dropdown-toggle waves-light b-none txt-muted" type="button" id="dropdown6" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="icofont icofont-navigation-menu"></i></button>
                                             <div class="dropdown-menu" aria-labelledby="dropdown6" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 24px, 0px); top: 0px; left: 0px; will-change: transform;">
-																							@can('download file')
+
 
 																							<a class="dropdown-item waves-light waves-effect" href="/assets/uploads/cnxdrive/{{$file->filename}}"><i class="ti-download text-success mr-2"></i> Download</a>
-																							@endcan
-																								@can('share file')
+
 
 																								<a class="dropdown-item waves-light waves-effect shareFile" data-toggle="modal" data-target="#shareFileModal" data-directory="{{$file->filename}}" data-file="{{$file->name ?? 'File name'}}" data-unique="{{$file->id}}" href="javascript:void(0);"><i class="ti-sharethis text-warning mr-2"></i> Share</a>
-																								@endcan
-																								@can('delete file')
+
 																								<div class="dropdown-divider"></div>
 
                                                 <a class="dropdown-item waves-light waves-effect deleteFile" data-toggle="modal" data-target="#deleteFileModal" data-directory="{{$file->filename}}" data-file="{{$file->name ?? 'File name'}}" data-unique="{{$file->id}}" href="javascript:void(0);"><i class="ti-trash mr-2 text-danger"></i> Delete</a>
-																								@endcan
+
                                             </div>
                                         </div>
                                     </div>
@@ -454,19 +429,16 @@
                                         <div class="dropdown-secondary dropdown float-right">
                                             <button class="btn btn-default btn-mini dropdown-toggle waves-light b-none txt-muted" type="button" id="dropdown6" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="icofont icofont-navigation-menu"></i></button>
                                             <div class="dropdown-menu" aria-labelledby="dropdown6" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 24px, 0px); top: 0px; left: 0px; will-change: transform;">
-																							@can('download file')
+
 
 																							<a class="dropdown-item waves-light waves-effect" href="/assets/uploads/cnxdrive/{{$file->filename}}"><i class="ti-download text-success mr-2"></i> Download</a>
-																							@endcan
-																								@can('share file')
 
 																								<a class="dropdown-item waves-light waves-effect shareFile" data-toggle="modal" data-target="#shareFileModal" data-directory="{{$file->filename}}" data-file="{{$file->name ?? 'File name'}}" data-unique="{{$file->id}}" href="javascript:void(0);"><i class="ti-sharethis text-warning mr-2"></i> Share</a>
-																								@endcan
-																								@can('delete file')
+
 																								<div class="dropdown-divider"></div>
 
                                                 <a class="dropdown-item waves-light waves-effect deleteFile" data-toggle="modal" data-target="#deleteFileModal" data-directory="{{$file->filename}}" data-file="{{$file->name ?? 'File name'}}" data-unique="{{$file->id}}" href="javascript:void(0);"><i class="ti-trash mr-2 text-danger"></i> Delete</a>
-																								@endcan
+
                                             </div>
                                         </div>
                                     </div>
@@ -480,19 +452,17 @@
                                         <div class="dropdown-secondary dropdown float-right">
                                             <button class="btn btn-default btn-mini dropdown-toggle waves-light b-none txt-muted" type="button" id="dropdown6" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="icofont icofont-navigation-menu"></i></button>
                                             <div class="dropdown-menu" aria-labelledby="dropdown6" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 24px, 0px); top: 0px; left: 0px; will-change: transform;">
-																							@can('download file')
+
 
 																							<a class="dropdown-item waves-light waves-effect" href="/assets/uploads/cnxdrive/{{$file->filename}}"><i class="ti-download text-success mr-2"></i> Download</a>
-																							@endcan
-																								@can('share file')
+
 
 																								<a class="dropdown-item waves-light waves-effect shareFile" data-toggle="modal" data-target="#shareFileModal" data-directory="{{$file->filename}}" data-file="{{$file->name ?? 'File name'}}" data-unique="{{$file->id}}" href="javascript:void(0);"><i class="ti-sharethis text-warning mr-2"></i> Share</a>
-																								@endcan
-																								@can('delete file')
+
 																								<div class="dropdown-divider"></div>
 
                                                 <a class="dropdown-item waves-light waves-effect deleteFile" data-toggle="modal" data-target="#deleteFileModal" data-directory="{{$file->filename}}" data-file="{{$file->name ?? 'File name'}}" data-unique="{{$file->id}}" href="javascript:void(0);"><i class="ti-trash mr-2 text-danger"></i> Delete</a>
-																								@endcan
+
                                             </div>
                                         </div>
                                     </div>
@@ -506,19 +476,16 @@
                                         <div class="dropdown-secondary dropdown float-right">
                                             <button class="btn btn-default btn-mini dropdown-toggle waves-light b-none txt-muted" type="button" id="dropdown6" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="icofont icofont-navigation-menu"></i></button>
                                             <div class="dropdown-menu" aria-labelledby="dropdown6" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 24px, 0px); top: 0px; left: 0px; will-change: transform;">
-																							@can('download file')
+
 
 																							<a class="dropdown-item waves-light waves-effect" href="/assets/uploads/cnxdrive/{{$file->filename}}"><i class="ti-download text-success mr-2"></i> Download</a>
-																							@endcan
-																								@can('share file')
 
 																								<a class="dropdown-item waves-light waves-effect shareFile" data-toggle="modal" data-target="#shareFileModal" data-directory="{{$file->filename}}" data-file="{{$file->name ?? 'File name'}}" data-unique="{{$file->id}}" href="javascript:void(0);"><i class="ti-sharethis text-warning mr-2"></i> Share</a>
-																								@endcan
-																								@can('delete file')
+
 																								<div class="dropdown-divider"></div>
 
                                                 <a class="dropdown-item waves-light waves-effect deleteFile" data-toggle="modal" data-target="#deleteFileModal" data-directory="{{$file->filename}}" data-file="{{$file->name ?? 'File name'}}" data-unique="{{$file->id}}" href="javascript:void(0);"><i class="ti-trash mr-2 text-danger"></i> Delete</a>
-																								@endcan
+
                                             </div>
                                         </div>
                                     </div>
@@ -532,19 +499,17 @@
                                         <div class="dropdown-secondary dropdown float-right">
                                             <button class="btn btn-default btn-mini dropdown-toggle waves-light b-none txt-muted" type="button" id="dropdown6" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="icofont icofont-navigation-menu"></i></button>
                                             <div class="dropdown-menu" aria-labelledby="dropdown6" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 24px, 0px); top: 0px; left: 0px; will-change: transform;">
-																							@can('download file')
+
 
 																							<a class="dropdown-item waves-light waves-effect" href="/assets/uploads/cnxdrive/{{$file->filename}}"><i class="ti-download text-success mr-2"></i> Download</a>
-																							@endcan
-																								@can('share file')
+
 
 																								<a class="dropdown-item waves-light waves-effect shareFile" data-toggle="modal" data-target="#shareFileModal" data-directory="{{$file->filename}}" data-file="{{$file->name ?? 'File name'}}" data-unique="{{$file->id}}" href="javascript:void(0);"><i class="ti-sharethis text-warning mr-2"></i> Share</a>
-																								@endcan
-																								@can('delete file')
+
 																								<div class="dropdown-divider"></div>
 
                                                 <a class="dropdown-item waves-light waves-effect deleteFile" data-toggle="modal" data-target="#deleteFileModal" data-directory="{{$file->filename}}" data-file="{{$file->name ?? 'File name'}}" data-unique="{{$file->id}}" href="javascript:void(0);"><i class="ti-trash mr-2 text-danger"></i> Delete</a>
-																								@endcan
+
                                             </div>
                                         </div>
                                     </div>
@@ -558,19 +523,18 @@
                                         <div class="dropdown-secondary dropdown float-right">
                                             <button class="btn btn-default btn-mini dropdown-toggle waves-light b-none txt-muted" type="button" id="dropdown6" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="icofont icofont-navigation-menu"></i></button>
                                             <div class="dropdown-menu" aria-labelledby="dropdown6" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 24px, 0px); top: 0px; left: 0px; will-change: transform;">
-																								@can('download file')
+
 
 																								<a class="dropdown-item waves-light waves-effect" href="/assets/uploads/cnxdrive/{{$file->filename}}"><i class="ti-download text-success mr-2"></i> Download</a>
-																								@endcan
-																								@can('share file')
+
 
 																								<a class="dropdown-item waves-light waves-effect shareFile" data-toggle="modal" data-target="#shareFileModal" data-directory="{{$file->filename}}" data-file="{{$file->name ?? 'File name'}}" data-unique="{{$file->id}}" href="javascript:void(0);"><i class="ti-sharethis text-warning mr-2"></i> Share</a>
-																								@endcan
+
 																								<div class="dropdown-divider"></div>
-																								@can('delete file')
+
 
                                                 <a class="dropdown-item waves-light waves-effect deleteFile" data-toggle="modal" data-target="#deleteFileModal" data-directory="{{$file->filename}}" data-file="{{$file->name ?? 'File name'}}" data-unique="{{$file->id}}" href="javascript:void(0);"><i class="ti-trash mr-2 text-danger"></i> Delete</a>
-																								@endcan
+
                                             </div>
                                         </div>
                                     </div>
@@ -584,20 +548,19 @@
                                         <div class="dropdown-secondary dropdown float-right">
                                             <button class="btn btn-default btn-mini dropdown-toggle waves-light b-none txt-muted" type="button" id="dropdown6" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="icofont icofont-navigation-menu"></i></button>
                                             <div class="dropdown-menu" aria-labelledby="dropdown6" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 24px, 0px); top: 0px; left: 0px; will-change: transform;">
-																							@can('download file')
+
 
 																							<a class="dropdown-item waves-light waves-effect" href="/assets/uploads/cnxdrive/{{$file->filename}}"><i class="ti-download text-success mr-2"></i> Download</a>
-																							@endcan
-																							@can('share file')
+
 
 																							<a class="dropdown-item waves-light waves-effect shareFile" data-toggle="modal" data-target="#shareFileModal" data-directory="{{$file->filename}}" data-file="{{$file->name ?? 'File name'}}" data-unique="{{$file->id}}" href="javascript:void(0);"><i class="ti-sharethis text-warning mr-2"></i> Share</a>
-																							@endcan
+
 
                                                 <div class="dropdown-divider"></div>
-																							@can('delete file')
+
 
 																							<a class="dropdown-item waves-light waves-effect deleteFile" data-toggle="modal" data-target="#deleteFileModal" data-directory="{{$file->filename}}" data-file="{{$file->name ?? 'File name'}}" data-unique="{{$file->id}}" href="javascript:void(0);"><i class="ti-trash mr-2 text-danger"></i> Delete</a>
-																							@endcan
+
                                             </div>
                                         </div>
                                     </div>
@@ -611,19 +574,18 @@
                                         <div class="dropdown-secondary dropdown float-right">
                                             <button class="btn btn-default btn-mini dropdown-toggle waves-light b-none txt-muted" type="button" id="dropdown6" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="icofont icofont-navigation-menu"></i></button>
                                             <div class="dropdown-menu" aria-labelledby="dropdown6" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 24px, 0px); top: 0px; left: 0px; will-change: transform;">
-																							@can('download file')
+
 
 																							<a class="dropdown-item waves-light waves-effect" href="/assets/uploads/cnxdrive/{{$file->filename}}"><i class="ti-download text-success mr-2"></i> Download</a>
-																							@endcan
-																							@can('share file')
+
 
 																							<a class="dropdown-item waves-light waves-effect shareFile" data-toggle="modal" data-target="#shareFileModal" data-directory="{{$file->filename}}" data-file="{{$file->name ?? 'File name'}}" data-unique="{{$file->id}}" href="javascript:void(0);"><i class="ti-sharethis text-warning mr-2"></i> Share</a>
-																							@endcan
+
 																								<div class="dropdown-divider"></div>
-																								@can('delete file')
+
 
                                                 <a class="dropdown-item waves-light waves-effect deleteFile" data-toggle="modal" data-target="#deleteFileModal" data-directory="{{$file->filename}}" data-file="{{$file->name ?? 'File name'}}" data-unique="{{$file->id}}" href="javascript:void(0);"><i class="ti-trash mr-2 text-danger"></i> Delete</a>
-																								@endcan
+
                                             </div>
                                         </div>
                                     </div>
@@ -637,19 +599,18 @@
                                         <div class="dropdown-secondary dropdown float-right">
                                             <button class="btn btn-default btn-mini dropdown-toggle waves-light b-none txt-muted" type="button" id="dropdown6" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="icofont icofont-navigation-menu"></i></button>
                                             <div class="dropdown-menu" aria-labelledby="dropdown6" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 24px, 0px); top: 0px; left: 0px; will-change: transform;">
-																							@can('download file')
+
 
 																							<a class="dropdown-item waves-light waves-effect" href="/assets/uploads/cnxdrive/{{$file->filename}}"><i class="ti-download text-success mr-2"></i> Download</a>
-																							@endcan
-																							@can('share file')
+
 
 																							<a class="dropdown-item waves-light waves-effect shareFile" data-toggle="modal" data-target="#shareFileModal" data-directory="{{$file->filename}}" data-file="{{$file->name ?? 'File name'}}" data-unique="{{$file->id}}" href="javascript:void(0);"><i class="ti-sharethis text-warning mr-2"></i> Share</a>
-																							@endcan
+
 																								<div class="dropdown-divider"></div>
-																								@can('delete file')
+
 
                                                 <a class="dropdown-item waves-light waves-effect deleteFile" data-toggle="modal" data-target="#deleteFileModal" data-directory="{{$file->filename}}" data-file="{{$file->name ?? 'File name'}}" data-unique="{{$file->id}}" href="javascript:void(0);"><i class="ti-trash mr-2 text-danger"></i> Delete</a>
-																								@endcan
+
                                             </div>
                                         </div>
                                     </div>
@@ -716,19 +677,18 @@
                                             <div class="dropdown-secondary dropdown float-right">
                                                 <button class="btn btn-default btn-mini dropdown-toggle waves-light b-none txt-muted" type="button" id="dropdown6" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="icofont icofont-navigation-menu"></i></button>
                                                 <div class="dropdown-menu" aria-labelledby="dropdown6" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 24px, 0px); top: 0px; left: 0px; will-change: transform;">
-																									@can('download file')
+
 
 																									<a class="dropdown-item waves-light waves-effect" href="/assets/uploads/cnxdrive/{{$file->filename}}"><i class="ti-download text-success mr-2"></i> Download</a>
-																									@endcan
-																									@can('share file')
+
 
 																									<a class="dropdown-item waves-light waves-effect shareFile" data-toggle="modal" data-target="#shareFileModal" data-directory="{{$file->filename}}" data-file="{{$file->name ?? 'File name'}}" data-unique="{{$file->id}}" href="javascript:void(0);"><i class="ti-sharethis text-warning mr-2"></i> Share</a>
-																									@endcan
+
 																										<div class="dropdown-divider"></div>
-																										@can('delete file')
+
 
                                                     <a class="dropdown-item waves-light waves-effect deleteFile" data-toggle="modal" data-target="#deleteFileModal" data-directory="{{$file->filename}}" data-file="{{$file->name ?? 'File name'}}" data-unique="{{$file->id}}" href="javascript:void(0);"><i class="ti-trash mr-2 text-danger"></i> Delete</a>
-																										@endcan
+
                                                 </div>
                                             </div>
                                         </div>
@@ -743,19 +703,18 @@
                                             <div class="dropdown-secondary dropdown float-right">
                                                 <button class="btn btn-default btn-mini dropdown-toggle waves-light b-none txt-muted" type="button" id="dropdown6" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="icofont icofont-navigation-menu"></i></button>
                                                 <div class="dropdown-menu" aria-labelledby="dropdown6" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 24px, 0px); top: 0px; left: 0px; will-change: transform;">
-																									@can('download file')
+
 
 																									<a class="dropdown-item waves-light waves-effect" href="/assets/uploads/cnxdrive/{{$file->filename}}"><i class="ti-download text-success mr-2"></i> Download</a>
-																									@endcan
-																									@can('share file')
+
 
 																									<a class="dropdown-item waves-light waves-effect shareFile" data-toggle="modal" data-target="#shareFileModal" data-directory="{{$file->filename}}" data-file="{{$file->name ?? 'File name'}}" data-unique="{{$file->id}}" href="javascript:void(0);"><i class="ti-sharethis text-warning mr-2"></i> Share</a>
-																									@endcan
+
 																										<div class="dropdown-divider"></div>
-																										@can('delete file')
+
 
                                                     <a class="dropdown-item waves-light waves-effect deleteFile" data-toggle="modal" data-target="#deleteFileModal" data-directory="{{$file->filename}}" data-file="{{$file->name ?? 'File name'}}" data-unique="{{$file->id}}" href="javascript:void(0);"><i class="ti-trash mr-2 text-danger"></i> Delete</a>
-																										@endcan
+
                                                 </div>
                                             </div>
                                         </div>
@@ -770,19 +729,18 @@
                                             <div class="dropdown-secondary dropdown float-right">
                                                 <button class="btn btn-default btn-mini dropdown-toggle waves-light b-none txt-muted" type="button" id="dropdown6" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="icofont icofont-navigation-menu"></i></button>
                                                 <div class="dropdown-menu" aria-labelledby="dropdown6" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 24px, 0px); top: 0px; left: 0px; will-change: transform;">
-																									@can('download file')
+
 
 																									<a class="dropdown-item waves-light waves-effect" href="/assets/uploads/cnxdrive/{{$file->filename}}"><i class="ti-download text-success mr-2"></i> Download</a>
-																									@endcan
-																									@can('share file')
+
 
 																									<a class="dropdown-item waves-light waves-effect shareFile" data-toggle="modal" data-target="#shareFileModal" data-directory="{{$file->filename}}" data-file="{{$file->name ?? 'File name'}}" data-unique="{{$file->id}}" href="javascript:void(0);"><i class="ti-sharethis text-warning mr-2"></i> Share</a>
-																									@endcan
+
 																										<div class="dropdown-divider"></div>
-																										@can('delete file')
+
 
                                                     <a class="dropdown-item waves-light waves-effect deleteFile" data-toggle="modal" data-target="#deleteFileModal" data-directory="{{$file->filename}}" data-file="{{$file->name ?? 'File name'}}" data-unique="{{$file->id}}" href="javascript:void(0);"><i class="ti-trash mr-2 text-danger"></i> Delete</a>
-																										@endcan
+
                                                 </div>
                                             </div>
                                         </div>
@@ -796,19 +754,18 @@
                                             <div class="dropdown-secondary dropdown float-right">
                                                 <button class="btn btn-default btn-mini dropdown-toggle waves-light b-none txt-muted" type="button" id="dropdown6" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="icofont icofont-navigation-menu"></i></button>
                                                 <div class="dropdown-menu" aria-labelledby="dropdown6" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 24px, 0px); top: 0px; left: 0px; will-change: transform;">
-																									@can('download file')
+
 
 																									<a class="dropdown-item waves-light waves-effect" href="/assets/uploads/cnxdrive/{{$file->filename}}"><i class="ti-download text-success mr-2"></i> Download</a>
-																									@endcan
-																									@can('share file')
+
 
 																									<a class="dropdown-item waves-light waves-effect shareFile" data-toggle="modal" data-target="#shareFileModal" data-directory="{{$file->filename}}" data-file="{{$file->name ?? 'File name'}}" data-unique="{{$file->id}}" href="javascript:void(0);"><i class="ti-sharethis text-warning mr-2"></i> Share</a>
-																									@endcan
+
 																										<div class="dropdown-divider"></div>
-																										@can('delete file')
+
 
                                                     <a class="dropdown-item waves-light waves-effect deleteFile" data-toggle="modal" data-target="#deleteFileModal" data-directory="{{$file->filename}}" data-file="{{$file->name ?? 'File name'}}" data-unique="{{$file->id}}" href="javascript:void(0);"><i class="ti-trash mr-2 text-danger"></i> Delete</a>
-																										@endcan
+
                                                 </div>
                                             </div>
                                         </div>
@@ -822,19 +779,18 @@
                                             <div class="dropdown-secondary dropdown float-right">
                                                 <button class="btn btn-default btn-mini dropdown-toggle waves-light b-none txt-muted" type="button" id="dropdown6" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="icofont icofont-navigation-menu"></i></button>
                                                 <div class="dropdown-menu" aria-labelledby="dropdown6" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 24px, 0px); top: 0px; left: 0px; will-change: transform;">
-																									@can('download file')
+
 
 																									<a class="dropdown-item waves-light waves-effect" href="/assets/uploads/cnxdrive/{{$file->filename}}"><i class="ti-download text-success mr-2"></i> Download</a>
-																									@endcan
-																									@can('share file')
+
 
 																									<a class="dropdown-item waves-light waves-effect shareFile" data-toggle="modal" data-target="#shareFileModal" data-directory="{{$file->filename}}" data-file="{{$file->name ?? 'File name'}}" data-unique="{{$file->id}}" href="javascript:void(0);"><i class="ti-sharethis text-warning mr-2"></i> Share</a>
-																									@endcan
+
 																										<div class="dropdown-divider"></div>
-																										@can('delete file')
+
 
                                                     <a class="dropdown-item waves-light waves-effect deleteFile" data-toggle="modal" data-target="#deleteFileModal" data-directory="{{$file->filename}}" data-file="{{$file->name ?? 'File name'}}" data-unique="{{$file->id}}" href="javascript:void(0);"><i class="ti-trash mr-2 text-danger"></i> Delete</a>
-																										@endcan
+
                                                 </div>
                                             </div>
                                         </div>
@@ -848,19 +804,18 @@
                                             <div class="dropdown-secondary dropdown float-right">
                                                 <button class="btn btn-default btn-mini dropdown-toggle waves-light b-none txt-muted" type="button" id="dropdown6" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="icofont icofont-navigation-menu"></i></button>
                                                 <div class="dropdown-menu" aria-labelledby="dropdown6" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 24px, 0px); top: 0px; left: 0px; will-change: transform;">
-																									@can('download file')
+
 
 																									<a class="dropdown-item waves-light waves-effect" href="/assets/uploads/cnxdrive/{{$file->filename}}"><i class="ti-download text-success mr-2"></i> Download</a>
-																									@endcan
-																									@can('share file')
+
 
 																									<a class="dropdown-item waves-light waves-effect shareFile" data-toggle="modal" data-target="#shareFileModal" data-directory="{{$file->filename}}" data-file="{{$file->name ?? 'File name'}}" data-unique="{{$file->id}}" href="javascript:void(0);"><i class="ti-sharethis text-warning mr-2"></i> Share</a>
-																									@endcan
+
 																										<div class="dropdown-divider"></div>
-																										@can('delete file')
+
 
                                                     <a class="dropdown-item waves-light waves-effect deleteFile" data-toggle="modal" data-target="#deleteFileModal" data-directory="{{$file->filename}}" data-file="{{$file->name ?? 'File name'}}" data-unique="{{$file->id}}" href="javascript:void(0);"><i class="ti-trash mr-2 text-danger"></i> Delete</a>
-																										@endcan
+
                                                 </div>
                                             </div>
                                         </div>
@@ -874,19 +829,18 @@
                                             <div class="dropdown-secondary dropdown float-right">
                                                 <button class="btn btn-default btn-mini dropdown-toggle waves-light b-none txt-muted" type="button" id="dropdown6" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="icofont icofont-navigation-menu"></i></button>
                                                 <div class="dropdown-menu" aria-labelledby="dropdown6" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 24px, 0px); top: 0px; left: 0px; will-change: transform;">
-																									@can('download file')
+
 
 																									<a class="dropdown-item waves-light waves-effect" href="/assets/uploads/cnxdrive/{{$file->filename}}"><i class="ti-download text-success mr-2"></i> Download</a>
-																									@endcan
-																									@can('share file')
+
 
 																									<a class="dropdown-item waves-light waves-effect shareFile" data-toggle="modal" data-target="#shareFileModal" data-directory="{{$file->filename}}" data-file="{{$file->name ?? 'File name'}}" data-unique="{{$file->id}}" href="javascript:void(0);"><i class="ti-sharethis text-warning mr-2"></i> Share</a>
-																									@endcan
+
 																										<div class="dropdown-divider"></div>
-																										@can('delete file')
+
 
                                                     <a class="dropdown-item waves-light waves-effect deleteFile" data-toggle="modal" data-target="#deleteFileModal" data-directory="{{$file->filename}}" data-file="{{$file->name ?? 'File name'}}" data-unique="{{$file->id}}" href="javascript:void(0);"><i class="ti-trash mr-2 text-danger"></i> Delete</a>
-																										@endcan
+
                                                 </div>
                                             </div>
                                         </div>
@@ -900,19 +854,18 @@
                                             <div class="dropdown-secondary dropdown float-right">
                                                 <button class="btn btn-default btn-mini dropdown-toggle waves-light b-none txt-muted" type="button" id="dropdown6" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="icofont icofont-navigation-menu"></i></button>
                                                 <div class="dropdown-menu" aria-labelledby="dropdown6" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 24px, 0px); top: 0px; left: 0px; will-change: transform;">
-																									@can('download file')
+
 
 																									<a class="dropdown-item waves-light waves-effect" href="/assets/uploads/cnxdrive/{{$file->filename}}"><i class="ti-download text-success mr-2"></i> Download</a>
-																									@endcan
-																									@can('share file')
+
 
 																									<a class="dropdown-item waves-light waves-effect shareFile" data-toggle="modal" data-target="#shareFileModal" data-directory="{{$file->filename}}" data-file="{{$file->name ?? 'File name'}}" data-unique="{{$file->id}}" href="javascript:void(0);"><i class="ti-sharethis text-warning mr-2"></i> Share</a>
-																									@endcan
+
 																										<div class="dropdown-divider"></div>
-																										@can('delete file')
+
 
                                                     <a class="dropdown-item waves-light waves-effect deleteFile" data-toggle="modal" data-target="#deleteFileModal" data-directory="{{$file->filename}}" data-file="{{$file->name ?? 'File name'}}" data-unique="{{$file->id}}" href="javascript:void(0);"><i class="ti-trash mr-2 text-danger"></i> Delete</a>
-																										@endcan
+
                                                 </div>
                                             </div>
                                         </div>
@@ -926,19 +879,17 @@
                                             <div class="dropdown-secondary dropdown float-right">
                                                 <button class="btn btn-default btn-mini dropdown-toggle waves-light b-none txt-muted" type="button" id="dropdown6" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="icofont icofont-navigation-menu"></i></button>
                                                 <div class="dropdown-menu" aria-labelledby="dropdown6" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 24px, 0px); top: 0px; left: 0px; will-change: transform;">
-																									@can('download file')
+
 
 																									<a class="dropdown-item waves-light waves-effect" href="/assets/uploads/cnxdrive/{{$file->filename}}"><i class="ti-download text-success mr-2"></i> Download</a>
-																									@endcan
-																									@can('share file')
+
 
 																									<a class="dropdown-item waves-light waves-effect shareFile" data-toggle="modal" data-target="#shareFileModal" data-directory="{{$file->filename}}" data-file="{{$file->name ?? 'File name'}}" data-unique="{{$file->id}}" href="javascript:void(0);"><i class="ti-sharethis text-warning mr-2"></i> Share</a>
-																									@endcan
+
 																										<div class="dropdown-divider"></div>
-																										@can('delete file')
 
                                                     <a class="dropdown-item waves-light waves-effect deleteFile" data-toggle="modal" data-target="#deleteFileModal" data-directory="{{$file->filename}}" data-file="{{$file->name ?? 'File name'}}" data-unique="{{$file->id}}" href="javascript:void(0);"><i class="ti-trash mr-2 text-danger"></i> Delete</a>
-																										@endcan
+
                                                 </div>
                                             </div>
                                         </div>
@@ -952,19 +903,18 @@
                                                 <div class="dropdown-secondary dropdown float-right">
                                                     <button class="btn btn-default btn-mini dropdown-toggle waves-light b-none txt-muted" type="button" id="dropdown6" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="icofont icofont-navigation-menu"></i></button>
                                                     <div class="dropdown-menu" aria-labelledby="dropdown6" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 24px, 0px); top: 0px; left: 0px; will-change: transform;">
-																											@can('download file')
+
 
 																											<a class="dropdown-item waves-light waves-effect" href="/assets/uploads/cnxdrive/{{$file->filename}}"><i class="ti-download text-success mr-2"></i> Download</a>
-																											@endcan
-																											@can('share file')
+
 
 																											<a class="dropdown-item waves-light waves-effect shareFile" data-toggle="modal" data-target="#shareFileModal" data-directory="{{$file->filename}}" data-file="{{$file->name ?? 'File name'}}" data-unique="{{$file->id}}" href="javascript:void(0);"><i class="ti-sharethis text-warning mr-2"></i> Share</a>
-																											@endcan
+
 																												<div class="dropdown-divider"></div>
-																												@can('delete file')
+
 
                                                         <a class="dropdown-item waves-light waves-effect deleteFile" data-toggle="modal" data-target="#deleteFileModal" data-directory="{{$file->filename}}" data-file="{{$file->name ?? 'File name'}}" data-unique="{{$file->id}}" href="javascript:void(0);"><i class="ti-trash mr-2 text-danger"></i> Delete</a>
-																												@endcan
+
                                                     </div>
                                                 </div>
                                             </div>
@@ -978,19 +928,18 @@
                                             <div class="dropdown-secondary dropdown float-right">
                                                 <button class="btn btn-default btn-mini dropdown-toggle waves-light b-none txt-muted" type="button" id="dropdown6" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="icofont icofont-navigation-menu"></i></button>
                                                 <div class="dropdown-menu" aria-labelledby="dropdown6" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 24px, 0px); top: 0px; left: 0px; will-change: transform;">
-																									@can('download file')
+
 
 																									<a class="dropdown-item waves-light waves-effect" href="/assets/uploads/cnxdrive/{{$file->filename}}"><i class="ti-download text-success mr-2"></i> Download</a>
-																									@endcan
-																									@can('share file')
+
 
 																									<a class="dropdown-item waves-light waves-effect shareFile" data-toggle="modal" data-target="#shareFileModal" data-directory="{{$file->filename}}" data-file="{{$file->name ?? 'File name'}}" data-unique="{{$file->id}}" href="javascript:void(0);"><i class="ti-sharethis text-warning mr-2"></i> Share</a>
-																									@endcan
+
 																										<div class="dropdown-divider"></div>
-																										@can('delete file')
+
 
                                                     <a class="dropdown-item waves-light waves-effect deleteFile" data-toggle="modal" data-target="#deleteFileModal" data-directory="{{$file->filename}}" data-file="{{$file->name ?? 'File name'}}" data-unique="{{$file->id}}" href="javascript:void(0);"><i class="ti-trash mr-2 text-danger"></i> Delete</a>
-																										@endcan
+
                                                 </div>
                                             </div>
                                         </div>
@@ -1004,19 +953,18 @@
                                             <div class="dropdown-secondary dropdown float-right">
                                                 <button class="btn btn-default btn-mini dropdown-toggle waves-light b-none txt-muted" type="button" id="dropdown6" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="icofont icofont-navigation-menu"></i></button>
                                                 <div class="dropdown-menu" aria-labelledby="dropdown6" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 24px, 0px); top: 0px; left: 0px; will-change: transform;">
-																									@can('download file')
+
 
 																									<a class="dropdown-item waves-light waves-effect" href="/assets/uploads/cnxdrive/{{$file->filename}}"><i class="ti-download text-success mr-2"></i> Download</a>
-																									@endcan
-																									@can('share file')
+
 
 																									<a class="dropdown-item waves-light waves-effect shareFile" data-toggle="modal" data-target="#shareFileModal" data-directory="{{$file->filename}}" data-file="{{$file->name ?? 'File name'}}" data-unique="{{$file->id}}" href="javascript:void(0);"><i class="ti-sharethis text-warning mr-2"></i> Share</a>
-																									@endcan
+
 																										<div class="dropdown-divider"></div>
-																										@can('delete file')
+
 
                                                     <a class="dropdown-item waves-light waves-effect deleteFile" data-toggle="modal" data-target="#deleteFileModal" data-directory="{{$file->filename}}" data-file="{{$file->name ?? 'File name'}}" data-unique="{{$file->id}}" href="javascript:void(0);"><i class="ti-trash mr-2 text-danger"></i> Delete</a>
-																										@endcan
+
                                                 </div>
                                             </div>
                                         </div>
@@ -1030,19 +978,18 @@
                                             <div class="dropdown-secondary dropdown float-right">
                                                 <button class="btn btn-default btn-mini dropdown-toggle waves-light b-none txt-muted" type="button" id="dropdown6" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="icofont icofont-navigation-menu"></i></button>
                                                 <div class="dropdown-menu" aria-labelledby="dropdown6" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 24px, 0px); top: 0px; left: 0px; will-change: transform;">
-																									@can('download file')
+
 
 																									<a class="dropdown-item waves-light waves-effect" href="/assets/uploads/cnxdrive/{{$file->filename}}"><i class="ti-download text-success mr-2"></i> Download</a>
-																									@endcan
-																									@can('share file')
+
 
 																									<a class="dropdown-item waves-light waves-effect shareFile" data-toggle="modal" data-target="#shareFileModal" data-directory="{{$file->filename}}" data-file="{{$file->name ?? 'File name'}}" data-unique="{{$file->id}}" href="javascript:void(0);"><i class="ti-sharethis text-warning mr-2"></i> Share</a>
-																									@endcan
+
 																										<div class="dropdown-divider"></div>
-																										@can('delete file')
+
 
                                                     <a class="dropdown-item waves-light waves-effect deleteFile" data-toggle="modal" data-target="#deleteFileModal" data-directory="{{$file->filename}}" data-file="{{$file->name ?? 'File name'}}" data-unique="{{$file->id}}" href="javascript:void(0);"><i class="ti-trash mr-2 text-danger"></i> Delete</a>
-																										@endcan
+
                                                 </div>
                                             </div>
                                         </div>
@@ -1056,19 +1003,18 @@
                                             <div class="dropdown-secondary dropdown float-right">
                                                 <button class="btn btn-default btn-mini dropdown-toggle waves-light b-none txt-muted" type="button" id="dropdown6" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="icofont icofont-navigation-menu"></i></button>
                                                 <div class="dropdown-menu" aria-labelledby="dropdown6" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 24px, 0px); top: 0px; left: 0px; will-change: transform;">
-																									@can('download file')
+
 
 																									<a class="dropdown-item waves-light waves-effect" href="/assets/uploads/cnxdrive/{{$file->filename}}"><i class="ti-download text-success mr-2"></i> Download</a>
-																									@endcan
-																									@can('share file')
+
 
 																									<a class="dropdown-item waves-light waves-effect shareFile" data-toggle="modal" data-target="#shareFileModal" data-directory="{{$file->filename}}" data-file="{{$file->name ?? 'File name'}}" data-unique="{{$file->id}}" href="javascript:void(0);"><i class="ti-sharethis text-warning mr-2"></i> Share</a>
-																									@endcan
+
 																										<div class="dropdown-divider"></div>
-																										@can('delete file')
+
 
                                                     <a class="dropdown-item waves-light waves-effect deleteFile" data-toggle="modal" data-target="#deleteFileModal" data-directory="{{$file->filename}}" data-file="{{$file->name ?? 'File name'}}" data-unique="{{$file->id}}" href="javascript:void(0);"><i class="ti-trash mr-2 text-danger"></i> Delete</a>
-																										@endcan
+
                                                 </div>
                                             </div>
                                         </div>
@@ -1082,19 +1028,17 @@
                                             <div class="dropdown-secondary dropdown float-right">
                                                 <button class="btn btn-default btn-mini dropdown-toggle waves-light b-none txt-muted" type="button" id="dropdown6" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="icofont icofont-navigation-menu"></i></button>
                                                 <div class="dropdown-menu" aria-labelledby="dropdown6" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 24px, 0px); top: 0px; left: 0px; will-change: transform;">
-																									@can('download file')
+
 
 																									<a class="dropdown-item waves-light waves-effect" href="/assets/uploads/cnxdrive/{{$file->filename}}"><i class="ti-download text-success mr-2"></i> Download</a>
-																									@endcan
-																									@can('share file')
 
 																									<a class="dropdown-item waves-light waves-effect shareFile" data-toggle="modal" data-target="#shareFileModal" data-directory="{{$file->filename}}" data-file="{{$file->name ?? 'File name'}}" data-unique="{{$file->id}}" href="javascript:void(0);"><i class="ti-sharethis text-warning mr-2"></i> Share</a>
-																									@endcan
+
 																										<div class="dropdown-divider"></div>
-																										@can('delete file')
+
 
                                                     <a class="dropdown-item waves-light waves-effect deleteFile" data-toggle="modal" data-target="#deleteFileModal" data-directory="{{$file->filename}}" data-file="{{$file->name ?? 'File name'}}" data-unique="{{$file->id}}" href="javascript:void(0);"><i class="ti-trash mr-2 text-danger"></i> Delete</a>
-																										@endcan
+
                                                 </div>
                                             </div>
                                         </div>
@@ -1108,19 +1052,18 @@
                                             <div class="dropdown-secondary dropdown float-right">
                                                 <button class="btn btn-default btn-mini dropdown-toggle waves-light b-none txt-muted" type="button" id="dropdown6" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="icofont icofont-navigation-menu"></i></button>
                                                 <div class="dropdown-menu" aria-labelledby="dropdown6" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 24px, 0px); top: 0px; left: 0px; will-change: transform;">
-																									@can('download file')
+
 
 																									<a class="dropdown-item waves-light waves-effect" href="/assets/uploads/cnxdrive/{{$file->filename}}"><i class="ti-download text-success mr-2"></i> Download</a>
-																									@endcan
-																									@can('share file')
+
 
 																									<a class="dropdown-item waves-light waves-effect shareFile" data-toggle="modal" data-target="#shareFileModal" data-directory="{{$file->filename}}" data-file="{{$file->name ?? 'File name'}}" data-unique="{{$file->id}}" href="javascript:void(0);"><i class="ti-sharethis text-warning mr-2"></i> Share</a>
-																									@endcan
+
 																										<div class="dropdown-divider"></div>
-																										@can('delete file')
+
 
                                                     <a class="dropdown-item waves-light waves-effect deleteFile" data-toggle="modal" data-target="#deleteFileModal" data-directory="{{$file->filename}}" data-file="{{$file->name ?? 'File name'}}" data-unique="{{$file->id}}" href="javascript:void(0);"><i class="ti-trash mr-2 text-danger"></i> Delete</a>
-																										@endcan
+
                                                 </div>
                                             </div>
                                         </div>
@@ -1134,19 +1077,18 @@
                                             <div class="dropdown-secondary dropdown float-right">
                                                 <button class="btn btn-default btn-mini dropdown-toggle waves-light b-none txt-muted" type="button" id="dropdown6" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="icofont icofont-navigation-menu"></i></button>
                                                 <div class="dropdown-menu" aria-labelledby="dropdown6" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 24px, 0px); top: 0px; left: 0px; will-change: transform;">
-																									@can('download file')
+
 
 																									<a class="dropdown-item waves-light waves-effect" href="/assets/uploads/cnxdrive/{{$file->filename}}"><i class="ti-download text-success mr-2"></i> Download</a>
-																									@endcan
-																									@can('share file')
+
 
 																									<a class="dropdown-item waves-light waves-effect shareFile" data-toggle="modal" data-target="#shareFileModal" data-directory="{{$file->filename}}" data-file="{{$file->name ?? 'File name'}}" data-unique="{{$file->id}}" href="javascript:void(0);"><i class="ti-sharethis text-warning mr-2"></i> Share</a>
-																									@endcan
+
 																										<div class="dropdown-divider"></div>
-																										@can('delete file')
+
 
                                                     <a class="dropdown-item waves-light waves-effect deleteFile" data-toggle="modal" data-target="#deleteFileModal" data-directory="{{$file->filename}}" data-file="{{$file->name ?? 'File name'}}" data-unique="{{$file->id}}" href="javascript:void(0);"><i class="ti-trash mr-2 text-danger"></i> Delete</a>
-																										@endcan
+
                                                 </div>
                                             </div>
                                         </div>
@@ -1160,19 +1102,18 @@
                                             <div class="dropdown-secondary dropdown float-right">
                                                 <button class="btn btn-default btn-mini dropdown-toggle waves-light b-none txt-muted" type="button" id="dropdown6" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="icofont icofont-navigation-menu"></i></button>
                                                 <div class="dropdown-menu" aria-labelledby="dropdown6" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 24px, 0px); top: 0px; left: 0px; will-change: transform;">
-																									@can('download file')
+
 
 																									<a class="dropdown-item waves-light waves-effect" href="/assets/uploads/cnxdrive/{{$file->filename}}"><i class="ti-download text-success mr-2"></i> Download</a>
-																									@endcan
-																									@can('share file')
+
 
 																									<a class="dropdown-item waves-light waves-effect shareFile" data-toggle="modal" data-target="#shareFileModal" data-directory="{{$file->filename}}" data-file="{{$file->name ?? 'File name'}}" data-unique="{{$file->id}}" href="javascript:void(0);"><i class="ti-sharethis text-warning mr-2"></i> Share</a>
-																									@endcan
+
 																										<div class="dropdown-divider"></div>
-																										@can('delete file')
+
 
                                                     <a class="dropdown-item waves-light waves-effect deleteFile" data-toggle="modal" data-target="#deleteFileModal" data-directory="{{$file->filename}}" data-file="{{$file->name ?? 'File name'}}" data-unique="{{$file->id}}" href="javascript:void(0);"><i class="ti-trash mr-2 text-danger"></i> Delete</a>
-																										@endcan
+
                                                 </div>
                                             </div>
                                         </div>
@@ -1186,19 +1127,18 @@
                                             <div class="dropdown-secondary dropdown float-right">
                                                 <button class="btn btn-default btn-mini dropdown-toggle waves-light b-none txt-muted" type="button" id="dropdown6" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="icofont icofont-navigation-menu"></i></button>
                                                 <div class="dropdown-menu" aria-labelledby="dropdown6" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 24px, 0px); top: 0px; left: 0px; will-change: transform;">
-																									@can('download file')
+
 
 																									<a class="dropdown-item waves-light waves-effect" href="/assets/uploads/cnxdrive/{{$file->filename}}"><i class="ti-download text-success mr-2"></i> Download</a>
-																									@endcan
-																									@can('share file')
+
 
 																									<a class="dropdown-item waves-light waves-effect shareFile" data-toggle="modal" data-target="#shareFileModal" data-directory="{{$file->filename}}" data-file="{{$file->name ?? 'File name'}}" data-unique="{{$file->id}}" href="javascript:void(0);"><i class="ti-sharethis text-warning mr-2"></i> Share</a>
-																									@endcan
+
 																										<div class="dropdown-divider"></div>
-																										@can('delete file')
+
 
                                                     <a class="dropdown-item waves-light waves-effect deleteFile" data-toggle="modal" data-target="#deleteFileModal" data-directory="{{$file->filename}}" data-file="{{$file->name ?? 'File name'}}" data-unique="{{$file->id}}" href="javascript:void(0);"><i class="ti-trash mr-2 text-danger"></i> Delete</a>
-																										@endcan
+
                                                 </div>
                                             </div>
                                         </div>
@@ -1212,19 +1152,18 @@
                                             <div class="dropdown-secondary dropdown float-right">
                                                 <button class="btn btn-default btn-mini dropdown-toggle waves-light b-none txt-muted" type="button" id="dropdown6" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="icofont icofont-navigation-menu"></i></button>
                                                 <div class="dropdown-menu" aria-labelledby="dropdown6" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 24px, 0px); top: 0px; left: 0px; will-change: transform;">
-																									@can('download file')
+
 
 																									<a class="dropdown-item waves-light waves-effect" href="/assets/uploads/cnxdrive/{{$file->filename}}"><i class="ti-download text-success mr-2"></i> Download</a>
-																									@endcan
-																									@can('share file')
+
 
 																									<a class="dropdown-item waves-light waves-effect shareFile" data-toggle="modal" data-target="#shareFileModal" data-directory="{{$file->filename}}" data-file="{{$file->name ?? 'File name'}}" data-unique="{{$file->id}}" href="javascript:void(0);"><i class="ti-sharethis text-warning mr-2"></i> Share</a>
-																									@endcan
+
 																										<div class="dropdown-divider"></div>
-																										@can('delete file')
+
 
                                                     <a class="dropdown-item waves-light waves-effect deleteFile" data-toggle="modal" data-target="#deleteFileModal" data-directory="{{$file->filename}}" data-file="{{$file->name ?? 'File name'}}" data-unique="{{$file->id}}" href="javascript:void(0);"><i class="ti-trash mr-2 text-danger"></i> Delete</a>
-																										@endcan
+
                                                 </div>
                                             </div>
                                         </div>

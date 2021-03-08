@@ -118,6 +118,7 @@ class Shortcut extends Component
 												->whereMonth('birth_date', '>', $date->month)
 										->orWhere(function($query) use ($date){
 										$query->WhereMonth('birth_date','=', $date->month)
+                                        ->where('tenant_id',Auth::user()->tenant_id)
 										->whereDay('birth_date', '>=', $date->day);
 									})->orderByRaw('DATE_FORMAT(birth_date, "%m-%d")', 'ASC')
 									->take(5)
