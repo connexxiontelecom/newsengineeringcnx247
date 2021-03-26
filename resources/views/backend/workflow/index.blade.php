@@ -317,7 +317,7 @@
 								</div>
 								<div class="form-group">
 										<div class="btn-group d-flex justify-content-center">
-											<button class="btn-mini btn btn-danger"><i class="ti-close mr-2"></i> Cancel</button>
+											<button  data-dismiss="modal" type="button" class="btn-mini btn btn-danger"><i class="ti-close mr-2"></i> Cancel</button>
 											<button class="btn-mini btn btn-primary" type="button" id="verifyThenAct"><i class="ti-check mr-2"></i> Submit</button>
 										</div>
 								</div>
