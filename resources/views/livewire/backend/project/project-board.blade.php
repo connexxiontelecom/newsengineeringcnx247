@@ -370,12 +370,12 @@
                                             </td>
                                             <td>
                                                 <div class="task-list-table">
-
-                                                        <a href="/activity-stream/profile/{{$participant->user->url}}">
-                                                            <img class="img-fluid img-radius" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{$participant->user->first_name}} {{$participant->user->surname ?? ''}}" src="/assets/images/avatars/thumbnails/{{ $participant->user->avatar ?? '/assets/images/avatar.png' }}" alt="{{$participant->user->first_name}} {{$participant->user->surname ?? ''}}">
+                                                    @foreach($task->responsiblePersons as $person)
+                                                        <a href="/activity-stream/profile/{{$person->user->url}}">
+                                                            <img class="img-fluid img-radius" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{$person->user->first_name}} {{$person->user->surname ?? ''}}" src="/assets/images/avatars/thumbnails/{{ $person->user->avatar ?? '/assets/images/avatar.png' }}" alt="{{$person->user->first_name}} {{$person->user->surname ?? ''}}">
                                                         </a>
 
-
+                                                    @endforeach
                                                 </div>
                                             </td>
                                             <td>
@@ -489,9 +489,9 @@
                                             </td>
                                             <td>
                                                 <div class="task-list-table">
-																										@foreach ($task->postObservers as $observer)
-                                                        <a href="/activity-stream/profile/{{$observer->user->url}}">
-                                                            <img class="img-fluid img-radius" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{$observer->user->first_name}} {{$observer->user->surname ?? ''}}" src="/assets/images/avatars/thumbnails/{{ $observer->user->avatar ?? '/assets/images/avatar.png' }}" alt="{{$observer->user->first_name}} {{$observer->user->surname ?? ''}}">
+																										 @foreach($task->responsiblePersons as $person)
+                                                        <a href="/activity-stream/profile/{{$person->user->url}}">
+                                                            <img class="img-fluid img-radius" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{$person->user->first_name}} {{$person->user->surname ?? ''}}" src="/assets/images/avatars/thumbnails/{{ $person->user->avatar ?? '/assets/images/avatar.png' }}" alt="{{$person->user->first_name}} {{$person->user->surname ?? ''}}">
                                                         </a>
 																										@endforeach
 
