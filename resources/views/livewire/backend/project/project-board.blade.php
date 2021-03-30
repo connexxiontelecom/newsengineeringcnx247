@@ -61,7 +61,7 @@
                                     @if ($person->user_id == Auth::user()->id)
                                         <tr>
                                             <td>
-                                               {{ $sn }}
+                                               {{ $sn++ }}
                                             </td>
                                             <td>
                                                 <a href="{{ route('view-project', $task->post_url) }}" class="card-title">{{$task->post_title}}</a>
@@ -157,7 +157,7 @@
 
 
 
-                                        <?php $sn++; ?>
+
                                     @endif
                                 @endforeach
                             @endforeach
@@ -329,12 +329,14 @@
 
 																		</thead>
 																		<tbody>
-
+																			@php
+																					$p = 1;
+																			@endphp
 																			@foreach($projects as $task)
 																					@foreach ($task->postParticipants as $participant)
 																							@if ($participant->user_id == Auth::user()->id)
 																									<tr>
-																										<td>1</td>
+																										<td>{{$p++}}</td>
 																										<td><a href="{{route('view-project', $task->post_url)}}">{{$task->post_title ?? ''}}</a></td>
 																										<td>
 																											<a href="/activity-stream/profile/{{$task->user->url}}">
@@ -446,12 +448,14 @@
 
 																		</thead>
 																		<tbody>
-
+																				@php
+																						$o = 1;
+																				@endphp
 																			@foreach($projects as $task)
 																					@foreach ($task->postObservers as $observer)
 																							@if ($observer->user_id == Auth::user()->id)
 																									<tr>
-																										<td>1</td>
+																										<td>{{$o++}}</td>
 																										<td><a href="{{route('view-project', $task->post_url)}}">{{$task->post_title ?? ''}}</a></td>
 																										<td>
 																											<a href="/activity-stream/profile/{{$task->user->url}}">
