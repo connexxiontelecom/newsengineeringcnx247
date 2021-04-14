@@ -105,7 +105,7 @@
 								audio.play();
 
 							}
-						 }, 300000);
+						 }, 300000 );
 				});
 
 			function notify(from, align, icon, type, animIn, animOut){
@@ -113,7 +113,7 @@
             icon: icon,
             title: 'New notification! ',
             message: ' You have unread notification(s).',
-            url: ''
+            url: "{{route('notifications')}}"
         },{
             element: 'body',
             type: type,
