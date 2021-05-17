@@ -264,6 +264,16 @@
                             <span class="pcoded-mtext">Budget Setup</span>
                         </a>
                     </li>
+									<li class=" ">
+                        <a href="{{route('bank-accounts')}}">
+                            <span class="pcoded-mtext">Bank Setup</span>
+                        </a>
+                    </li>
+									<li class=" ">
+                        <a href="{{route('vendor-services')}}">
+                            <span class="pcoded-mtext">Service Setup</span>
+                        </a>
+                    </li>
                     <li class=" ">
                         <a href="{{route('opening-balance')}}">
                             <span class="pcoded-mtext">Opening Balance</span>

@@ -296,7 +296,7 @@ class CRMController extends Controller
                     'posted_by' => Auth::user()->id,
                     'narration' => 'VAT on invoice no. '.$invoice->invoice_no.' for '.$invoice->client->company_name,
                     'dr_amount' => 0,
-                    'cr_amount' => $request->currency != Auth::user()->tenant->currency->id ?  $request->tax_amount * $request->exchange_rate : $request->tax_amount,
+                    'cr_amount' => $request->currency != Auth::user()->tenant->currency->id ?  $request->tax_amount * $request->exchange_rate : $request->tax_amount ?? 0,
                     'ref_no' => $ref_no,
                     'bank' => 0,
                     'ob' => 0,
