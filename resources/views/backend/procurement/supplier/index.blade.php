@@ -100,7 +100,6 @@
                                             <th>#</th>
                                             <th>Company Name</th>
                                             <th>Email</th>
-                                            <th>Phone</th>
                                             <th>Industry</th>
                                             <th>Contact Person</th>
                                             <th>Email</th>
@@ -117,7 +116,6 @@
                                                     <td>{{$serial++}}</td>
                                                     <td>{{$supplier->company_name}}</td>
                                                     <td>{{$supplier->company_email}}</td>
-                                                    <td>{{$supplier->company_phone}}</td>
                                                     <td>{{$supplier->supplierIndustry->industry}}</td>
                                                     <td>{{$supplier->first_name}}</td>
                                                     <td>{{$supplier->email_address}}</td>
@@ -137,7 +135,6 @@
                                             <th>#</th>
                                             <th>Company Name</th>
                                             <th>Email</th>
-                                            <th>Phone</th>
                                             <th>Industry</th>
                                             <th>Contact Person</th>
                                             <th>Email</th>
