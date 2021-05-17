@@ -76,7 +76,7 @@ Receive Payment
             <div class="row invoive-info">
                 <div class="col-md-4 col-xs-12 invoice-client-info">
                     <h6>Client Information :</h6>
-                    <h6 class="m-0">{{$invoice->client->title ?? ''}} {{$invoice->client->first_name ?? ''}} {{$invoice->client->surname ?? ''}}</h6>
+                    <h6 class="m-0"> {{$invoice->client->company_name ?? ''}} </h6>
                     <p class="m-0 m-t-10">{{$invoice->client->street_1 ?? ''}}. {{$invoice->client->city ?? ''}}, {{$invoice->client->postal_code ?? ''}}</p>
                     <p class="m-0">{{$invoice->client->mobile_no ?? ''}}</p>
                     <p><a href="mailto:{{$invoice->client->email ?? ''}}" class="__cf_email__" data-cfemail="eb8f8e8684ab939291c5888486">[ {{$invoice->client->email ?? ''}} ]</a></p>

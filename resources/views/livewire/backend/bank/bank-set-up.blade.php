@@ -59,16 +59,12 @@
                                             @enderror
 
                                         </div>
-
-
                                         <div class="form-group">
                                             <label for="">Bank GL Code</label>
                                             <select class="form-control" wire:model.debounce.90000ms="bank_gl_code">
+																							<option selected disabled>--Select bank--</option>
                                                 @foreach($bank_details as $bank_detail):
-
                                                     <option value="{{$bank_detail->glcode}}"> {{$bank_detail->account_name." (".$bank_detail->glcode.")" ?? ''  }} </option>
-
-
                                                 @endforeach;
                                             </select>
 
