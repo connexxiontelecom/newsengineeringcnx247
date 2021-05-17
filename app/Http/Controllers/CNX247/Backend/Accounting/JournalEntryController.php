@@ -17,7 +17,7 @@ class JournalEntryController extends Controller
 
     public function create()
     {
-        $accounts = DB::table(Auth::user()->tenant_id.'_coa')->where('type', 'Detail')->get();
+        $accounts = DB::table(Auth::user()->tenant_id.'_coa')->where('type', 1)->get();
         return view('backend.accounting.postings.jv.create', ['accounts'=>$accounts]);
     }
 

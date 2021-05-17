@@ -89,9 +89,9 @@
                      <div class="card-block">
                          <div class="row invoive-info">
                              <div class="col-md-6 col-xs-12 invoice-client-info">
-																 <h6 class="sub-title">Supplier Information :</h6>
+																 <h6 class="sub-title">Vendor Information :</h6>
 																 <select name="supplier" id="supplier" class="form-control">
-																	 <option disabled selected>Select supplier</option>
+																	 <option disabled selected>Select vendor</option>
 																	 @foreach ($suppliers as $supplier)
 																			 <option value="{{$supplier->id}}">{{$supplier->company_name ?? ''}}</option>
 																	 @endforeach

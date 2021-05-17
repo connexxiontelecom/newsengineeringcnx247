@@ -162,7 +162,7 @@ class CRMController extends Controller
             }
             if(Schema::connection('mysql')->hasTable(Auth::user()->tenant_id.'_coa')){
                 $status = 1; //subscribed for accounting package
-                $accounts = DB::table(Auth::user()->tenant_id.'_coa')->where('type', 'Detail')->get();
+                $accounts = DB::table(Auth::user()->tenant_id.'_coa')->where('type', 1)->get();
                 return view('backend.crm.clients.convert-to-lead',
                 ['client'=>$client,
                 'invoice_no'=>$invoiceNo,
@@ -512,7 +512,7 @@ class CRMController extends Controller
     */
     public function invoiceList(){
         $now = Carbon::now();
-        $invoices = Invoice::where('tenant_id', Auth::user()->tenant_id)->orderBy('id', 'DESC')->get();
+        $invoices = Invoice::where('trash',0)->where('tenant_id', Auth::user()->tenant_id)->orderBy('id', 'DESC')->get();
         $monthly = Invoice::where('tenant_id', Auth::user()->tenant_id)
                             ->whereMonth('created_at', date('m'))
 														->whereYear('created_at', date('Y'))

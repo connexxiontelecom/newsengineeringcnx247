@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-    Supplier - {{$supplier->company_name ?? ''}}
+	Vendor - {{$supplier->company_name ?? ''}}
 @endsection
 
 @section('extra-styles')
@@ -20,7 +20,7 @@
     <div class="col-md-12">
         <div class="card">
             <div class="card-block">
-                <h5 class="sub-title">Supplier Profile</h5>
+                <h5 class="sub-title">Vendor Profile</h5>
 
                 <div class="card-header">
                     @if (session()->has('success'))

@@ -56,7 +56,7 @@ class SupplierController extends Controller
         if(Schema::connection('mysql')->hasTable(Auth::user()->tenant_id.'_coa') || Schema::connection('mysql')->hasTable(Auth::user()->tenant_id.'_gl')){
             $accounts = DB::table(Auth::user()->tenant_id.'_coa')
                         ->select('glcode', 'account_name')
-                        ->where('type', 'Detail')
+                        ->where('type', 1)
                         ->get();
 					return view('backend.procurement.supplier.create',['industries'=>$industries,'accounts'=>$accounts, 'status'=>1]);
         }else{
@@ -187,7 +187,7 @@ class SupplierController extends Controller
                                         ->where('tenant_id', Auth::user()->tenant_id)
 																				->get();
 					if(Schema::connection('mysql')->hasTable(Auth::user()->tenant_id.'_coa')){
-						$accounts = DB::table(Auth::user()->tenant_id.'_coa')->where('type', 'Detail')->select()->get();
+						$accounts = DB::table(Auth::user()->tenant_id.'_coa')->where('type', 1)->select()->get();
 						$status = 1; //subscribed for accounting package
             return view('backend.procurement.supplier.view-purchase-order', [
 							'purchase'=>$purchase,
@@ -332,7 +332,7 @@ class SupplierController extends Controller
                         ->select()
                         ->get();
         //Service::where('tenant_id', Auth::user()->tenant_id)->get();
-        $accounts = DB::table(Auth::user()->tenant_id.'_coa')->where('type', '=', 'Detail')->get();
+        $accounts = DB::table(Auth::user()->tenant_id.'_coa')->where('type', '=', 1)->get();
         return view('backend.procurement.vendor.services', ['services'=>$services, 'accounts'=>$accounts]);
     }
 
@@ -357,7 +357,7 @@ class SupplierController extends Controller
         $bills = BillMaster::where('tenant_id', Auth::user()->tenant_id)->orderBy('id', 'DESC')->get();
         $coa = DB::table(Auth::user()->tenant_id.'_coa')
                 ->select('glcode', 'account_name')
-                ->where('type', 'Detail')
+                ->where('type', 1)
                 ->get();
         return view('backend.procurement.vendor.bill',['bills'=>$bills]);
     }
