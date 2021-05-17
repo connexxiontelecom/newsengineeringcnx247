@@ -506,6 +506,9 @@ Route::post('/logistics/new-vehicle', 'CNX247\Backend\LogisticsController@storeV
 Route::get('/logistics/view-vehicle/{slug}', 'CNX247\Backend\LogisticsController@viewVehicle')->name('logistics-view-vehicle');
 Route::post('/logistics/vehicle/assign', 'CNX247\Backend\LogisticsController@assignVehicleToDriver');
 #Accounting routes
+		Route::get('/accounting-dashboard', 'CNX247\Backend\Accounting\ChartOfAccountController@dashboard')->name('accounting-dashboard');
+    Route::get('/accounting/audit-trail', 'CNX247\Backend\Accounting\ChartOfAccountController@auditTrail')->name('audit-trail');
+		Route::post('/accounting/audit-trail', 'CNX247\Backend\Accounting\ChartOfAccountController@retrieveAuditTrail');
     Route::get('/chart-of-accounts', 'CNX247\Backend\Accounting\ChartOfAccountController@index')->name('chart-of-accounts');
     Route::post('/new/chart-of-account', 'CNX247\Backend\Accounting\ChartOfAccountController@createCOA')->name('create-new-coa');
     Route::post('/get-parent-account', 'CNX247\Backend\Accounting\ChartOfAccountController@getParentAccount');

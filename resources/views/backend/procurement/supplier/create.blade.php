@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-    Add New Supplier
+    Add New Vendor
 @endsection
 
 @section('extra-styles')
@@ -34,7 +34,7 @@
                     <div class="col-sm-12">
                         <div class="card">
                             <div class="card-block">
-                                <h5 class="sub-title">Add New Supplier</h5>
+                                <h5 class="sub-title">Add New Vendor</h5>
                                 <form action="{{route('new-supplier')}}" method="post">
                                     @csrf
                                     <div class="row">
@@ -156,7 +156,7 @@
                                                 <select name="vendor_account" class="js-example-basic-single col-sm-12 form-control" >
                                                     <option selected disabled>Select vendor account</option>
                                                     @foreach($accounts as $account)
-                                                        <option value="{{$account->glcode}}">{{$account->account_name ?? ''}} - {{$account->glcode ?? ''}}</option>
+                                                        <option value="{{$account->glcode}}">{{$account->glcode ?? ''}} - {{$account->account_name ?? ''}}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
