@@ -234,14 +234,22 @@
         </ul>
 
         <div class="pcoded-navigatio-lavel">Accounting</div>
+				<ul class="pcoded-item pcoded-left-item">
+					<li class="">
+						<a href="{{ route('accounting-dashboard') }}">
+							<span class="pcoded-micon"><i class="ti-layers-alt"></i></span>
+							<span class="pcoded-mtext">Dashboard</span>
+						</a>
+					</li>
+				</ul>
         <ul class="pcoded-item pcoded-left-item">
             <li class="pcoded-hasmenu">
                 <a href="javascript:void(0)">
                     <span class="pcoded-micon"><i class="icofont icofont-money-bag"></i></span>
-                    <span class="pcoded-mtext">Account</span>
+                    <span class="pcoded-mtext">Setup</span>
                 </a>
                 <ul class="pcoded-submenu">
-                    <li class=" ">
+									<li class=" ">
                         <a href="{{route('chart-of-accounts')}}">
                             <span class="pcoded-mtext">Chart of Accounts</span>
                         </a>
@@ -266,14 +274,39 @@
                             <span class="pcoded-mtext">VAT</span>
                         </a>
                     </li>
-                    <li class=" ">
-                        <a href="{{route('ledger-default-variables')}}">
-                            <span class="pcoded-mtext">Ledger Defaults</span>
-                        </a>
-                    </li>
                 </ul>
             </li>
         </ul>
+			<ul class="pcoded-item pcoded-left-item">
+				<li class="pcoded-hasmenu">
+					<a href="javascript:void(0)">
+						<span class="pcoded-micon"><i class="icofont icofont-coins"></i></span>
+						<span class="pcoded-mtext">Reports</span>
+					</a>
+					<ul class="pcoded-submenu">
+						<li class=" ">
+							<a href="{{route('audit-trail')}}">
+								<span class="pcoded-mtext">Audit Trail</span>
+							</a>
+						</li>
+						<li class=" ">
+							<a href="{{route('trial-balance')}}">
+								<span class="pcoded-mtext">Trial Balance</span>
+							</a>
+						</li>
+						<li class=" ">
+							<a href="{{route('balance-sheet')}}">
+								<span class="pcoded-mtext">Balance Sheet</span>
+							</a>
+						</li>
+						<li class=" ">
+							<a href="{{route('profit-o-loss')}}">
+								<span class="pcoded-mtext">Profit/Loss</span>
+							</a>
+						</li>
+					</ul>
+				</li>
+			</ul>
         <ul class="pcoded-item pcoded-left-item">
             <li class="pcoded-hasmenu">
                 <a href="javascript:void(0)">
@@ -303,7 +336,7 @@
                     </li>
                     <li class=" ">
                         <a href="{{route('invoice-list')}}">
-                            <span class="pcoded-mtext">Invoices</span>
+                            <span class="pcoded-mtext">Invoice</span>
                         </a>
                     </li>
                 </ul>
@@ -329,36 +362,6 @@
                     <li class=" ">
                         <a href="{{route('journal-entries')}}">
                             <span class="pcoded-mtext">Journal Voucher</span>
-                        </a>
-                    </li>
-                    <li class=" ">
-                        <a href="{{route('budget-setup')}}">
-                            <span class="pcoded-mtext">Workflow</span>
-                        </a>
-                    </li>
-                </ul>
-            </li>
-        </ul>
-        <ul class="pcoded-item pcoded-left-item">
-            <li class="pcoded-hasmenu">
-                <a href="javascript:void(0)">
-                    <span class="pcoded-micon"><i class="icofont icofont-coins"></i></span>
-                    <span class="pcoded-mtext">Reports</span>
-                </a>
-                <ul class="pcoded-submenu">
-                    <li class=" ">
-                        <a href="{{route('trial-balance')}}">
-                            <span class="pcoded-mtext">Trial Balance</span>
-                        </a>
-                    </li>
-                    <li class=" ">
-                        <a href="{{route('balance-sheet')}}">
-                            <span class="pcoded-mtext">Balance Sheet</span>
-                        </a>
-                    </li>
-                    <li class=" ">
-                        <a href="{{route('profit-o-loss')}}">
-                            <span class="pcoded-mtext">Profit/Loss</span>
                         </a>
                     </li>
                 </ul>

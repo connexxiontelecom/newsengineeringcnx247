@@ -49,7 +49,7 @@
                                                 <select  name="account_name" id="account_name" class="form-control js-example-basic-single">
                                                     <option disabled selected>Select Account</option>
                                                     @foreach ($accounts as $account)
-                                                        <option value="{{$account->glcode}}">{{$account->account_name ?? ''}} - {{$account->glcode ?? ''}}</option>
+                                                        <option value="{{$account->glcode}}">{{$account->glcode ?? ''}} - {{$account->account_name ?? ''}}</option>
                                                     @endforeach
                                                 </select>
                                             @error('account_name')

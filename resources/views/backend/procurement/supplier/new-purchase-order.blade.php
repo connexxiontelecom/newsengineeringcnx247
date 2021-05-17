@@ -89,7 +89,7 @@
                      <div class="card-block">
                          <div class="row invoive-info">
                              <div class="col-md-6 col-xs-12 invoice-client-info">
-                                 <h6 class="sub-title">Supplier Information :</h6>
+                                 <h6 class="sub-title">Vendor Information :</h6>
                                  <h6 class="m-0">{{$supplier->company_name ?? ''}}</h6>
                                  <p class="m-0 m-t-10">{{$supplier->address ?? ''}}</p>
                                  <p class="m-0">{{$supplier->company_phone ?? ''}}</p>

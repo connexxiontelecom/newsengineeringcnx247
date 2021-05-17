@@ -2,6 +2,11 @@
 
 namespace App\Http\Controllers\CNX247\Backend\Accounting;
 
+use App\ApplicationLog;
+use App\BillMaster;
+use App\Invoice;
+use App\PayMaster;
+use App\User;
 use Illuminate\Validation\ValidationException;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -90,7 +95,59 @@ class ChartOfAccountController extends Controller
 
     public function __construct(){
         $this->middleware('auth');
+
     }
+
+    public function dashboard(){
+			$invoices = Invoice::where('trash',0)->where('tenant_id', Auth::user()->tenant_id)->orderBy('id', 'DESC')->get();
+			$bills = BillMaster::where('trash',0)->where('tenant_id', Auth::user()->tenant_id)->orderBy('id', 'DESC')->get();
+			$payments = PayMaster::where('trash',0)->where('tenant_id', Auth::user()->tenant_id)->orderBy('id', 'DESC')->get();
+    	return view('backend.accounting.dashboard',['invoices'=>$invoices, 'bills'=>$bills, 'payments'=>$payments]);
+		}
+
+		public function getUsers(){
+    	return User::where('tenant_id', Auth::user()->tenant_id)->where('account_status',1)->get();
+		}
+		public function auditTrail(){
+
+    	return view('backend.accounting.audit-trail',['status'=>0, 'users'=>$this->getUsers()]);
+		}
+
+		public function retrieveAuditTrail(Request $request){
+    	$this->validate($request,[
+    		'search_parameter'=>'required'
+			]);
+    	#keyword phrase
+					if($request->search_parameter == 1){
+						if(empty($request->keyword_phrase)){
+							session()->flash("error", "<strong>Whoops!</strong> Keyword phrase is required. Try again.");
+							return back();
+						}else{
+							$logs = ApplicationLog::where('activity', 'LIKE', "%{$request->search_phrase}%")->get();
+							return view('backend.accounting.audit-trail', ['status'=>1, 'logs'=>$logs, 'users'=>$this->getUsers()]);
+						}
+					}
+			#User
+				if($request->search_parameter == 2){
+					if(empty($request->user)){
+						session()->flash("error", "<strong>Whoops!</strong> User is required. Try again.");
+						return back();
+					}else{
+						$logs = ApplicationLog::where('user_id', $request->user)->get();
+						return view('backend.accounting.audit-trail', ['status'=>1, 'logs'=>$logs, 'users'=>$this->getUsers()]);
+					}
+				}
+			#Date range
+				if($request->search_parameter == 3){
+					if(empty($request->start_date)){
+						session()->flash("error", "<strong>Whoops!</strong> Date range is required. Try again.");
+						return back();
+					}else{
+						$logs = ApplicationLog::whereBetween('created_at', [$request->start_date, $request->end_date])->get();
+						return view('backend.accounting.audit-trail', ['status'=>1, 'logs'=>$logs, 'users'=>$this->getUsers()]);
+					}
+				}
+		}
 
     public function index(){
         $exist = null;
@@ -99,7 +156,7 @@ class ChartOfAccountController extends Controller
             return view('backend.accounting.setup.coa.index', ['exist'=>$exist]);
         }else{
             $exist = 'yes';
-            $charts = DB::table(Auth::user()->tenant_id.'_coa')->orderBy('glcode', 'ASC')->get();
+            $charts = DB::table(Auth::user()->tenant_id.'_coa')->get();
             return view('backend.accounting.setup.coa.index', ['exist'=>$exist, 'charts'=>$charts]);
         }
     }
@@ -116,7 +173,7 @@ class ChartOfAccountController extends Controller
                 $table->integer('bank')->default(0);
                 $table->unsignedBigInteger('glcode');
                 $table->integer('parent_account')->nullable();
-                $table->tinyInteger('type')->default(1)->comment('0=Detail, 1=General');
+                $table->tinyInteger('type')->default(1)->comment('1=Detail, 0=General');
                 $table->timestamps();
             });
             #Insert default records into table
@@ -145,9 +202,9 @@ class ChartOfAccountController extends Controller
         $this->validate($request,[
             'account_type'=>'required'
         ]);
-        if($request->type == 'Detail'){
+        if($request->type == '1'){
             $account = DB::table(Auth::user()->tenant_id.'_coa')->select('account_name', 'id', 'type', 'glcode')
-                ->where('type','General')
+                ->where('type',0)
                 ->where('account_type',$request->account_type)
                 ->get();
             return response()->json(['parents'=>$account],200);
@@ -172,7 +229,7 @@ class ChartOfAccountController extends Controller
     }
 
     public function vat(){
-        $accounts = DB::table(Auth::user()->tenant_id.'_coa')->where('type', 'Detail')->select()->get();
+        $accounts = DB::table(Auth::user()->tenant_id.'_coa')->where('type', 1)->select()->get();
         $policy = Policy::where('tenant_id', Auth::user()->tenant_id)->first();
         return view('backend.accounting.setup.vat.index',['accounts'=>$accounts,'policy'=>$policy]);
     }
@@ -199,7 +256,7 @@ class ChartOfAccountController extends Controller
     }
 
     public function openingBalance(){
-        $accounts = DB::table(Auth::user()->tenant_id.'_coa')->where('type', 'Detail')->select()->get();
+        $accounts = DB::table(Auth::user()->tenant_id.'_coa')->where('type', 1)->select()->get();
         $opening_balances = DB::table(Auth::user()->tenant_id.'_gl as g')
                             ->join(Auth::user()->tenant_id.'_coa as c', 'g.glcode', '=', 'c.glcode')
                             ->select('g.glcode as gcode', 'c.glcode as ccode', 'c.account_name as account',

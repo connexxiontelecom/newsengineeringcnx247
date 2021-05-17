@@ -171,7 +171,7 @@ class BudgetController extends Controller
                             ->get();
         $accounts = DB::table(Auth::user()->tenant_id.'_coa')
                         ->whereIn('account_type', [4,5])
-                        ->where('type', 'Detail')
+                        ->where('type', 1)
                         ->get();
         //$budgets = Budget::where('tenant_id', Auth::user()->tenant_id)->get();
         return view('backend.accounting.setup.budget.budget-setup',
