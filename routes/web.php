@@ -39,7 +39,8 @@ Route::get('/test', function(){
     $unread = Auth::user()->unReadNotifications;
     //return dd($unread);
 });
-Route::get('/', 'CNX247\Frontend\BaseController@homepage')->name('home');
+Route::get('/', 'Auth\LoginController@signin')->name('home');
+//Route::get('/', 'CNX247\Frontend\BaseController@homepage')->name('home');
 
 #Administrator routes
 Route::get('/dashboard', 'CNX247\Backend\DashboardController@index')->name('dashboard');
@@ -510,8 +511,16 @@ Route::get('/logistics/vehicles', 'CNX247\Backend\LogisticsController@vehicles')
 Route::get('/logistics/new-vehicle', 'CNX247\Backend\LogisticsController@newVehicle')->name('logistics-new-vehicle');
 Route::post('/logistics/new-vehicle', 'CNX247\Backend\LogisticsController@storeVehicle');
 Route::get('/logistics/view-vehicle/{slug}', 'CNX247\Backend\LogisticsController@viewVehicle')->name('logistics-view-vehicle');
+Route::post('/logistics/view-vehicle/{slug}', 'CNX247\Backend\LogisticsController@viewVehicle')->name('logistics-view-vehicle');
 Route::post('/logistics/vehicle/assign', 'CNX247\Backend\LogisticsController@assignVehicleToDriver');
+Route::get('/logistics/renewal-type', 'CNX247\Backend\LogisticsController@renewalType')->name('renewal-type');
+Route::post('/logistics/renewal-type', 'CNX247\Backend\LogisticsController@renewalType')->name('renewal-type');
+Route::get('/logistics/renewal-schedule', 'CNX247\Backend\LogisticsController@renewalSchedule')->name('renewal-schedule');
+
 #Accounting routes
+		Route::get('/accounting-dashboard', 'CNX247\Backend\Accounting\ChartOfAccountController@dashboard')->name('accounting-dashboard');
+    Route::get('/accounting/audit-trail', 'CNX247\Backend\Accounting\ChartOfAccountController@auditTrail')->name('audit-trail');
+		Route::post('/accounting/audit-trail', 'CNX247\Backend\Accounting\ChartOfAccountController@retrieveAuditTrail');
     Route::get('/chart-of-accounts', 'CNX247\Backend\Accounting\ChartOfAccountController@index')->name('chart-of-accounts');
     Route::post('/new/chart-of-account', 'CNX247\Backend\Accounting\ChartOfAccountController@createCOA')->name('create-new-coa');
     Route::post('/get-parent-account', 'CNX247\Backend\Accounting\ChartOfAccountController@getParentAccount');

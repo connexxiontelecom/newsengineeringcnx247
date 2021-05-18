@@ -26,4 +26,10 @@ class LogisticsUser extends Authenticatable
         return $this->belongsTo(LogisticsVehicle::class, 'vehicle_id');
     }
 
+    public function assignedUser(){
+	    //return $this->hasOne(User::class, 'user_id');
+    	return $this->hasOne(User::class, 'user_id');
+	   // return $this->belongsTo(User::class, 'user_id');
+    }
+
 }

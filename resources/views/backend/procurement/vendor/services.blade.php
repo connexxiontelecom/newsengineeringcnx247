@@ -51,7 +51,7 @@
                                         <label for="">Account</label>
                                         <select name="account" class="form-control select2-selection__rendered js-example-basic-single ">
                                             @foreach($accounts as $account)
-                                                <option value="{{$account->glcode}}">{{$account->account_name}} - {{$account->glcode}}</option>
+                                                <option value="{{$account->glcode}}">{{$account->glcode}} - {{$account->account_name}}</option>
                                             @endforeach
                                         </select>
                                         @error('account')

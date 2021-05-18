@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-    Suppliers
+	Vendors
 @endsection
 
 @section('extra-styles')
@@ -18,7 +18,7 @@
                 <div class="card widget-card-1">
                     <div class="card-block-small">
                         <i class="icofont icofont-users bg-c-blue card1-icon"></i>
-                        <span class="text-c-blue f-w-600">Suppliers</span>
+                        <span class="text-c-blue f-w-600">Vendors</span>
                         <h6>{{number_format(count($suppliers))}}</h6>
                         <div>
                             <span class="f-left m-t-10 text-muted">
@@ -91,7 +91,7 @@
                     <div class="col-sm-12">
                         <div class="card">
                             <div class="card-block">
-                                    <h5 class="sub-title">Suppliers</h5>
+                                    <h5 class="sub-title">Vendors</h5>
                                     <a href="{{route('new-supplier')}}" class="btn btn-primary btn-mini waves-effect waves-light float-right mb-4"><i class="ti-plus mr-2"></i>Add New Supplier</a>
                                 <div class="dt-responsive table-responsive">
                                     <table id="simpletable" class="table table-striped table-bordered nowrap">
@@ -100,7 +100,6 @@
                                             <th>#</th>
                                             <th>Company Name</th>
                                             <th>Email</th>
-                                            <th>Phone</th>
                                             <th>Industry</th>
                                             <th>Contact Person</th>
                                             <th>Email</th>
@@ -117,7 +116,6 @@
                                                     <td>{{$serial++}}</td>
                                                     <td>{{$supplier->company_name}}</td>
                                                     <td>{{$supplier->company_email}}</td>
-                                                    <td>{{$supplier->company_phone}}</td>
                                                     <td>{{$supplier->supplierIndustry->industry}}</td>
                                                     <td>{{$supplier->first_name}}</td>
                                                     <td>{{$supplier->email_address}}</td>
@@ -137,7 +135,6 @@
                                             <th>#</th>
                                             <th>Company Name</th>
                                             <th>Email</th>
-                                            <th>Phone</th>
                                             <th>Industry</th>
                                             <th>Contact Person</th>
                                             <th>Email</th>

@@ -278,10 +278,18 @@
 				@can('accounting')
 					<div class="pcoded-navigatio-lavel">Accounting</div>
 					<ul class="pcoded-item pcoded-left-item">
-							<li class="pcoded-hasmenu">
+							<li class="">
+						<a href="{{ route('accounting-dashboard') }}">
+							<span class="pcoded-micon"><i class="ti-layers-alt"></i></span>
+							<span class="pcoded-mtext">Dashboard</span>
+						</a>
+					</li>
+				</ul>
+        <ul class="pcoded-item pcoded-left-item">
+            <liclass="pcoded-hasmenu">
 									<a href="javascript:void(0)">
 											<span class="pcoded-micon"><i class="icofont icofont-money-bag"></i></span>
-											<span class="pcoded-mtext">Account</span>
+											<span class="pcoded-mtext">Setup</span>
 									</a>
 									<ul class="pcoded-submenu">
 										@can('view chart of accounts')
@@ -311,7 +319,17 @@
 										@can('set opening balance')
 
 											<li class=" ">
-													<a href="{{route('opening-balance')}}">
+													<a href="{{route('bank-accounts')}}">
+                            <span class="pcoded-mtext">Bank Setup</span>
+                        </a>
+                    </li>
+									<li class=" ">
+                        <a href="{{route('vendor-services')}}">
+                            <span class="pcoded-mtext">Service Setup</span>
+                        </a>
+                    </li>
+                    <li class=" ">
+                        <ahref="{{route('opening-balance')}}">
 															<span class="pcoded-mtext">Opening Balance</span>
 													</a>
 											</li>
@@ -321,9 +339,34 @@
 															<span class="pcoded-mtext">VAT</span>
 													</a>
 											</li>
-											<li class=" ">
-													<a href="{{route('ledger-default-variables')}}">
-															<span class="pcoded-mtext">Ledger Defaults</span>
+											</ul>
+            </li>
+        </ul>
+			<ul class="pcoded-item pcoded-left-item">
+				<li class="pcoded-hasmenu">
+					<a href="javascript:void(0)">
+						<span class="pcoded-micon"><i class="icofont icofont-coins"></i></span>
+						<span class="pcoded-mtext">Reports</span>
+					</a>
+					<ul class="pcoded-submenu">
+						<li class=" ">
+							<a href="{{route('audit-trail')}}">
+								<span class="pcoded-mtext">Audit Trail</span>
+							</a>
+						</li>
+						<li class=" ">
+													<a href="{{route('trial-balance')}}">
+															<span class="pcoded-mtext">Trial Balance</span>
+							</a>
+						</li>
+						<li class=" ">
+							<a href="{{route('balance-sheet')}}">
+								<span class="pcoded-mtext">Balance Sheet</span>
+							</a>
+						</li>
+						<li class=" ">
+							<a href="{{route('profit-o-loss')}}">
+								<span class="pcoded-mtext">Profit/Loss</span>
 													</a>
 											</li>
 									</ul>
@@ -367,7 +410,7 @@
                     </li>
                     <li class=" ">
                         <a href="{{route('invoice-list')}}">
-                            <span class="pcoded-mtext">Invoices</span>
+                            <span class="pcoded-mtext">Invoice</span>
                         </a>
                     </li>
                 </ul>
@@ -495,26 +538,49 @@
 
 				@endcan
 				@can('access logistics')
-					<div class="pcoded-navigatio-lavel">Logistics</div>
+					<div class="pcoded-navigatio-lavel">Fleet Management</div>
 					<ul class="pcoded-item pcoded-left-item">
 							<li class="pcoded-hasmenu">
 									<a href="javascript:void(0);">
 											<span class="pcoded-micon"><i class="icofont icofont-fire-truck"></i></span>
-											<span class="pcoded-mtext">Logistics</span>
+											<span class="pcoded-mtext">Fleet Setup</span>
 									</a>
-									<ul class="pcoded-submenu">
+									<ul class="pcoded-submenu"><li class=" ">
+								<a href="{{route('renewal-type')}}">
+									<span class="pcoded-mtext">Renewal Type</span>
+								</a>
+							</li>
 										@can('view drivers')
 
 										<li class=" ">
-												<a href="{{route('logistics-drivers')}}">
-														<span class="pcoded-mtext">Drivers</span>
+												<a href="{{route('logistics-customers')}}">
+									<span class="pcoded-mtext">Maintenance Activity</span>
+								</a>
+							</li>
+
+							<!--<li class=" ">
+									<a href="'logistics-shipping')}}">
+														<span class="pcoded-mtext">Shipping</span>
 												</a>
 										</li>
 										@endcan
 										@can('view customers')
 											<li class=" ">
-													<a href="{{route('logistics-customers')}}">
-															<span class="pcoded-mtext">Customers</span>
+													<a href="'logistics-pick-up-points')}}">
+											<span class="pcoded-mtext">Pick-up Points</span>
+									</a>
+							</li>-->
+						</ul>
+					</li>
+            <li class="pcoded-hasmenu">
+                <a href="javascript:void(0);">
+                    <span class="pcoded-micon"><i class="icofont icofont-fire-truck"></i></span>
+                    <span class="pcoded-mtext">Fleets Management</span>
+                </a>
+                <ul class="pcoded-submenu">
+                    <li class=" ">
+                        <a href="{{route('logistics-drivers')}}">
+															<span class="pcoded-mtext">Drivers</span>
 													</a>
 											</li>
 
@@ -525,7 +591,11 @@
 												<a href="{{route('logistics-vehicles')}}">
 														<span class="pcoded-mtext">Vehicles</span>
 												</a>
-										</li>
+										</li><li class=" ">
+                        <a href="{{route('renewal-schedule')}}">
+                            <span class="pcoded-mtext">Renewal Schedule</span>
+                        </a>
+                    </li>
 										@endcan
 										@can('view logistics log')
 											<li class=" ">
