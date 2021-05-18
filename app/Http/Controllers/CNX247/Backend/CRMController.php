@@ -162,7 +162,7 @@ class CRMController extends Controller
             }
             if(Schema::connection('mysql')->hasTable(Auth::user()->tenant_id.'_coa')){
                 $status = 1; //subscribed for accounting package
-                $accounts = DB::table(Auth::user()->tenant_id.'_coa')->where('type', 'Detail')->get();
+                $accounts = DB::table(Auth::user()->tenant_id.'_coa')->where('type', 1)->get();
                 return view('backend.crm.clients.convert-to-lead',
                 ['client'=>$client,
                 'invoice_no'=>$invoiceNo,
@@ -301,7 +301,7 @@ class CRMController extends Controller
                     'posted_by' => Auth::user()->id,
                     'narration' => 'VAT on invoice no. '.$invoice->invoice_no.' for '.$invoice->client->company_name,
                     'dr_amount' => 0,
-                    'cr_amount' => $request->currency != Auth::user()->tenant->currency->id ?  ($request->tax_amount * $request->exchange_rate) ?? 0 : $request->tax_amount ?? 0,
+                    'cr_amount' => $request->currency != Auth::user()->tenant->currency->id ?  $request->tax_amount * $request->exchange_rate : $request->tax_amount ?? 0,
                     'ref_no' => $ref_no,
                     'bank' => 0,
                     'ob' => 0,
@@ -513,7 +513,7 @@ class CRMController extends Controller
     */
     public function invoiceList(){
         $now = Carbon::now();
-        $invoices = Invoice::where('tenant_id', Auth::user()->tenant_id)->orderBy('id', 'DESC')->get();
+        $invoices = Invoice::where('trash',0)->where('tenant_id', Auth::user()->tenant_id)->orderBy('id', 'DESC')->get();
         $monthly = Invoice::where('tenant_id', Auth::user()->tenant_id)
                             ->whereMonth('created_at', date('m'))
 														->whereYear('created_at', date('Y'))
