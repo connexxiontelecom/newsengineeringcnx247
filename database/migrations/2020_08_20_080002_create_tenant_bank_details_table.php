@@ -20,6 +20,7 @@ class CreateTenantBankDetailsTable extends Migration
             $table->string('bank_name')->nullable();
             $table->string('account_name')->nullable();
             $table->string('account_number')->nullable();
+            $table->string('sort_code')->nullable();
             $table->tinyInteger('account_type')->nullable(); //0 for savings and 1 for current
             $table->timestamps();
         });

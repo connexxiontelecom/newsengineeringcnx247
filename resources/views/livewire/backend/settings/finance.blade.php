@@ -102,6 +102,13 @@
                         @error('account_number')
                             <i class="text-danger mt-2">{{$message}}</i>
                         @enderror
+										</div>
+										<div class="form-group">
+                        <label for="">Sort Code</label>
+                        <input type="text" wire:model.debounce.90000ms="sort_code" class="form-control" placeholder="Sort Code">
+                        @error('sort_code')
+                            <i class="text-danger mt-2">{{$message}}</i>
+                        @enderror
                     </div>
                     <div class="form-group">
                         <label for="">Account Type</label>

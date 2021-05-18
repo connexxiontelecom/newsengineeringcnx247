@@ -18,7 +18,7 @@ use App\LogisticsVehicleAssignmentLog;
 use App\PickupPoint;
 use Auth;
 use Image;
-
+use DateTime;
 class LogisticsController extends Controller
 {
     //
@@ -204,7 +204,6 @@ class LogisticsController extends Controller
         return view('backend.logistics.add-new-vehicle');
     }
     public function storeVehicle(Request $request){
-        //return dd($request->all());
         $this->validate($request,[
             'chassis_no'=>'required',
             'registration_no'=>'required',
@@ -225,8 +224,11 @@ class LogisticsController extends Controller
         }
         $vehicle = new LogisticsVehicle;
         $vehicle->chassis_no = $request->chassis_no;
-        $vehicle->registration_no = $request->registration_no;
-        $vehicle->registration_date = $request->registration_date;
+				$vehicle->registration_no = $request->registration_no;
+
+				$dueDateInstance = new DateTime($request->registration_date);
+				$vehicle->registration_date = $dueDateInstance->format('Y-m-d H:i:s');
+
         $vehicle->engine_no = $request->engine_no;
         $vehicle->owner_name = $request->owner_name;
         $vehicle->make_model = $request->maker_model;

@@ -13,7 +13,13 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'CNX247'),
+		'name' => env('APP_NAME', 'CNX247'),
+		'email'=>'enquiry@cnx247.com',
+		'phone'=>'+234 901 640 0000',
+		'address'=>'2A Iller Crescent, Off Katsina Ala, Maitama FCT Abuja, Nigeria',
+		'sponsor_website'=>'http://www.connexxiontelecom.com',
+		'sponsor'=>'CNX247 Team',
+		'website'=>'http://www.cnx247.com',
 
     /*
     |--------------------------------------------------------------------------

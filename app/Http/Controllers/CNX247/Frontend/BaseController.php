@@ -16,7 +16,8 @@ class BaseController extends Controller
 {
     #load homepage
     public function homepage(){
-        $permissionObj = DB::table('role_has_permissions')
+ 			return redirect()->route('signin');
+     /*   $permissionObj = DB::table('role_has_permissions')
         ->select('permission_id')
         ->distinct()
         ->get();
@@ -36,7 +37,7 @@ class BaseController extends Controller
         #Get list of modules for this tenant
         $modules = ModuleManager::whereIn('id', $moduleIds)->orderBy('module_name', 'ASC')->get();
         //$plans = Role::where('type', 0)->get();
-        return view('frontend.index', ['plans'=>$plans]);
+        return view('frontend.index', ['plans'=>$plans]); */
     }
 
 

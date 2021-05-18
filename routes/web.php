@@ -37,7 +37,7 @@ Route::livewire('/workflows', 'workflows')->name('workflows'); */
 #Base [Frontend routes]
 Route::get('/test', function(){
     $unread = Auth::user()->unReadNotifications;
-    return dd($unread);
+    //return dd($unread);
 });
 Route::get('/', 'CNX247\Frontend\BaseController@homepage')->name('home');
 
@@ -85,6 +85,8 @@ Route::get('/workflow-task/view/{url}', 'CNX247\Backend\WorkflowController@viewW
 Route::get('/workflow-business-process', 'CNX247\Backend\WorkflowController@businessProcess')->name('workflow-business-process');
 Route::post('/workflow/business-process', 'CNX247\Backend\WorkflowController@setBusinessProcess');
 Route::post('/workflow/approve-or-decline-request', 'CNX247\Backend\WorkflowController@approveOrDeclineRequest');
+Route::post('/search-workflow-assignment', 'CNX247\Backend\WorkflowController@searchWorkflowAssignment')->name('search-workflow-assignment');
+Route::post('/search-workflow-my-requests', 'CNX247\Backend\WorkflowController@searchWorkflowMyRequests')->name('search-workflow-my-requests');
 #Expense report route
 Route::get('/expense-report', 'CNX247\Backend\ExpenseController@index')->name('expense-report');
 Route::post('/expense-report', 'CNX247\Backend\ExpenseController@store');
@@ -246,6 +248,7 @@ Route::get('/crm/deal/view/{slug}', 'CNX247\Backend\CRMController@viewDeal')->na
 #Invoice list
 Route::get('/invoice-list', 'CNX247\Backend\CRMController@invoiceList')->name('invoice-list');
 Route::get('/print/invoice/{slug}', 'CNX247\Backend\CRMController@printInvoice')->name('print-invoice');
+Route::get('/export/invoice/{slug}', 'CNX247\Backend\CRMController@exportInvoiceAsWord')->name('export-invoice');
 Route::post('/send/invoice/email', 'CNX247\Backend\CRMController@sendInvoiceViaEmail');
 Route::get('/invoice/decline-invoice/{slug}', 'CNX247\Backend\CRMController@declineInvoice')->name('decline-invoice');
 #Receipt list
@@ -302,12 +305,14 @@ Route::get('/feedbacks', 'CNX247\Backend\CRMController@feedbacks')->name('feedba
 Route::post('/feedback-status', 'CNX247\Backend\CRMController@feedbackStatus');
 #Activity stream routes
 Route::get('/activity-stream', 'CNX247\Backend\ActivityStreamController@index')->name('activity-stream');
+/* Route::post('/activity-stream/like-unlike-post', 'CNX247\Backend\ActivityStreamShortcutController@likeUnlikePost'); */
 Route::post('/activity-stream/message', 'CNX247\Backend\ActivityStreamController@sendMessage');
 
 Route::post('/activity-stream/new/task', 'CNX247\Backend\ActivityStreamController@storeTask');
 
 Route::post('/activity-stream/live-update', 'CNX247\Backend\ActivityStreamController@postView');
 Route::get('/activity-stream/post/{slug}', 'CNX247\Backend\ActivityStreamController@viewPost')->name('view-post-activity-stream');
+Route::post('/activity-stream/search', 'CNX247\Backend\ActivityStreamController@searchCNX247')->name('search-cnx247');
 Route::post('/event/new', 'CNX247\Backend\ActivityStreamController@createEvent');
 Route::post('/announcement/new', 'CNX247\Backend\ActivityStreamController@createAnnouncement');
 Route::post('/activity-stream/upload/attachment', 'CNX247\Backend\ActivityStreamController@shareFile');
@@ -429,6 +434,7 @@ Route::get('/my-event/calendar', 'CNX247\Backend\EventController@eventCalendar')
 Route::get('/my-event-calendar', 'CNX247\Backend\EventController@getEventCalendarData');
 Route::get('/company-calendar', 'CNX247\Backend\EventController@companyCalendar')->name('company-calendar');
 Route::get('/company-event-calendar', 'CNX247\Backend\EventController@getCompanyEventData');
+Route::get('/all-events', 'CNX247\Backend\EventController@viewAllEvents')->name('view-all-events');
 
 #Procurement routes
 #Supplier routes

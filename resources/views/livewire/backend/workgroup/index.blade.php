@@ -3,8 +3,11 @@
         <div class="card">
             <div class="card-block">
                 <h5 class="sub-title">Workgroups</h5>
-                <span>You can only access a workgroup to which you're a member. </span>
+								<span>You can only access a workgroup to which you're a member. </span>
+								@can('create workgroup')
+
                 <a href="{{route('new-workgroup')}}" class="float-right btn btn-primary btn-mini waves-effect waves-light" ><i class="ti-plus mr-2"></i>New Workgroup</a>
+								@endcan
                 <div class="row">
                     @if (session()->has('error'))
                         <div class="col-md-12">

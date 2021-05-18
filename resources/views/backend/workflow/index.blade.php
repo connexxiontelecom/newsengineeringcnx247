@@ -23,10 +23,13 @@
 										<a class="nav-link" data-toggle="tab" href="#profile3" role="tab">My Requests</a>
 										<div class="slide"></div>
 								</li>
+								@can('view workflow statistics')
 								<li class="nav-item">
 										<a class="nav-link" data-toggle="tab" href="#messages3" role="tab">Statistics</a>
 										<div class="slide"></div>
 								</li>
+
+								@endcan
 						</ul>
 						<!-- Tab panes -->
 						<div class="tab-content card-block">
@@ -41,6 +44,20 @@
 											{!! session('success') !!}
 									</div>
 									@endif
+									<div class="row">
+									<div class="col-md-6">
+										<form action="{{route('search-workflow-assignment')}}" method="post">
+											@csrf
+											<div class="input-group input-group-button">
+													<input type="text" class="form-control" placeholder="Search item" name="search_item" id="search_item">
+													<button type="submit" class="input-group-addon btn btn-primary" id="basic-addon10">
+															<span class="">Search</span>
+													</button>
+											</div>
+
+										</form>
+									</div>
+								</div>
 									<div class="form-group col-sm-2 col-md-2 mb-3">
 										<label for="">Filter</label>
 										<select name="filter" id="filter-assignments" class="form-control">
@@ -134,6 +151,20 @@
 									<h5 class="sub-title">My Requests</h5>
 									@include('backend.workflow.common._run-business-process')
 										<div id="datatable-assignment" class="table table-stripped table-bordered nowrap mt-4">
+											<div class="row">
+												<div class="col-md-6">
+													<form action="{{route('search-workflow-my-requests')}}" method="post">
+														@csrf
+														<div class="input-group input-group-button">
+																<input type="text" class="form-control" placeholder="Search item" name="search_item" id="search_item">
+																<button type="submit" class="input-group-addon btn btn-primary" id="basic-addon10">
+																		<span class="">Search</span>
+																</button>
+														</div>
+
+													</form>
+												</div>
+											</div>
 											<div class="form-group col-sm-2 col-md-2 mb-3">
 												<label for="">Filter</label>
 												<select name="filter" id="filter-my-request" class="form-control">
@@ -189,71 +220,74 @@
 										</div>
 										</div>
 								</div>
-								<div class="tab-pane" id="messages3" role="tabpanel">
+								@can('view workflow statistics')
+									<div class="tab-pane" id="messages3" role="tabpanel">
+												<div class="row">
+													<div class="col-md-12 col-sm-12">
+														<h5 class="sub-title">Statistics</h5>
+													</div>
+												</div>
 											<div class="row">
-												<div class="col-md-12 col-sm-12">
-													<h5 class="sub-title">Statistics</h5>
-												</div>
+													<div class="col-md-6 col-xl-3">
+															<div class="card widget-card-1">
+																	<div class="card-block-small">
+																			<i class="icofont icofont-diamond bg-c-yellow card1-icon"></i>
+																			<span class="text-c-yellow f-w-600">Requisition</span>
+																			<h6>{{Auth::user()->tenant->currency->symbol ?? 'N'}}{{number_format($overall)}}</h6>
+																			<div>
+																					<span class="f-left m-t-10 text-muted">
+																							<i class="text-c-yellow f-16 ti-calendar m-r-10"></i>Overall
+																					</span>
+																			</div>
+																	</div>
+															</div>
+													</div>
+													<div class="col-md-6 col-xl-3">
+															<div class="card widget-card-1">
+																	<div class="card-block-small">
+																			<i class="icofont icofont-diamond bg-c-pink card1-icon"></i>
+																			<span class="text-c-pink f-w-600">Requisition</span>
+																			<h6>{{Auth::user()->tenant->currency->symbol ?? 'N'}}{{number_format($thisYear)}}</h6>
+																			<div>
+																					<span class="f-left m-t-10 text-muted">
+																							<i class="text-c-pink f-16 ti-calendar m-r-10"></i>This Year
+																					</span>
+																			</div>
+																	</div>
+															</div>
+													</div>
+													<div class="col-md-6 col-xl-3">
+															<div class="card widget-card-1">
+																	<div class="card-block-small">
+																			<i class="icofont icofont-diamond bg-c-green card1-icon"></i>
+																			<span class="text-c-green f-w-600">Requisition</span>
+																			<h6>{{Auth::user()->tenant->currency->symbol ?? 'N'}}{{number_format($lastMonth)}}</h6>
+																			<div>
+																					<span class="f-left m-t-10 text-muted">
+																							<i class="text-c-green f-16 ti-calendar m-r-10"></i>Last Month
+																					</span>
+																			</div>
+																	</div>
+															</div>
+													</div>
+													<div class="col-md-6 col-xl-3">
+															<div class="card widget-card-1">
+																	<div class="card-block-small">
+																			<i class="icofont icofont-diamond bg-c-blue card1-icon"></i>
+																			<span class="text-c-blue f-w-600">Requisition</span>
+																			<h6>{{Auth::user()->tenant->currency->symbol ?? 'N'}}{{number_format($thisMonth)}}</h6>
+																			<div>
+																					<span class="f-left m-t-10 text-muted">
+																							<i class="text-c-blue f-16 ti-calendar m-r-10"></i>This Month
+																					</span>
+																			</div>
+																	</div>
+															</div>
+													</div>
 											</div>
-										<div class="row">
-												<div class="col-md-6 col-xl-3">
-														<div class="card widget-card-1">
-																<div class="card-block-small">
-																		<i class="icofont icofont-diamond bg-c-yellow card1-icon"></i>
-																		<span class="text-c-yellow f-w-600">Requisition</span>
-																		<h6>{{Auth::user()->tenant->currency->symbol ?? 'N'}}{{number_format($overall)}}</h6>
-																		<div>
-																				<span class="f-left m-t-10 text-muted">
-																						<i class="text-c-yellow f-16 ti-calendar m-r-10"></i>Overall
-																				</span>
-																		</div>
-																</div>
-														</div>
-												</div>
-												<div class="col-md-6 col-xl-3">
-														<div class="card widget-card-1">
-																<div class="card-block-small">
-																		<i class="icofont icofont-diamond bg-c-pink card1-icon"></i>
-																		<span class="text-c-pink f-w-600">Requisition</span>
-																		<h6>{{Auth::user()->tenant->currency->symbol ?? 'N'}}{{number_format($thisYear)}}</h6>
-																		<div>
-																				<span class="f-left m-t-10 text-muted">
-																						<i class="text-c-pink f-16 ti-calendar m-r-10"></i>This Year
-																				</span>
-																		</div>
-																</div>
-														</div>
-												</div>
-												<div class="col-md-6 col-xl-3">
-														<div class="card widget-card-1">
-																<div class="card-block-small">
-																		<i class="icofont icofont-diamond bg-c-green card1-icon"></i>
-																		<span class="text-c-green f-w-600">Requisition</span>
-																		<h6>{{Auth::user()->tenant->currency->symbol ?? 'N'}}{{number_format($lastMonth)}}</h6>
-																		<div>
-																				<span class="f-left m-t-10 text-muted">
-																						<i class="text-c-green f-16 ti-calendar m-r-10"></i>Last Month
-																				</span>
-																		</div>
-																</div>
-														</div>
-												</div>
-												<div class="col-md-6 col-xl-3">
-														<div class="card widget-card-1">
-																<div class="card-block-small">
-																		<i class="icofont icofont-diamond bg-c-blue card1-icon"></i>
-																		<span class="text-c-blue f-w-600">Requisition</span>
-																		<h6>{{Auth::user()->tenant->currency->symbol ?? 'N'}}{{number_format($thisMonth)}}</h6>
-																		<div>
-																				<span class="f-left m-t-10 text-muted">
-																						<i class="text-c-blue f-16 ti-calendar m-r-10"></i>This Month
-																				</span>
-																		</div>
-																</div>
-														</div>
-												</div>
-										</div>
-								</div>
+									</div>
+
+								@endcan
 						</div>
 				</div>
 				</div>
@@ -283,7 +317,7 @@
 								</div>
 								<div class="form-group">
 										<div class="btn-group d-flex justify-content-center">
-											<button class="btn-mini btn btn-danger"><i class="ti-close mr-2"></i> Cancel</button>
+											<button  data-dismiss="modal" type="button" class="btn-mini btn btn-danger"><i class="ti-close mr-2"></i> Cancel</button>
 											<button class="btn-mini btn btn-primary" type="button" id="verifyThenAct"><i class="ti-check mr-2"></i> Submit</button>
 										</div>
 								</div>
@@ -353,6 +387,18 @@
 										$('.table-row').hide();
 									}
 								});
+						});
+
+						$(document).on('blur', '#search_item', function(e){
+							e.preventDefault();
+							var term = $(this).val();
+							axios.post('/search-workflow-assignment',{term:term})
+							.then(response=>{
+								console.log(response.data)
+							})
+							.catch(error=>{
+
+							});
 						});
 
 						$(document).on('click', '#verifyThenAct', function(e){

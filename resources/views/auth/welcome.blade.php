@@ -12,44 +12,23 @@
     </style>
 @endsection
 
-@section('main-content')
+@section('content')
+<div class="container mt-100 mt-60">
+		<div class="row row align-items-center">
+			<div class="col-lg-7 col-md-6 order-2 order-md-1 mt-4 mt-sm-0 pt-2 pt-sm-0">
+				<div class="section-title">
+					<img src="/assets/images/logo.png" alt="logo.png" height="75" width="120">
+						<h4 class="title mb-4">Congratulations!</h4>
+						<p>We're pleased to have you on board.</p>
+						<p>{{ config('app.name') }} has a lot to offer. Explore the platform. Please do not hesitate to contact us if you face any challenge.</p>
+						<p>Once again, welcome to <span class="text-primary">{{ config('app.name') }}.</span></p>
+						<p class="text-inverse text-left m-b-0">Proceed to <a href="{{ route('signin') }}" class="mt-3 h6 text-primary"><strong class="f-w-600">Signin <i class="mdi mdi-chevron-right"></i></strong></a></p>
 
-<section class="login-block">
-    <!-- Container-fluid starts -->
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-sm-12">
-                <form class="md-float-material form-material" wire:submit.prevent="signupNow">
-                    <div class="text-center">
-                        <img src="/assets/images/logo.png" alt="logo.png" height="75" width="120">
-                    </div>
-                    <div class="auth-box card">
-                        <div class="card-block">
-                            <div class="row m-b-20">
-                                <div class="col-md-12">
-                                <h6 class="text-center sub-title txt-primary">Welcome {{$user->first_name}}</h6>
-                                </div>
-                            </div>
-                            <div class="form-group form-primary">
-                                <p>We're pleased to have you on board.</p>
-                                <p>{{ config('app.name') }} has a lot to offer. Explore the platform. Please do not hesitate to contact us if you face any challenge.</p>
-                                Once again, welcome to <strong> {{ config('app.name') }}.</strong>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <p class="text-inverse text-left m-b-0">Proceed to <a href="{{ route('signin') }}"><strong class="f-w-600">Signin</strong></a></p>
-                                    
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <!-- end of col-sm-12 -->
-        </div>
-        <!-- end of row -->
-    </div>
-    <!-- end of container-fluid -->
-</section>
+				</div>
+		</div>
+		</div>
+
+</div>
+
 
 @endsection

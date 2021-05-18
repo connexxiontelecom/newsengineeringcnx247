@@ -7,6 +7,7 @@ use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 use Illuminate\Http\Request;
 use App\Mail\onBoardEmployee;
+use App\Mail\StartTrial;
 use Paystack;
 use App\Plan;
 use App\PlanFeature;
@@ -125,7 +126,7 @@ class PaymentGatewayController extends Controller
 						$user->verification_link = substr(sha1(time()), 25,40);
 						$user->save();
 						$user->assignRole('Human Resource');
-						//\Mail::to($user)->send(new onBoardEmployee($user, $password));
+						\Mail::to($user)->send(new StartTrial($user));
 						session()->flash("success", "<strong>Success!</strong> Trial registration done.");
 						return redirect()->route('signin');
 

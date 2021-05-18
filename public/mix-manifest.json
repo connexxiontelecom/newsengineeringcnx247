@@ -1,5 +1,6 @@
 {
     "/js/manifest.js": "/js/manifest.js",
+    "/js/activity-stream.js": "/js/activity-stream.js",
     "/js/app.js": "/js/app.js",
     "/css/app.css": "/css/app.css",
     "/js/browser-calls.js": "/js/browser-calls.js",

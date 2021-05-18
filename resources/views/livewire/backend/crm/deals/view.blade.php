@@ -100,7 +100,7 @@
                                                                     </div>
                                                                 @endforeach
                                                             @else
-                                                                <p class="text-center mb-3">Be the first to start a conversation with <strong>{{$lead->client->title ?? ''}}  {{$lead->client->first_name}}</strong></p>
+                                                                <p class="text-center mb-3">Be the first to start a conversation</strong></p>
                                                             @endif
                                                         </div>
                                                     </div>

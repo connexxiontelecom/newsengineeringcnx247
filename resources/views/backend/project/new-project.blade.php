@@ -8,7 +8,8 @@
 <link rel="stylesheet" type="text/css" href="/assets/css/component.css">
 <link rel="stylesheet" type="text/css" href="/assets/bower_components/bootstrap-multiselect/css/bootstrap-multiselect.css">
     <link rel="stylesheet" type="text/css" href="/assets/bower_components/multiselect/css/multi-select.css">
-    <link rel="stylesheet" href="/assets/bower_components/select2/css/select2.min.css">
+		<link rel="stylesheet" href="/assets/bower_components/select2/css/select2.min.css">
+		<link rel="stylesheet" type="text/css" href="/assets/css/cus/datetimepicker.min.css">
 @endsection
 
 @section('content')
@@ -64,40 +65,18 @@
                                         @enderror
                                 </div>
                             </div>
-                            <div class="col-md-4 col-md-4 col-lg-4 col-sm-6">
-                                <div class="checkbox-fade fade-in-primary">
-                                    <label>
-                                        <input name="budget_check" id="budget_check" type="checkbox" value="1">
-                                        <span class="cr">
-                                            <i class="cr-icon icofont icofont-ui-check txt-primary"></i>
-                                        </span>
-                                        <span>This project has budget</span>
-                                    </label>
-                                </div>
-                                <div id="budget_wrapper">
-                                    <select  name="budget" id="budget" value="{{old('budget')}}" class="form-control js-example-basic-single mb-2">
-                                        <option disabled selected>Select budget</option>
-                                        @foreach ($budgets as $budget)
-                                        <option value="{{$budget->glcode}}">{{$budget->budget_title}}</option>
-                                        @endforeach
-                                    </select>
-                                    @error('budget')
-                                        <i class="text-danger">{{$message}}</i>
-                                    @enderror
-                                </div>
-                            </div>
                         </div>
                         <div class="row">
                             <div class="col-md-4">
                                 <label >Start Date</label>
-                                        <input type="datetime-local" value="{{old('start_date')}}" name="start_date" class="form-control form-control-normal" placeholder="Start Date">
+                                        <input type="text" value="{{old('start_date')}}" name="start_date" id="start_date" class="form-control form-control-normal" placeholder="dd/mm/yyyy">
                                 @error('start_date')
                                     <i class="text-danger">{{$message}}</i>
                                 @enderror
                             </div>
                             <div class="col-md-4">
                                 <label>Due Date <sup class="text-danger" style="cursor: pointer;"> <abbr title="Required">*</abbr> </sup></label>
-                                <input type="datetime-local" value="{{old('due_date')}}" name="due_date" class="form-control form-control-normal" placeholder="Due date">
+                                <input type="text" id="due_date" value="{{old('due_date')}}" name="due_date" class="form-control form-control-normal" placeholder="dd/mm/yyyy">
                                 @error('due_date')
                                     <i class="text-danger">{{$message}}</i>
                                 @enderror
@@ -215,8 +194,13 @@
 <script type="text/javascript" src="/assets/pages/advance-elements/select2-custom.js"></script>
 <script type="text/javascript" src="/assets/bower_components/tinymce/tinymce.min.js"></script>
 <script type="text/javascript" src="/assets/js/cus/tinymce.js"></script>
+<script type="text/javascript" src="/assets/js/cus/moment.js"></script>
+<script type="text/javascript" src="/assets/js/cus/datetimepicker.js"></script>
 <script>
     $(document).ready(function(){
+
+			$('#start_date').datetimepicker();
+			$('#due_date').datetimepicker();
         $('#budget_wrapper').hide();
         $('#budget_check').on('change', function(e){
             e.preventDefault();

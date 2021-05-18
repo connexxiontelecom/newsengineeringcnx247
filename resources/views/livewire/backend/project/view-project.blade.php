@@ -149,10 +149,11 @@
                     </tbody>
                 </table>
 						</div>
-
-            <div class="card-footer d-flex justify-content-center">
-                <a href="{{route('project-financials', $project->post_url)}}" class="btn btn-sm btn-light">View Details</a>
-            </div>
+						@can('view project financial account')
+							<div class="card-footer d-flex justify-content-center">
+									<a href="{{route('project-financials', $project->post_url)}}" class="btn btn-sm btn-light">View Details</a>
+							</div>
+						@endcan
         </div>
         <div class="card card-border-danger" style="margin-top:-30px;">
             <div class="card-header">

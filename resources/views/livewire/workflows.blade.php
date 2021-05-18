@@ -18,7 +18,8 @@
             </button>
             {!! session('success') !!}
         </div>
-        @endif
+				@endif
+
         <div class="dt-responsive table-responsive">
             <table id="datatable-assignment" class="table table-striped table-bordered nowrap">
                 <thead>

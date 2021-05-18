@@ -1,5 +1,5 @@
 /*  Video tutorial/codealong here: https://youtu.be/fCpw5i_2IYU */
-$blue: #74b9ff;
+$blue: #056162;
 
 body {
   background-image: url('https://images.unsplash.com/photo-1560568082-c15188aa6510?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=3300&q=80');
@@ -8,7 +8,7 @@ body {
   text-rendering: optimizeLegibility;
 }
 
-.container {
+.chat-container {
   margin: 60px auto;
   background: #fff;
   padding: 0;
@@ -81,11 +81,11 @@ input {
 }
 .conversation{
 	height: 500px;
-	overflow-x: scroll;
-	display: flex;
+	overflow-y: scroll;
+	/* display: flex;
 	flex: 5;
 	flex-direction: column;
-	justify-content: space-between;
+	justify-content: space-between; */
 }
 .friend-drawer {
   padding: 10px 15px;
@@ -135,7 +135,7 @@ hr {
 }
 
 .chat-bubble {
-  padding: 20px 30px;
+  padding: 10px 15px;
   background: #eee;
   margin: 10px 30px;
   border-radius: 9px;
@@ -183,7 +183,7 @@ hr {
 }
 
 
-.offset-md-9 {
+.offset-md-7 {
   .chat-bubble {
     background: $blue;
     color: #fff;

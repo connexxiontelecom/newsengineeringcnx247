@@ -1,6 +1,8 @@
      $(document).ready(function(){
          $(document).on('click', '#avatarHandler', function(e){
-             e.preventDefault();
+					 e.preventDefault();
+					 e.stopImmediatePropagation();
+					 $('#avatarHandler').text('Processing...');
              $('#avatar').click();
              $('#avatar').change(function(ev){
                  let file = ev.target.files[0];
@@ -11,7 +13,9 @@
                     $('#avatar-preview').attr('src', avatar);
                     axios.post('/upload/avatar',{avatar:avatar})
                     .then(response=>{
-                        $.notify('Success! Profile image updated.', 'success');
+											$.notify('Success! Profile image updated.', 'success');
+											$('#avatarHandler').text('Done!');
+											location.reload();
                     })
                     .catch(error=>{
                         var errs = Object.values(error.response.data.errors);
@@ -23,7 +27,8 @@
                 });
          });
          $(document).on('click', '#coverPhotoHandle', function(e){
-             e.preventDefault();
+					 e.preventDefault();
+					 e.stopImmediatePropagation();
              $('#cover_photo').click();
              $('#cover_photo').change(function(ev){
                  let file = ev.target.files[0];

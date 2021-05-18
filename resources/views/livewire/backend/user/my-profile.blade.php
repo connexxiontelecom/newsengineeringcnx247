@@ -9,7 +9,7 @@
                         <div class="col-md-12">
                             <div class="media-left">
                                 <a href="#" class="profile-image">
-                                    <span id="avatarHandler" class="btn btn-primary btn-mini waves-effect waves-light mb-2"><i class="ti-user mr-2" title="Change profile picture"></i>Change picture</span> <br>
+                                    <span id="avatarHandler" class="btn avatar-text btn-primary btn-mini waves-effect waves-light mb-2"><i class="ti-user mr-2 " title="Change profile picture"></i>Change picture</span> <br>
                                     <input type="file" id="avatar" hidden>
                                     <img height="108" width="108" class="user-img img-radius" id="avatar-preview" src="/assets/images/avatars/medium/{{Auth::user()->avatar ?? 'avatar.png'}}" alt="user-img">
                                 </a>
@@ -50,5 +50,5 @@
     </div>
 </div>
 @push('profile-script')
- <script src="{{asset('/assets/js/cus/profile.js')}}"></script>
+
 @endpush

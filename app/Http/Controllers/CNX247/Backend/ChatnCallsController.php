@@ -21,7 +21,15 @@ class ChatnCallsController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth');
+				$this->middleware('auth');
+				// Twilio credentials
+				$this->account_sid = env('TWILIO_ACCOUNT_SID');
+				$this->auth_token = env('TWILIO_AUTH_TOKEN');
+				//The twilio number you purchased
+				$this->from = env('TWILIO_NUMBER');
+				// Initialize the Programmable Voice API
+				$this->client = new Client($this->account_sid, $this->auth_token);
+
     }
 
     /*
@@ -88,14 +96,8 @@ class ChatnCallsController extends Controller
             $dir = 'assets/uploads/attachments/';
             $filename = 'chat_'.uniqid().'_'.time().'_'.date('Ymd').'.'.$extension;
             $request->file('attachment')->move(public_path($dir), $filename);
-        }
+				}
 
-/*         if($request->attachment){
-            $filename = 'chat_'.time().'.'.explode('/', explode(':', substr($request->attachment, 0, strpos($request->attachment, ';')))[1])[1];
-            //share attachment
-            //$file->move(base_path('\modo\images'),$file->getClientOriginalName());
-            \Image::make($request->attachment)->resize(52, 82)->save(public_path('assets/uploads/attachments/').$filename);
-        } */
         $message = new Message;
         $message->to_id = $request->to;
         $message->from_id = Auth::user()->id;
@@ -115,46 +117,44 @@ class ChatnCallsController extends Controller
         $forPage = $request->forPage;
         $sid = getenv('TWILIO_ACCOUNT_SID');
         $token =  getenv('TWILIO_AUTH_TOKEN');
-        if ($forPage === route('dashboard', [], false)) {
+        //if ($forPage === route('dashboard', [], false)) {
             $this->clientToken->allowClientIncoming('support_agent');
-        } else {
+        //} else {
 
-        }
+				//}
+				$token = $this->clientToken->generateToken();
+        return response()->json(['token' => $token]);
     }
 
     /*
     * Make call
     */
     public function makeCall(Request $request){
-        // Get form input
-        $userPhone = $request->phoneNumber;
-        $encodedSalesPhone = urlencode(str_replace(' ','',$request->phoneNumber));
-        // Set URL for outbound call - this should be your public server URL
-        $host = config('app.url');//parse_url(Request::url(), PHP_URL_HOST);
-
-        // Create authenticated REST client using account credentials in
-        // <project root dir>/.env.php
-        $client = new Client(
-            getenv('TWILIO_ACCOUNT_SID'),
-            getenv('TWILIO_AUTH_TOKEN')
-        );
-
-        try {
-           $call = $client->calls->create(
-                $request->phoneNumber,
-                getenv('TWILIO_NUMBER'),
-                array(
-                    //"twiml" => "<Response><Say>Ahoy there!</Say></Response>"
-                    "url" => "http://$host/outbound/$encodedSalesPhone"//"http://demo.twilio.com/docs/voice.xml"//"http://$host/outbound/$encodedSalesPhone"
-                )
-            );
-        } catch (Exception $e) {
-            // Failed calls will throw
-            return $e;
-        }
-
-        // return a JSON response
-        return array('message' => $call);
+        $this->validate($request,[
+					'phoneNumber'=>'required'
+				]);
+				try{
+					$phoneNumber = $this->client->lookups->v1->phoneNumbers($request->phoneNumber)->fetch();
+					if($phoneNumber){
+						$call = $this->client->account->calls->create(
+							$request->phoneNumber,
+							$this->from,
+							array(
+								"record"=>TRUE,
+								"url"=>"http://demo.twilio.com/docs/voice.xml"
+							)
+						);
+						if($call){
+							echo "Call initiated";
+						}else{
+							echo "Call failed";
+						}
+					}
+				}catch(Exception $ex){
+					echo "Error: ".$ex->getMessage;
+				}catch (RestException $rest) {
+					echo 'Error: ' . $rest->getMessage();
+				}
     }
 
     public function newCall(Request $request)
@@ -181,7 +181,7 @@ class ChatnCallsController extends Controller
 
 		public function initializeChat(){
 			// get all users except the authenticated one
-			$users = User::where('id', '!=', auth()->id())->where('tenant_id', Auth::user()->tenant_id)->get();
+			$users = User::where('id', '!=', auth()->id())->where('account_status', 1)->where('tenant_id', Auth::user()->tenant_id)->get();
 			$unreadIds = Message::select(\DB::raw('`from_id` as sender_id, count(`from_id`) as unread'))
             ->where('to_id', auth()->id())
 						->where('is_read', 0)

@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\CNX247\Backend;
-
+use PhpOffice\PhpWord\TemplateProcessor;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
@@ -30,7 +30,7 @@ use Auth;
 use Image;
 use DB;
 use Schema;
-
+use DateTime;
 
 class CRMController extends Controller
 {
@@ -241,15 +241,20 @@ class CRMController extends Controller
         $invoice->ref_no = $ref_no;
         $invoice->client_id = $request->clientId;
         $invoice->tenant_id = Auth::user()->tenant_id;
-        $invoice->issued_by = Auth::user()->id;
-        $invoice->issue_date = $request->issue_date;
-        $invoice->due_date = $request->due_date;
+				$invoice->issued_by = Auth::user()->id;
+
+				$startDateInstance = new DateTime($request->issue_date);
+				$invoice->issue_date = $startDateInstance->format('Y-m-d H:i:s');
+
+					$dueDateInstance = new DateTime($request->due_date);
+				$invoice->due_date = $dueDateInstance->format('Y-m-d H:i:s');
+
         $invoice->total = $request->currency != Auth::user()->tenant->currency->id ? ($totalAmount * $request->exchange_rate + ($totalAmount*$request->tax_rate)/100 * $request->exchange_rate ) : ($totalAmount + ($totalAmount*$request->tax_rate)/100 ) ;
-        $invoice->sub_total = $request->currency != Auth::user()->tenant->currency->id ? $request->subTotal * $request->exchange_rate : $request->subTotal;
+        $invoice->sub_total = $request->currency != Auth::user()->tenant->currency->id ? ($request->subTotal * $request->exchange_rate) ?? 0 : $request->subTotal ?? 0;
         $invoice->tax_rate = $request->tax_rate ?? 0;
-        $invoice->tax_value = $request->currency != Auth::user()->tenant->currency->id ?  $request->tax_amount * $request->exchange_rate : $request->tax_amount;
-				$invoice->currency_id = $request->currency;
-				$invoice->exchange_rate = $request->exchange_rate ?? 1;
+        $invoice->tax_value = $request->currency != Auth::user()->tenant->currency->id ?  ($request->tax_amount * $request->exchange_rate) ?? 0 : $request->tax_amount ?? 0;
+		$invoice->currency_id = $request->currency;
+		$invoice->exchange_rate = $request->exchange_rate ?? 1;
         $invoice->slug = substr(sha1(time()), 23,40);
         $invoice->save();
         #invoiceId
@@ -262,7 +267,7 @@ class CRMController extends Controller
             $item->product_id = $pro->id;
             $item->quantity = $request->quantity[$i];
             $item->unit_cost = $request->unit_cost[$i];
-            $item->total = $request->currency != Auth::user()->tenant->currency->id ? (($request->quantity[$i] * $request->unit_cost[$i]) * $request->exchange_rate) : $request->quantity[$i] * $request->unit_cost[$i];
+            $item->total = $request->currency != Auth::user()->tenant->currency->id ? (($request->quantity[$i] * $request->unit_cost[$i]) * $request->exchange_rate) ?? 0 : ($request->quantity[$i] * $request->unit_cost[$i]) ?? 0;
             $item->invoice_id = $invoiceId;
             $item->client_id = $request->clientId;
             $item->tenant_id = Auth::user()->tenant_id;
@@ -282,12 +287,12 @@ class CRMController extends Controller
                     'glcode' => $client->glcode,
                     'posted_by' => Auth::user()->id,
                     'narration' => 'Invoice generation for ' . $invoice->client->company_name ?? '',
-                    'dr_amount' => $request->currency != Auth::user()->tenant->currency->id ? ($totalAmount * $request->exchange_rate + ($totalAmount*$request->tax_rate)/100 * $request->exchange_rate ) :  ($totalAmount + ($totalAmount*$request->tax_rate)/100 ) ,
+                    'dr_amount' => $request->currency != Auth::user()->tenant->currency->id ? ($totalAmount * $request->exchange_rate + ($totalAmount*$request->tax_rate)/100 * $request->exchange_rate ) ?? 0 :  ($totalAmount + ($totalAmount*$request->tax_rate)/100 ) ?? 0 ,
                     'cr_amount' => 0,
                     'ref_no' => $ref_no,
                     'bank' => 0,
                     'ob' => 0,
-                    'transaction_date' => $invoice->created_at,
+                    //'transaction_date' => $invoice->created_at,
                     'created_at' => $invoice->created_at
                 ];
                 DB::table(Auth::user()->tenant_id . '_gl')->insert($invoicePost);
@@ -300,7 +305,7 @@ class CRMController extends Controller
                     'ref_no' => $ref_no,
                     'bank' => 0,
                     'ob' => 0,
-                    'transaction_date' => $invoice->created_at,
+                    //'transaction_date' => $invoice->created_at,
                     'created_at' => $invoice->created_at
                 ];
                 DB::table(Auth::user()->tenant_id . '_gl')->insert($VATPost);
@@ -310,11 +315,11 @@ class CRMController extends Controller
                         'posted_by' => Auth::user()->id,
                         'narration' => 'Invoice generation for ' . $d->description,
                         'dr_amount' => 0,
-                        'cr_amount' => $request->currency != Auth::user()->tenant->currency->id ? (($d->quantity * $d->unit_cost) * $request->exchange_rate) : $d->quantity * $d->unit_cost,
+                        'cr_amount' => $request->currency != Auth::user()->tenant->currency->id ? (($d->quantity * $d->unit_cost) * $request->exchange_rate) ?? 0 : ($d->quantity * $d->unit_cost) ?? 0,
                         'ref_no' => $ref_no,
                         'bank' => 0,
                         'ob' => 0,
-                        'transaction_date' => $invoice->created_at,
+                        //'transaction_date' => $invoice->created_at,
                         'created_at' => $invoice->created_at
                     ];
                     DB::table(Auth::user()->tenant_id . '_gl')->insert($receiptPost);
@@ -430,8 +435,7 @@ class CRMController extends Controller
             'reference_no'=>'required',
             'bank'=>'required'
 				]);
-
-
+				//return dd($request->all());
 				$totalAmount = 0;
 				$arrayCount = 0;
 				$currencyArray = [];
@@ -458,9 +462,12 @@ class CRMController extends Controller
         $receipt = new Receipt();
         $receipt->tenant_id = Auth::user()->tenant_id;
         $receipt->issued_by = Auth::user()->id;
-        $receipt->client_id = $request->clientId;
-        $receipt->issue_date = $request->payment_date;
-        $receipt->amount = $totalAmount;
+				$receipt->client_id = $request->clientId;
+
+				$startDateInstance = new DateTime($request->payment_date);
+				$receipt->issue_date = $startDateInstance->format('Y-m-d H:i:s');
+
+        $receipt->amount = $totalAmount ;
         $receipt->currency_id = $request->currency[0];
         $receipt->exchange_rate = $request->exchange_rate[0];
         $receipt->payment_type = $request->payment_method;
@@ -483,12 +490,6 @@ class CRMController extends Controller
             $detail->payment = (str_replace(',','',$reIndexed[$j]) * $request->exchange_rate[$j]);
             $detail->save();
 						#Update invoice
-            /* $invoice = Invoice::where('id', $request->invoices[$j])->where('tenant_id', Auth::user()->tenant_id)->first();
-            $invoice->paid_amount += str_replace(',','',$reIndexed[$j]);
-            if($invoice->paid_amount >= $invoice->total){
-                $invoice->status = 1; //payment complete
-            }
-						$invoice->save(); */
 						$receiptInvoice =  new ReceiptInvoice;
 						$receiptInvoice->receipt_id = $receiptId;
 						$receiptInvoice->invoice_id = $request->invoices[$j];
@@ -517,19 +518,19 @@ class CRMController extends Controller
                             ->whereMonth('created_at', date('m'))
 														->whereYear('created_at', date('Y'))
 														->where('trash', '!=',1)
-                            ->sum(\DB::raw('total + tax_value'));
+                            ->sum(\DB::raw('total'));
         $last_month = Invoice::where('tenant_id', Auth::user()->tenant_id)
 														 ->whereMonth('created_at', '=', $now->subMonth()->month)
 														 ->where('trash', '!=',1)
-														 ->sum(\DB::raw('total + tax_value'));
+														 ->sum(\DB::raw('total'));
         $thisYear = Invoice::where('tenant_id', Auth::user()->tenant_id)
 														->whereYear('created_at', date('Y'))
 														->where('trash', '!=',1)
-                            ->sum(\DB::raw('total + tax_value'));
+                            ->sum(\DB::raw('total'));
         $this_week = Invoice::where('tenant_id', Auth::user()->tenant_id)
 														->whereBetween('created_at', [$now->startOfWeek()->format('Y-m-d H:i'), $now->endOfWeek()->format('Y-m-d H:i')])
 														->where('trash', '!=',1)
-                            ->sum(\DB::raw('total + tax_value'));
+                            ->sum(\DB::raw('total'));
         return view('backend.crm.invoice.index',
         [
             'invoices'=>$invoices,
@@ -548,6 +549,45 @@ class CRMController extends Controller
         if(!empty($invoice)){
 
             return view('backend.crm.invoice.print-invoice', ['invoice'=>$invoice]);
+        }else{
+            return "Invoice not found";
+        }
+    }
+    /*
+    * Print invoice
+    */
+    public function exportInvoiceAsWord($slug){
+        $invoice = Invoice::where('slug', $slug)->where('tenant_id', Auth::user()->tenant_id)->first();
+        if(!empty($invoice)){
+					$templateProcessor = new TemplateProcessor(public_path('assets/word-template/invoice.docx'));
+					$templateProcessor->setValue('company_name', Auth::user()->tenant->company_name ?? 'Company Name');
+					$templateProcessor->setValue('company_email', Auth::user()->tenant->email ?? 'Company Email');
+					$templateProcessor->setValue('company_phone', Auth::user()->tenant->phone ?? 'Company Phone');
+					$templateProcessor->setValue('company_address', Auth::user()->tenant->street_1 ?? 'Company Address');
+					$templateProcessor->setValue('invoice_no', $invoice->invoice_no);
+					$templateProcessor->setValue('ref_no', $invoice->ref_no);
+					$templateProcessor->setValue('client_name', $invoice->client->company_name);
+					$templateProcessor->setValue('client_address', $invoice->client->street_1);
+					$templateProcessor->setValue('client_phone', $invoice->client->mobile_no);
+					$templateProcessor->setValue('client_email', $invoice->client->email);
+					$templateProcessor->setValue('balance_due', $invoice->getCurrency->symbol.''.number_format(($invoice->total - $invoice->paid_amount)/$invoice->exchange_rate,2));
+
+					/* $templateProcessor->setValue('account_name', Auth::user()->tenantBankDetails->account_name);
+					$templateProcessor->setValue('account_no', Auth::user()->tenantBankDetails->account_number);
+					$templateProcessor->setValue('bank', Auth::user()->tenantBankDetails->bank_name);
+					 */
+					$templateProcessor->setValue('status', $invoice->status == 0 ? 'Pending' : 'Completed');
+					$templateProcessor->setValue('issue_date', date('d M, Y', strtotime($invoice->issue_date)));
+					$templateProcessor->setValue('due_date', date('d M, Y', strtotime($invoice->due_date)));
+					foreach($invoice->invoiceItem as $item){
+						$templateProcessor->setValue('description', $item->description);
+						$templateProcessor->setValue('quantity', $item->quantity);
+						$templateProcessor->setValue('amount', $invoice->getCurrency->symbol.''.number_format($item->unit_cost, 2));
+						$templateProcessor->setValue('total', $invoice->getCurrency->symbol.''.number_format($item->total/$invoice->exchange_rate, 2));
+					}
+					$fileName = $invoice->invoice_no;
+					$templateProcessor->saveAs($fileName.'.docx');
+					return response()->download($fileName.'.docx')->deleteFileAfterSend(true);
         }else{
             return "Invoice not found";
         }
@@ -693,8 +733,12 @@ class CRMController extends Controller
     */
     public function printReceipt($slug){
         $receipt = Receipt::where('slug', $slug)->where('tenant_id', Auth::user()->tenant_id)->first();
+        $receipt_invoice = ReceiptInvoice::where('receipt_id', $receipt->id)->first();
         if(!empty($receipt)){
-						$invoices = ReceiptItem::where('tenant_id', Auth::user()->tenant_id)->where('receipt_id', $receipt->id)->get();
+						$invoices = InvoiceItem::where('tenant_id', Auth::user()->tenant_id)
+																		->where('invoice_id', $receipt_invoice->invoice_id)->get();
+						$payments = ReceiptItem::where('tenant_id', Auth::user()->tenant_id)->where('invoice_id', $receipt_invoice->invoice_id)->get();
+
 						$invoiceIds = [];
 						foreach($invoices as $in){
 							array_push($invoiceIds, $in->invoice_id);
@@ -703,11 +747,10 @@ class CRMController extends Controller
 																			->where('client_id', $receipt->client_id)
 																			->whereIn('id', $invoiceIds)
 																			->get();
-
 						return view('backend.crm.receipt.print-receipt',
 						['receipt'=>$receipt,
 						'invoices'=>$invoices,
-						'invoiceBalance'=>$invoiceBalance,
+						'payments'=>$payments,
 						'invoiceBalance'=>$invoiceBalance
 						]);
         }else{

@@ -6,7 +6,7 @@ body {
   text-rendering: optimizeLegibility;
 }
 
-.container {
+.chat-container {
   margin: 60px auto;
   background: #fff;
   padding: 0;
@@ -43,7 +43,7 @@ body {
 }
 
 .settings-tray--right i:hover {
-  color: #74b9ff;
+  color: #056162;
   cursor: pointer;
 }
 
@@ -99,20 +99,11 @@ input:focus {
 
 .conversation {
   height: 500px;
-  overflow-x: scroll;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-flex: 5;
-      -ms-flex: 5;
-          flex: 5;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
+  overflow-y: scroll;
+  /* display: flex;
+	flex: 5;
+	flex-direction: column;
+	justify-content: space-between; */
 }
 
 .friend-drawer {
@@ -150,7 +141,7 @@ input:focus {
 }
 
 .friend-drawer--onhover:hover {
-  background: #74b9ff;
+  background: #056162;
   cursor: pointer;
 }
 
@@ -166,7 +157,7 @@ hr {
 }
 
 .chat-bubble {
-  padding: 20px 30px;
+  padding: 10px 15px;
   background: #eee;
   margin: 10px 30px;
   border-radius: 9px;
@@ -196,7 +187,7 @@ hr {
 
 .chat-bubble--right:after {
   right: 0;
-  border-left-color: #74b9ff;
+  border-left-color: #056162;
   border-right: 0;
   margin-right: -20px;
 }
@@ -219,8 +210,8 @@ hr {
   }
 }
 
-.offset-md-9 .chat-bubble {
-  background: #74b9ff;
+.offset-md-7 .chat-bubble {
+  background: #056162;
   color: #fff;
 }
 

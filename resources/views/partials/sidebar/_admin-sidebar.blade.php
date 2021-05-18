@@ -2,12 +2,14 @@
     <div class="pcoded-inner-navbar main-menu" style="background: none;">
         <div class="pcoded-navigatio-lavel">Navigation</div>
         <ul class="pcoded-item pcoded-left-item">
-            <li class="">
-                <a href="{{route('activity-stream')}}">
-                    <span class="pcoded-micon"><i class="ti-layers-alt"></i></span>
-                    <span class="pcoded-mtext">Activity Stream</span>
-                </a>
-            </li>
+					@can('view activity stream')
+						<li class="">
+								<a href="{{route('activity-stream')}}">
+										<span class="pcoded-micon"><i class="ti-layers-alt"></i></span>
+										<span class="pcoded-mtext">Activity Stream</span>
+								</a>
+						</li>
+					@endcan
             <li class="">
                 <a href="{{route('workflow-tasks')}}">
                     <span class="pcoded-micon"><i class="ti-menu"></i></span>
