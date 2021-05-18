@@ -23,9 +23,11 @@
         "laravel/ui": "^2.0",
         "livewire/livewire": "^1.1",
         "nwidart/laravel-modules": "^7.1",
+        "phpoffice/phpword": "^0.17.0",
         "pusher/pusher-php-server": "^4.1",
         "quickbooks/v3-php-sdk": "^5.3",
         "spatie/laravel-permission": "^3.13",
+        "spatie/laravel-searchable": "^1.9",
         "twilio/sdk": "^6.7",
         "tymon/jwt-auth": "^1.0",
         "unicodeveloper/laravel-paystack": "^1.0"

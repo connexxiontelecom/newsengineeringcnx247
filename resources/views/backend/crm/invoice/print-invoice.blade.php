@@ -148,13 +148,18 @@
                                 <th class="text-left"> <strong>Account Name:</strong> </th>
                                 <td>{{Auth::user()->tenantBankDetails->account_name ?? ''}}</td>
                             </tr>
+                           @if(!is_null(Auth::user()->tenantBankDetails->sort_code))<tr>
+                                <th class="text-left"><strong>Sort Code:</strong> </th>
+                                <td>{{Auth::user()->tenantBankDetails->sort_code ?? ''}}</td>
+														</tr>
+														@endif
                             <tr>
                                 <th class="text-left"><strong>Account Number:</strong> </th>
                                 <td>{{Auth::user()->tenantBankDetails->account_number ?? ''}}</td>
                             </tr>
                             <tr>
                                 <th class="text-left"><strong>Bank:</strong> </th>
-                                <td>{{Auth::user()->tenant->tenantBankDetails->bank_name ?? ''}}</td>
+                                <td>{{Auth::user()->tenantBankDetails->bank_name ?? ''}}</td>
                             </tr>
                         </tbody>
                         <tbody>
@@ -196,6 +201,7 @@
                         <button type="button" class="btn btn-success btn-mini btn-print-invoice m-b-10 btn-sm waves-effect waves-light m-r-20" value="{{$invoice->id}}" id="sendInvoiceViaEmail"> <i class="icofont icofont-email mr-2"></i> <span id="sendEmailAddon">Send as Email</span> </button>
                         <button type="button" class="btn btn-primary btn-mini btn-print-invoice m-b-10 btn-sm waves-effect waves-light m-r-20" type="button" id="printInvoice"><i class="icofont icofont-printer mr-2"></i> Print</button>
 												<a href="{{url()->previous()}}" class="btn btn-secondary btn-mini waves-effect m-b-10 btn-sm waves-light"><i class="ti-arrow-left mr-2"></i> Back</a>
+												<a href="{{ route('export-invoice', $invoice->slug) }}" class="btn btn-warning btn-mini waves-effect m-b-10 btn-sm waves-light"><i class="ti-export mr-2"></i> Export Word</a>
 												@if ($invoice->trash == 0)
                        	 <a href="{{route('decline-invoice', $invoice->slug)}}" class="btn btn-danger btn-mini waves-effect m-b-10 btn-sm waves-light"><i class="ti-trash mr-2"></i> Decline Invoice</a>
 												@endif

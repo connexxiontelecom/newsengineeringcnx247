@@ -5,7 +5,7 @@ Receive Payment
 @endsection
 
 @section('extra-styles')
-
+<link rel="stylesheet" type="text/css" href="/assets/css/cus/datetimepicker.min.css">
 <style>
 /* The heart of the matter */
 
@@ -82,9 +82,9 @@ Receive Payment
                     <p><a href="mailto:{{$invoice->client->email ?? ''}}" class="__cf_email__" data-cfemail="eb8f8e8684ab939291c5888486">[ {{$invoice->client->email ?? ''}} ]</a></p>
                 </div>
                 <div class="col-md-4 col-sm-6">
-                    <h6 class="m-b-20">Balance: <span>{{$invoice->getCurrency->symbol ??  'N'}}{{number_format($pending_invoices->sum('total') - $pending_invoices->sum('paid_amount'),2)}}</span></h6>
+                    <h6 class="m-b-20">Balance: <span>{{$invoice->getCurrency->symbol ??  'N'}}{{number_format($pending_invoices->sum('total')/$invoice->exchange_rate - $pending_invoices->sum('paid_amount')/$invoice->exchange_rate,2)}}</span></h6>
                     <h6 class="text-uppercase text-primary">Amount Received :
-                        <span class="balance">{{$invoice->getCurrency->symbol ?? 'N'}} {{number_format($pending_invoices->sum('paid_amount'),2)}}<span class="amount-received"></span> </span>
+                        <span class="balance">{{$invoice->getCurrency->symbol ?? 'N'}} {{number_format($pending_invoices->sum('paid_amount')/$invoice->exchange_rate,2)}}<span class="amount-received"></span> </span>
                     </h6>
                 </div>
                 <div class="col-md-12 col-sm-12">
@@ -92,7 +92,7 @@ Receive Payment
                         <div class="col-md-3 col-lg-3 col-sm-3">
                             <div class="form-group">
                                 <label for="">Payment Date</label>
-                                <input type="date" name="payment_date" placeholder="Date" class="form-control">
+                                <input type="text" name="payment_date" id="payment_date" placeholder="dd/mm/yyyy" class="form-control">
                                 @error('payment_date')
                                     <i class="text-danger mt-2">{{$message}}</i>
                                 @enderror
@@ -162,7 +162,7 @@ Receive Payment
                                         <td>
                                             <div class="checkbox-fade fade-in-primary">
                                                 <label>
-                                                    <input type="checkbox" value="" data-amount="{{ number_format((float)($item->total/$item->exchange_rate) - ($item->paid_amount/$item->exchange_rate), 2, '.', '')}}" class="select-invoice">
+                                                    <input type="checkbox" value="" data-amount="{{ number_format((float)($item->total/$invoice->exchange_rate) - ($item->paid_amount/$invoice->exchange_rate), 2, '.', '')}}" class="select-invoice">
                                                     <span class="cr">
                                                         <i class="cr-icon icofont icofont-ui-check txt-primary"></i>
                                                     </span>
@@ -182,10 +182,10 @@ Receive Payment
                                             <p>{{date( Auth::user()->tenant->dateFormat->format ?? 'd/M/Y', strtotime($item->due_date))}}</p>
                                         </td>
                                         <td>
-                                            <p>{{$invoice->getCurrency->symbol ?? 'N'}}{{number_format(($item->total/$item->exchange_rate),2)}}</p>
+                                            <p>{{$invoice->getCurrency->symbol ?? 'N'}}{{number_format(($item->total)/$invoice->exchange_rate,2)}}</p>
                                         </td>
                                         <td>
-                                            <p>{{$invoice->getCurrency->symbol ?? 'N'}}{{number_format(($item->total/$item->exchange_rate) - ($item->paid_amount/$item->exchange_rate),2)}}</p>
+                                            <p>{{$invoice->getCurrency->symbol ?? 'N'}}{{number_format(($item->total)/$invoice->exchange_rate - ($item->paid_amount)/$invoice->exchange_rate,2)}}</p>
                                         </td>
                                         <td><input type="text" class="form-control payment autonumber" name="payment[]" style="width: 120px;"></td>
                                     </tr>
@@ -244,8 +244,12 @@ Receive Payment
 <script src="\assets\pages\form-masking\jquery.inputmask.js"></script>
 <script src="/assets/pages/form-masking/autoNumeric.js"></script>
 <script src="/assets/pages/form-masking/form-mask.js"></script>
+<script type="text/javascript" src="/assets/js/cus/moment.js"></script>
+<script type="text/javascript" src="/assets/js/cus/datetimepicker.js"></script>
+
 <script>
     $(document).ready(function(){
+			$('#payment_date').datetimepicker();
         var grand_total = 0;
         var invoice_total = 0;
         $(".select-invoice").on('change', function() {

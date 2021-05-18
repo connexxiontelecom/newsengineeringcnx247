@@ -15,6 +15,7 @@ use App\ResponsiblePerson;
 use App\Post;
 use App\User;
 use Auth;
+use DateTime;
 use Illuminate\Support\Facades\DB;
 
 class BusinessTripController extends Controller
@@ -115,9 +116,14 @@ class BusinessTripController extends Controller
         $business->currency = $request->currency;
         $business->post_type = 'business-trip';
         $business->post_content = $request->purpose;
-        $business->location = $request->destination;
-        $business->start_date = $request->start_date;
-        $business->end_date = $request->end_date;
+				$business->location = $request->destination;
+
+				$startDateInstance = new DateTime($request->start_date);
+				$business->start_date = $startDateInstance->format('Y-m-d H:i:s');
+
+					$dueDateInstance = new DateTime($request->end_date);
+				$business->end_date = $dueDateInstance->format('Y-m-d H:i:s');
+
         $business->post_status = 'in-progress';
         $business->user_id = Auth::user()->id;
         $business->tenant_id = Auth::user()->tenant_id;

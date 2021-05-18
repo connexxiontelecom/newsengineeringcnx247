@@ -12,11 +12,13 @@
     <link rel="stylesheet" type="text/css" href="\assets\bower_components\switchery\css\switchery.min.css">
     <link rel="stylesheet" type="text/css" href="\assets\bower_components\bootstrap-tagsinput\css\bootstrap-tagsinput.css">
     <link rel="stylesheet" href="{{asset('assets/css/cus/parsley.css')}}">
-    <link rel="stylesheet" href="{{asset('assets/css/cus/progressBar.css')}}">
+		<link rel="stylesheet" href="{{asset('assets/css/cus/progressBar.css')}}">
+		<link rel="stylesheet" type="text/css" href="/assets/css/cus/datetimepicker.min.css">
 @endsection
 
 @section('content')
-        @livewire('backend.activity-stream.shortcut')
+
+			@livewire('backend.activity-stream.shortcut')
 
 @endsection
 
@@ -85,6 +87,17 @@
 <script type="text/javascript" src="\assets\bower_components\bootstrap-tagsinput\js\bootstrap-tagsinput.js"></script>
 <script src="{{asset('/assets/js/cus/parsley.min.js')}}"></script>
 <script src="{{asset('/assets/js/cus/progressBar.js')}}"></script>
+<script type="text/javascript" src="/assets/js/cus/moment.js"></script>
+<script type="text/javascript" src="/assets/js/cus/datetimepicker.js"></script>
+<script>
+	$(document).ready(function(){
+
+			$('#start_date').datetimepicker();
+			$('#due_date').datetimepicker();
+			$('#event_start_date').datetimepicker();
+			$('#event_end_date').datetimepicker();
+	});
+</script>
 @stack('activity-stream-exception')
 
 @endsection

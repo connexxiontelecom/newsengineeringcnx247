@@ -20,6 +20,7 @@ var vm = new Vue({
 			selected_user_details: '',
 			searchText:'',
 			noRecord:false,
+			file: '',
 			options:{
 				height:'500px'
 			},
@@ -76,6 +77,25 @@ var vm = new Vue({
 
 
 		},
+		triggerFileUpload(){
+			this.handleFileUpload();
+		},
+		handleFileUpload(){
+			this.$refs.attachment.click();
+			this.file = this.$refs.attachment.files[0];
+		//	if(this.file != null){
+				let formData = new FormData();
+				formData.append('attachment', this.file);
+				formData.append('to',this.selected_user);
+				axios.post('/conversation/attachment',formData)
+				.then(response=>{
+					this.file = '';
+					this.getSelectedUser(this.selected_user);
+					this.scrollToBottom();
+
+				});
+			//}
+		},
 		handleIncoming(message){
 			if(this.selected_user && message.from_id == $this.selected_user){
 				this.saveNewMessage(message);
@@ -93,8 +113,8 @@ var vm = new Vue({
 				this.selected_user_details = response.data.selected_user;
 				this.initializeChat();
 				this.searchText = '';
+				this.scrollToBottom();
 			});
-			//this.scrollToBottom();
 
 		},
 
@@ -116,6 +136,7 @@ var vm = new Vue({
 			.then(response=>{
 				this.compose_message = '';
 				this.getSelectedUser(this.selected_user);
+				this.scrollToBottom();
 			});
 		},
 		saveNewMessage(obj){
@@ -127,11 +148,26 @@ var vm = new Vue({
 		date: function (date) {
       return moment(date).format('MMMM Do YYYY, h:mm:ss a');
 		},
-		/* scrollToBottom() {
-			setTimeout(()=>{
-				this.$refs.messageWrapper.scrollTo = this.$refs.messageWrapper.scrollHeight - this.$refs.messageWrapper.clientHeight;
+		scrollToBottom() {
+			setTimeout(() => {
+					document.getElementById('messageWrapper').scrollTop = document.getElementById('messageWrapper').scrollHeight - document.getElementById('messageWrapper').clientHeight;
 			}, 50);
-    }, */
+		},
+		setupClient() {
+			axios.post("/conversation/compatibility-token", {
+					forPage: window.location.pathname,
+					_token: $('meta[name="csrf-token"]').attr('content')
+			}).then(response=> {
+					//console.log(re);
+					//device = new Device();
+					//device.setup(data.token);
+					//setupHandlers(device);
+			}).catch(error=> {
+					updateCallStatus("Could not get a token from server!");
+			});
+
+	}
+
 	},
 
 });

@@ -97,6 +97,8 @@ class Post extends Model
     }
     public function getProjectBudgetFinancials(){
         return $this->hasMany(BudgetFinancial::class, 'project_id');
-    }
+		}
+
+
 
 }

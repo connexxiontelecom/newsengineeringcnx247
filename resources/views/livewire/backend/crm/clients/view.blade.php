@@ -14,9 +14,15 @@
                 <div class="card-header">
                     <h5 class="card-header-text"> {{ $client->first_name ?? ''}} {{$client->surname ?? ''}}</h5>
                     <div class="btn-group d-flex justify-content-end">
-                        <a href="{{route('new-client')}}" class="btn btn-mini btn-primary"><i class="ti-plus"></i> Add New Client</a>
+
+
+											<a href="{{route('new-client')}}" class="btn btn-mini btn-primary"><i class="ti-plus"></i> Add New Client</a>
+
                         <a href="{{route('clients')}}" class="btn btn-mini btn-danger"><i class="ti-user"></i> All Clients</a>
-                        <a href="{{route('convert-to-lead', $client->slug)}}" class="btn btn-mini btn-info"><i class="ti-control-shuffle"></i> Convert to Lead</a>
+
+
+												<a href="{{route('convert-to-lead', $client->slug)}}" class="btn btn-mini btn-info"><i class="ti-control-shuffle"></i> Convert to Lead</a>
+
                         <button type="button" class="btn btn-mini btn-default" data-toggle="modal" data-target="#sendEmailModal"><i class="ti-email"></i> Send Email</button>
                         <button type="button" class="btn btn-mini btn-secondary" data-toggle="modal" data-target="#sendSMS"><i class="ti-comment-alt"></i> Send SMS</button>
                     </div>

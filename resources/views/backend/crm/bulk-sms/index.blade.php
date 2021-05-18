@@ -75,14 +75,14 @@
                                 </tr>
                             </thead>
                         <tbody>
-                            @php 
+                            @php
                                 $i = 1;
                             @endphp
                             @if (count($sms) > 0)
                                 @foreach ($sms as $message)
                                     <tr class="unread">
                                         <td>{{$i++}}</td>
-                                        <td><a href="email-read.htm" class="email-name">{{$message->mobile_no}}</a></td>
+                                        <td><a href="javascript:void(0);" class="email-name">{{$message->mobile_no}}</a></td>
                                         <td>{{ strlen($message->message) > 81 ? substr($message->message, 0,81).'...' : $message->message ?? ''}}</td>
                                         <td class="email-attch">
                                             @if ($message->status == 0)

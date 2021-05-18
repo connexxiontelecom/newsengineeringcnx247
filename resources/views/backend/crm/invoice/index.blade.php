@@ -58,68 +58,70 @@
     </div>
     <div class="row">
         <div class="col-xl-12 col-lg-12 filter-bar">
-            <div class="row">
-                <div class="col-xl-3 col-md-6">
-                    <div class="card">
-                        <div class="card-block">
-                            <div class="row align-items-center m-l-0">
-                                <div class="col-auto">
-                                    <i class="icofont icofont-ui-calendar f-30 text-c-lite-green"></i>
-                                </div>
-                                <div class="col-auto">
-                                    <h6 class="text-muted m-b-10">This Year</h6>
-                                    <h5 class="m-b-0">{{Auth::user()->tenant->currency->symbol ?? '₦'}}{{number_format($thisYear,2)}}</h5>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-3 col-md-6">
-                    <div class="card">
-                        <div class="card-block">
-                            <div class="row align-items-center m-l-0">
-                                <div class="col-auto">
-                                    <i class="icofont icofont-ui-calendar f-30 text-c-lite-green"></i>
-                                </div>
-                                <div class="col-auto">
-                                    <h6 class="text-muted m-b-10">Last Month</h6>
-                                    <h5 class="m-b-0">{{Auth::user()->tenant->currency->symbol ?? '₦'}}{{number_format($last_month,2)}}</h5>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-3 col-md-6">
-                    <div class="card">
-                        <div class="card-block">
-                            <div class="row align-items-center m-l-0">
-                                <div class="col-auto">
-                                    <i class="icofont icofont-ui-calendar f-30 text-c-lite-green"></i>
-                                </div>
-                                <div class="col-auto">
-                                    <h6 class="text-muted m-b-10">This Month</h6>
-                                    <h5 class="m-b-0">{{Auth::user()->tenant->currency->symbol ?? '₦'}}{{number_format($monthly,2)}}</h5>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-3 col-md-6">
-                    <div class="card">
-                        <div class="card-block">
-                            <div class="row align-items-center m-l-0">
-                                <div class="col-auto">
-                                    <i class="icofont icofont-ui-calendar f-30 text-c-lite-green"></i>
-                                </div>
-                                <div class="col-auto">
-                                    <h6 class="text-muted m-b-10">This Week</h6>
-                                    <h5 class="m-b-0">{{Auth::user()->tenant->currency->symbol ?? '₦'}}{{number_format($this_week,2)}}</h5>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+					@can('view invoice report')
+						<div class="row">
+								<div class="col-xl-3 col-md-6">
+										<div class="card">
+												<div class="card-block">
+														<div class="row align-items-center m-l-0">
+																<div class="col-auto">
+																		<i class="icofont icofont-ui-calendar f-30 text-c-lite-green"></i>
+																</div>
+																<div class="col-auto">
+																		<h6 class="text-muted m-b-10">This Year</h6>
+																		<h5 class="m-b-0">{{Auth::user()->tenant->currency->symbol ?? '₦'}}{{number_format($thisYear,2)}}</h5>
+																</div>
+														</div>
+												</div>
+										</div>
+								</div>
+								<div class="col-xl-3 col-md-6">
+										<div class="card">
+												<div class="card-block">
+														<div class="row align-items-center m-l-0">
+																<div class="col-auto">
+																		<i class="icofont icofont-ui-calendar f-30 text-c-lite-green"></i>
+																</div>
+																<div class="col-auto">
+																		<h6 class="text-muted m-b-10">Last Month</h6>
+																		<h5 class="m-b-0">{{Auth::user()->tenant->currency->symbol ?? '₦'}}{{number_format($last_month,2)}}</h5>
+																</div>
+														</div>
+												</div>
+										</div>
+								</div>
+								<div class="col-xl-3 col-md-6">
+										<div class="card">
+												<div class="card-block">
+														<div class="row align-items-center m-l-0">
+																<div class="col-auto">
+																		<i class="icofont icofont-ui-calendar f-30 text-c-lite-green"></i>
+																</div>
+																<div class="col-auto">
+																		<h6 class="text-muted m-b-10">This Month</h6>
+																		<h5 class="m-b-0">{{Auth::user()->tenant->currency->symbol ?? '₦'}}{{number_format($monthly,2)}}</h5>
+																</div>
+														</div>
+												</div>
+										</div>
+								</div>
+								<div class="col-xl-3 col-md-6">
+										<div class="card">
+												<div class="card-block">
+														<div class="row align-items-center m-l-0">
+																<div class="col-auto">
+																		<i class="icofont icofont-ui-calendar f-30 text-c-lite-green"></i>
+																</div>
+																<div class="col-auto">
+																		<h6 class="text-muted m-b-10">This Week</h6>
+																		<h5 class="m-b-0">{{Auth::user()->tenant->currency->symbol ?? '₦'}}{{number_format($this_week,2)}}</h5>
+																</div>
+														</div>
+												</div>
+										</div>
+								</div>
 						</div>
+
 						<div class="col-md-12">
 							<div class="card">
 									<div class="card-block">
@@ -150,7 +152,8 @@
 											</div>
 									</div>
 							</div>
-					</div>
+						</div>
+					@endcan
             <div class="row">
 							<div class="col-sm-12">
 								<div class="card card-border-primary">
@@ -189,10 +192,16 @@
                                     <div class="dropdown-secondary dropdown">
                                         <button class="btn btn-info btn-mini dropdown-toggle waves-light b-none txt-muted" type="button" id="dropdown14" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="icofont icofont-navigation-menu"></i></button>
                                         <div class="dropdown-menu" aria-labelledby="dropdown14" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut">
-                                            <a class="dropdown-item waves-light waves-effect" href="{{route('print-invoice', $invoice->slug)}}"><i class="ti-printer"></i> Print Invoice</a>
+																						<a class="dropdown-item waves-light waves-effect" href="{{route('print-invoice', $invoice->slug)}}"><i class="ti-printer"></i> Print Invoice</a>
+
+
                                             <a class="dropdown-item waves-light waves-effect" href="{{route('print-invoice', $invoice->slug)}}"><i class="ti-trash"></i> Decline Invoice</a>
-                                            @if(($invoice->paid_amount) < ($invoice->total))
-                                                <a class="dropdown-item waves-light waves-effect" href="{{route('receive-payment', $invoice->slug)}}"><i class="ti-receipt"></i> Receive Payment</a>
+
+																						@if(($invoice->paid_amount) < ($invoice->total))
+
+
+																							<a class="dropdown-item waves-light waves-effect" href="{{route('receive-payment', $invoice->slug)}}"><i class="ti-receipt"></i> Receive Payment</a>
+
 																						@endif
 
                                         </div>

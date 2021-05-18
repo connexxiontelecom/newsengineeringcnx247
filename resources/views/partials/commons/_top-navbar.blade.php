@@ -16,13 +16,17 @@
         <div class="navbar-container container-fluid">
             <ul class="nav-left">
                 <li class="header-search">
+									<form action="{{route('search-cnx247')}}" method="post" >
+										@csrf
                     <div class="main-search morphsearch-search">
                         <div class="input-group">
                             <span class="input-group-addon search-close"><i class="feather icon-x"></i></span>
-                            <input type="text" class="form-control">
+                            <input type="text" style="" class="form-control" placeholder="Search {{config('app.name')}}" name="search_phrase">
                             <span class="input-group-addon search-btn"><i class="feather icon-search"></i></span>
                         </div>
                     </div>
+
+									</form>
                 </li>
                 <li>
                     <a href="#!" onclick="javascript:toggleFullScreen()">
@@ -66,7 +70,7 @@
                             </ul>
                         </div>
                     </li>
-                    @livewire('backend.user.notifications')
+										@livewire('backend.user.notifications')
                     <li class="header-notification">
                         <div class="dropdown-primary dropdown">
                             <div class="dropdown-toggle" data-toggle="dropdown">

@@ -111,7 +111,10 @@
                                                 <td>{{date(Auth::user()->tenant->dateFormat->format ?? 'd F, Y', strtotime($room->created_at)) ?? ''}}</td>
                                                 <td>
                                                     <div class="btn-group">
-                                                        <a href="{{ route('join-room',$room->room_name) }}" class="btn-mini btn btn-primary">Join</a>
+																											@can('join room')
+																											<a href="{{ route('join-room',$room->room_name) }}" class="btn-mini btn btn-primary">Join</a>
+
+																											@endcan
                                                         @if ($room->created_by == Auth::user()->id)
                                                          <a href="{{ route('delete-room',$room->room_name) }}" class="btn-mini btn btn-danger"> <i class="ti-trash"></i> </a>
                                                         @endif

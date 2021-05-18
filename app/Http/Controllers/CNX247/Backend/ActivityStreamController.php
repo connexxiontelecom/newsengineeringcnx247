@@ -14,6 +14,7 @@ use App\Invitation;
 use App\Clocker as ClockInOut;
 use App\Observer;
 use App\User;
+use DateTime;
 use DB;
 use Auth;
 
@@ -136,9 +137,15 @@ class ActivityStreamController extends Controller
         $task->post_content = $request->task_description;
         $task->post_color = $request->color;
         $task->post_type = 'task';
-        $task->post_url = $url;
-        $task->start_date = $request->start_date ?? '';
-        $task->end_date = $request->due_date;
+				$task->post_url = $url;
+
+				$startDateInstance = new DateTime($request->start_date);
+				$task->start_date = $startDateInstance->format('Y-m-d H:i:s');
+
+					$dueDateInstance = new DateTime($request->due_date);
+				$task->end_date = $dueDateInstance->format('Y-m-d H:i:s');
+
+
         $task->post_priority = $request->priority;
         $task->tenant_id = Auth::user()->tenant_id;
         $task->save();
@@ -221,9 +228,14 @@ class ActivityStreamController extends Controller
         $event->post_content = $request->event_description;
         $event->post_type = 'event';
         $event->post_url = $url;
-        $event->tenant_id = Auth::user()->tenant_id;
-        $event->start_date = $request->event_start_date ?? '';
-        $event->end_date = $request->event_end_date ?? '';
+				$event->tenant_id = Auth::user()->tenant_id;
+
+				$startDateInstance = new DateTime($request->event_start_date);
+				$event->start_date = $startDateInstance->format('Y-m-d H:i:s');
+
+					$dueDateInstance = new DateTime($request->event_end_date);
+				$event->end_date = $dueDateInstance->format('Y-m-d H:i:s');
+
         $event->save();
         $event_id = $event->id;
         //send notification
@@ -438,7 +450,11 @@ class ActivityStreamController extends Controller
                     $part->save();
                      //send notification
                      $user = User::find($person);
-                     $user->notify(new NewPostNotification($app));
+										 $user->notify(new NewPostNotification($app));
+										 /* if($person == Auth::user()->id){
+											$audio = "<script> var audio = new Audio('/assets/sounds/s1.mp3'); audio.play(); </script>";
+											echo $audio;
+										 } */
                 }
             }
         }
@@ -503,5 +519,11 @@ class ActivityStreamController extends Controller
         $out->status = 2; //out
         $out->save();
         return response()->json(['message'=>'Success! Clocked-out'], 200);
-    }
+		}
+
+		public function searchCNX247(Request $request){
+			$posts = Post::where('post_title', 'LIKE', '%'.$request->search_phrase.'%')
+										->orWhere('post_content', 'LIKE', '%'.$request->search_phrase.'%')->get();
+			return view('backend.activity-stream.search-result',['posts'=>$posts,'search_phrase'=>$request->search_phrase]);
+		}
 }

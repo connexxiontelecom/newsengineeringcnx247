@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="/assets/bower_components/select2/css/select2.min.css">
     <!-- Animate.css -->
     <link rel="stylesheet" type="text/css" href="/assets/bower_components/animate.css/css/animate.css">
+    <link rel="stylesheet" type="text/css" href="/assets/css/cus/datetimepicker.min.css">
 @endsection
 
 @section('content')
@@ -55,14 +56,14 @@
                     <div class="row">
                         <div class="form-group col-md-4">
                             <label class="">Start Date</label>
-                            <input type="datetime-local" name="start_date" value="{{old('start_date')}}" class="form-control form-control-normal" placeholder="Task title">
+                            <input type="text" id="start_date" name="start_date" value="{{old('start_date')}}" class="form-control form-control-normal" placeholder="dd/mm/yyyy" >
                             @error('start_date')
                                 <i class="text-danger">{{$message}}</i>
                             @enderror
                         </div>
                         <div class="form-group col-md-4">
                             <label class="">Due Date</label>
-                            <input type="datetime-local" name="due_date" value="{{old('due_date')}}" class="form-control form-control-normal" placeholder="Due date">
+                            <input type="text" id="due_date" name="due_date" value="{{old('due_date')}}" class="form-control form-control-normal" placeholder="dd/mm/yyyy" >
                             @error('due_date')
                                 <i class="text-danger">{{$message}}</i>
                             @enderror
@@ -150,5 +151,14 @@
 <script type="text/javascript" src="/assets/pages/advance-elements/select2-custom.js"></script>
 <script type="text/javascript" src="/assets/bower_components/tinymce/tinymce.min.js"></script>
 <script type="text/javascript" src="/assets/js/cus/tinymce.js"></script>
+<script type="text/javascript" src="/assets/js/cus/moment.js"></script>
+<script type="text/javascript" src="/assets/js/cus/datetimepicker.js"></script>
+<script>
+	$(document).ready(function(){
+		$('#start_date').datetimepicker();
+		$('#due_date').datetimepicker();
+
+	});
+</script>
 @stack('custom-scripts')
 @endsection

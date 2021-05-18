@@ -6,8 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Http\Request;
 use App\User;
+use App\ApplicationLog;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use DB;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
@@ -81,9 +83,15 @@ class LoginController extends Controller
 		if(!empty($user)){
 			//this account is verified
 			if(Auth::attempt(['email'=>$request->email, 'password'=>$request->password, 'account_status'=>1], $request->remember)){
+				/* $message = Auth::user()->first_name." ".Auth::user()->surname." logged in.";
+				$log = new ApplicationLog;
+				$log->tenant_id = Auth::user()->tenant_id;
+				$log->activity = $message;
+				$log->save(); */
 				//check if profile is not updated
 				if(empty(Auth::user()->department_id) ){
 					session()->flash("update_profile", "<strong>Notice: </strong> You're adviced to complete your profile");
+
 					return redirect()->route('my-profile');
 				}else{
 

@@ -14,7 +14,8 @@
     <link rel="stylesheet" type="text/css" href="/assets/bower_components/animate.css/css/animate.css">
     <link rel="stylesheet" type="text/css" href="/assets/bower_components/animate.css/css/animate.css">
     <link rel="stylesheet" href="{{asset('assets/css/cus/parsley.css')}}">
-    <link rel="stylesheet" href="{{asset('assets/css/cus/progressBar.css')}}">
+		<link rel="stylesheet" href="{{asset('assets/css/cus/progressBar.css')}}">
+		<link rel="stylesheet" type="text/css" href="/assets/css/cus/datetimepicker.min.css">
 <style>
     .md-content h3{
         border-radius: 0px !important;
@@ -59,13 +60,13 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="">Start Date</label>
-                                    <input type="datetime-local" placeholder="Start Date" id="start_date" class="form-control" required>
+                                    <input type="text" placeholder="dd/mm/yyyy" id="start_date" class="form-control" required>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="">End Date</label>
-                                    <input type="datetime-local" placeholder="End Date" id="end_date" class="form-control" required>
+                                    <input type="text" placeholder="dd/mm/yyyy" id="end_date" class="form-control" required>
                                 </div>
                             </div>
                         </div>
@@ -108,6 +109,16 @@
     <script type="text/javascript" src="/assets/bower_components/tinymce/tinymce.min.js"></script>
     <script type="text/javascript" src="/assets/js/cus/tinymce.js"></script>
     <script src="{{asset('/assets/js/cus/parsley.min.js')}}"></script>
-    <script src="{{asset('/assets/js/cus/progressBar.js')}}"></script>
+		<script src="{{asset('/assets/js/cus/progressBar.js')}}"></script>
+
+<script type="text/javascript" src="/assets/js/cus/moment.js"></script>
+<script type="text/javascript" src="/assets/js/cus/datetimepicker.js"></script>
+<script>
+	$(document).ready(function(){
+
+			$('#start_date').datetimepicker();
+			$('#end_date').datetimepicker();
+	});
+</script>
     @stack('business-trip-script')
 @endsection

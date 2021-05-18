@@ -2,9 +2,18 @@
 	<div class="row">
 			<div class="d-inline-block">
 					<a class="btn btn-warning ml-3 btn-mini btn-round text-white" href="{{route('project-board')}}"><i class="icofont icofont-tasks"></i>  Project Detail</a>
+					@can('generate project budget')
 					<a href="{{ route('project-budget', $project->post_url) }}" class=" btn btn-primary btn-mini btn-round text-white"><i class="icofont icofont-spreadsheet"></i> Budget</a>
+
+					@endcan
+					@can('generate project invoice')
 					<a href="{{ route('project-invoice', $project->post_url) }}" class="btn btn-danger btn-mini btn-round text-white"><i class="icofont icofont-money-bag "></i>  Invoice </a>
+
+					@endcan
+					@can('generate project bill')
+
 					<a href="{{ route('project-bill', $project->post_url) }}" class="btn btn-info btn-mini btn-round text-white"><i class="ti-receipt "></i>  Bill </a>
+					@endcan
 			</div>
 	</div>
 	<div class="nav-item nav-grid">

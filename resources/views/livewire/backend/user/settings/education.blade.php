@@ -59,7 +59,9 @@
                         <div class="col-md-12">
                             <label>Qualification</label>
                             <select class="form-control col-md-12" wire:model.debounce.90000ms="qualification">
-
+															@foreach ($qualifications as $item)
+																	<option value="{{$item->id ?? ''}}">{{$item->name ?? ''}}</option>
+															@endforeach
                             </select>
                             @error('qualification')
                                 <i>{{$message}}</i>

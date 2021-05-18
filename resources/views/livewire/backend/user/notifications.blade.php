@@ -87,11 +87,67 @@
 </li>
 @push('notification-script')
     <script>
+			var unread = "{{count($unread) ?? 0 }}";
+			var logo = "{{ asset('/assets/images/company-assets/logos/'.Auth::user()->tenant->logo ?? 'logo.png') }}";
+			var company = "{{ Auth::user()->tenant->company_name ?? 'CNX247 ERP Solution' }}";
+			var sound = "/assets/sounds/s1.mp3";
         $(document).ready(function(){
+
             $(document).on('click', '.markAllAsRead', function(e){
                 e.preventDefault();
                 location.reload();
             });
+
+						setInterval(function(){
+							if(unread > 0){
+								notify('bottom', 'right', 'fa fa-check', 'inverse', 'animated fadeIn', 'animated fadeOut');
+								var audio = new Audio(sound);
+								audio.play();
+
+							}
+						 }, 300000 );
+				});
+
+			function notify(from, align, icon, type, animIn, animOut){
+        $.growl({
+            icon: icon,
+            title: 'New notification! ',
+            message: ' You have unread notification(s).',
+            url: "{{route('notifications')}}"
+        },{
+            element: 'body',
+            type: type,
+            allow_dismiss: true,
+            placement: {
+                from: from,
+                align: align
+            },
+            offset: {
+                x: 30,
+                y: 30
+            },
+            spacing: 10,
+            z_index: 999999,
+            delay: 5000,
+            timer: 1000,
+            url_target: '_blank',
+            mouse_over: false,
+            animate: {
+                enter: animIn,
+                exit: animOut
+            },
+            icon_type: 'class',
+            template: '<div data-growl="container" class="alert alert-warning" role="alert">' +
+            '<button type="button" class="close" data-growl="dismiss">' +
+            '<span aria-hidden="true">&times;</span>' +
+            '<span class="sr-only">Close</span>' +
+            '</button>' +
+            '<span data-growl="icon"></span>' +
+            '<span data-growl="title"></span>' +
+            '<span data-growl="message"></span>' +
+            '<a href="{{route('notifications')}}" data-growl="url"></a>' +
+            '</div>'
         });
+    };
     </script>
 @endpush

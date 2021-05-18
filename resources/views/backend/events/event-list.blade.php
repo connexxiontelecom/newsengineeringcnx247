@@ -5,9 +5,10 @@
 @endsection
 
 @section('extra-styles')
-<link rel="stylesheet" type="text/css" href="/assets/bower_components/datatables.net-bs4/css/dataTables.bootstrap4.min.css">
-<link rel="stylesheet" type="text/css" href="/assets/pages/data-table/css/buttons.dataTables.min.css">
-<link rel="stylesheet" type="text/css" href="/assets/bower_components/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css">
+<link rel="stylesheet" type="text/css" href="\assets\bower_components\datatables.net-bs4\css\dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" type="text/css" href="\assets\pages\data-table\css\buttons.dataTables.min.css">
+    <link rel="stylesheet" type="text/css" href="\assets\bower_components\datatables.net-responsive-bs4\css\responsive.bootstrap4.min.css">
+
 @endsection
 
 @section('content')
@@ -21,7 +22,7 @@
         <div class="card">
             <div class="card-block">
                 <h5 class="m-0 sub-title">
-                    My Event List
+                    List Events
                 </h5>
                 <div class="row mt-3">
                     <div class="col-md-12 btn-add-task">
@@ -39,7 +40,9 @@
                                 <tr>
                                     <th>#</th>
                                     <th>Event Name</th>
-                                    <th>Start date</th>
+                                    <th>Host</th>
+                                    <th>Status</th>
+                                    <th>Start Date</th>
                                     <th>End Date</th>
                                 </tr>
                                 </thead>
@@ -53,9 +56,22 @@
                                                 <td>{{$i++}}</td>
                                                 <td>
                                                     <a href="{{route('view-post-activity-stream', $event->post_url)}}">{{$event->post_title}}</a>
-                                                </td>
-                                                <td><label for="" class="label label-primary">{{date(Auth::user()->tenant->dateFormat->format ?? 'd F, Y', strtotime($event->start_date))}} @ {{date('h:ia', strtotime($event->start_date))}}</label></td>
-                                                <td><label for="" class="label label-danger">{{date(Auth::user()->tenant->dateFormat->format ?? 'd F, Y', strtotime($event->end_date))}} @ {{date('h:ia', strtotime($event->start_date))}}</label></td>
+																								</td>
+																								<td>
+																									<a href="{{route('view-profile', $event->user->url)}}">{{$event->user->first_name ?? ''}} {{$event->user->surname ?? ''}}</a>
+																								</td>
+																								<td>
+																									@if ($event->end_date < \Carbon\Carbon::now())
+																											<label for="" class="label label-danger">Closed</label>
+																									@elseif(\Carbon\Carbon::now()->between(\Carbon\Carbon::parse($event->start_date), \Carbon\Carbon::parse($event->end_date)))
+																											<label for="" class="label label-warning">In-progress</label>
+																									@else
+																											<label for="" class="label label-success">Open</label>
+																									@endif
+
+																								</td>
+                                                <td><label for="" class="">{{date(Auth::user()->tenant->dateFormat->format ?? 'd F, Y', strtotime($event->start_date))}} @ {{date('h:ia', strtotime($event->start_date))}}</label></td>
+                                                <td><label for="" class="">{{date(Auth::user()->tenant->dateFormat->format ?? 'd F, Y', strtotime($event->end_date))}} @ {{date('h:ia', strtotime($event->start_date))}}</label></td>
                                             </tr>
                                         @endforeach
                                     @else
@@ -68,7 +84,9 @@
                                 <tr>
                                     <th>#</th>
                                     <th>Event Name</th>
-                                    <th>Start date</th>
+                                    <th>Host</th>
+                                    <th>Status</th>
+                                    <th>Start Date</th>
                                     <th>End Date</th>
                                 </tr>
                                 </tfoot>
@@ -83,10 +101,9 @@
 @endsection
 
 @section('extra-scripts')
-<script src="/assets/bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
-<script src="/assets/bower_components/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
-<script src="/assets/pages/data-table/js/vfs_fonts.js"></script>
-<script src="/assets/bower_components/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
-<script src="/assets/bower_components/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
-<script src="/assets/bower_components/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js"></script>
+<script src="\assets\bower_components\datatables.net\js\jquery.dataTables.min.js"></script>
+<script src="\assets\bower_components\datatables.net-bs4\js\dataTables.bootstrap4.min.js"></script>
+<script src="\assets\bower_components\datatables.net-responsive\js\dataTables.responsive.min.js"></script>
+<script src="\assets\bower_components\datatables.net-responsive-bs4\js\responsive.bootstrap4.min.js"></script>
+<script src="\assets\pages\data-table\js\data-table-custom.js"></script>
 @endsection

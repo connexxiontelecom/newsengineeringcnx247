@@ -19,6 +19,7 @@ use App\Status;
 use App\User;
 use Auth;
 use Illuminate\Http\Request;
+use DateTime;
 
 class TaskController extends Controller
 {
@@ -76,6 +77,7 @@ class TaskController extends Controller
      */
     public function storeTask(Request $request)
     {
+			 //dd($request->all());
 
         $this->validate($request, [
             'task_title' => 'required',
@@ -85,16 +87,21 @@ class TaskController extends Controller
             'due_date' => 'required|date|after_or_equal:start_date',
         ]);
 
-        $url = substr(sha1(time()), 10, 10);
+         $url = substr(sha1(time()), 10, 10);
         $task = new Post;
         $task->post_title = $request->task_title;
         $task->user_id = Auth::user()->id;
         $task->post_content = $request->task_description;
         $task->post_color = $request->color;
         $task->post_type = 'task';
-        $task->post_url = $url;
-        $task->start_date = $request->start_date ?? '';
-        $task->end_date = $request->due_date;
+				$task->post_url = $url;
+
+				$startDateInstance = new DateTime($request->start_date);
+				$task->start_date = $startDateInstance->format('Y-m-d H:i:s');
+
+				$dueDateInstance = new DateTime($request->due_date);
+				$task->end_date = $dueDateInstance->format('Y-m-d H:i:s');
+
         $task->post_priority = $request->priority;
         $task->tenant_id = Auth::user()->tenant_id;
         $task->save();
@@ -178,8 +185,13 @@ class TaskController extends Controller
         $task->post_color = $request->color;
         $task->post_type = 'task';
         $task->post_url = $request->url;
-        $task->start_date = $request->start_date ?? '';
-        $task->end_date = $request->due_date;
+
+					$startDateInstance = new DateTime($request->start_date);
+				$task->start_date = $startDateInstance->format('Y-m-d H:i:s');
+
+					$dueDateInstance = new DateTime($request->due_date);
+				$task->end_date = $dueDateInstance->format('Y-m-d H:i:s');
+
         $task->tenant_id = Auth::user()->tenant_id;
         //$task->attachment = $filename;
         $task->save();
