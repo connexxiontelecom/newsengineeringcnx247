@@ -78,7 +78,7 @@
 										</a>
 								</li>
 
-      
+
 
 					<div class="pcoded-navigatio-lavel">Human Resource</div>
 					<ul class="pcoded-item pcoded-left-item">
@@ -264,7 +264,7 @@
 					</ul>
 
 
-				
+
 
   <div class="pcoded-navigatio-lavel">Accounting</div>
 				<ul class="pcoded-item pcoded-left-item">
@@ -274,7 +274,7 @@
 							<span class="pcoded-mtext">Dashboard</span>
 						</a>
 					</li>
-				
+
             <li class="pcoded-hasmenu">
                 <a href="javascript:void(0)">
                     <span class="pcoded-micon"><i class="icofont icofont-money-bag"></i></span>
@@ -559,92 +559,7 @@
 
 
 
-					<div class="pcoded-navigatio-lavel">Fleet Management</div>
 
-					<ul class="pcoded-item pcoded-left-item">
-							<li class="pcoded-hasmenu">
-									<a href="javascript:void(0);">
-											<span class="pcoded-micon"><i class="icofont icofont-fire-truck"></i></span>
-											<span class="pcoded-mtext">Fleet Setup</span>
-									</a>
-									<ul class="pcoded-submenu"><li class=" ">
-								<a href="{{route('renewal-type')}}">
-									<span class="pcoded-mtext">Renewal Type</span>
-								</a>
-							</li>
-
-
-{{--										<li class=" ">--}}
-{{--												<a href="{{route('logistics-customers')}}">--}}
-{{--									<span class="pcoded-mtext">Maintenance Activity</span>--}}
-{{--								</a>--}}
-{{--							</li>--}}
-
-							<!--<li class=" ">
-									<a href="'logistics-shipping')}}">
-														<span class="pcoded-mtext">Shipping</span>
-												</a>
-										</li>
-
-											<li class=" ">
-													<a href="'logistics-pick-up-points')}}">
-											<span class="pcoded-mtext">Pick-up Points</span>
-									</a>
-							</li>-->
-						</ul>
-					</li>
-            <li class="pcoded-hasmenu">
-                <a href="javascript:void(0);">
-                    <span class="pcoded-micon"><i class="icofont icofont-fire-truck"></i></span>
-                    <span class="pcoded-mtext">Fleets Management</span>
-                </a>
-                <ul class="pcoded-submenu">
-                    <li class=" ">
-                        <a href="{{route('logistics-drivers')}}">
-															<span class="pcoded-mtext">Drivers</span>
-													</a>
-											</li>
-
-
-
-										<li class=" ">
-												<a href="{{route('logistics-vehicles')}}">
-														<span class="pcoded-mtext">Vehicles</span>
-												</a>
-										</li><li class=" ">
-                        <a href="{{route('renewal-schedule')}}">
-                            <span class="pcoded-mtext">Renewal Schedule</span>
-                        </a>
-                    </li>
-
-											<li class=" ">
-													<a href="{{route('all-logs')}}">
-															<span class="pcoded-mtext">Log</span>
-													</a>
-											</li>
-
-
-									</ul>
-							</li>
-					</ul>
-
-
-					<div class="pcoded-navigatio-lavel">System Settings</div>
-					<ul class="pcoded-item pcoded-left-item">
-							<li class="pcoded-hasmenu">
-									<a href="javascript:void(0)">
-											<span class="pcoded-micon"><i class="feather icon-credit-card"></i></span>
-											<span class="pcoded-mtext">General Settings</span>
-									</a>
-									<ul class="pcoded-submenu">
-											<li class=" ">
-													<a href="{{route('general-settings')}}">
-															<span class="pcoded-mtext">General Settings</span>
-													</a>
-											</li>
-									</ul>
-							</li>
-					</ul>
 
 				@can('access administrative area')
 					<div class="pcoded-navigatio-lavel">Administration</div>
@@ -730,18 +645,7 @@
 					</ul>
 
 				@endcan
-                    <li class=" ">
-                        <a href="{{route('purchase-orders')}}">
-                            <span class="pcoded-mtext">Purchase Orders</span>
-                        </a>
-                    </li>
-                    <li class=" ">
-                        <a href="{{route('vendor-services')}}">
-                            <span class="pcoded-mtext">Services</span>
-                        </a>
-                    </li>
-                </ul>
-            </li>
+
         </ul>
         <div class="pcoded-navigatio-lavel">Fleet Management</div>
         <ul class="pcoded-item pcoded-left-item">
