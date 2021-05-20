@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "cedaa5c832b20547e1b02f50b2cf30c6",
+    "content-hash": "f65b0c8d8fa8003a0f71ef83a128c85f",
     "packages": [
         {
             "name": "arielmejiadev/larapex-charts",
@@ -2752,6 +2752,7 @@
                 "secret-key cryptography",
                 "side-channel resistant"
             ],
+
             "support": {
                 "issues": "https://github.com/paragonie/sodium_compat/issues",
                 "source": "https://github.com/paragonie/sodium_compat/tree/v1.15.4"
@@ -2965,11 +2966,12 @@
                 "word",
                 "writer"
             ],
+
             "support": {
-                "issues": "https://github.com/PHPOffice/PHPWord/issues",
-                "source": "https://github.com/PHPOffice/PHPWord/tree/develop"
+                "issues": "https://github.com/paragonie/sodium_compat/issues",
+                "source": "https://github.com/paragonie/sodium_compat/tree/v1.15.4"
             },
-            "time": "2019-10-01T20:43:33+00:00"
+            "time": "2021-04-17T09:00:05+00:00"
         },
         {
             "name": "phpoption/phpoption",
@@ -4582,7 +4584,7 @@
                 "roles",
                 "security",
                 "spatie"
-            ],
+
             "support": {
                 "issues": "https://github.com/spatie/laravel-permission/issues",
                 "source": "https://github.com/spatie/laravel-permission/tree/3.18.0"
@@ -4648,17 +4650,18 @@
                 "laravel-searchable",
                 "spatie"
             ],
+
             "support": {
-                "issues": "https://github.com/spatie/laravel-searchable/issues",
-                "source": "https://github.com/spatie/laravel-searchable/tree/1.9.0"
+                "issues": "https://github.com/spatie/laravel-permission/issues",
+                "source": "https://github.com/spatie/laravel-permission/tree/3.18.0"
             },
             "funding": [
                 {
-                    "url": "https://spatie.be/open-source/support-us",
-                    "type": "custom"
+                    "url": "https://github.com/spatie",
+                    "type": "github"
                 }
             ],
-            "time": "2020-12-09T07:25:27+00:00"
+            "time": "2020-11-09T14:08:36+00:00"
         },
         {
             "name": "spomky-labs/base64url",
@@ -7915,10 +7918,9 @@
                     "type": "patreon"
                 }
             ],
-<<<<<<< HEAD
+
             "time": "2021-03-24T13:35:17+00:00"
-=======
-            "time": "2020-09-29T21:25:37+00:00"
+
         },
         {
             "name": "zendframework/zend-escaper",
@@ -7973,7 +7975,7 @@
             },
             "abandoned": "laminas/laminas-escaper",
             "time": "2019-09-05T20:03:20+00:00"
->>>>>>> 476c8d1d4c0df6478c61e7c3b5e9146fa865ab67
+
         }
     ],
     "packages-dev": [
