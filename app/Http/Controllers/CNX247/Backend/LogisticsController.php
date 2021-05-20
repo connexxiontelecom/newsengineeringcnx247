@@ -16,7 +16,11 @@ use App\LogisticsCustomer;
 use App\LogisticsVehicle;
 use App\LogisticsVehicleAssignmentLog;
 use App\PickupPoint;
+use App\User;
+use App\RenewalType;
+use App\RenewalSchedule;
 use Auth;
+use Illuminate\Support\Facades\DB;
 use Image;
 use DateTime;
 class LogisticsController extends Controller
@@ -24,29 +28,59 @@ class LogisticsController extends Controller
     //
     public function __construct(){
         $this->middleware('auth');
+        $this->drivers = new LogisticsUser();
+        $this->renew = new RenewalType();
+        $this->renewSchedule = new RenewalSchedule();
     }
 
     public function drivers(){
-        return view('backend.logistics.drivers');
+	    $drivers = DB::table('logistics_users')
+		    ->join('users', 'logistics_users.id', '=', 'users.id')
+		    ->select('*')
+		    ->get();
+
+     return view('backend.logistics.drivers', ['drivers' => $drivers]);
     }
+
+	public function renewalType(Request $request){
+		$method = strtolower($request->method());
+	if($method == 'get'):
+		$renewals = DB::table('renewal_types')
+			->select('*')
+			->get();
+
+		return view('backend.logistics.renewal_type', ['renewals' => $renewals]);
+
+		endif;
+
+		if($method == 'post'):
+				if(isset($request->id)):
+					$this->renew = $this->renew::find($request->id);
+				endif;
+			$this->renew->tenant_id = Auth::user()->tenant_id;
+			$this->renew->renewal_type_name = $request->renewal_type_name;
+			$this->renew->save();
+
+			session()->flash("success", "<strong>Success!</strong> New Renewal Registered.");
+			return redirect()->route('renewal-type');
+
+			endif;
+	}
 
     public function addNewDriver(){
         $locations = PickupPoint::where('tenant_id', Auth::user()->tenant_id)->orderBy('location', 'ASC')->get();
-        return view('backend.logistics.add-new-driver', ['locations'=>$locations]);
+        $employees = User::where(['tenant_id' => Auth::user()->tenant_id,
+	                                  'account_status' => 1])->get();
+
+    return view('backend.logistics.add-new-driver', ['locations'=>$locations, 'employees' => $employees]);
     }
 
     public function storeDriver(Request $request){
         //return dd($request->all());
         $this->validate($request,[
-            'first_name'=>'required',
-            'surname'=>'required',
-            'mobile_no'=>'required',
-            'email'=>'required|email|unique:logistics_users,email',
-            'gender'=>'required',
-            'driver_no'=>'required',
+            'user_id'=>'required',
             'means_of_identification'=>'required',
             'moi_attachment'=>'required',
-            'location'=>'required'
             ]);
 
         if(!empty($request->file('moi_attachment'))){
@@ -59,25 +93,17 @@ class LogisticsController extends Controller
         }else{
             $filename = '';
         }
-        $password = substr(sha1(time()),32,40);
-        $driver = new LogisticsUser;
-        $driver->first_name = $request->first_name;
-        $driver->registered_by = Auth::user()->id;
-        $driver->tenant_id = Auth::user()->tenant_id;
-        $driver->surname = $request->surname;
-        $driver->mobile_no = $request->mobile_no;
-        $driver->email = $request->email;
-        $driver->gender = $request->gender;
-        $driver->user_id = $request->driver_no;
-        $driver->type_of_identification = $request->means_of_identification;
-        $driver->attachment = $filename;
-        $driver->url = substr(sha1(time()), 21,40);
-        $driver->password = bcrypt($password);
-        $driver->role = 1; //driver
-        $driver->location = $request->location;
-        $driver->address = $request->address;
-        $driver->save();
-        \Mail::to($driver)->send(new NewDriver($driver, $password));
+
+        //$driver = new LogisticsUser;
+        $this->drivers->user_id = $request->user_id;
+        $this->drivers->registered_by = Auth::user()->id;
+        $this->drivers->tenant_id = Auth::user()->tenant_id;
+        $this->drivers->type_of_identification = $request->means_of_identification;
+        $this->drivers->attachment = $filename;
+
+        //print_r($driver);
+       $this->drivers->save();
+
         session()->flash("success", "<strong>Success!</strong> New driver registered.");
         return redirect()->route('logistics-drivers');
     }
@@ -198,7 +224,8 @@ class LogisticsController extends Controller
     }
 
     public function vehicles(){
-        return view('backend.logistics.vehicles');
+	    $vehicles = LogisticsVehicle::where('tenant_id', Auth::user()->tenant_id)->orderBy('id', 'DESC')->get();
+        return view('backend.logistics.vehicles', ['vehicles' => $vehicles]);
     }
     public function newVehicle(){
         return view('backend.logistics.add-new-vehicle');
@@ -240,20 +267,135 @@ class LogisticsController extends Controller
         session()->flash("success", "<strong>Success!</strong> New vehicle saved.");
         return redirect()->route('logistics-vehicles');
     }
-    public function viewVehicle($slug){
-        $vehicle = LogisticsVehicle::where('slug', $slug)->where('tenant_id', Auth::user()->tenant_id)->first();
-        if(!empty($vehicle)){
-            $drivers = LogisticsUser::where('tenant_id', Auth::user()->tenant_id)->where('role', 1)->get();
-            $logs = LogisticsVehicleAssignmentLog::where('tenant_id', Auth::user()->tenant_id)
-                                                    ->where('vehicle_id', $vehicle->id)
-                                                    ->orderBy('id', 'DESC')->get();
-            return view('backend.logistics.vehicle-details', ['vehicle'=>$vehicle,'drivers'=>$drivers, 'logs'=>$logs]);
-        }else{
-            session()->flash("error", "<strong>Ooops!</strong> Vehicle not found.");
-            return redirect()->route('logistics-vehicles');
-        }
-        return view('backend.logistics.add-new-customer');
+
+    public function viewVehicle(Request $request, $slug){
+
+	    $method = strtolower($request->method());
+	    if($method == 'get'):
+		    $vehicle = LogisticsVehicle::where('slug', $slug)->where('tenant_id', Auth::user()->tenant_id)->first();
+		    if(!empty($vehicle)){
+			    //$drivers = LogisticsUser::where('tenant_id', Auth::user()->tenant_id)->where('role', 1)->get();
+			    $drivers = DB::table('logistics_users')
+				    ->join('users', 'logistics_users.id', '=', 'users.id')
+				    ->select('*')
+				    ->get();
+			    $employees = User::where(['tenant_id' => Auth::user()->tenant_id,
+				    'account_status' => 1])->get();
+
+			    $renewals = DB::table('renewal_types')
+				    ->select('*')
+				    ->get();
+
+			    $renewal_schedules = DB::table('renewal_schedules')
+				   ->select( '*')
+				    ->where('renewal_schedule_vehicle_id', $vehicle->id)
+				    ->join('renewal_types', 'renewal_schedules.renewal_schedule_type_id', '=', 'renewal_types.id')
+				    ->join('users', 'renewal_schedules.renewal_schedule_user_id', '=', 'users.id')
+				    ->get();
+
+//			    $renewa_schedules = DB::table('renewal_schedules')
+//				    ->select('id as rid')
+//				    ->where('renewal_schedule_vehicle_id', $vehicle->id)
+//				    ->get();
+//			    $enewal_schedules =  ((array)$renewal_schedules + (array)$renewa_schedules);
+//
+//			    //$renewal_schedules = (object) array_merge((array) $_renewal_schedules,(array) $renewal_schedules );
+//
+//			    print_r($enewal_schedules);
+
+			    //$renewal_schedules = array_merge($renewal_schedules,  $_renewal_schedules);
+
+			    $logs = LogisticsVehicleAssignmentLog::where('tenant_id', Auth::user()->tenant_id)
+				    ->where('vehicle_id', $vehicle->id)
+				    ->orderBy('id', 'DESC')->get();
+
+
+			    return view('backend.logistics.vehicle-details', ['vehicle'=>$vehicle,'drivers'=>$drivers, 'logs'=>$logs, 'renewals' => $renewals, 'employees' => $employees, 'renewal_schedules' => $renewal_schedules]);
+		    }else{
+			    session()->flash("error", "<strong>Ooops!</strong> Vehicle not found.");
+			    return redirect()->route('logistics-vehicles');
+		    }
+
+	    endif;
+
+	    if($method == 'post'):
+
+		    $check =   DB::table('renewal_schedules')
+									    ->select('*')
+									    ->where(['renewal_schedule_type_id' => $request->renewal_schedule_type_id,
+										    'renewal_schedule_vehicle_id' => $request->renewal_schedule_vehicle_id])
+
+			                ->first();
+
+	    if(!empty($check)):
+				$this->renewSchedule = $this->renewSchedule::find($check->id);
+		  endif;
+
+
+		    $this->renewSchedule->tenant_id = Auth::user()->tenant_id;
+		    $this->renewSchedule->renewal_schedule_type_id = $request->renewal_schedule_type_id;
+		    $this->renewSchedule->renewal_schedule_vehicle_id = $request->renewal_schedule_vehicle_id;
+		    $this->renewSchedule->renewal_schedule_date = $request->renewal_schedule_date;
+		    $this->renewSchedule->renewal_schedule_user_id = $request->renewal_schedule_user_id;
+		    $this->renewSchedule->save();
+
+		    session()->flash("success", "<strong>Success!</strong> Renewal Schedule Registered.");
+		    $_route = 'logistics/view-vehicle/'.$slug;
+		    return redirect($_route);
+
+	    endif;
+
+
+//        return view('backend.logistics.add-new-customer');
     }
+
+	public function renewalSchedule(Request $request){
+
+		$method = strtolower($request->method());
+		if($method == 'get'):
+			$renewal_schedules = DB::table('renewal_schedules')
+				->select( '*')
+				->join('renewal_types', 'renewal_schedules.renewal_schedule_type_id', '=', 'renewal_types.id')
+				->join('logistics_vehicles', 'renewal_schedules.renewal_schedule_vehicle_id', '=', 'logistics_vehicles.id')
+				->join('users', 'renewal_schedules.renewal_schedule_user_id', '=', 'users.id')
+				->orderBy('renewal_schedules.renewal_schedule_date', 'asc')
+				->get();
+
+			return view('backend.logistics.renewal-schedule', ['renewal_schedules' => $renewal_schedules]);
+
+
+		endif;
+
+		if($method == 'post'):
+
+			$check =   DB::table('renewal_schedules')
+				->select('*')
+				->where(['renewal_schedule_type_id' => $request->renewal_schedule_type_id,
+					'renewal_schedule_vehicle_id' => $request->renewal_schedule_vehicle_id])
+
+				->first();
+
+			if(!empty($check)):
+				$this->renewSchedule = $this->renewSchedule::find($check->id);
+			endif;
+
+
+			$this->renewSchedule->tenant_id = Auth::user()->tenant_id;
+			$this->renewSchedule->renewal_schedule_type_id = $request->renewal_schedule_type_id;
+			$this->renewSchedule->renewal_schedule_vehicle_id = $request->renewal_schedule_vehicle_id;
+			$this->renewSchedule->renewal_schedule_date = $request->renewal_schedule_date;
+			$this->renewSchedule->renewal_schedule_user_id = $request->renewal_schedule_user_id;
+			$this->renewSchedule->save();
+
+			session()->flash("success", "<strong>Success!</strong> Renewal Schedule Registered.");
+			$_route = 'logistics/view-vehicle/'.$slug;
+			return redirect($_route);
+
+		endif;
+
+
+//        return view('backend.logistics.add-new-customer');
+	}
     public function newCustomer(){
         return view('backend.logistics.add-new-customer');
     }

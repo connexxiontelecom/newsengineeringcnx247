@@ -35,7 +35,13 @@
                         <div class="row">
                             <div class="col-lg-12 col-md-12 col-sm-12">
                                 <button class="btn btn-mini btn-primary float-right mb-2" data-toggle="modal" data-target="#assignVehicleModal"><i class="zmdi zmdi-car-taxi mr-2"></i> Assign To Driver</button>
-                                <table class="table">
+
+
+
+															<button class="btn btn-mini btn-success float-right mb-2" data-toggle="modal" data-target="#assignmentLogs"><i class="zmdi zmdi-car-taxi mr-2"></i> View Assignment Logs</button>
+
+															<button class="btn btn-mini btn-secondary float-right mb-2" data-toggle="modal" data-target="#newRenewal"><i class="zmdi zmdi-car-taxi mr-2"></i> New Renewal</button>
+															<table class="table">
                                     <tbody>
                                         <tr>
                                             <td class="col-lg-2"><strong>Owner Name:</strong> </td>
@@ -89,49 +95,44 @@
         </div>
     </div>
 </div>
-
 <div class="row">
-    <div class="col-md-12 col-lg-12 col-sm-12">
-        <div class="card">
-            <div class="card-block">
-                <h5 class="sub-title">Vehicle Assignment Log</h5>
+	<div class="col-md-12 col-lg-12 col-sm-12">
+		<div class="card">
+			<div class="card-block">
+				<h5 class="sub-title">Document Renewal Schedules</h5>
 
-                <table class="table table-strip">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Driver</th>
-                            <th>Assigned By</th>
-                            <th>Date</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @php
-                            $i = 1;
-                        @endphp
-                        @foreach ($logs as $item)
-                            <tr>
-                                <td>{{$i++}}</td>
-                                <td>{{$item->assignedTo->first_name ?? ''}} {{$item->assignedTo->surname ?? ''}}</td>
-                                <td>{{$item->assignedBy->first_name ?? ''}} {{$item->assignedBy->surname ?? ''}}</td>
-                                <td>{{date('d F, Y', strtotime($item->created_at))}}</td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <th>#</th>
-                            <th>Driver</th>
-                            <th>Assigned By</th>
-                            <th>Date</th>
-                        </tr>
-                    </tfoot>
-                </table>
+				<table class="table table-strip">
+					<thead>
+					<tr>
+						<th>#</th>
+						<th>Type</th>
+						<th>Employee Responsible</th>
+						<th>Date</th>
 
-            </div>
-        </div>
-    </div>
+					</tr>
+					</thead>
+					<tbody>
+					@php
+						$i = 1;
+					@endphp
+					@foreach ($renewal_schedules as $renewal_schedule)
+						<tr>
+							<td>{{$i++}}</td>
+							<td>{{$renewal_schedule->renewal_type_name ?? ''}} {{$item->assignedTo->surname ?? ''}}</td>
+							<td>{{$renewal_schedule->first_name ?? ''}} {{$renewal_schedule->surname ?? ''}}</td>
+							<td>{{date('d F, Y', strtotime($renewal_schedule->renewal_schedule_date))}}</td>
+
+						</tr>
+					@endforeach
+					</tbody>
+
+				</table>
+
+			</div>
+		</div>
+	</div>
 </div>
+
 @endsection
 
 @section('dialog-section')
@@ -152,7 +153,7 @@
                         <select name="assign_driver"  id="assign_driver" class="form-control" required>
                             <option selected disabled>Select Driver</option>
                             @foreach ($drivers as $driver)
-                                <option value="{{$driver->id}}">{{$driver->first_name ?? ''}} {{$driver->surname ?? ''}}</option>
+                                <option value="{{$driver->user_id}}">{{$driver->first_name ?? ''}} {{$driver->surname ?? ''}}</option>
                             @endforeach
                         </select>
                         <input type="hidden" name="vehicleId" id="vehicleId" value="{{$vehicle->id}}">
@@ -170,6 +171,107 @@
             </div>
         </div>
     </div>
+</div>
+
+<div class="modal fade" id="newRenewal" tabindex="-1" role="dialog">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header bg-primary">
+				<h4 class="modal-title"><i class="zmdi zmdi-car-taxi text-white"></i> New Renewal Type</h4>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true" class="text-white">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<form method="post" action="">
+					@csrf
+					<div class="form-group">
+						<label for="">Renewal Type</label>
+						<select name="renewal_schedule_type_id"   class="form-control" required>
+							<option selected disabled>Select Renewal Type</option>
+							@foreach ($renewals as $renewal)
+								<option value="{{$renewal->id}}">{{$renewal->renewal_type_name ?? ''}}</option>
+							@endforeach
+						</select>
+
+						<label for="">Employee</label>
+						<select name="renewal_schedule_user_id"   class="form-control" required>
+							<option selected disabled>Select Responsible Employee</option>
+							@foreach ($employees as $employee)
+								<option value="{{$employee->id}}">{{$employee->first_name ?? ''}} {{$employee->surname ?? ''}}</option>
+							@endforeach
+						</select>
+
+						<label for="">Date</label>
+						<input type="date" name="renewal_schedule_date" class="form-control" required>
+
+						<input type="hidden" name="renewal_schedule_vehicle_id"  value="{{$vehicle->id}}">
+					</div>
+					<hr>
+					<div class="form-group d-flex justify-content-center">
+						<div class="btn-group">
+							<input type="hidden" id="editPickupId">
+							<button type="button" class="btn btn-danger waves-effect btn-mini" data-dismiss="modal"> <i class="ti-close mr-2"></i> Close</button>
+							<button type="submit" id="assignVehicleBtn" class="btn btn-primary waves-effect waves-light btn-mini"><i class="ti-check mr-2"></i> Add </button>
+						</div>
+					</div>
+
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+<div class="modal modal-lg fade" id="assignmentLogs" tabindex="-1" role="dialog">
+	<div class="modal-lg modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header bg-primary">
+				<h4 class="modal-title"><i class="zmdi zmdi-car-taxi text-white"></i> Vehicle Assignment Logs</h4>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true" class="text-white">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-md-12 col-lg-12 col-sm-12">
+						<div class="card">
+							<div class="card-block">
+								<h5 class="sub-title">Vehicle Assignment Log</h5>
+
+								<table class="table table-strip">
+									<thead>
+									<tr>
+										<th>#</th>
+										<th>Driver</th>
+										<th>Assigned By</th>
+										<th>Date</th>
+									</tr>
+									</thead>
+									<tbody>
+									@php
+										$i = 1;
+									@endphp
+									@foreach ($logs as $item)
+										<tr>
+											<td>{{$i++}}</td>
+											<td>{{$item->assignedTo->first_name ?? ''}} {{$item->assignedTo->surname ?? ''}}</td>
+											<td>{{$item->assignedBy->first_name ?? ''}} {{$item->assignedBy->surname ?? ''}}</td>
+											<td>{{date('d F, Y', strtotime($item->created_at))}}</td>
+										</tr>
+									@endforeach
+									</tbody>
+
+								</table>
+
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
 @endsection
 

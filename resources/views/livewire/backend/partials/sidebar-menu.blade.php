@@ -531,5 +531,186 @@
 					</ul>
 
 				@endcan
+                    <li class=" ">
+                        <a href="{{route('purchase-orders')}}">
+                            <span class="pcoded-mtext">Purchase Orders</span>
+                        </a>
+                    </li>
+                    <li class=" ">
+                        <a href="{{route('vendor-services')}}">
+                            <span class="pcoded-mtext">Services</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+        <div class="pcoded-navigatio-lavel">Fleet Management</div>
+        <ul class="pcoded-item pcoded-left-item">
+					<li class="pcoded-hasmenu">
+						<a href="javascript:void(0);">
+							<span class="pcoded-micon"><i class="icofont icofont-fire-truck"></i></span>
+							<span class="pcoded-mtext">Fleet Setup</span>
+						</a>
+						<ul class="pcoded-submenu">
+							<li class=" ">
+								<a href="{{route('renewal-type')}}">
+									<span class="pcoded-mtext">Renewal Type</span>
+								</a>
+							</li>
+							<li class=" ">
+								<a href="{{route('logistics-customers')}}">
+									<span class="pcoded-mtext">Maintenance Activity</span>
+								</a>
+							</li>
+
+							<!--<li class=" ">
+									<a href="'logistics-shipping')}}">
+											<span class="pcoded-mtext">Shipping </span>
+									</a>
+							</li>
+							<li class=" ">
+									<a href="'logistics-pick-up-points')}}">
+											<span class="pcoded-mtext">Pick-up Points</span>
+									</a>
+							</li>-->
+						</ul>
+					</li>
+            <li class="pcoded-hasmenu">
+                <a href="javascript:void(0);">
+                    <span class="pcoded-micon"><i class="icofont icofont-fire-truck"></i></span>
+                    <span class="pcoded-mtext">Fleets Management</span>
+                </a>
+                <ul class="pcoded-submenu">
+                    <li class=" ">
+                        <a href="{{route('logistics-drivers')}}">
+                            <span class="pcoded-mtext">Drivers</span>
+                        </a>
+                    </li>
+									<li class=" ">
+										<a href="{{route('logistics-vehicles')}}">
+											<span class="pcoded-mtext">Vehicles</span>
+										</a>
+									</li>
+                    <li class=" ">
+                        <a href="{{route('renewal-schedule')}}">
+                            <span class="pcoded-mtext">Renewal Schedule</span>
+                        </a>
+                    </li>
+
+                    <li class=" ">
+                        <a href="{{route('all-logs')}}">
+                            <span class="pcoded-mtext">Log</span>
+                        </a>
+                    </li>
+                    <!--<li class=" ">
+                        <a href="'logistics-shipping')}}">
+                            <span class="pcoded-mtext">Shipping </span>
+                        </a>
+                    </li>
+                    <li class=" ">
+                        <a href="'logistics-pick-up-points')}}">
+                            <span class="pcoded-mtext">Pick-up Points</span>
+                        </a>
+                    </li>-->
+                </ul>
+            </li>
+        </ul>
+        <div class="pcoded-navigatio-lavel">System Settings</div>
+        <ul class="pcoded-item pcoded-left-item">
+            <li class="pcoded-hasmenu">
+                <a href="javascript:void(0)">
+                    <span class="pcoded-micon"><i class="feather icon-credit-card"></i></span>
+                    <span class="pcoded-mtext">General Settings</span>
+                </a>
+                <ul class="pcoded-submenu">
+                    <li class=" ">
+                        <a href="{{route('general-settings')}}">
+                            <span class="pcoded-mtext">General Settings</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+        <div class="pcoded-navigatio-lavel">Administration</div>
+        <ul class="pcoded-item pcoded-left-item">
+            <li class="pcoded-hasmenu">
+                <a href="javascript:void(0)">
+                    <span class="pcoded-micon"><i class="ti-briefcase"></i></span>
+                    <span class="pcoded-mtext">Administration</span>
+                </a>
+                <ul class="pcoded-submenu">
+                    <li class=" ">
+                        <a href="{{route('admin-support')}}">
+                            <span class="pcoded-mtext">Support Ticket</span>
+                        </a>
+                    </li>
+                    <li class=" ">
+                        <a href="{{route('feedbacks')}}">
+                            <span class="pcoded-mtext">Feedback</span>
+                        </a>
+                    </li>
+                    <li class=" ">
+                        <a href="{{route('tenants')}}">
+                            <span class="pcoded-mtext">Tenants</span>
+                        </a>
+                    </li>
+                    <li class=" ">
+                        <a href="{{route('plans-n-features')}}">
+                            <span class="pcoded-mtext">Plans & Features</span>
+                        </a>
+                    </li>
+                    <li class=" ">
+                        <a href="{{route('tenant-financials')}}">
+                            <span class="pcoded-mtext">Financials</span>
+                        </a>
+                    </li>
+                    <li class=" ">
+                        <a href="{{route('tenant-memberships')}}">
+                            <span class="pcoded-mtext">Membership</span>
+                        </a>
+                    </li>
+                    <li class=" ">
+                        <a href="{{route('constants')}}">
+                            <span class="pcoded-mtext">Constants</span>
+                        </a>
+                    </li>
+                    <li class=" ">
+                        <a href="{{route('roles')}}">
+                            <span class="pcoded-mtext">Roles</span>
+                        </a>
+                    </li>
+                    <li class=" ">
+                        <a href="{{route('permissions')}}">
+                            <span class="pcoded-mtext">Permissions</span>
+                        </a>
+                    </li>
+                    <li class=" ">
+                        <a href="{{route('module-manager')}}">
+                            <span class="pcoded-mtext">Module Manager</span>
+                        </a>
+                    </li>
+                    <li class=" ">
+                        <a href="{{route('terms-n-conditions')}}">
+                            <span class="pcoded-mtext">Terms & Conditions</span>
+                        </a>
+                    </li>
+                    <li class=" ">
+                        <a href="{{route('admin-theme-gallery')}}">
+                            <span class="pcoded-mtext">Themes</span>
+                        </a>
+                    </li>
+                    <li class=" ">
+                        <a href="{{route('access-faqs')}}">
+                            <span class="pcoded-mtext">FAQs</span>
+                        </a>
+                    </li>
+                    <li class=" ">
+                        <a href="{{route('privacy-policy')}}">
+                            <span class="pcoded-mtext">Privacy Policy</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
     </div>
 </nav>
