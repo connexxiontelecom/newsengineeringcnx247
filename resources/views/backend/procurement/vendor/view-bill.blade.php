@@ -76,7 +76,7 @@
                                 @foreach($items as $item)
                                     <tr class="item">
                                         <td>
-                                            {{$item->description ?? '' }}
+                                            {{$item->billService->product ?? '' }}
                                         </td>
                                         <td>
                                             {{$item->quantity }}
@@ -109,8 +109,7 @@
                 <div class="col-sm-12 purchase-btn-group text-center">
                     <div class="btn-group">
                         <button type="button" class="btn btn-primary btn-mini btn-print-purchase m-b-10 btn-sm waves-effect waves-light m-r-20" type="button" id="printInvoice"><i class="icofont icofont-printer mr-2"></i> Print</button>
-												<a href="{{url()->previous()}}" class="btn btn-secondary btn-mini waves-effect m-b-10 btn-sm waves-light"><i class="ti-arrow-left mr-2"></i> Back</a>
-												@if ($bill->trash == 0)
+												@if ($bill->trash == 0 && $bill->paid_amount <= 0)
 													<a href="{{route('decline-bill', $bill->slug)}}" class="btn btn-danger btn-mini waves-effect m-b-10 btn-sm waves-light"><i class="ti-trash mr-2"></i> Decline Bill</a>
 												@endif
                     </div>

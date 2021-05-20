@@ -251,6 +251,7 @@ Route::get('/print/invoice/{slug}', 'CNX247\Backend\CRMController@printInvoice')
 Route::get('/export/invoice/{slug}', 'CNX247\Backend\CRMController@exportInvoiceAsWord')->name('export-invoice');
 Route::post('/send/invoice/email', 'CNX247\Backend\CRMController@sendInvoiceViaEmail');
 Route::get('/invoice/decline-invoice/{slug}', 'CNX247\Backend\CRMController@declineInvoice')->name('decline-invoice');
+Route::get('/crm/issue-invoice', 'CNX247\Backend\CRMController@showIssueInvoiceForm')->name('issue-invoice');
 #Receipt list
 Route::get('/receipt-list', 'CNX247\Backend\CRMController@receiptList')->name('receipt-list');
 Route::get('/print/receipt/{slug}', 'CNX247\Backend\CRMController@printReceipt')->name('print-receipt');
@@ -453,7 +454,7 @@ Route::get('/vendor-bills', 'CNX247\Backend\SupplierController@vendorBills')->na
 Route::get('/new-vendor-bill', 'CNX247\Backend\SupplierController@newVendorBill')->name('new-vendor-bill');
 Route::post('/new-vendor-bill', 'CNX247\Backend\SupplierController@storeVendorBill');
 Route::get('/vendor-services', 'CNX247\Backend\SupplierController@vendorServices')->name('vendor-services');
-Route::get('/vendor-services', 'CNX247\Backend\SupplierController@vendorServices')->name('vendor-services');
+#Route::get('/vendor-services', 'CNX247\Backend\SupplierController@vendorServices')->name('vendor-services');
 Route::post('/store-vendor-service', 'CNX247\Backend\SupplierController@storeVendorService')->name('store-vendor-service');
 Route::post('/vendor-bill/details', 'CNX247\Backend\SupplierController@vendorDetails');
 Route::get('/vendor-bill/view/{id}', 'CNX247\Backend\SupplierController@viewBill')->name('view-bill');
@@ -513,6 +514,7 @@ Route::get('/logistics/view-vehicle/{slug}', 'CNX247\Backend\LogisticsController
 Route::post('/logistics/vehicle/assign', 'CNX247\Backend\LogisticsController@assignVehicleToDriver');
 #Accounting routes
 		Route::get('/accounting-dashboard', 'CNX247\Backend\Accounting\ChartOfAccountController@dashboard')->name('accounting-dashboard');
+		Route::post('/accounting-dashboard', 'CNX247\Backend\Accounting\ChartOfAccountController@filterDashboardResult')->name('filter-dashboard');
     Route::get('/accounting/audit-trail', 'CNX247\Backend\Accounting\ChartOfAccountController@auditTrail')->name('audit-trail');
 		Route::post('/accounting/audit-trail', 'CNX247\Backend\Accounting\ChartOfAccountController@retrieveAuditTrail');
     Route::get('/chart-of-accounts', 'CNX247\Backend\Accounting\ChartOfAccountController@index')->name('chart-of-accounts');
@@ -552,6 +554,8 @@ Route::post('/logistics/vehicle/assign', 'CNX247\Backend\LogisticsController@ass
     #Bank setup
     #Bank routes
     Route::get('/account/banks', 'CNX247\Backend\Accounting\ChartOfAccountController@bank')->name('bank-accounts');
+    Route::post('/account/add-new-bank', 'CNX247\Backend\Accounting\ChartOfAccountController@addNewBank')->name('add-new-bank');
+    Route::post('/account/update-bank', 'CNX247\Backend\Accounting\ChartOfAccountController@updateBank')->name('update-bank');
 
 #QuickBooks routes
 //Route::get('/connect-to-quickbooks', 'CNX247\Backend\QuickBooksController@analyzeBusiness');

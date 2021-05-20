@@ -78,7 +78,63 @@
 										</a>
 								</li>
 
-        <div class="pcoded-navigatio-lavel">Accounting</div>
+					<div class="pcoded-navigatio-lavel">Marketing</div>
+					<ul class="pcoded-item pcoded-left-item">
+						<li class="pcoded-hasmenu">
+							<a href="javascript:void(0)">
+								<span class="pcoded-micon"><i class="feather icon-box"></i></span>
+								<span class="pcoded-mtext">CRM</span>
+							</a>
+							<ul class="pcoded-submenu">
+								@can('crm dashboard')
+									<li class=" ">
+										<a href="{{route('crm-dashboard')}}">
+											<span class="pcoded-mtext">Dashboard</span>
+										</a>
+									</li>
+
+								@endcan
+								<li class=" ">
+									<a href="{{route('clients')}}">
+										<span class="pcoded-mtext">Clients</span>
+									</a>
+								</li>
+								<li class=" ">
+									<a href="{{route('leads')}}">
+										<span class="pcoded-mtext">Leads</span>
+									</a>
+								</li>
+								<li class=" ">
+									<a href="{{route('deals')}}">
+										<span class="pcoded-mtext">Deals</span>
+									</a>
+								</li>
+								<li class=" ">
+									<a href="{{route('invoice-list')}}">
+										<span class="pcoded-mtext">Invoices</span>
+									</a>
+								</li>
+								<li class=" ">
+									<a href="{{route('receipt-list')}}">
+										<span class="pcoded-mtext">Receipts</span>
+									</a>
+								</li>
+								<li class=" ">
+									<a href="{{route('bulk-sms')}}">
+										<span class="pcoded-mtext">Bulk SMS</span>
+									</a>
+								</li>
+								<li class=" ">
+									<a href="{{route('email-campaigns')}}">
+										<span class="pcoded-mtext">Email Campaigns</span>
+									</a>
+								</li>
+							</ul>
+						</li>
+					</ul>
+
+
+					<div class="pcoded-navigatio-lavel">Accounting</div>
 				<ul class="pcoded-item pcoded-left-item">
 					<li class="">
 						<a href="{{ route('accounting-dashboard') }}">
@@ -186,7 +242,7 @@
                 <ul class="pcoded-submenu">
                     <li class=" ">
                         <a href="{{route('clients')}}">
-                            <span class="pcoded-mtext">Customers</span>
+                            <span class="pcoded-mtext">Client List</span>
                         </a>
                     </li>
                     <li class=" ">
@@ -222,28 +278,7 @@
                 </ul>
             </li>
         </ul>
-        <div class="pcoded-navigatio-lavel">Procurement</div>
-        <ul class="pcoded-item pcoded-left-item">
-            <li class="pcoded-hasmenu">
-                <a href="javascript:void(0);">
-                    <span class="pcoded-micon"><i class="icofont icofont-bar-code"></i></span>
-                    <span class="pcoded-mtext">Procurement</span>
-                </a>
-                <ul class="pcoded-submenu">
-                    <li class=" ">
-                        <a href="{{route('new-supplier')}}">
-                            <span class="pcoded-mtext">Add New Vendor</span>
-                        </a>
-                    </li>
-                    <li class=" ">
-                        <a href="{{route('suppliers')}}">
-                            <span class="pcoded-mtext">Vendors</span>
-                        </a>
-                    </li>
 
-								</ul>
-						</li>
-				</ul>
 
 					<ul class="pcoded-item pcoded-left-item">
 							<li class="pcoded-hasmenu">
@@ -267,11 +302,6 @@
 											<li class=" ">
 													<a href="{{route('journal-entries')}}">
 															<span class="pcoded-mtext">Journal Voucher</span>
-													</a>
-											</li>
-											<li class=" ">
-													<a href="{{route('budget-setup')}}">
-															<span class="pcoded-mtext">Workflow</span>
 													</a>
 											</li>
 
@@ -318,38 +348,35 @@
 											<span class="pcoded-mtext">Procurement</span>
 									</a>
 									<ul class="pcoded-submenu">
-										@can('add vendor')
+
 
 										<li class=" ">
 												<a href="{{route('new-supplier')}}">
 														<span class="pcoded-mtext">Add New Vendor</span>
 												</a>
 										</li>
-										@endcan
-											@can('view vendors')
+
 												<li class=" ">
 														<a href="{{route('suppliers')}}">
 																<span class="pcoded-mtext">Vendors</span>
 														</a>
 												</li>
 
-											@endcan
-											@can('view purchase orders')
+
 
 											<li class=" ">
 													<a href="{{route('purchase-orders')}}">
 															<span class="pcoded-mtext">Purchase Orders</span>
 													</a>
 											</li>
-											@endcan
-											@can('view services')
+
 
 											<li class=" ">
 													<a href="{{route('vendor-services')}}">
 															<span class="pcoded-mtext">Services</span>
 													</a>
 											</li>
-											@endcan
+
 									</ul>
 							</li>
 					</ul>

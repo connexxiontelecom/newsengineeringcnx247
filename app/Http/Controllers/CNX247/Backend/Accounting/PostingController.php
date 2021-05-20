@@ -40,9 +40,10 @@ class PostingController extends Controller
     public function receiptDetail($slug){
 
         $receipt = Receipt::where('slug', $slug)->where('tenant_id', Auth::user()->tenant_id)->first();
+        $bank =  DB::table(Auth::user()->tenant_id . '_coa')->where('glcode', $receipt->bank)->first();
         if(!empty($receipt)){
 
-            return view('backend.accounting.postings.receipt-detail', ['receipt'=>$receipt]);
+            return view('backend.accounting.postings.receipt-detail', ['receipt'=>$receipt, 'bank'=>$bank]);
         }else{
             session()->flash("error", "<strong>Ooops!</strong> No record found.");
             return back();

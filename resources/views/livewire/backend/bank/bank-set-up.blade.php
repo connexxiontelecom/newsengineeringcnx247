@@ -113,7 +113,7 @@
                                                         <td>{{$serial++}}</td>
                                                         <td>{{$bank->bank_name}}</td>
                                                         <td>{{$bank->bank_account_number}}</td>
-                                                        <td>{{$bank->bank_gl_code}}</td>
+                                                        <td>{{$bank->bank_gl_code}} - {{$bank->account_name ?? ''}}</td>
                                                         <td>{{$bank->bank_branch}}</td>
                                                         <td>{{date('d F, Y', strtotime($bank->created_at))}}</td>
                                                         <td>
