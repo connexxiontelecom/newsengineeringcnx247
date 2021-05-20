@@ -40,7 +40,12 @@ class BankSetUp extends Component
     }
 
     public function getContent(){
-        $this->banks = Bank::orderBy('bank_name', 'ASC')->get();
+        $this->banks =  /*DB::table(Auth::user()->tenant_id.'_coa as c')
+													->join('banks as b', 'b.bank_gl_code', '=', 'c.glcode')
+													//->select()
+													->get();*/
+
+        Bank::orderBy('bank_name', 'ASC')->get();
     }
 
     public function addNewBank(){

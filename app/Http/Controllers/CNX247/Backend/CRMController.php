@@ -188,10 +188,48 @@ class CRMController extends Controller
         return view('backend.crm.clients.convert-to-lead', ['client'=>$client, 'invoice_no'=>$invoiceNo, 'products'=>$products]);
     }
 
+    public function showIssueInvoiceForm(){
+			$status = null;
+			$clients = Client::where('tenant_id', Auth::user()->tenant_id)->orderBy('company_name', 'ASC')->get();
+			$invoice = Invoice::orderBy('id', 'DESC')->first();
+			$products = Product::where('tenant_id', Auth::user()->tenant_id)->orderBy('id', 'DESC')->get();
+			$currencies = Currency::all();
+			$invoiceNo = null;
+
+				if(!empty($invoice) ){
+					$invoiceNo = $invoice->invoice_no + rand(11, 99);
+				}else{
+					$invoiceNo = rand(111, 999);
+				}
+				if(Schema::connection('mysql')->hasTable(Auth::user()->tenant_id.'_coa')){
+					$status = 1; //subscribed for accounting package
+					$accounts = DB::table(Auth::user()->tenant_id.'_coa')->where('type', 1)->get();
+					return view('backend.crm.clients.new-invoice',
+						['clients'=>$clients,
+							'invoice_no'=>$invoiceNo,
+							'products'=>$products,
+							'status'=>$status,
+							'accounts'=>$accounts,
+							'currencies'=>$currencies
+						]);
+				}else{
+					return view('backend.crm.clients.new-invoice',
+						['clients'=>$clients,
+							'invoice_no'=>$invoiceNo,
+							'products'=>$products,
+							'status'=>0,
+							'currencies'=>$currencies
+						]);
+				}
+
+
+		}
+
     /*
     * Raise an invoice
     */
     public function raiseAnInvoice(Request $request){
+
         if($request->status == 1){
             $this->validate($request,[
                 'issue_date'=>'required',
@@ -274,8 +312,9 @@ class CRMController extends Controller
             $item->save();
         }
         $client = Client::where('id',$request->clientId)->where('tenant_id', Auth::user()->tenant_id)->first();
+
         if(empty($client->glcode)){
-            $client->glcode = $request->client_account;
+            $client->glcode = $request->client_account; //client_account
             $client->save();
         }
         #Check for accounting module
@@ -340,20 +379,26 @@ class CRMController extends Controller
 
 		public function declineInvoice($slug){
 			$invoice = Invoice::where('slug', $slug)->where('tenant_id', Auth::user()->tenant_id)->first();
+
 			if(!empty($invoice)){
 				$invoice->status = 2; //declined
 				$invoice->trash = 1;
 				$invoice->save();
 				$ref_no = $invoice->ref_no;
 				#delete record in GL table
+
 				$records = DB::table(Auth::user()->tenant_id.'_gl')->where('ref_no', $ref_no)->delete();
 				if($records){
 					session()->flash("success", "<strong>Success!</strong> Invoice trashed.");
-				return redirect()->route('invoice-list');
+					return redirect()->route('invoice-list');
+				}else{
+					session()->flash("error", "<strong>Ooops!</strong> No record found.");
+					return redirect()->route('invoice-list');
 				}
 
 			}else{
 				session()->flash("error", "<strong>Ooops!</strong> No record found.");
+				return redirect()->route('invoice-list');
 			}
 		}
     public function sendEmailToClient(Request $request){

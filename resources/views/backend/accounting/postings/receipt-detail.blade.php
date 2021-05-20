@@ -81,7 +81,8 @@
                     </table>
                 </div>
                 <div class="col-md-4 col-sm-6">
-                    <h6 class="m-b-20">Ref. Number <span>#{{$receipt->ref_no}}</span></h6>
+                    <h6 class="m-b-20">Ref. Number: <small><span>#{{$receipt->ref_no}}</span></small></h6>
+                    <h6 class="m-b-20">Bank: <small> <span>{{$bank->glcode ?? ''}} - {{$bank->account_name ?? ''}}</span></small></h6>
                 </div>
             </div>
             <div class="row">

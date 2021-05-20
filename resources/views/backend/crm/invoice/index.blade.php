@@ -158,16 +158,16 @@
 							<div class="col-sm-12">
 								<div class="card card-border-primary">
 									<div class="card-block">
+										<a href="{{route('issue-invoice')}}" class="btn btn-mini btn-primary float-right mb-4">Add New Invoice</a>
 										<div class="dt-responsive table-responsive">
 											<table id="simpletable" class="table table-striped table-bordered nowrap">
 													<thead>
 													<tr>
 															<th>#</th>
 															<th>Company Name</th>
-															<th>Issued By</th>
 															<th>Invoice No.</th>
 															<th>Total</th>
-															<th>Paid</th>
+															<th>Paid(Receipt)</th>
 															<th>Balance</th>
 															<th>Due Date</th>
 															<th>Action</th>
@@ -181,11 +181,10 @@
 																<tr>
 																	<td>{{$serial++}}</td>
 																	<td>{{$invoice->client->company_name ?? ''}}</td>
-																	<td>{{$invoice->converter->first_name ?? ''}}  {{$invoice->converter->surname ?? ''}}</td>
 																	<td>{{$invoice->invoice_no}}</td>
-																	<td>{{Auth::user()->tenant->currency->symbol ?? 'N'}}{{number_format(($invoice->total),2)}}</td>
-																	<td>{{Auth::user()->tenant->currency->symbol ?? 'N'}}{{number_format($invoice->paid_amount,2)}}</td>
-																	<td>{{Auth::user()->tenant->currency->symbol ?? 'N'}}{{number_format(($invoice->total)  - ($invoice->paid_amount),2)}}</td>
+																	<td class="text-right">{{Auth::user()->tenant->currency->symbol ?? 'N'}}{{number_format(($invoice->total * $invoice->exchange_rate),2)}}</td>
+																	<td class="text-right text-success">{{Auth::user()->tenant->currency->symbol ?? 'N'}}{{number_format($invoice->paid_amount* $invoice->exchange_rate,2)}}</td>
+																	<td class="text-right text-danger">{{Auth::user()->tenant->currency->symbol ?? 'N'}}{{number_format(($invoice->total* $invoice->exchange_rate)  - ($invoice->paid_amount* $invoice->exchange_rate),2)}}</td>
 																	<td>{{date('d F, Y', strtotime($invoice->due_date))}}</td>
 																	<td>
 
@@ -194,14 +193,11 @@
                                         <div class="dropdown-menu" aria-labelledby="dropdown14" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut">
 																						<a class="dropdown-item waves-light waves-effect" href="{{route('print-invoice', $invoice->slug)}}"><i class="ti-printer"></i> Print Invoice</a>
 
-
+																					@if ($invoice->trash == 0 && $invoice->paid_amount <= 0)
                                             <a class="dropdown-item waves-light waves-effect" href="{{route('print-invoice', $invoice->slug)}}"><i class="ti-trash"></i> Decline Invoice</a>
-
+																					@endif
 																						@if(($invoice->paid_amount) < ($invoice->total))
-
-
 																							<a class="dropdown-item waves-light waves-effect" href="{{route('receive-payment', $invoice->slug)}}"><i class="ti-receipt"></i> Receive Payment</a>
-
 																						@endif
 
                                         </div>
@@ -214,10 +210,9 @@
 													<tr>
 														<th>#</th>
 														<th>Company Name</th>
-														<th>Issued By</th>
 														<th>Invoice No.</th>
 														<th>Total</th>
-														<th>Paid</th>
+														<th>Paid(Receipt)</th>
 														<th>Balance</th>
 														<th>Due Date</th>
 														<th>Action</th>

@@ -12,11 +12,6 @@
 @endsection
 
 @section('content')
-<div class="row">
-    <div class="col-md-12 filter-bar">
-        @include('backend.procurement.supplier.common._procurement-slab')
-    </div>
-</div>
     <div class="row">
         <div class="col-md-12">
             <div class="card">
@@ -42,7 +37,7 @@
 														<strong>Ooops!</strong> This action cannot be completed because there is a receipt that needs to be taken care of.
 													</div>
 											@endif
-                    <a href="{{route('vendor-bills')}}" class="btn mb-4 btn-primary btn-mini"><i class="ti-layout mr-2"></i>New Payment</a>
+                    <a href="{{route('payments')}}" class="btn mb-4 btn-primary btn-mini ">Payments</a>
                     <form action="{{route('new-payment')}}" method="post" autocomplete="off">
                         @csrf
                         <div class="row">

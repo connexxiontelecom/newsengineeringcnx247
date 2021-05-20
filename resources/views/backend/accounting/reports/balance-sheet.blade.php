@@ -92,10 +92,10 @@
                                         <td class="text-center">{{$a++}}</td>
                                         <td class="sorting_1 text-center">{{$report->glcode ?? ''}}</td>
                                         <td class="text-center">{{$report->account_name ?? ''}}</td>
-                                        <td class="text-center">{{(($bfDr + $report->sumDebit) - ($bfCr + $report->sumCredit)) > 0 ?  number_format((($bfDr + $report->sumDebit) - ($bfCr + $report->sumCredit)),2) : 0}}
+                                        <td class="text-right">{{(($bfDr + $report->sumDebit) - ($bfCr + $report->sumCredit)) > 0 ?  number_format((($bfDr + $report->sumDebit) - ($bfCr + $report->sumCredit)),2) : 0}}
                                             <small style="display: none;">  {{ $aCPDrTotal +=  (($bfDr + $report->sumDebit) - ($bfCr + $report->sumCredit)) > 0 ? (($bfDr + $report->sumDebit) - ($bfCr + $report->sumCredit)) : 0  }}</small>
                                         </td>
-                                        <td class="text-center">{{(($bfDr + $report->sumDebit) - ($bfCr + $report->sumCredit)) < 0 ? number_format((($bfCr + $report->sumCredit) - ($bfDr + $report->sumDebit)),2) : 0}}
+                                        <td class="text-right">{{(($bfDr + $report->sumDebit) - ($bfCr + $report->sumCredit)) < 0 ? number_format((($bfCr + $report->sumCredit) - ($bfDr + $report->sumDebit)),2) : 0}}
                                             <small style="display: none;">  {{ $aCPCrTotal += (($bfDr + $report->sumDebit) - ($bfCr + $report->sumCredit)) < 0 ? (($bfCr + $report->sumCredit) - ($bfDr + $report->sumDebit)) : 0 }}</small>
                                         </td>
                                     </tr>
@@ -115,10 +115,10 @@
                                     <td class="text-center">{{$a++}}</td>
                                     <td class="sorting_1 text-center">{{$report->glcode ?? ''}}</td>
                                     <td class="text-center">{{$report->account_name ?? ''}}</td>
-                                    <td class="text-center">{{(($bfDr + $report->sumDebit) - ($bfCr + $report->sumCredit)) > 0 ?  number_format((($bfDr + $report->sumDebit) - ($bfCr + $report->sumCredit)),2) : 0}}
+                                    <td class="text-right">{{(($bfDr + $report->sumDebit) - ($bfCr + $report->sumCredit)) > 0 ?  number_format((($bfDr + $report->sumDebit) - ($bfCr + $report->sumCredit)),2) : 0}}
                                         <small style="display: none;">  {{ $aCPDrTotal +=  (($bfDr + $report->sumDebit) - ($bfCr + $report->sumCredit)) > 0 ? (($bfDr + $report->sumDebit) - ($bfCr + $report->sumCredit)) : 0  }}</small>
                                     </td>
-                                    <td class="text-center">{{(($bfDr + $report->sumDebit) - ($bfCr + $report->sumCredit)) < 0 ? number_format((($bfCr + $report->sumCredit) - ($bfDr + $report->sumDebit)),2) : 0}}
+                                    <td class="text-right">{{(($bfDr + $report->sumDebit) - ($bfCr + $report->sumCredit)) < 0 ? number_format((($bfCr + $report->sumCredit) - ($bfDr + $report->sumDebit)),2) : 0}}
                                         <small style="display: none;">  {{ $aCPCrTotal += (($bfDr + $report->sumDebit) - ($bfCr + $report->sumCredit)) < 0 ? (($bfCr + $report->sumCredit) - ($bfDr + $report->sumDebit)) : 0 }}</small>
                                     </td>
                                 </tr>
@@ -135,10 +135,10 @@
                                     <td class="text-center">{{$a++}}</td>
                                     <td class="sorting_1 text-center">{{$report->glcode ?? ''}}</td>
                                     <td class="text-center">{{$report->account_name ?? ''}}</td>
-                                    <td class="text-center">{{(($bfDr + $report->sumDebit) - ($bfCr + $report->sumCredit)) > 0 ?  number_format((($bfDr + $report->sumDebit) - ($bfCr + $report->sumCredit)),2) : 0}}
+                                    <td class="text-right">{{(($bfDr + $report->sumDebit) - ($bfCr + $report->sumCredit)) > 0 ?  number_format((($bfDr + $report->sumDebit) - ($bfCr + $report->sumCredit)),2) : 0}}
                                         <small style="display: none;">  {{ $aCPDrTotal +=  (($bfDr + $report->sumDebit) - ($bfCr + $report->sumCredit)) > 0 ? (($bfDr + $report->sumDebit) - ($bfCr + $report->sumCredit)) : 0  }}</small>
                                     </td>
-                                    <td class="text-center">{{(($bfDr + $report->sumDebit) - ($bfCr + $report->sumCredit)) < 0 ? number_format((($bfCr + $report->sumCredit) - ($bfDr + $report->sumDebit)),2) : 0}}
+                                    <td class="text-right">{{(($bfDr + $report->sumDebit) - ($bfCr + $report->sumCredit)) < 0 ? number_format((($bfCr + $report->sumCredit) - ($bfDr + $report->sumDebit)),2) : 0}}
                                         <small style="display: none;">  {{ $aCPCrTotal += (($bfDr + $report->sumDebit) - ($bfCr + $report->sumCredit)) < 0 ? (($bfCr + $report->sumCredit) - ($bfDr + $report->sumDebit)) : 0 }}</small>
                                     </td>
                                 </tr>
@@ -152,16 +152,16 @@
                             <small style="display: none;">  {{ $rCb +=  $revenue->sum('dr_amount') - $revenue->sum('cr_amount') > 0 ? ($revenue->sum('dr_amount') - $revenue->sum('cr_amount')) : ($revenue->sum('cr_amount') - $revenue->sum('dr_amount'))}}</small>
                             <small style="display: none;">  {{ $eCb +=  $expense->sum('dr_amount') - $expense->sum('cr_amount') }}</small>
 
-                            <td class="text-center">{{ $rCb - $eCb < 0 ? number_format($rCb - $eCb,2) : ''}}
+                            <td class="text-right">{{ $rCb - $eCb < 0 ? number_format($rCb - $eCb,2) : ''}}
                             </td>
-                            <td class="text-center">{{ $rCb - $eCb > 0 ? number_format($rCb - $eCb,2) : ''}}
+                            <td class="text-right">{{ $rCb - $eCb > 0 ? number_format($rCb - $eCb,2) : ''}}
                                 <small style="display: none;">  {{ $aCPCrTotal +=  $rCb - $eCb }}</small>
                             </td>
                         </tr>
                         <tr>
                             <td colspan="3" class="text-right"><strong style="font-size:14px; text-transform:uppercase; text-align: right;">Total:</strong></td>
-                            <td class="text-center"> {{number_format($aCPDrTotal,2)}}</td>
-                            <td class="text-center"> {{number_format($aCPCrTotal,2)}}</td>
+                            <td class="text-right"> {{number_format($aCPDrTotal,2)}}</td>
+                            <td class="text-right"> {{number_format($aCPCrTotal,2)}}</td>
                         </tr>
                     </table>
                 </div>

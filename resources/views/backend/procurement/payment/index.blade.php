@@ -11,12 +11,6 @@
 @endsection
 
 @section('content')
-<div class="row">
-    <div class="col-md-12 filter-bar">
-        @include('backend.procurement.supplier.common._procurement-slab')
-    </div>
-</div>
-
     <div>
         <div class="row">
             <div class="col-md-12">
@@ -48,7 +42,9 @@
                             <div class="col-sm-12">
                                 <div class="card">
                                     <div class="card-block">
+
                                         <h5 class="sub-title">Payments</h5>
+																			<a href="{{url()->previous()}}" class="btn btn-secondary btn-mini">Back</a>
                                         <a href="{{route('new-payment')}}" class="btn btn-primary btn-mini float-right mb-3">New Payment</a>
                                         <div class="dt-responsive table-responsive">
                                             <table id="simpletable" class="table table-striped table-bordered nowrap">
@@ -72,7 +68,7 @@
                                                         <td>{{$serial++}}</td>
                                                         <td>{{$payment->bank_name}}</td>
                                                         <td>{{!is_null($payment->date_inputed ) ? date('d F, Y', strtotime($payment->date_inputed )) : '-'}}</td>
-                                                        <td>{{number_format($payment->amount,2) ?? ''}}</td>
+                                                        <td class="text-right">{{number_format($payment->amount,2) ?? ''}}</td>
                                                         <td>{{$payment->ref_no ?? ''}}</td>
                                                         <td>{{$payment->memo ?? ''}}</td>
                                                         <td>

@@ -441,14 +441,16 @@ class SupplierController extends Controller
             $details->rate = $request->unit_cost[$n];
             $details->glcode = $serviceGls[$n];
             $details->amount = $request->quantity[$n] * $request->unit_cost[$n];
+
             $details->vat_amount = (($request->quantity[$n] * $request->unit_cost[$n])*$policy->vat)/100;
 						$details->save();
 
         }
         #Vendor
         $vendor = Supplier::where('tenant_id', Auth::user()->tenant_id)->where('id', $request->vendor)->first();
+        //return dd($vendor);
         $vendorGl = [
-            'glcode'=>$vendor->glcode,
+            'glcode'=>$vendor->glcode ?? 10101,
             'posted_by'=>Auth::user()->id,
             'narration'=>'Bill raised for '.$vendor->company_name,
             'dr_amount'=>0,
@@ -502,9 +504,9 @@ class SupplierController extends Controller
     public function viewBill($slug)
     {
         $bill = BillMaster::where('tenant_id', Auth::user()->tenant_id)->where('slug', $slug)->first();
-        $items = BillDetail::where('tenant_id', Auth::user()->tenant_id)->where('bill_id', $bill->id)->get();
-        if(!empty($bill)){
-            return view('backend.procurement.vendor.view-bill', ['bill'=>$bill, 'items'=>$items]);
+			if(!empty($bill)){
+					$items = BillDetail::where('tenant_id', Auth::user()->tenant_id)->where('bill_id', $bill->id)->get();
+					return view('backend.procurement.vendor.view-bill', ['bill'=>$bill, 'items'=>$items]);
         }else{
             session()->flash("error", "<strong>Ooops!</strong> No record found.");
             return back();
@@ -654,10 +656,11 @@ class SupplierController extends Controller
 
     public function paymentDetail($slug){
         $payment = PayMaster::where('slug', $slug)->where('tenant_id', Auth::user()->tenant_id)->first();
-        $items = PayDetail::where('pay_id', $payment->id)->where('tenant_id', Auth::user()->tenant_id)->get();
-        if(!empty($payment) && count($items) > 0){
+			if(!empty($payment)){
+					$bank = DB::table(Auth::user()->tenant_id . '_coa')->where('glcode', $payment->bank_id)->first();
+					$items = PayDetail::where('pay_id', $payment->id)->where('tenant_id', Auth::user()->tenant_id)->get();
 
-            return view('backend.procurement.payment.view',['payment'=>$payment, 'items'=>$items]);
+					return view('backend.procurement.payment.view',['payment'=>$payment, 'items'=>$items, 'bank'=>$bank]);
         }else{
             session()->flash("error", "<strong>Ooops!</strong> Record not found.");
             return redirect()->route('payments');
@@ -682,10 +685,13 @@ class SupplierController extends Controller
             $payment->save();
 
         $bankGlCode = $payment->bank_id;
+
         $detail = PayDetail::where('pay_id', $payment->id)->where('tenant_id', Auth::user()->tenant_id)->first();
         $bills = PayDetail::where('pay_id', $payment->id)->where('tenant_id', Auth::user()->tenant_id)->get();
         $bill = BillMaster::where('id', $detail->bill_id)->where('tenant_id', Auth::user()->tenant_id)->first();
+
         $vendor = Supplier::where('id', $bill->vendor_id)->where('tenant_id', Auth::user()->tenant_id)->first();
+					//return dd($vendor);
         # Post GL
         $bankGl = [
             'glcode' => $bankGlCode,
@@ -703,7 +709,7 @@ class SupplierController extends Controller
         DB::table(Auth::user()->tenant_id . '_gl')->insert($bankGl);
         foreach($bills as $b){
 						$vendorGl = [
-								'glcode' => $vendor->glcode,
+								'glcode' => $vendor->glcode ?? 10101,
 								'posted_by' => Auth::user()->id,
 								'narration' => 'Payment for ' . $b->description,
 								'dr_amount' => $b->pay_amount ?? 0,
