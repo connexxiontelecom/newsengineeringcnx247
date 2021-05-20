@@ -530,10 +530,10 @@ class SupplierController extends Controller
 
         $invoice = Invoice::where('status', 0)->where('tenant_id', Auth::user()->tenant_id)->get();
 				$banks = Bank::where('tenant_id', Auth::user()->tenant_id)->get();
-				$vendors = DB::table('suppliers as s')
+				$vendors = /*DB::table('suppliers as s')
 											->join('bill_masters as b', 'b.vendor_id', '=', 's.id')
-											->where('b.paid',0)->get();
-				//Supplier::where('tenant_id', Auth::user()->tenant_id)->get();
+											->where('b.paid',0)->get();*/
+				Supplier::where('tenant_id', Auth::user()->tenant_id)->get();
 				$status = PaymentBill::where('tenant_id', Auth::user()->tenant_id)
 																			->where('bill_id', 1)
 																			->where('trash',0)
