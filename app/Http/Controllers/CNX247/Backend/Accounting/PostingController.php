@@ -164,6 +164,7 @@ class PostingController extends Controller
 
 			}else{
 				session()->flash("error", "<strong>Ooops!</strong> No record found.");
+				return redirect()->route('vendor-bills');
 			}
 		}
 }
