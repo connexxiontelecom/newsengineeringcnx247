@@ -139,7 +139,7 @@
                                 <th class="text-left"> <strong>Account Name:</strong> </th>
                                 <td>{{Auth::user()->tenantBankDetails->account_name ?? ''}}</td>
                             </tr>
-                           @if(!is_null(Auth::user()->tenantBankDetails->sort_code))<tr>
+                           @if(Auth::user()->tenantBankDetails->sort_code)<tr>
                                 <th class="text-left"><strong>Sort Code:</strong> </th>
                                 <td>{{Auth::user()->tenantBankDetails->sort_code ?? ''}}</td>
 														</tr>

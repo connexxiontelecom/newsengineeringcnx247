@@ -8,6 +8,6 @@ class BillDetail extends Model
 {
     //
     public function billService(){
-        return $this->belongsTo(Service::class, 'bill_id');
+        return $this->belongsTo(Service::class, 'service_id');
     }
 }

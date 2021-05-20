@@ -43,7 +43,7 @@
                                         <select  name="vat_glcode" id="vat_glcode" class="form-control js-example-basic-single">
                                             <option disabled selected>Select Account</option>
                                             @foreach ($accounts as $account)
-                                                <option value="{{$account->glcode}}">{{$account->account_name ?? ''}} - {{$account->glcode ?? ''}}</option>
+                                                <option value="{{$account->glcode}}">{{$account->glcode ?? ''}} - {{$account->account_name ?? ''}}</option>
                                             @endforeach
                                         </select>
                                         @error('vat_glcode')
@@ -84,7 +84,7 @@
                                             <tr>
                                                 <td>{{$serial++}}</td>
                                                 <td>{{$policy->vat ?? ''}}</td>
-                                                <td>{{$policy->glcode ?? ''}}</td>
+                                                <td>{{$policy->glcode ?? ''}} - {{$policy->account_name ?? ''}}</td>
                                                 <td>
                                                     <a href="javascript:void(0);" class="edit-policy" data-vat="{{$policy->vat ?? 0}}" data-account="{{$policy->glcode}}"> <i class="ti-pencil text-warning"></i> </a>
                                                 </td>

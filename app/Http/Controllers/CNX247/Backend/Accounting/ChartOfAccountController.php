@@ -12,6 +12,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\DefaultAccount;
 use App\Policy;
+use App\Bank;
+
 use Auth;
 use DB;
 use Schema;
@@ -95,14 +97,29 @@ class ChartOfAccountController extends Controller
 
     public function __construct(){
         $this->middleware('auth');
+        $this->bank = new Bank();
 
     }
 
     public function dashboard(){
-			$invoices = Invoice::where('trash',0)->where('tenant_id', Auth::user()->tenant_id)->orderBy('id', 'DESC')->get();
-			$bills = BillMaster::where('trash',0)->where('tenant_id', Auth::user()->tenant_id)->orderBy('id', 'DESC')->get();
-			$payments = PayMaster::where('trash',0)->where('tenant_id', Auth::user()->tenant_id)->orderBy('id', 'DESC')->get();
-    	return view('backend.accounting.dashboard',['invoices'=>$invoices, 'bills'=>$bills, 'payments'=>$payments]);
+			$invoices = Invoice::where('trash',0)->where('tenant_id', Auth::user()->tenant_id)->whereYear('created_at', date('Y'))->orderBy('id', 'DESC')->get();
+			$bills = BillMaster::where('trash',0)->where('tenant_id', Auth::user()->tenant_id)->whereYear('created_at', date('Y'))->orderBy('id', 'DESC')->get();
+			$payments = PayMaster::where('trash',0)->where('tenant_id', Auth::user()->tenant_id)->whereYear('created_at', date('Y'))->orderBy('id', 'DESC')->get();
+    	return view('backend.accounting.dashboard',['invoices'=>$invoices, 'bills'=>$bills, 'payments'=>$payments, 'start_date'=>now(), 'end_date'=>now()]);
+		}
+
+		public function filterDashboardResult(Request $request){
+				if(empty($request->start_date)){
+					session()->flash("error", "<strong>Whoops!</strong> Date range is required. Try again.");
+					return back();
+				}else{
+					$invoices = Invoice::where('trash',0)->where('tenant_id', Auth::user()->tenant_id)->whereBetween('created_at', [$request->start_date, $request->end_date])->orderBy('id', 'DESC')->get();
+					$bills = BillMaster::where('trash',0)->where('tenant_id', Auth::user()->tenant_id)->whereBetween('created_at', [$request->start_date, $request->end_date])->orderBy('id', 'DESC')->get();
+					$payments = PayMaster::where('trash',0)->where('tenant_id', Auth::user()->tenant_id)->whereBetween('created_at', [$request->start_date, $request->end_date])->orderBy('id', 'DESC')->get();
+					return view('backend.accounting.dashboard',['invoices'=>$invoices, 'bills'=>$bills, 'payments'=>$payments,
+						'start_date'=>$request->start_date, 'end_date'=>$request->end_date
+					]);
+				}
 		}
 
 		public function getUsers(){
@@ -230,7 +247,11 @@ class ChartOfAccountController extends Controller
 
     public function vat(){
         $accounts = DB::table(Auth::user()->tenant_id.'_coa')->where('type', 1)->select()->get();
-        $policy = Policy::where('tenant_id', Auth::user()->tenant_id)->first();
+        $policy = /*DB::table(Auth::user()->tenant_id.'_coa as c')
+										->join('policies as p', 'p.glcode', '=', 'c.glcode')
+										->get();*/
+        //return dd($policy);
+					Policy::where('tenant_id', Auth::user()->tenant_id)->first();
         return view('backend.accounting.setup.vat.index',['accounts'=>$accounts,'policy'=>$policy]);
     }
     public function postVat(Request $request){
@@ -347,14 +368,44 @@ class ChartOfAccountController extends Controller
         return back();
     }
 
+	public function addNewBank(Request $request){
+		$this->validate($request, [
+			'bank_name'=>'required|unique:banks,bank_name',
+			'bank_gl_code' =>'required|unique:banks,bank_gl_code',
+			'bank_branch'=>'required',
+			'bank_account_number' => 'required',
+
+		]);
+			$this->bank->setNewBank($request);
+			session()->flash("success", "<strong>Success! </strong> New bank registered.");
+				return back();
+	}
     public function bank()
     {
         $tenant_id = Auth::user()->tenant_id;
-        $bank_details = DB::table($tenant_id."_coa")->select()->where('bank', '=', 1)->get();
-        $data['banks'] = DB::table('banks')->select()->where('tenant_id', '=', $tenant_id)->get();
+        $bank_details =   DB::table($tenant_id."_coa")->select()->where('bank', '=', 1)->get();
+        $data['banks'] = DB::table(Auth::user()->tenant_id.'_coa as c')
+														->join('banks as b', 'b.bank_gl_code', '=', 'c.glcode')
+														->select()
+														->get();
+					//DB::table('banks')->select()->where('tenant_id', '=', $tenant_id)->get();
+
         $data['bank_details'] = $bank_details;
         return view('backend.accounting.bank.index', $data);
     }
+
+    public function updateBank(Request $request){
+    	$this->validate($request,[
+    		'bank'=>'required',
+				'bank_name'=>'required',
+				'bank_glcode'=>'required',
+				'account_no'=>'required'
+			]);
+    	$this->bank->updateBank($request);
+    	session()->flash("success", "<strong>Success!</strong> Changes saved.");
+    	return back();
+		}
+
 
     public function edit(Request $request)
     {
