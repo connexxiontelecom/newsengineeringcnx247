@@ -38,9 +38,9 @@
                                     @csrf
 
 																	<div class="row">
-																		<div class="col-md-4">
+																		<div class="col-md-6">
 																			<label>Employees<sup class="text-danger">*</sup></label>
-																			<select name="user_id" id="" class="form-control col-md-6">
+																			<select name="user_id" id="" class="form-control">
 																				<option selected disabled >Select Employee</option>
 																			@foreach($employees as $employee)
 																				<option value="{{$employee->id}}"> {{ $employee->first_name }} {{ $employee->surname }}</option>
@@ -51,9 +51,9 @@
 																			@enderror
 																		</div>
 
-																		<div class="col-md-5">
+																		<div class="col-md-6">
 																			<label>Means of Identification<sup class="text-danger">*</sup></label>
-																			<select name="means_of_identification" id="" class="form-control col-md-6">
+																			<select name="means_of_identification" id="" class="form-control">
 																				<option selected disabled >Select MOI</option>
 																				<option value="1">International Passport</option>
 																				<option value="2">Driver's license</option>
@@ -64,7 +64,20 @@
 																			<i class="text-danger">{{$message}}</i>
 																			@enderror
 																		</div>
-																		<div class="col-md-3">
+
+																	</div>
+
+																	<div class="row">
+																		<div class="col-md-6">
+																			<label>License Expiry Date<sup class="text-danger">*</sup></label>
+																			<input type="date" name="license_date" class="form-control">
+																			@error('user_id')
+																			<i class="text-danger">{{$message}}</i>
+																			@enderror
+																		</div>
+
+
+																		<div class="col-md-6">
 																			<label>MOI Attachment<sup class="text-danger">*</sup></label>
 																			<input type="file" class="form-control-file" name="moi_attachment">
 																			@error('moi_attachment')
@@ -73,8 +86,6 @@
 																		</div>
 
 																	</div>
-
-
 
                                     <hr>
                                     <div class="row">

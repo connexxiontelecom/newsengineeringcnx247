@@ -39,13 +39,11 @@
 							<thead>
 							<tr>
 								<th>#</th>
-								<th>Reg. No.</th>
-								<th>Reg. Date</th>
+								<th>Alias</th>
 								<th>Chassis No.</th>
-								<th>Engine No.</th>
-								<th>Owner Name</th>
-								<th>Maker/Model</th>
-								<th>Date</th>
+								<th>Purchase Date</th>
+								<th>Plate No</th>
+								<th>Vehicle Type</th>
 								<th>Action</th>
 							</tr>
 							</thead>
@@ -54,15 +52,13 @@
 								$serial = 1;
 							@endphp
 							@foreach($vehicles as $vehicle)
-								<tr>
+								<tr @if($vehicle->status == 0) style="background-color: lightcoral" @endif>
 									<td>{{$serial++}}</td>
-									<td>{{$vehicle->registration_no ?? ''}}</td>
-									<td>{{date('d F, Y', strtotime($vehicle->registration_date))}}</td>
+									<td>{{$vehicle->brand ?? ''}} - {{$vehicle->make_model ?? ''}} - {{$vehicle->year ?? ''}} - {{$vehicle->color ?? ''}} - {{$vehicle->plate_no ?? ''}}</td>
 									<td>{{$vehicle->chassis_no ?? ''}}</td>
-									<td>{{$vehicle->engine_no ?? ''}}</td>
-									<td>{{$vehicle->owner_name ?? ''}}</td>
-									<td>{{$vehicle->make_model ?? ''}}</td>
-									<td>{{date(Auth::user()->tenant->dateFormat->format ?? 'd F, Y', strtotime($vehicle->created_at))}}</td>
+									<td>{{$vehicle->purchase_date ?? ''}}</td>
+									<td>{{$vehicle->plate_no ?? ''}}</td>
+									<td>{{$vehicle->vehicle_type ?? ''}}</td>
 									<td>
 										<a class="btn btn-mini btn-primary" href="{{route('logistics-view-vehicle', $vehicle->slug)}}"><i class="ti-eye mr-2"></i> View</a>
 									</td>
