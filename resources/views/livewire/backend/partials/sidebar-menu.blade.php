@@ -659,7 +659,7 @@
                 <ul class="pcoded-submenu">
 									<li class=" ">
 										<a href="{{route('logistics-vehicles')}}">
-											<span class="pcoded-mtext">Vehicles</span>
+											<span class="pcoded-mtext">Active Vehicles</span>
 										</a>
 									</li>
                     <li class=" ">
@@ -677,6 +677,12 @@
 									<li class=" ">
 										<a href="{{route('maintenance-schedule')}}">
 											<span class="pcoded-mtext">Maintenance Schedule</span>
+										</a>
+									</li>
+
+									<li class=" ">
+										<a href="{{route('logistics-dvehicles')}}">
+											<span class="pcoded-mtext">Disposed Vehicles</span>
 										</a>
 									</li>
 

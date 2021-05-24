@@ -10,9 +10,7 @@
 
 @section('content')
 <div class="row">
-    <div class="col-md-12 filter-bar">
-        @include('backend.logistics.common._logistics-slab')
-    </div>
+
 </div>
 <div class="row">
     <div class="col-md-12">
@@ -25,7 +23,14 @@
                             <div class="col-lg-12 m-b-15">
                                 <div id="big_banner">
                                     <div class="port_big_img">
+																			@if($vehicle->image)
                                         <img class="img img-fluid" src="/assets/uploads/logistics/vehicles/{{$vehicle->image ?? 'vehicle.png'}}" alt="{{$vehicle->owner_name ?? ''}}">
+																			@else
+																				<img class="img img-fluid" src="https://via.placeholder.com/728x600.png?text=No+Image+Available" alt="{{$vehicle->owner_name ?? ''}}">
+
+
+
+																			@endif
                                     </div>
                                 </div>
                             </div>
@@ -37,14 +42,14 @@
 															@if($vehicle->status == 1)
 																<button class="btn btn-mini btn-secondary float-right mb-2" data-toggle="modal" data-target="#newSchedule"><i class="zmdi zmdi-car-taxi mr-2"></i> New Maintenance Schedule</button>
 
-																<button class="btn btn-mini btn-primary float-right mb-2" data-toggle="modal" data-target="#assignVehicleModal"><i class="zmdi zmdi-car-taxi mr-2"></i> Assign To Driver</button>
+																<button class="btn btn-mini btn-primary float-right mb-2" data-toggle="modal" data-target="#assignVehicleModal"><i class="zmdi zmdi-car-taxi mr-2"></i> Assign Vehicle</button>
 
 															<button class="btn btn-mini btn-success float-right mb-2" data-toggle="modal" data-target="#assignmentLogs"><i class="zmdi zmdi-car-taxi mr-2"></i> View Assignment Logs</button>
 
 															<button class="btn btn-mini btn-secondary float-right mb-2" data-toggle="modal" data-target="#newRenewal"><i class="zmdi zmdi-car-taxi mr-2"></i> New Renewal</button>
 
 																 @endif
-																<button class="btn btn-mini btn-info float-right mb-2" data-toggle="modal" data-target="#updateVehicle"><i class="zmdi zmdi-car-taxi mr-2"></i> Update Vehicle</button>
+																<button class="btn btn-mini btn-info float-right mb-2" data-toggle="modal" data-target="#updateVehicle"><i class="zmdi zmdi-car-taxi mr-2"></i> Edit Vehicle</button>
 																<table class="table">
                                     <tbody>
 																		<tr>
@@ -94,7 +99,7 @@
     </div>
 </div>
 <div class="row">
-	<div class="col-md-6 col-lg-6 col-sm-12">
+	<div class="col-md-8 col-lg-8 col-sm-12">
 		<div class="card">
 			<div class="card-block">
 				<h5 class="sub-title">Document Renewal Schedules</h5>
@@ -105,7 +110,11 @@
 						<th>#</th>
 						<th>Type</th>
 						<th>Employee Responsible</th>
-						<th>Date</th>
+						<th> Renew Date</th>
+						<th>Due Date</th>
+
+
+						<th>Status </th>
 
 					</tr>
 					</thead>
@@ -114,11 +123,14 @@
 						$i = 1;
 					@endphp
 					@foreach ($renewal_schedules as $renewal_schedule)
-						<tr>
-							<td>{{$i++}}</td>
+						<tr @if($renewal_schedule->renewal_schedule_date < date('Y-m-d'))  style="background-color: lightcoral" @endif>
+							<td>{{$i++}} </td>
 							<td>{{$renewal_schedule->renewal_type_name ?? ''}} {{$item->assignedTo->surname ?? ''}}</td>
 							<td>{{$renewal_schedule->first_name ?? ''}} {{$renewal_schedule->surname ?? ''}}</td>
+							<td>{{date('d F, Y', strtotime($renewal_schedule->renewal_schedule_renew_date))}} </td>
 							<td>{{date('d F, Y', strtotime($renewal_schedule->renewal_schedule_date))}}</td>
+
+							<td> @if($renewal_schedule->renewal_schedule_date > date('Y-m-d')) {{ 'Document Active' }} @else {{ ' Document Expired' }} @endif</td>
 
 						</tr>
 					@endforeach
@@ -129,7 +141,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="col-md-6 col-lg-6 col-sm-12">
+	<div class="col-md-8 col-lg-8 col-sm-12">
 		<div class="card">
 			<div class="card-block">
 				<h5 class="sub-title">Maintenance Schedules</h5>
@@ -140,7 +152,9 @@
 						<th>#</th>
 						<th>Type</th>
 						<th>Employee Responsible</th>
-						<th>Date</th>
+						<th>Last Activity Date</th>
+						<th>Next Activity Date</th>
+						<th> Status</th>
 
 					</tr>
 					</thead>
@@ -149,11 +163,13 @@
 						$i = 1;
 					@endphp
 					@foreach ($maintenance_schedules as $maintenance_schedule)
-						<tr>
+						<tr @if($maintenance_schedule->maintenance_schedule_due_date > date('Y-m-d'))  style="background-color: lightcoral" @endif>
 							<td>{{$i++}}</td>
 							<td>{{$maintenance_schedule->maintenance_type_name ?? ''}} {{$item->assignedTo->surname ?? ''}}</td>
 							<td>{{$maintenance_schedule->first_name ?? ''}} {{$maintenance_schedule->surname ?? ''}}</td>
 							<td>{{date('d F, Y', strtotime($maintenance_schedule->maintenance_schedule_date))}}</td>
+							<td>{{date('d F, Y', strtotime($maintenance_schedule->maintenance_schedule_due_date))}}</td>
+							<td> @if($maintenance_schedule->maintenance_schedule_due_date > date('Y-m-d')) {{ 'Not Due' }} @else {{ ' Due for Maintenance' }} @endif</td>
 
 						</tr>
 					@endforeach
@@ -180,7 +196,15 @@
             </div>
             <div class="modal-body">
                 <form data-parsley-validate id="assignVehicle">
-
+										<div class="form-group">
+											<label for="">Employee</label>
+											<select name="assign_employee" id="assign_employee"   class="form-control" required>
+												<option selected disabled>Select Responsible Employee</option>
+												@foreach ($employees as $employee)
+													<option value="{{$employee->id}}">{{$employee->first_name ?? ''}} {{$employee->surname ?? ''}}</option>
+												@endforeach
+											</select>
+										</div>
                     <div class="form-group">
                         <label for="">Drivers</label>
                         <select name="assign_driver"  id="assign_driver" class="form-control" required>
@@ -193,8 +217,14 @@
                     </div>
 
 									<div class="form-group">
-										<label for="">Reason</label>
+										<label for="">Reason/Purpose</label>
 										<textarea class="form-control" id="reason" name="reason" placeholder="reason"></textarea>
+
+									</div>
+
+									<div class="form-group">
+										<label for="">Due Date:</label>
+										<input type="date" class="form-control" id="due_date" name="due_date" >
 
 									</div>
                     <hr>
@@ -240,9 +270,13 @@
 								<option value="{{$employee->id}}">{{$employee->first_name ?? ''}} {{$employee->surname ?? ''}}</option>
 							@endforeach
 						</select>
+						<label for="">Renew Date</label>
+						<input type="date" name="renewal_schedule_renew_date" class="form-control" required>
 
-						<label for="">Date</label>
+						<label for="">Due Date</label>
 						<input type="date" name="renewal_schedule_date" class="form-control" required>
+
+
 
 						<input type="hidden" name="post_type" value="1">
 
@@ -267,7 +301,7 @@
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header bg-primary">
-				<h4 class="modal-title"><i class="zmdi zmdi-car-taxi text-white"></i> New Renewal Type</h4>
+				<h4 class="modal-title"><i class="zmdi zmdi-car-taxi text-white"></i>Schedule Maintenance</h4>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true" class="text-white">&times;</span>
 				</button>
@@ -276,11 +310,15 @@
 				<form method="post" action="">
 					@csrf
 					<div class="form-group">
-						<label for="">Renewal Type</label>
-						<select name="maintenance_schedule_type_id"   class="form-control" required>
-							<option selected disabled>Select Renewal Type</option>
+
+						<label for="">Last Activity Date</label>
+						<input type="date" name="maintenance_schedule_date" id="activity_date"  class="form-control" required>
+
+						<label for="">Maintenance Type</label>
+						<select name="maintenance_schedule_type_id"  id="maintenance_id" class="form-control" required>
+							<option selected>Select Maintenance Type</option>
 							@foreach ($maintenances as $maintenance)
-								<option value="{{$maintenance->id}}">{{$maintenance->maintenance_type_name ?? ''}} (Every {{$maintenance->maintenance_type_interval ?? ''}} month(s)</option>
+								<option value="{{$maintenance->id}}" data-foo="{{$maintenance->maintenance_type_interval}}">{{$maintenance->maintenance_type_name ?? ''}} (Every {{$maintenance->maintenance_type_interval ?? ''}} month(s)</option>
 							@endforeach
 						</select>
 
@@ -292,8 +330,9 @@
 							@endforeach
 						</select>
 
-						<label for="">Date</label>
-						<input type="date" name="maintenance_schedule_date" class="form-control" required>
+
+						<label for="">Next Activity Date</label>
+						<input type="text" name="maintenance_schedule_due_date" id="next_activity_date" class="form-control" readonly required>
 
 						<input type="hidden" name="post_type" value="2">
 
@@ -339,8 +378,9 @@
 										<th>#</th>
 										<th>Driver</th>
 										<th> Reason </th>
+										<th>Assignment Date</th>
 {{--										<th>Assigned By</th>--}}
-										<th>Date</th>
+										<th>Due Date</th>
 									</tr>
 									</thead>
 									<tbody>
@@ -354,6 +394,7 @@
 											<td>{{$item->reason ?? ''}}</td>
 {{--											<td>{{$item->assignedBy->first_name ?? ''}} {{$item->assignedBy->surname ?? ''}}</td>--}}
 											<td>{{date('d F, Y', strtotime($item->created_at))}}</td>
+											<td>{{date('d F, Y', strtotime($item->due_date))}}</td>
 										</tr>
 									@endforeach
 									</tbody>
@@ -559,6 +600,31 @@
 
 @section('extra-scripts')
 <script>
+
+	$(function(){
+		$('#maintenance_id').change(function() {
+			let activity_date = $('#activity_date').val();
+			if (activity_date == null) {
+				alert('Please Enter Last Activity Date')
+			} else{
+				var selected = $(this).find('option:selected');
+			var maintenance_interval = selected.data('foo');
+
+			activity_date = new Date(activity_date);
+			let next_date = activity_date.setDate(activity_date.getDate() + (maintenance_interval * 30));
+			next_date = new Date(next_date)
+			$('#next_activity_date').val(next_date.toLocaleDateString())
+		}
+
+		});
+	});
+
+	// function changeDate(){
+	// 	let maintenance_interval = document.getElementById('maintenance_id').data('foo');
+	//
+	//
+	//
+	// }
     $(document).ready(function(){
 
     $('#assignVehicle').parsley().on('field:validated', function() {
@@ -573,6 +639,8 @@
         form_data.append('driver',$('#assign_driver').val());
         form_data.append('vehicle',$('#vehicleId').val());
         form_data.append('reason', $('#reason').val());
+			form_data.append('due_date', $('#due_date').val());
+			form_data.append('assign_employee', $('#assign_employee').val());
         $('#assignVehicleBtn').text('Processing...');
         axios.post('/logistics/vehicle/assign',form_data, config)
         .then(response=>{
