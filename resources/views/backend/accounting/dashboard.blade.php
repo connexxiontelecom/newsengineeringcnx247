@@ -25,11 +25,11 @@
 									<div class="card">
 										<div class="card-block">
 											<h5 class="sub-title">Account Dashboard </h5>
-											<p>From: <label for="" class="label label-info">{{date('d M, Y', strtotime($start_date))}}</label> To: <label for="" class="label label-danger">{{date('d M, Y', strtotime($end_date))}}</label></p>
+											<p>Year: <label for="" class="label label-info">{{date('Y', strtotime($start_date))}}</label></p>
 											<div class="row">
-												<div class="col-md-6 offset-md-3">
-													<form action="{{route('filter-dashboard')}}" method="post">
-														@csrf
+												<!-- <div class="col-md-6 offset-md-3">
+													<form action="route('filter-dashboard')}}" method="post">
+														csrf
 														<div class="input-group input-group-button" id="date_range">
 												<span class="input-group-addon btn btn-primary" id="basic-addon9">
 														<span class="">From</span>
@@ -46,7 +46,7 @@
 															</div>
 														</div>
 													</form>
-												</div>
+												</div> -->
 												<!-- order-visitor start -->
 												<div class="col-md-6">
 													<div class="card text-center text-white bg-c-yellow">

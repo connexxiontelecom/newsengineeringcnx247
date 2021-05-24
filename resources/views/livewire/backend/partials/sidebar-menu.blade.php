@@ -348,6 +348,7 @@
                             <span class="pcoded-mtext">Budget Setup</span>
                         </a>
                     </li>
+
 									<li class=" ">
                         <a href="{{route('bank-accounts')}}">
 
@@ -475,6 +476,11 @@
 												<a href="{{route('profit-o-loss')}}">
 														<span class="pcoded-mtext">Profit/Loss</span>
 												</a>
+										</li>
+										<li class=" ">
+											<a href="{{route('budget-analysis')}}">
+												<span class="pcoded-mtext">Budget Analysis</span>
+											</a>
 										</li>
 
 									</ul>

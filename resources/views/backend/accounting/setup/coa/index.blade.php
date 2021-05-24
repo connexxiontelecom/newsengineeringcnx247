@@ -45,6 +45,7 @@
 								<th class="sorting_asc text-left" tabindex="0" style="width: 150px;">ACCOUNT NAME</th>
 								<th class="sorting_asc text-left" tabindex="0" >PARENT</th>
 								<th class="sorting_asc text-left" tabindex="0" >TYPE</th>
+								<th class="sorting_asc text-left" tabindex="0" >Bank</th>
 							</tr>
 							</thead>
 							<tbody>
@@ -52,7 +53,7 @@
 								$a = 1;
 							@endphp
 							<tr role="row" class="odd">
-								<td class="sorting_1" colspan="5"><strong style="font-size:16px; text-transform:uppercase;">Assets</strong></td>
+								<td class="sorting_1" colspan="6"><strong style="font-size:16px; text-transform:uppercase;">Assets</strong></td>
 							</tr>
 							@foreach($charts as $report)
 								@switch($report->account_type)
@@ -64,6 +65,7 @@
 											<td class="text-left">{{$report->account_name ?? ''}}</td>
 											<td class="text-left">{{$report->parent_account ?? ''}}</td>
 											<td class="text-left">{{$report->type == 0 ? 'General' : 'Detail'}}</td>
+											<td>{{$report->bank == 1 ? 'Yes' : 'No'}}</td>
 										</tr>
 									@endif
 									@break
@@ -71,7 +73,7 @@
 							@endforeach
 
 							<tr role="row" class="odd">
-								<td class="sorting_1"  colspan="5">
+								<td class="sorting_1"  colspan="6">
 									<strong style="font-size:16px; text-transform:uppercase;">Liability</strong>
 								</td>
 							</tr>
@@ -85,6 +87,7 @@
 											<td class="text-left">{{$report->account_name ?? ''}}</td>
 											<td class="text-left">{{$report->parent_account ?? ''}}</td>
 											<td class="text-left">{{$report->type == 0 ? 'General' : 'Detail'}}</td>
+											<td>{{$report->bank == 1 ? 'Yes' : 'No'}}</td>
 										</tr>
 
 									@endif
@@ -92,7 +95,7 @@
 								@endswitch
 							@endforeach
 							<tr role="row" class="odd">
-								<td class="sorting_1"  colspan="5"><strong style="font-size:16px; text-transform:uppercase;">Equity</strong></td>
+								<td class="sorting_1"  colspan="6"><strong style="font-size:16px; text-transform:uppercase;">Equity</strong></td>
 							</tr>
 							@foreach($charts as $report)
 								@switch($report->account_type)
@@ -104,6 +107,7 @@
 											<td class="text-left">{{$report->account_name ?? ''}}</td>
 											<td class="text-left">{{$report->parent_account ?? ''}}</td>
 											<td class="text-left">{{$report->type == 0 ? 'General' : 'Detail'}}</td>
+											<td>{{$report->bank == 1 ? 'Yes' : 'No'}}</td>
 										</tr>
 
 									@endif
@@ -111,7 +115,7 @@
 								@endswitch
 							@endforeach
 							<tr role="row" class="odd">
-								<td class="sorting_1"  colspan="5"><strong style="font-size:16px; text-transform:uppercase;">Revenue</strong></td>
+								<td class="sorting_1"  colspan="6"><strong style="font-size:16px; text-transform:uppercase;">Revenue</strong></td>
 							</tr>
 							@foreach($charts as $report)
 								@switch($report->account_type)
@@ -123,6 +127,7 @@
 											<td class="text-left">{{$report->account_name ?? ''}}</td>
 											<td class="text-left">{{$report->parent_account ?? ''}}</td>
 											<td class="text-left">{{$report->type == 0 ? 'General' : 'Detail'}}</td>
+											<td>{{$report->bank == 1 ? 'Yes' : 'No'}}</td>
 										</tr>
 
 									@endif
@@ -130,7 +135,7 @@
 								@endswitch
 							@endforeach
 							<tr role="row" class="odd">
-								<td class="sorting_1"  colspan="5"><strong style="font-size:16px; text-transform:uppercase;">Expenses</strong></td>
+								<td class="sorting_1"  colspan="6"><strong style="font-size:16px; text-transform:uppercase;">Expenses</strong></td>
 							</tr>
 							@foreach($charts as $report)
 								@switch($report->account_type)
@@ -142,6 +147,7 @@
 											<td class="text-left">{{$report->account_name ?? ''}}</td>
 											<td class="text-left">{{$report->parent_account ?? ''}}</td>
 											<td class="text-left">{{$report->type == 0 ? 'General' : 'Detail'}}</td>
+											<td>{{$report->bank == 1 ? 'Yes' : 'No'}}</td>
 										</tr>
 
 							@endif

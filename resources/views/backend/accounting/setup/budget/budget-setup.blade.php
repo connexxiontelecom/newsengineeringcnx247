@@ -46,7 +46,7 @@
                                 <td>{{$serial++}}</td>
                                 <td>{{$budget->bp_title}}</td>
                                 <td>{{$budget->account ?? ''}} - ({{$budget->bcode}})</td>
-                                <td>{{number_format($budget->amount)}}</td>
+                                <td class="text-right">{{number_format($budget->amount)}}</td>
                                 <td>{{date('d F, Y', strtotime($budget->created_at))}}</td>
                                 <td>
                                     {{$budget->first_name ?? ''}} {{$budget->surname ?? ''}}
@@ -153,6 +153,7 @@
                     .then(response=>{
                         $('#budgetModal').modal('hide');
                         $.notify(response.data.message,'success');
+                        location.reload();
                     })
                     .catch(error=>{
                         $.notify(error.response.data.error,'error');

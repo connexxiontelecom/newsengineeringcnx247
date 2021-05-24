@@ -126,7 +126,7 @@
                         </div>
                         <div class="row mb-3">
                             <div class="col-md-12 col-sm-12 col-lg-12">
-                                <button class="btn btn-mini btn-primary add-line"> <i class="ti-plus mr-2"></i> Add Line</button>
+                                <button class="btn btn-mini btn-warning add-line"> <i class="ti-plus mr-2"></i> Add Line</button>
                             </div>
                         </div>
                         <div class="row">

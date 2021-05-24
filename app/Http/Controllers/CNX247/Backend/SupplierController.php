@@ -55,7 +55,7 @@ class SupplierController extends Controller
         $industries = Industry::orderBy('industry', 'ASC')->get();
         if(Schema::connection('mysql')->hasTable(Auth::user()->tenant_id.'_coa') || Schema::connection('mysql')->hasTable(Auth::user()->tenant_id.'_gl')){
             $accounts = DB::table(Auth::user()->tenant_id.'_coa')
-                        ->select('glcode', 'account_name')
+                        ->select('glcode', 'account_name', 'account_type', 'type')
                         ->where('type', 1)
                         ->get();
 					return view('backend.procurement.supplier.create',['industries'=>$industries,'accounts'=>$accounts, 'status'=>1]);

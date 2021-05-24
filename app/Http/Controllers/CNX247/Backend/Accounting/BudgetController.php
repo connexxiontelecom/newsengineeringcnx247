@@ -170,7 +170,7 @@ class BudgetController extends Controller
                             ->where('b.tenant_id',Auth::user()->tenant_id)
                             ->get();
         $accounts = DB::table(Auth::user()->tenant_id.'_coa')
-                        ->whereIn('account_type', [4,5])
+                        ->whereIn('account_type', [5])
                         ->where('type', 1)
                         ->get();
         //$budgets = Budget::where('tenant_id', Auth::user()->tenant_id)->get();
@@ -181,6 +181,20 @@ class BudgetController extends Controller
                 'budgets'=>$budgets
                 ]);
     }
+
+    public function budgetAnalysis(){
+    	$budgets = DB::table('budgets as b')
+										->join('budget_profiles as bp', 'bp.id', '=', 'b.budget_profile_id')
+										->join(Auth::user()->tenant_id.'_coa as c', 'c.glcode', '=', 'b.glcode')
+										->join(Auth::user()->tenant_id.'_gl as g', 'g.glcode', '=', 'c.glcode')
+										->select('bp.budget_title as title', DB::raw('SUM(amount) AS total'),
+											DB::raw('SUM(g.cr_amount) AS budget_spent'), 'bp.*', 'b.*', 'c.*')
+										->where('bp.tenant_id', '=', Auth::user()->tenant_id)
+										->groupBy('b.budget_profile_id')
+										->get();
+
+    	return view('backend.accounting.setup.budget.budget-analysis', ['budgets'=>$budgets]);
+		}
 
     public function storeBudgetSetup(Request $request){
         $this->validate($request,[

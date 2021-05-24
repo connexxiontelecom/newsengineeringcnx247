@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-    Payments
+    Payments(unposted)
 @endsection
 
 @section('extra-styles')
@@ -43,7 +43,7 @@
                                 <div class="card">
                                     <div class="card-block">
 
-                                        <h5 class="sub-title">Payments</h5>
+                                        <h5 class="sub-title">Payments(unposted)</h5>
 																			<a href="{{url()->previous()}}" class="btn btn-secondary btn-mini">Back</a>
                                         <a href="{{route('new-payment')}}" class="btn btn-primary btn-mini float-right mb-3">New Payment</a>
                                         <div class="dt-responsive table-responsive">
@@ -72,7 +72,7 @@
                                                         <td>{{$payment->ref_no ?? ''}}</td>
                                                         <td>{{$payment->memo ?? ''}}</td>
                                                         <td>
-                                                            <a href="{{route('payment-detail', $payment->slug)}}" class="btn btn-mini btn-info">Learn more</a>
+                                                            <a href="{{route('payment-detail', $payment->slug)}}" class="btn btn-mini btn-info">View</a>
                                                         </td>
                                                     </tr>
                                                 @endforeach
