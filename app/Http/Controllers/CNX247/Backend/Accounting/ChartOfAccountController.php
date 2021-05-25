@@ -247,11 +247,11 @@ class ChartOfAccountController extends Controller
 
     public function vat(){
         $accounts = DB::table(Auth::user()->tenant_id.'_coa')->where('type', 1)->select()->get();
-        $policy = /*DB::table(Auth::user()->tenant_id.'_coa as c')
+        $policy = DB::table(Auth::user()->tenant_id.'_coa as c')
 										->join('policies as p', 'p.glcode', '=', 'c.glcode')
-										->get();*/
-        //return dd($policy);
-					Policy::where('tenant_id', Auth::user()->tenant_id)->first();
+										->first();
+        /*return dd($policy);
+					Policy::where('tenant_id', Auth::user()->tenant_id)->first();*/
         return view('backend.accounting.setup.vat.index',['accounts'=>$accounts,'policy'=>$policy]);
     }
     public function postVat(Request $request){

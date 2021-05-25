@@ -55,7 +55,7 @@ class SupplierController extends Controller
         $industries = Industry::orderBy('industry', 'ASC')->get();
         if(Schema::connection('mysql')->hasTable(Auth::user()->tenant_id.'_coa') || Schema::connection('mysql')->hasTable(Auth::user()->tenant_id.'_gl')){
             $accounts = DB::table(Auth::user()->tenant_id.'_coa')
-                        ->select('glcode', 'account_name')
+                        ->select('glcode', 'account_name', 'account_type', 'type')
                         ->where('type', 1)
                         ->get();
 					return view('backend.procurement.supplier.create',['industries'=>$industries,'accounts'=>$accounts, 'status'=>1]);
@@ -662,8 +662,12 @@ class SupplierController extends Controller
 			if(!empty($payment)){
 					$bank = DB::table(Auth::user()->tenant_id . '_coa')->where('glcode', $payment->bank_id)->first();
 					$items = PayDetail::where('pay_id', $payment->id)->where('tenant_id', Auth::user()->tenant_id)->get();
-
-					return view('backend.procurement.payment.view',['payment'=>$payment, 'items'=>$items, 'bank'=>$bank]);
+					$item = PayDetail::where('pay_id', $payment->id)->where('tenant_id', Auth::user()->tenant_id)->first();
+					$bill = BillMaster::where('tenant_id', Auth::user()->tenant_id)->where('id', $item->bill_id)->first();
+					$bill_items = BillDetail::where('tenant_id', Auth::user()->tenant_id)->where('bill_id', $bill->id)->get();
+					return view('backend.procurement.payment.view',['payment'=>$payment,
+						'items'=>$items,
+						'bank'=>$bank, 'bill'=>$bill, 'bill_items'=>$bill_items]);
         }else{
             session()->flash("error", "<strong>Ooops!</strong> Record not found.");
             return redirect()->route('payments');

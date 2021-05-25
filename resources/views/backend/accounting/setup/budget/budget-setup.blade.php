@@ -46,7 +46,7 @@
                                 <td>{{$serial++}}</td>
                                 <td>{{$budget->bp_title}}</td>
                                 <td>{{$budget->account ?? ''}} - ({{$budget->bcode}})</td>
-                                <td>{{number_format($budget->amount)}}</td>
+                                <td class="text-right">{{number_format($budget->amount)}}</td>
                                 <td>{{date('d F, Y', strtotime($budget->created_at))}}</td>
                                 <td>
                                     {{$budget->first_name ?? ''}} {{$budget->surname ?? ''}}
@@ -100,14 +100,18 @@
                         <div class="form-group">
                             <label for="">GL Account <sup class="text-danger">*</sup></label>
                             <select type="text" id="gl_code" class="form-control col-md-12">
-                                @foreach($accounts as $account)
-                                    <option value="{{$account->glcode}}">{{$account->account_name}}</option>
-                                @endforeach
+															<optgroup label="Expenses">
+																@foreach($accounts as $account)
+																	@if($account->account_type == 5)
+																		<option value="{{$account->glcode}}">{{$account->glcode}} - {{$account->account_name}}</option>
+																	@endif
+																@endforeach
+															</optgroup>
                             </select>
                         </div>
                         <div class="form-group">
                             <label for="">Amount <sup class="text-danger">*</sup></label>
-                            <input type="number" step="0.01" id="amount" class="form-control">
+                            <input type="text" step="0.01" id="amount" class="form-control autonumber">
                         </div>
                     </form>
                 </div>
@@ -133,6 +137,7 @@
     <script src="\assets\bower_components\datatables.net-responsive\js\dataTables.responsive.min.js"></script>
     <script src="\assets\bower_components\datatables.net-responsive-bs4\js\responsive.bootstrap4.min.js"></script>
     <script src="\assets\pages\data-table\js\data-table-custom.js"></script>
+		<script src="/assets/pages/form-masking/autoNumeric.js"></script>
     <script>
         $(document).ready(function(){
             $(document).on('click', '#setupBudgetBtn', function(e){
@@ -153,6 +158,7 @@
                     .then(response=>{
                         $('#budgetModal').modal('hide');
                         $.notify(response.data.message,'success');
+                        location.reload();
                     })
                     .catch(error=>{
                         $.notify(error.response.data.error,'error');
