@@ -625,7 +625,7 @@
 					<li class="pcoded-hasmenu">
 						<a href="javascript:void(0);">
 							<span class="pcoded-micon"><i class="icofont icofont-fire-truck"></i></span>
-							<span class="pcoded-mtext">Fleet Setup</span>
+							<span class="pcoded-mtext">Setup</span>
 						</a>
 						<ul class="pcoded-submenu">
 							<li class=" ">
@@ -634,8 +634,14 @@
 								</a>
 							</li>
 							<li class=" ">
-								<a href="{{route('logistics-customers')}}">
-									<span class="pcoded-mtext">Maintenance Activity</span>
+								<a href="{{route('vehicle-type')}}">
+									<span class="pcoded-mtext">Vehicle Type</span>
+								</a>
+							</li>
+
+							<li class=" ">
+								<a href="{{route('maintenance-type')}}">
+									<span class="pcoded-mtext">Maintenance Type</span>
 								</a>
 							</li>
 
@@ -654,30 +660,43 @@
             <li class="pcoded-hasmenu">
                 <a href="javascript:void(0);">
                     <span class="pcoded-micon"><i class="icofont icofont-fire-truck"></i></span>
-                    <span class="pcoded-mtext">Fleets Management</span>
+                    <span class="pcoded-mtext">Manage Fleets</span>
                 </a>
                 <ul class="pcoded-submenu">
+									<li class=" ">
+										<a href="{{route('logistics-vehicles')}}">
+											<span class="pcoded-mtext">Active Vehicles</span>
+										</a>
+									</li>
                     <li class=" ">
                         <a href="{{route('logistics-drivers')}}">
                             <span class="pcoded-mtext">Drivers</span>
                         </a>
                     </li>
-									<li class=" ">
-										<a href="{{route('logistics-vehicles')}}">
-											<span class="pcoded-mtext">Vehicles</span>
-										</a>
-									</li>
+
                     <li class=" ">
                         <a href="{{route('renewal-schedule')}}">
                             <span class="pcoded-mtext">Renewal Schedule</span>
                         </a>
                     </li>
 
-                    <li class=" ">
-                        <a href="{{route('all-logs')}}">
-                            <span class="pcoded-mtext">Log</span>
-                        </a>
-                    </li>
+									<li class=" ">
+										<a href="{{route('maintenance-schedule')}}">
+											<span class="pcoded-mtext">Maintenance Schedule</span>
+										</a>
+									</li>
+
+									<li class=" ">
+										<a href="{{route('logistics-dvehicles')}}">
+											<span class="pcoded-mtext">Disposed Vehicles</span>
+										</a>
+									</li>
+
+{{--                    <li class=" ">--}}
+{{--                        <a href="{{route('all-logs')}}">--}}
+{{--                            <span class="pcoded-mtext">Log</span>--}}
+{{--                        </a>--}}
+{{--                    </li>--}}
                     <!--<li class=" ">
                         <a href="'logistics-shipping')}}">
                             <span class="pcoded-mtext">Shipping </span>

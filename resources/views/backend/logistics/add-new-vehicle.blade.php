@@ -33,22 +33,121 @@
                         <div class="card">
                             <div class="card-block">
                                 <h5 class="sub-title">Add New Vehicle</h5>
-                                <p><strong>NOTE:</strong> All fields marked <sup class="text-danger">*</sup> is requird.</p>
+                                <p><strong>NOTE:</strong> All fields marked <sup class="text-danger">*</sup> is required.</p>
                                 <form action="{{route('logistics-new-vehicle')}}" method="post" enctype="multipart/form-data">
                                     @csrf
                                     <div class="row">
-                                        <div class="col-md-12">
+                                        <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="">Vehicle Image</label>
                                                 <input type="file" name="image" class="form-control-file">
                                             </div>
                                         </div>
+
+																			<div class="col-md-6">
+																				<div class="form-group">
+																					<label for="">Vehicle Type</label>
+																					<select name="vehicle_type"   class="form-control" required>
+																						<option selected disabled>Select Vehicle Type</option>
+																						@foreach ($vehicles as $vehicle)
+																							<option value="{{$vehicle->id}}">{{$vehicle->vehicle_type_name ?? ''}}</option>
+																						@endforeach
+																					</select>
+
+																						</div>
+																			</div>
                                     </div>
-                                    <div class="row">
+
+
+																	<div class="row">
+																		<div class="col-md-6">
+																			<div class="form-group">
+																				<label for="">Color<sup class="text-danger">*</sup></label>
+																				<input type="text" name="color" placeholder="Color" value="{{old('color')}}"  class="form-control">
+																				@error('color')
+																				<i class="text-danger">{{$message}}</i>
+																				@enderror
+																			</div>
+																		</div>
+																		<div class="col-md-6">
+																			<div class="form-group">
+																				<label for="">Maker/Model<sup class="text-danger">*</sup></label>
+																				<input type="text" name="make_model" placeholder="Maker/Model" value="{{old('make_model')}}"  class="form-control">
+																				@error('make_model')
+																				<i class="text-danger">{{$message}}</i>
+																				@enderror
+																			</div>
+																		</div>
+																	</div>
+																	<div class="row">
+																		<div class="col-md-6">
+																			<div class="form-group">
+																				<label for="">Brand<sup class="text-danger">*</sup></label>
+																				<input type="text" name="brand" placeholder="brand." value="{{old('brand')}}"  class="form-control">
+																				@error('registration_no')
+																				<i class="text-danger">{{$message}}</i>
+																				@enderror
+																			</div>
+																		</div>
+																		<div class="col-md-6">
+																			<div class="form-group">
+																				<label for="">Purchase Price<sup class="text-danger">*</sup></label>
+																				<input type="text" name="purchase_price"  value="{{old('purchase_price')}}" placeholder="Purchase Price"  class="form-control">
+																				@error('purchase_price')
+																				<i class="text-danger">{{$message}}</i>
+																				@enderror
+																			</div>
+																		</div>
+																	</div>
+
+																	<div class="row">
+																		<div class="col-md-6">
+																			<div class="form-group">
+																				<label for="">Engine Type<sup class="text-danger">*</sup></label>
+																				<input type="text" name="engine_type" placeholder="Engine Type" value="{{old('engine_type')}}"  class="form-control">
+																				@error('engine_type')
+																				<i class="text-danger">{{$message}}</i>
+																				@enderror
+																			</div>
+																		</div>
+																		<div class="col-md-6">
+																			<div class="form-group">
+																				<label for="">Year :<sup class="text-danger">*</sup></label>
+																				<input type="text" name="year"  value="{{old('year')}}" placeholder="year"  class="form-control">
+																				@error('year')
+																				<i class="text-danger">{{$message}}</i>
+																				@enderror
+																			</div>
+																		</div>
+																	</div>
+
+
+																	<div class="row">
+																		<div class="col-md-6">
+																			<div class="form-group">
+																				<label for="">Mileage.<sup class="text-danger">*</sup></label>
+																				<input type="text" name="mileage" placeholder="Mileage" value="{{old('mileage')}}"  class="form-control">
+																				@error('mileage')
+																				<i class="text-danger">{{$message}}</i>
+																				@enderror
+																			</div>
+																		</div>
+																		<div class="col-md-6">
+																			<div class="form-group">
+																				<label for="">Policy Number(INSR)<sup class="text-danger">*</sup></label>
+																				<input type="text" name="policy_number" value="{{old('policy_number')}}" placeholder="Policy Number"  class="form-control">
+																				@error('registration_date')
+																				<i class="text-danger">{{$message}}</i>
+																				@enderror
+																			</div>
+																		</div>
+																	</div>
+
+																	<div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label for="">Registration No.<sup class="text-danger">*</sup></label>
-                                                <input type="text" name="registration_no" placeholder="Registration No." value="{{old('registration_no')}}"  class="form-control">
+                                                <label for="">Plate Number <sup class="text-danger">*</sup></label>
+                                                <input type="text" name="plate_no" placeholder="Registration No." value="{{old('plate_no')}}"  class="form-control">
                                                 @error('registration_no')
                                                     <i class="text-danger">{{$message}}</i>
                                                 @enderror
@@ -56,9 +155,9 @@
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label for="">Registration Date<sup class="text-danger">*</sup></label>
-                                                <input type="text" name="registration_date" id="registration_date" value="{{old('registration_date')}}" placeholder="dd/mm/yyyy"  class="form-control">
-                                                @error('registration_date')
+                                                <label for="">Purchase Date<sup class="text-danger">*</sup></label>
+                                                <input type="text" name="purchase_date"  value="{{old('purchase_date')}}" placeholder="dd/mm/yyyy"  class="form-control">
+                                                @error('purchase_date')
                                                     <i class="text-danger">{{$message}}</i>
                                                 @enderror
                                             </div>
@@ -76,39 +175,20 @@
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label for="">Engine No.<sup class="text-danger">*</sup></label>
-                                                <input type="text" name="engine_no" placeholder="Engine No." value="{{old('engine_no')}}"  class="form-control">
+                                                <label for="">Tank Capacity.<sup class="text-danger">*</sup></label>
+                                                <input type="text" name="tank_capacity" placeholder="Tank Capacity." value="{{old('tank_capacity')}}"  class="form-control">
                                                 @error('engine_no')
                                                     <i class="text-danger">{{$message}}</i>
                                                 @enderror
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="">Owner Name<sup class="text-danger">*</sup></label>
-                                                <input type="text" name="owner_name" placeholder="Owner Name" value="{{old('owner_name')}}"  class="form-control">
-                                                @error('owner_name')
-                                                    <i class="text-danger">{{$message}}</i>
-                                                @enderror
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="">Maker/Model<sup class="text-danger">*</sup></label>
-                                                <input type="text" name="maker_model" placeholder="Maker/Model" value="{{old('maker_model')}}"  class="form-control">
-                                                @error('maker_model')
-                                                    <i class="text-danger">{{$message}}</i>
-                                                @enderror
-                                            </div>
-                                        </div>
-                                    </div>
+
                                     <hr>
                                     <div class="row">
                                         <div class="col-md-12 d-flex justify-content-center">
                                             <div class="btn-group">
-                                                <button class="btn btn-mini btn-danger" ><i class="ti-close mr-2"></i> Cancel</button>
+                                                <button class="btn btn-mini btn-danger" type="reset" ><i class="ti-close mr-2"></i> Cancel</button>
                                                 <button class="btn btn-mini btn-primary" type="submit" ><i class="ti-check mr-2"></i> Submit</button>
                                             </div>
                                         </div>

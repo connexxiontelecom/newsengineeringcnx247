@@ -509,6 +509,7 @@ Route::get('/logistics/new-customer', 'CNX247\Backend\LogisticsController@newCus
 Route::post('/store-logistic-customer', 'CNX247\Backend\LogisticsController@storeCustomer')->name('store-logistic-customer');
 #Vehicle routes
 Route::get('/logistics/vehicles', 'CNX247\Backend\LogisticsController@vehicles')->name('logistics-vehicles');
+	Route::get('/logistics/dvehicles', 'CNX247\Backend\LogisticsController@dvehicles')->name('logistics-dvehicles');
 Route::get('/logistics/new-vehicle', 'CNX247\Backend\LogisticsController@newVehicle')->name('logistics-new-vehicle');
 Route::post('/logistics/new-vehicle', 'CNX247\Backend\LogisticsController@storeVehicle');
 Route::get('/logistics/view-vehicle/{slug}', 'CNX247\Backend\LogisticsController@viewVehicle')->name('logistics-view-vehicle');
@@ -516,7 +517,16 @@ Route::post('/logistics/view-vehicle/{slug}', 'CNX247\Backend\LogisticsControlle
 Route::post('/logistics/vehicle/assign', 'CNX247\Backend\LogisticsController@assignVehicleToDriver');
 Route::get('/logistics/renewal-type', 'CNX247\Backend\LogisticsController@renewalType')->name('renewal-type');
 Route::post('/logistics/renewal-type', 'CNX247\Backend\LogisticsController@renewalType')->name('renewal-type');
+	Route::get('/logistics/vehicle-type', 'CNX247\Backend\LogisticsController@vehicleType')->name('vehicle-type');
+	Route::post('/logistics/vehicle-type', 'CNX247\Backend\LogisticsController@vehicleType')->name('vehicle-type');
+	Route::get('/logistics/maintenance-type', 'CNX247\Backend\LogisticsController@maintenanceType')->name('maintenance-type');
+	Route::post('/logistics/maintenance-type', 'CNX247\Backend\LogisticsController@maintenanceType')->name('maintenance-type');
 Route::get('/logistics/renewal-schedule', 'CNX247\Backend\LogisticsController@renewalSchedule')->name('renewal-schedule');
+	Route::get('/logistics/maintenance-schedule', 'CNX247\Backend\LogisticsController@maintenanceSchedule')->name('maintenance-schedule');
+	Route::get('/logistics/maintenance-schedule-calender', 'CNX247\Backend\LogisticsController@maintenanceScheduleCalender')->name('maintenance-schedule-calender');
+	Route::get('/maintenance-schedule-calender-data', 'CNX247\Backend\LogisticsController@maintenanceScheduleData')->name('maintenance-schedule-calender-data');
+	Route::get('/renewal-schedule-calender-data', 'CNX247\Backend\LogisticsController@renewalScheduleData')->name('renewal-schedule-calender-data');
+	Route::get('/logistics/renewal-schedule-calender', 'CNX247\Backend\LogisticsController@renewalScheduleCalender')->name('renewal-schedule-calender');
 
 #Accounting routes
 		Route::get('/accounting-dashboard', 'CNX247\Backend\Accounting\ChartOfAccountController@dashboard')->name('accounting-dashboard');
