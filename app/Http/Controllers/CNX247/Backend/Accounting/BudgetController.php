@@ -190,7 +190,9 @@ class BudgetController extends Controller
 										->select('bp.budget_title as title', DB::raw('SUM(amount) AS total'),
 											DB::raw('SUM(g.cr_amount) AS budget_spent'), 'bp.*', 'b.*', 'c.*')
 										->where('bp.tenant_id', '=', Auth::user()->tenant_id)
-										->groupBy('b.budget_profile_id')
+										//->whereMonth('g.transaction_date','bp.month_start')
+										//->whereMonth('g.transaction_date','bp.month_end')
+										->groupBy('g.glcode')
 										->get();
 
     	return view('backend.accounting.setup.budget.budget-analysis', ['budgets'=>$budgets]);

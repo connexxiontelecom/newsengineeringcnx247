@@ -108,7 +108,7 @@
                                                 @enderror
                                             </td>
                                             <td>
-                                                <input type="number" placeholder="Unit Cost" step="0.01" class="form-control" name="unit_cost[]">
+                                                <input type="text" placeholder="Unit Cost" step="0.01" class="form-control unit_cost utonumber" name="unit_cost[]">
                                                 @error('unit_cost')
                                                 <i class="text-danger mt-2">{{$message}}</i>
                                                 @enderror
@@ -205,6 +205,10 @@
     <script type="text/javascript" src="/assets/bower_components/multiselect/js/jquery.multi-select.js"></script>
     <script type="text/javascript" src="/assets/bower_components/bootstrap-multiselect/js/bootstrap-multiselect.js"></script>
     <script type="text/javascript" src="/assets/pages/advance-elements/select2-custom.js"></script>
+		<script src="\assets\pages\form-masking\inputmask.js"></script>
+		<script src="\assets\pages\form-masking\jquery.inputmask.js"></script>
+		<script src="/assets/pages/form-masking/autoNumeric.js"></script>
+		<script src="/assets/pages/form-masking/form-mask.js"></script>
     <script>
         $(document).ready(function(){
 					var defaultCurrency = "{{Auth::user()->tenant->currency->id}}";
@@ -255,6 +259,10 @@
                 });
             });
 
+            $(document).on('blur', '.unit_cost', function(e){
+            	e.preventDefault();
+
+						});
             //calculate totals
             function calculateTotals(){
                 const subTotals = $('.item').map((idx, val)=> calculateSubTotal(val)).get();
@@ -270,10 +278,12 @@
             function calculateSubTotal(row){
                 const $row = $(row);
                 const inputs = $row.find('input');
-                const subtotal = inputs[0].value * inputs[1].value;
+								//const val = inputs[1].value;
+                const subtotal = inputs[0].value * inputs[1].value; //.replace(/,/g, '');
                 // $row.find('td:nth-last-child(3)').text(formatAsCurrency(subtotal));
-                $row.find('td:nth-last-child(2) input[type=text]').val(subtotal);
+                $row.find('td:nth-last-child(2) input[type=text]').val(subtotal/*.toLocaleString()*/);
                 return subtotal;
+
             }
 
 

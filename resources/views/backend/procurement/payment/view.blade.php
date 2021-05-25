@@ -85,7 +85,97 @@
                                             <tr class="item">
                                                 <td>
                                                     <div class="form-group">
-                                                        <p><a target="_blank" href="javascript:void(0);">{{$item->description ?? ''}}</a></p>
+                                                        <p><a target="_blank" href="javascript:void(0);" data-toggle="modal" data-target="#billModal_{{$item->id}}">{{$item->description ?? ''}}</a></p>
+																											<div class="modal fade" id="billModal_{{$item->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+																												<div class="modal-dialog modal-lg" role="document">
+																													<div class="modal-content">
+																														<div class="modal-header">
+																															<h6 class="modal-title" id="exampleModalLongTitle">Bill Detail</h6>
+																															<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+																																<span aria-hidden="true">&times;</span>
+																															</button>
+																														</div>
+																														<div class="modal-body">
+																															<div class="card-block">
+																																<div class="row invoive-info">
+																																	<div class="col-md-6 col-sm-6 ">
+																																		<h6 class="sub-title">Vendor Information</h6>
+																																		<p class="m-0 m-t-10 text-left"><strong>Vendor Name: </strong>{{$bill->getVendor->company_name ?? 'Vendor Name'}} </p>
+																																		<p class="m-0 m-t-10 text-left"><strong>Address: </strong>{{$bill->getVendor->company_address ?? 'Address'}} </p>
+																																		<p class="m-0 text-left"><strong>Email: </strong>{{$bill->getVendor->email_address ?? ''}}</p>
+																																		<p class="text-left"><strong>Phone: </strong>{{$bill->getVendor->mobile_no ?? 'Phone Number here'}}</p>
+																																	</div>
+																																	<div class="col-md-6 col-sm-6 ">
+																																		<h6 class="sub-title">Bill Detail</h6>
+																																		<p class="m-0 m-t-10 text-left"><strong>Bill No.: </strong>{{$bill->bill_no <= 10 ? '0000'.$bill->invoice_no : $bill->bill_no}}</p>
+																																		<p class="m-0 m-t-10 text-left"><strong>Bill Date: </strong>{{date('d F, Y', strtotime($bill->bill_date))}} </p>
+																																		<p class="m-0 text-left"><strong>Payment Status: </strong>{{$bill->status}}</p>
+																																	</div>
+																																</div>
+																																<div class="row invoice-info">
+																																	<div class="col-md-12 col-sm-12">
+																																		<table class="table table-hover">
+																																			<thead>
+																																			<th>Payment Instruction/Note</th>
+																																			</thead>
+																																			<tbody>
+																																			<tr>
+																																				<td>{{$bill->instruction}}</td>
+																																			</tr>
+																																			</tbody>
+																																		</table>
+																																	</div>
+																																</div>
+																																<div class="row">
+																																	<div class="col-sm-12">
+																																		<div class="table-responsive">
+																																			<table class="table  invoice-detail-table">
+																																				<thead>
+																																				<tr class="thead-default">
+																																					<th>Item Name</th>
+																																					<th>Quantity</th>
+																																					<th>Unit Price({{ $bill->getCurrency->symbol ?? Auth::user()->tenant->currency->symbol}})</th>
+																																					<th>Total({{ $bill->getCurrency->symbol ?? Auth::user()->tenant->currency->symbol}})</th>
+																																				</tr>
+																																				</thead>
+																																				<tbody>
+
+																																				@foreach($bill_items as $item)
+																																					<tr class="item">
+																																						<td>
+																																							{{$item->billService->product ?? '' }}
+																																						</td>
+																																						<td>
+																																							{{$item->quantity }}
+																																						</td>
+																																						<td>
+																																							{{number_format($item->rate,2) ?? '0'}}
+																																						</td>
+																																						<td>{{number_format($item->amount/$bill->exchange_rate,2)}}</td>
+																																					</tr>
+																																				@endforeach
+																																				<tr>
+																																					<td colspan="4" class="text-right"><strong>VAT: </strong>{{ $bill->getCurrency->symbol ?? Auth::user()->tenant->currency->symbol}} {{number_format($bill->vat_amount/$bill->exchange_rate,2)}}</td>
+																																				</tr>
+																																				<tr>
+																																					<td colspan="4" class="text-right"><strong>Sub-total: </strong>{{ $bill->getCurrency->symbol ?? Auth::user()->tenant->currency->symbol}} {{number_format(($bill->bill_amount/$bill->exchange_rate) - ($bill->vat_amount/$bill->exchange_rate),2)}}</td>
+																																				</tr>
+																																				<tr>
+																																					<td colspan="4" class="text-right"><strong>Total: </strong>{{ $bill->getCurrency->symbol ?? Auth::user()->tenant->currency->symbol}} {{number_format($bill->bill_amount/$bill->exchange_rate,2)}}</td>
+																																				</tr>
+																																				</tbody>
+																																			</table>
+																																		</div>
+																																	</div>
+																																</div>
+																															</div>
+																														</div>
+																														<div class="modal-footer">
+																															<button type="button" class="btn btn-secondary btn-mini" data-dismiss="modal">Close</button>
+																														</div>
+																													</div>
+																												</div>
+																											</div>
                                                     </div>
                                                 </td>
                                                 <td>
