@@ -37,7 +37,7 @@
                                 <th>Year</th>
                                 <th>Date</th>
                                 <th>Created By</th>
-                                <th>Action</th>
+                                {{--<th>Action</th>--}}
                             </tr>
                             </thead>
                             <tbody>
@@ -136,7 +136,7 @@
                                     <td>
                                         {{$profile->user->first_name ?? ''}} {{$profile->user->surname ?? ''}}
                                     </td>
-                                    <td>Action</td>
+                                   {{-- <td>Action</td>--}}
                                 </tr>
                             @endforeach
                             </tbody>
@@ -150,7 +150,7 @@
                                 <th>Year</th>
                                 <th>Date</th>
                                 <th>Created By</th>
-                                <th>Action</th>
+                                {{--<th>Action</th>--}}
                             </tr>
                             </tfoot>
                         </table>

@@ -42,9 +42,41 @@
                                         <label for="">VAT Account</label>
                                         <select  name="vat_glcode" id="vat_glcode" class="form-control js-example-basic-single">
                                             <option disabled selected>Select Account</option>
-                                            @foreach ($accounts as $account)
-                                                <option value="{{$account->glcode}}">{{$account->glcode ?? ''}} - {{$account->account_name ?? ''}}</option>
-                                            @endforeach
+																					<optgroup label="Assets">
+																						@foreach($accounts as $account)
+																							@if($account->account_type == 1)
+																								<option value="{{$account->glcode}}">{{$account->glcode}} - {{$account->account_name}}</option>
+																							@endif
+																						@endforeach
+																					</optgroup>
+																					<optgroup label="Liability">
+																						@foreach($accounts as $account)
+																							@if($account->account_type == 2)
+																								<option value="{{$account->glcode}}">{{$account->glcode}} - {{$account->account_name}}</option>
+																							@endif
+																						@endforeach
+																					</optgroup>
+																					<optgroup label="Equity">
+																						@foreach($accounts as $account)
+																							@if($account->account_type == 3)
+																								<option value="{{$account->glcode}}">{{$account->glcode}} - {{$account->account_name}}</option>
+																							@endif
+																						@endforeach
+																					</optgroup>
+																					<optgroup label="Revenue">
+																						@foreach($accounts as $account)
+																							@if($account->account_type == 4)
+																								<option value="{{$account->glcode}}">{{$account->glcode}} - {{$account->account_name}}</option>
+																							@endif
+																						@endforeach
+																					</optgroup>
+																					<optgroup label="Expenses">
+																						@foreach($accounts as $account)
+																							@if($account->account_type == 5)
+																								<option value="{{$account->glcode}}">{{$account->glcode}} - {{$account->account_name}}</option>
+																							@endif
+																						@endforeach
+																					</optgroup>
                                         </select>
                                         @error('vat_glcode')
                                             <i class="text-danger mt-2">{{$message}}</i>

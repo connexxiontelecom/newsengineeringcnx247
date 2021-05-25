@@ -567,6 +567,7 @@ Route::get('/logistics/renewal-schedule', 'CNX247\Backend\LogisticsController@re
     Route::post('/budget-profile', 'CNX247\Backend\Accounting\BudgetController@budgetProfile');
     Route::get('/budget-setup', 'CNX247\Backend\Accounting\BudgetController@budgetSetup')->name('budget-setup');
     Route::post('/budget-setup', 'CNX247\Backend\Accounting\BudgetController@storeBudgetSetup');
+    Route::get('/budget-analysis', 'CNX247\Backend\Accounting\BudgetController@budgetAnalysis')->name('budget-analysis');
     #Bank setup
     #Bank routes
     Route::get('/account/banks', 'CNX247\Backend\Accounting\ChartOfAccountController@bank')->name('bank-accounts');

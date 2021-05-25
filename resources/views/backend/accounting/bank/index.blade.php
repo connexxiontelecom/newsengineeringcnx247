@@ -76,7 +76,7 @@
 											<select class="form-control" name="bank_gl_code">
 												<option selected disabled>--Select bank--</option>
 												@foreach($bank_details as $bank_detail):
-												<option value="{{$bank_detail->glcode}}"> {{$bank_detail->account_name." (".$bank_detail->glcode.")" ?? ''  }} </option>
+												<option value="{{$bank_detail->glcode}}">{{$bank_detail->glcode ?? ''  }} - {{$bank_detail->account_name ?? ''}}</option>
 												@endforeach;
 											</select>
 											@error('bank_gl_code')
@@ -210,7 +210,7 @@
                                     <select class="form-control" name="bank_gl_code">
                                         @foreach($bank_details as $bank_detail):
 
-                                        <option value="{{$bank_detail->glcode}}"  @if($bank_detail->glcode == $bank->bank_gl_code): {{'selected'}}   @endif > {{$bank_detail->account_name." (".$bank_detail->glcode.")" ?? ''  }} </option>
+                                        <option value="{{$bank_detail->glcode}}"  @if($bank_detail->glcode == $bank->bank_gl_code): {{'selected'}}   @endif > {{$bank_detail->glcode ?? ''  }} - {{$bank_detail->account_name ?? ''}}  </option>
 
 
                                         @endforeach;
