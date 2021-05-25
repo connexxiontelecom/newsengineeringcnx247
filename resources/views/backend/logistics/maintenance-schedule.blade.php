@@ -5,6 +5,9 @@
 @endsection
 
 @section('extra-styles')
+	<link rel="stylesheet" type="text/css" href="\assets\bower_components\datatables.net-bs4\css\dataTables.bootstrap4.min.css">
+	<link rel="stylesheet" type="text/css" href="\assets\pages\data-table\css\buttons.dataTables.min.css">
+	<link rel="stylesheet" type="text/css" href="\assets\bower_components\datatables.net-responsive-bs4\css\responsive.bootstrap4.min.css">
 
 @endsection
 
@@ -30,8 +33,9 @@
 											<div class="card-block">
 												<h5 class="sub-title">maintenance Schedules</h5>
 
-												<table class="table table-strip">
-													<thead>
+												<table id="simpletable" class="table table-striped table-bordered nowrap">
+
+												<thead>
 													<tr>
 														<th>#</th>
 														<th>Type</th>
@@ -48,7 +52,7 @@
 														$i = 1;
 													@endphp
 													@foreach ($maintenance_schedules as $maintenance_schedule)
-														<tr @if($maintenance_schedule->maintenance_schedule_due_date > date('Y-m-d'))  style="background-color: lightcoral" @endif>
+														<tr @if($maintenance_schedule->maintenance_schedule_due_date < date('Y-m-d'))  style="background-color: lightcoral" @endif>
 															<td>{{$i++}}</td>
 															<td>{{$maintenance_schedule->maintenance_type_name ?? ''}} {{$item->assignedTo->surname ?? ''}}</td>
 															<td>{{$maintenance_schedule->brand ?? ''}} - {{$maintenance_schedule->make_model ?? ''}} - {{$maintenance_schedule->year ?? ''}} - {{$maintenance_schedule->color ?? ''}} - {{$maintenance_schedule->plate_no ?? ''}}</td>
@@ -83,5 +87,9 @@
 @endsection
 
 @section('extra-scripts')
-
+	<script src="\assets\bower_components\datatables.net\js\jquery.dataTables.min.js"></script>
+	<script src="\assets\bower_components\datatables.net-bs4\js\dataTables.bootstrap4.min.js"></script>
+	<script src="\assets\bower_components\datatables.net-responsive\js\dataTables.responsive.min.js"></script>
+	<script src="\assets\bower_components\datatables.net-responsive-bs4\js\responsive.bootstrap4.min.js"></script>
+	<script src="\assets\pages\data-table\js\data-table-custom.js"></script>
 @endsection

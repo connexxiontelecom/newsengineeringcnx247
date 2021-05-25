@@ -5,36 +5,32 @@
 @endsection
 
 @section('extra-styles')
+	<link rel="stylesheet" type="text/css" href="\assets\bower_components\datatables.net-bs4\css\dataTables.bootstrap4.min.css">
+	<link rel="stylesheet" type="text/css" href="\assets\pages\data-table\css\buttons.dataTables.min.css">
+	<link rel="stylesheet" type="text/css" href="\assets\bower_components\datatables.net-responsive-bs4\css\responsive.bootstrap4.min.css">
 
 @endsection
 
 @section('content')
-	<div class="row">
-		<nav class="navbar navbar-light bg-faded m-b-30 p-10">
-			<div class="row">
-				{{--        <div class="d-inline-block">--}}
-				{{--            <a class="btn btn-warning ml-3 btn-mini btn-round text-white" href="{{route('purchase-orders')}}"><i class="icofont icofont-tasks"></i> Purchase Orders</a>--}}
-				{{--            <a href="{{ route('suppliers') }}" class=" btn btn-primary btn-mini btn-round text-white"><i class="icofont icofont-cart-alt"></i> Suppliers</a>--}}
-				{{--        </div>--}}
-			</div>
-			<div class="nav-item nav-grid">
-				<a href="{{}}" class="btn btn-warning btn-mini waves-effect waves-light"><i class="icofont icofont-tasks mr-2"></i>Calendar View</a>
 
-			</div>
-		</nav>
-	</div>
 	<div class="row">
 		<div class="col-md-12">
 			<!-- Product detail page start -->
 			<div class="card product-detail-page">
 				<div class="card-block">
 					<div class="row">
+						<div class="col-3 offset-9">
+							<a href="{{route('renewal-schedule-calender')}}" class="btn btn-primary btn-mini float-right mb-3"><i class="icofont icofont-tasks mr-2"></i>Calender View</a>
+
+						</div>
+					</div>
+					<div class="row">
 						<div class="col-md-12 col-lg-12 col-sm-12">
 							<div class="card">
 								<div class="card-block">
 									<h5 class="sub-title">Document Renewal Schedules</h5>
 
-									<table class="table table-strip">
+									<table id="simpletable" class="table table-striped table-bordered">
 										<thead>
 										<tr>
 											<th>#</th>
@@ -63,7 +59,7 @@
 												<td>{{date('d F, Y', strtotime($renewal_schedule->renewal_schedule_renew_date))}} </td>
 												<td>{{date('d F, Y', strtotime($renewal_schedule->renewal_schedule_date))}}</td>
 
-												<td> @if($renewal_schedule->renewal_schedule_date > date('Y-m-d')) {{ 'Document Active' }} @else {{ ' Document Expired' }} @endif</td>
+												<td> @if($renewal_schedule->renewal_schedule_date > date('Y-m-d')) {{ 'Active' }} @else {{ 'Expired' }} @endif</td>
 
 
 											</tr>
@@ -80,6 +76,7 @@
 
 				</div>
 			</div>
+			</div>
 		</div>
 	</div>
 
@@ -91,5 +88,9 @@
 @endsection
 
 @section('extra-scripts')
-
+	<script src="\assets\bower_components\datatables.net\js\jquery.dataTables.min.js"></script>
+	<script src="\assets\bower_components\datatables.net-bs4\js\dataTables.bootstrap4.min.js"></script>
+	<script src="\assets\bower_components\datatables.net-responsive\js\dataTables.responsive.min.js"></script>
+	<script src="\assets\bower_components\datatables.net-responsive-bs4\js\responsive.bootstrap4.min.js"></script>
+	<script src="\assets\pages\data-table\js\data-table-custom.js"></script>
 @endsection

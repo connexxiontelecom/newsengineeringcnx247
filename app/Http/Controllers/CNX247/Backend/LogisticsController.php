@@ -409,6 +409,102 @@
 //        return view('backend.logistics.add-new-customer');
 		}
 
+		public function renewalScheduleData(Request $request){
+			$method = strtolower($request->method());
+			if($method == 'get'):
+				$renewal_schedules = DB::table('renewal_schedules')
+					->select( '*')
+					->join('renewal_types', 'renewal_schedules.renewal_schedule_type_id', '=', 'renewal_types.id')
+					->join('logistics_vehicles', 'renewal_schedules.renewal_schedule_vehicle_id', '=', 'logistics_vehicles.id')
+					->join('users', 'renewal_schedules.renewal_schedule_user_id', '=', 'users.id')
+					->orderBy('renewal_schedules.renewal_schedule_date', 'asc')
+					->where('logistics_vehicles.status',  '=', 1)
+					->get();
+
+				$i = 0;
+				$new_rs = array();
+				foreach ($renewal_schedules as $renewal_schedule):
+					$new_rs[$i] = array(
+						'title' => $renewal_schedule->renewal_type_name." (".$renewal_schedule->brand." - ".$renewal_schedule->make_model." - ".$renewal_schedule->year ."-".$renewal_schedule->color. "- ".$renewal_schedule->plate_no,
+						'start' => $renewal_schedule->renewal_schedule_date,
+						'end'=> $renewal_schedule->renewal_schedule_date
+					);
+					$i++;
+				endforeach;
+
+				return response($new_rs);
+//				$new_ms = json_encode($new_ms);
+//
+//				//echo $new_ms;
+//				return view('backend.logistics.maintenance-schedule-calendar', ['maintenance_schedules' => $new_ms]);
+//
+
+			endif;
+		}
+
+		public function renewalScheduleCalender(Request $request){
+
+			$method = strtolower($request->method());
+			if($method == 'get'):
+//				$maintenance_schedules = DB::table('maintenance_schedules')
+//					->select( '*')
+//					->join('maintenance_types', 'maintenance_schedules.maintenance_schedule_type_id', '=', 'maintenance_types.id')
+//					->join('logistics_vehicles', 'maintenance_schedules.maintenance_schedule_vehicle_id', '=', 'logistics_vehicles.id')
+//					->join('users', 'maintenance_schedules.maintenance_schedule_user_id', '=', 'users.id')
+//					->orderBy('maintenance_schedules.maintenance_schedule_date', 'asc')
+//					->where('logistics_vehicles.status',  '=', 1)
+//					->get();
+//
+//				$i = 0;
+//				$new_ms = array();
+//				foreach ($maintenance_schedules as $maintenance_schedule):
+//					$new_ms[$i] = array(
+//						'title' => $maintenance_schedule->maintenance_type_name." (".$maintenance_schedule->brand." - ".$maintenance_schedule->make_model." - ".$maintenance_schedule->year ."-".$maintenance_schedule->color. "- ".$maintenance_schedule->plate_no,
+//						'start' => $maintenance_schedule->maintenance_schedule_due_date
+//					);
+//					$i++;
+//				endforeach;
+//
+//				$new_ms = json_encode($new_ms);
+
+				//echo $new_ms;
+				return view('backend.logistics.renewal-schedule-calendar');
+
+
+			endif;
+
+			if($method == 'post'):
+
+				$check =   DB::table('renewal_schedules')
+					->select('*')
+					->where(['renewal_schedule_type_id' => $request->renewal_schedule_type_id,
+						'renewal_schedule_vehicle_id' => $request->renewal_schedule_vehicle_id])
+
+					->first();
+
+				if(!empty($check)):
+					$this->renewSchedule = $this->renewSchedule::find($check->id);
+				endif;
+
+
+				$this->renewSchedule->tenant_id = Auth::user()->tenant_id;
+				$this->renewSchedule->renewal_schedule_type_id = $request->renewal_schedule_type_id;
+				$this->renewSchedule->renewal_schedule_vehicle_id = $request->renewal_schedule_vehicle_id;
+				$this->renewSchedule->renewal_schedule_date = $request->renewal_schedule_date;
+				$this->renewSchedule->renewal_schedule_user_id = $request->renewal_schedule_user_id;
+				$this->renewSchedule->save();
+
+				session()->flash("success", "<strong>Success!</strong> Renewal Schedule Registered.");
+				$_route = 'logistics/view-vehicle/'.$slug;
+				return redirect($_route);
+
+			endif;
+
+
+//        return view('backend.logistics.add-new-customer');
+		}
+
+
 		public function maintenanceSchedule(Request $request){
 
 			$method = strtolower($request->method());
@@ -458,6 +554,39 @@
 //        return view('backend.logistics.add-new-customer');
 		}
 
+		public function maintenanceScheduleData(Request $request){
+			$method = strtolower($request->method());
+			if($method == 'get'):
+				$maintenance_schedules = DB::table('maintenance_schedules')
+					->select( '*')
+					->join('maintenance_types', 'maintenance_schedules.maintenance_schedule_type_id', '=', 'maintenance_types.id')
+					->join('logistics_vehicles', 'maintenance_schedules.maintenance_schedule_vehicle_id', '=', 'logistics_vehicles.id')
+					->join('users', 'maintenance_schedules.maintenance_schedule_user_id', '=', 'users.id')
+					->orderBy('maintenance_schedules.maintenance_schedule_date', 'asc')
+					->where('logistics_vehicles.status',  '=', 1)
+					->get();
+
+				$i = 0;
+				$new_ms = array();
+				foreach ($maintenance_schedules as $maintenance_schedule):
+					$new_ms[$i] = array(
+						'title' => $maintenance_schedule->maintenance_type_name." (".$maintenance_schedule->brand." - ".$maintenance_schedule->make_model." - ".$maintenance_schedule->year ."-".$maintenance_schedule->color. "- ".$maintenance_schedule->plate_no,
+						'start' => $maintenance_schedule->maintenance_schedule_due_date,
+						'end'=> $maintenance_schedule->maintenance_schedule_due_date
+					);
+					$i++;
+				endforeach;
+
+				return response($new_ms);
+//				$new_ms = json_encode($new_ms);
+//
+//				//echo $new_ms;
+//				return view('backend.logistics.maintenance-schedule-calendar', ['maintenance_schedules' => $new_ms]);
+//
+
+			endif;
+		}
+
 		public function maintenanceScheduleCalender(Request $request){
 
 			$method = strtolower($request->method());
@@ -471,7 +600,20 @@
 					->where('logistics_vehicles.status',  '=', 1)
 					->get();
 
-				return view('backend.logistics.maintenance-schedule-calendar', ['maintenance_schedules' => $maintenance_schedules]);
+			$i = 0;
+			$new_ms = array();
+			foreach ($maintenance_schedules as $maintenance_schedule):
+				$new_ms[$i] = array(
+					'title' => $maintenance_schedule->maintenance_type_name." (".$maintenance_schedule->brand." - ".$maintenance_schedule->make_model." - ".$maintenance_schedule->year ."-".$maintenance_schedule->color. "- ".$maintenance_schedule->plate_no,
+					'start' => $maintenance_schedule->maintenance_schedule_due_date
+					);
+			$i++;
+				endforeach;
+
+				$new_ms = json_encode($new_ms);
+
+				//echo $new_ms;
+			return view('backend.logistics.maintenance-schedule-calendar', ['maintenance_schedules' => $new_ms]);
 
 
 			endif;

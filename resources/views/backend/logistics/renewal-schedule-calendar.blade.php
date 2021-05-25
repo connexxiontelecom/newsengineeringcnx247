@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-    maintenance Schedule
+    Renewal Schedule
 @endsection
 
 @section('extra-styles')
@@ -21,7 +21,7 @@
 						<div class="card-block">
 							<div class="row">
 								<div class="col-3 offset-9">
-									<a href="{{route('maintenance-schedule')}}" class="btn btn-primary btn-mini float-right mb-3"><i class="icofont icofont-tasks mr-2"></i>List View</a>
+									<a href="{{route('renewal-schedule')}}" class="btn btn-primary btn-mini float-right mb-3"><i class="icofont icofont-tasks mr-2"></i>List View</a>
 
 								</div>
 							</div>
@@ -64,7 +64,7 @@
 
 				defaultView: 'month',
 				editable: true,
-				events: '/maintenance-schedule-calender-data'
+				events: '/renewal-schedule-calender-data'
 			});
 
 		});
