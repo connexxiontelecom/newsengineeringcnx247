@@ -15,7 +15,7 @@
 		<div class="col-md-12">
 			<div class="card">
 				<div class="card-block">
-					<h5 class="mb-2 sub-title">Vehicles</h5>
+					<h5 class="mb-2 sub-title">Disposed Vehicles</h5>
 					<a href="{{route('logistics-new-vehicle')}}" class="btn btn-primary btn-mini float-right mb-3"><i class="ti-plus"></i>Add New Vehicle</a>
 
 					@if (session()->has('success'))

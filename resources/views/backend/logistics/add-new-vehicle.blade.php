@@ -33,7 +33,7 @@
                         <div class="card">
                             <div class="card-block">
                                 <h5 class="sub-title">Add New Vehicle</h5>
-                                <p><strong>NOTE:</strong> All fields marked <sup class="text-danger">*</sup> is requird.</p>
+                                <p><strong>NOTE:</strong> All fields marked <sup class="text-danger">*</sup> is required.</p>
                                 <form action="{{route('logistics-new-vehicle')}}" method="post" enctype="multipart/form-data">
                                     @csrf
                                     <div class="row">

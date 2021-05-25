@@ -50,7 +50,7 @@
 								<tr>
 									<td>{{$serial++}}</td>
 									<td>{{$maintenance->maintenance_type_name ?? ''}}</td>
-									<td>{{$maintenance->maintenance_type_interval ?? ''}}</td>
+									<td>{{$maintenance->maintenance_type_interval ?? ''}} Month(s)</td>
 
 									<td>
 										<button class="btn btn-mini btn-primary" data-toggle="modal" data-target="#update{{$maintenance->id}}"><i class="ti-eye mr-2"></i> Update</button>
@@ -119,7 +119,7 @@
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header bg-primary">
-					<h4 class="modal-title"><i class="zmdi zmdi-car-taxi text-white"></i> maintenance Type</h4>
+					<h4 class="modal-title"><i class="zmdi zmdi-car-taxi text-white"></i> Maintenance Type</h4>
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 						<span aria-hidden="true" class="text-white">&times;</span>
 					</button>
@@ -130,7 +130,7 @@
 
 						<div class="form-group">
 							<label for="">Name of maintenance</label>
-							<input type="text" name="maintenance_type_name" placeholder="maintenance Type Name" value="{{old('maintenance_type_name')}}"  class="form-control">
+							<input type="text" name="maintenance_type_name" placeholder="Maintenance Type Name" value="{{old('maintenance_type_name')}}"  class="form-control">
 							@error('maintenance_type_name')
 							<i class="text-danger">{{$message}}</i>
 							@enderror
@@ -139,7 +139,7 @@
 
 						<div class="form-group">
 							<label for="">Interval (Months)</label>
-							<input type="number" step="any"  name="maintenance_type_interval" placeholder="maintenance Type Name" value="{{old('maintenance_type_interval')}}"  class="form-control">
+							<input type="number" step="any"  name="maintenance_type_interval" placeholder="Internal Month(s)" value="{{old('maintenance_type_interval')}}"  class="form-control">
 							@error('maintenance_type_name')
 							<i class="text-danger">{{$message}}</i>
 							@enderror
