@@ -4,7 +4,7 @@
 	namespace App;
 
 
-	class MaintenanceSchedule extends \Illuminate\Database\Eloquent\Model
+		class MaintenanceSchedule extends \Illuminate\Database\Eloquent\Model
 	{
 
 	}

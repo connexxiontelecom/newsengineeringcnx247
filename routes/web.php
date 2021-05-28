@@ -515,6 +515,7 @@ Route::post('/logistics/new-vehicle', 'CNX247\Backend\LogisticsController@storeV
 Route::get('/logistics/view-vehicle/{slug}', 'CNX247\Backend\LogisticsController@viewVehicle')->name('logistics-view-vehicle');
 Route::post('/logistics/view-vehicle/{slug}', 'CNX247\Backend\LogisticsController@viewVehicle')->name('logistics-view-vehicle');
 Route::post('/logistics/vehicle/assign', 'CNX247\Backend\LogisticsController@assignVehicleToDriver');
+
 Route::get('/logistics/renewal-type', 'CNX247\Backend\LogisticsController@renewalType')->name('renewal-type');
 Route::post('/logistics/renewal-type', 'CNX247\Backend\LogisticsController@renewalType')->name('renewal-type');
 	Route::get('/logistics/vehicle-type', 'CNX247\Backend\LogisticsController@vehicleType')->name('vehicle-type');
