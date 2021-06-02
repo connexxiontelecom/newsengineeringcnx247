@@ -131,6 +131,79 @@
                                             </div>
                                         </div>
                                     </div>
+																	<div class="row mt-3">
+																		<div class="col-sm-12">
+																			<div class="card">
+																				<div class="card-header">
+																					<h5>Copied Queries</h5>
+																					<span>You were copied to these queries.</span>
+
+																				</div>
+																				<div class="card-block">
+																					<div class="dt-responsive table-responsive">
+																						<table id="copied" class="table table-striped table-bordered nowrap">
+																							<thead>
+																							<tr>
+																								<th>#</th>
+																								<th>Employee</th>
+																								<th>Subject</th>
+																								<th>Status</th>
+																								<th>Type</th>
+																								<th>Date</th>
+																							</tr>
+																							</thead>
+																							<tbody>
+																							@php
+																								$sl = 1;
+																							@endphp
+																							@if (count($copiedQueries) > 0)
+																								@foreach ($copiedQueries as $query)
+																									<tr>
+																										<td>{{$sl++}}</td>
+																										<td>
+																											{{$query->first_name ?? ''}} {{$query->surname ?? ''}}</td>
+																										<td><a href="{{route('view-query', $query->slug)}}">{{$query->subject}}</a> </td>
+																										<td>
+																											@if ($query->status == 1)
+																												<label for="" class="label label-success">Open</label>
+																											@else
+																												<label for="" class="label label-danger">Closed</label>
+
+																											@endif
+																										</td>
+																										<td>
+																											@if ($query->query_type == 0)
+																												<label for="" class="label label-warning">Warning</label>
+																											@else
+																												<label for="" class="label label-danger">Query</label>
+																											@endif
+																										</td>
+																										<td><label for="" class="label label-primary">{{date(Auth::user()->tenant->dateFormat->format ?? 'd F, Y', strtotime($query->created_at))}}</label></td>
+																									</tr>
+																								@endforeach
+																							@else
+																								<tr>
+																									<td colspan="9">There're no queries.</td>
+																								</tr>
+																							@endif
+
+																							</tbody>
+																							<tfoot>
+																							<tr>
+																								<th>#</th>
+																								<th>Employee</th>
+																								<th>Subject</th>
+																								<th>Status</th>
+																								<th>Type</th>
+																								<th>Date</th>
+																							</tr>
+																							</tfoot>
+																						</table>
+																					</div>
+																				</div>
+																			</div>
+																		</div>
+																	</div>
                                 </div>
                             </div>
                         </div>

@@ -61,6 +61,17 @@
 
 														@endif
                         </div>
+											<div class="form-group">
+                            <label for="">Responsible Person</label>
+												<select name="responsible_person" id="responsible_person" class="form-control">
+													<option selected disabled>--Select responsible person</option>
+													@foreach($users as $user)
+														<option value="{{$user->id}}">{{$user->first_name ?? ''}} {{$user->surname ?? ''}}</option>
+													@endforeach
+
+												</select>
+
+                        </div>
                         <div class="form-group">
                             <label for="">Description</label>
                             <textarea name="" id="description" cols="5" rows="5" class="form-control content" placeholder="Type here..."></textarea>

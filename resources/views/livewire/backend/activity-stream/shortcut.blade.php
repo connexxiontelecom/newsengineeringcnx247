@@ -2073,26 +2073,7 @@
 																																	</div>
 																																	<p class="text-muted">{!! strlen(strip_tags($post->post_content)) > 339 ? substr(strip_tags($post->post_content), 0,339).'...<a href='.route('view-post-activity-stream', $post->post_url).'>Read more</a>' : strip_tags($post->post_content) !!}</p>
 																																	<div class="row">
-																																			<div class="col-md-12 d-flex justify-content-center">
-																																					<div class="btn-group">
-																																							@if($post->post_status == 'in-progress')
-																																									@foreach($post->responsiblePersons as $app)
 
-																																									@if($app->user_id == Auth::user()->id && $app->status == 'in-progress')
-																																													<button class="btn btn-out-dashed btn-danger btn-square btn-mini" wire:click="declineRequest({{ $post->id }})"><i class="ti-na mr-2"></i> DECLINE</button>
-
-																																													<button type="button" class="btn btn-success btn-out-dashed btn-square btn-mini approveBtn" wire:click="approveRequest({{ $post->id }})"> <i class="ti-check-box mr-2"></i>
-																																															APPROVE
-																																													</button>
-																																											@elseif($app->user_id == Auth::user()->id && $app->status == 'decline')
-																																													<i>You previously declined this request</i>
-																																											@elseif($app->user_id == Auth::user()->id && $app->status == 'approve')
-																																													<i>You previously approved this request</i>
-																																											@endif
-																																									@endforeach
-																																							@endif
-																																					</div>
-																																			</div>
 																																			@if (session()->has('done'))
 																																					<div class="col-md-12">
 																																							{!! session()->get('done') !!}
@@ -2276,26 +2257,7 @@
 																																	</div>
 																																	<p class="text-muted">{!! strlen(strip_tags($post->post_content)) > 339 ? substr(strip_tags($post->post_content), 0,339).'...<a href='.route('view-post-activity-stream', $post->post_url).'>Read more</a>' : strip_tags($post->post_content) !!}</p>
 																																	<div class="row">
-																																			<div class="col-md-12 d-flex justify-content-center">
-																																					<div class="btn-group">
-																																							@if($post->post_status == 'in-progress')
-																																									@foreach($post->responsiblePersons as $app)
 
-																																									@if($app->user_id == Auth::user()->id && $app->status == 'in-progress')
-																																													<button class="btn btn-out-dashed btn-danger btn-square btn-mini" wire:click="declineRequest({{ $post->id }})"><i class="ti-na mr-2"></i> DECLINE</button>
-
-																																													<button type="button" class="btn btn-success btn-out-dashed btn-square btn-mini approveBtn" wire:click="approveRequest({{ $post->id }})"> <i class="ti-check-box mr-2"></i>
-																																															APPROVE
-																																													</button>
-																																											@elseif($app->user_id == Auth::user()->id && $app->status == 'decline')
-																																													<i>You previously declined this request</i>
-																																											@elseif($app->user_id == Auth::user()->id && $app->status == 'approve')
-																																													<i>You previously approved this request</i>
-																																											@endif
-																																									@endforeach
-																																							@endif
-																																					</div>
-																																			</div>
 																																			@if (session()->has('done'))
 																																					<div class="col-md-12">
 																																							{!! session()->get('done') !!}
@@ -2479,26 +2441,7 @@
 																																	</div>
 																																	<p class="text-muted">{!! strlen(strip_tags($post->post_content)) > 339 ? substr(strip_tags($post->post_content), 0,339).'...<a href='.route('view-post-activity-stream', $post->post_url).'>Read more</a>' : strip_tags($post->post_content) !!}</p>
 																																	<div class="row">
-																																			<div class="col-md-12 d-flex justify-content-center">
-																																					<div class="btn-group">
-																																							@if($post->post_status == 'in-progress')
-																																									@foreach($post->responsiblePersons as $app)
 
-																																									@if($app->user_id == Auth::user()->id && $app->status == 'in-progress')
-																																													<button class="btn btn-out-dashed btn-danger btn-square btn-mini" wire:click="declineRequest({{ $post->id }})"><i class="ti-na mr-2"></i> DECLINE</button>
-
-																																													<button type="button" class="btn btn-success btn-out-dashed btn-square btn-mini approveBtn" wire:click="approveRequest({{ $post->id }})"> <i class="ti-check-box mr-2"></i>
-																																															APPROVE
-																																													</button>
-																																											@elseif($app->user_id == Auth::user()->id && $app->status == 'decline')
-																																													<i>You previously declined this request</i>
-																																											@elseif($app->user_id == Auth::user()->id && $app->status == 'approve')
-																																													<i>You previously approved this request</i>
-																																											@endif
-																																									@endforeach
-																																							@endif
-																																					</div>
-																																			</div>
 																																			@if (session()->has('done'))
 																																					<div class="col-md-12">
 																																							{!! session()->get('done') !!}
@@ -2686,26 +2629,7 @@
 																																			<label for="" class="label label-danger">End Date: {{date(Auth::user()->tenant->dateFormat->format ?? 'd F, Y', strtotime($post->end_date))}}</label>
 																																	</div>
 																																	<div class="row">
-																																			<div class="col-md-12 d-flex justify-content-center">
-																																					<div class="btn-group">
-																																							@if($post->post_status == 'in-progress')
-																																									@foreach($post->responsiblePersons as $app)
 
-																																									@if($app->user_id == Auth::user()->id && $app->status == 'in-progress')
-																																													<button class="btn btn-out-dashed btn-danger btn-square btn-mini" wire:click="declineRequest({{ $post->id }})"><i class="ti-na mr-2"></i> DECLINE</button>
-
-																																													<button type="button" class="btn btn-success btn-out-dashed btn-square btn-mini approveBtn" wire:click="approveRequest({{ $post->id }})"> <i class="ti-check-box mr-2"></i>
-																																															APPROVE
-																																													</button>
-																																											@elseif($app->user_id == Auth::user()->id && $app->status == 'decline')
-																																													<i>You previously declined this request</i>
-																																											@elseif($app->user_id == Auth::user()->id && $app->status == 'approve')
-																																													<i>You previously approved this request</i>
-																																											@endif
-																																									@endforeach
-																																							@endif
-																																					</div>
-																																			</div>
 																																			@if (session()->has('done'))
 																																					<div class="col-md-12">
 																																							{!! session()->get('done') !!}
@@ -2893,26 +2817,7 @@
 																																			<label for="" class="label label-danger">End Date: {{date(Auth::user()->tenant->dateFormat->format ?? 'd F, Y', strtotime($post->end_date))}}</label>
 																																	</div>
 																																	<div class="row">
-																																			<div class="col-md-12 d-flex justify-content-center">
-																																					<div class="btn-group">
-																																							@if($post->post_status == 'in-progress')
-																																									@foreach($post->responsiblePersons as $app)
 
-																																									@if($app->user_id == Auth::user()->id && $app->status == 'in-progress')
-																																													<button class="btn btn-out-dashed btn-danger btn-square btn-mini" wire:click="declineRequest({{ $post->id }})"><i class="ti-na mr-2"></i> DECLINE</button>
-
-																																													<button type="button" class="btn btn-success btn-out-dashed btn-square btn-mini approveBtn" wire:click="approveRequest({{ $post->id }})"> <i class="ti-check-box mr-2"></i>
-																																															APPROVE
-																																													</button>
-																																											@elseif($app->user_id == Auth::user()->id && $app->status == 'decline')
-																																													<i>You previously declined this request</i>
-																																											@elseif($app->user_id == Auth::user()->id && $app->status == 'approve')
-																																													<i>You previously approved this request</i>
-																																											@endif
-																																									@endforeach
-																																							@endif
-																																					</div>
-																																			</div>
 																																			@if (session()->has('done'))
 																																					<div class="col-md-12">
 																																							{!! session()->get('done') !!}

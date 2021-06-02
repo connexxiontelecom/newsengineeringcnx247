@@ -24,6 +24,9 @@ class ViewWorkflowTask extends Component
     public $review;
     public $request;
     public $attachments;
+    public $users;
+    public $next_person = '';
+    public $mark_as_final;
 
     public $transactionPassword;
     public $userAction; //approved/declined
@@ -48,6 +51,7 @@ class ViewWorkflowTask extends Component
         $this->attachments = PostAttachment::where('post_id', $this->request->id)
                             ->where('tenant_id',Auth::user()->tenant_id)
                             ->get();
+        $this->users = User::where('tenant_id', Auth::user()->tenant_id)->where('account_status',1)->get();
     }
 
     /*
@@ -112,9 +116,10 @@ class ViewWorkflowTask extends Component
 
     }
     public function verifyCode($id){
-        $this->validate([
+        /*$this->validate([
             'transactionPassword'=>'required'
-        ]);
+        ]);*/
+        //return dd($this->mark_as_final);
         if (Hash::check($this->transactionPassword, Auth::user()->transaction_password)) {
             $details = Post::find($id);
             if($this->userAction == 'approved'){
@@ -122,13 +127,13 @@ class ViewWorkflowTask extends Component
                 $action->status = $this->userAction;
                 $action->save();
                 //Register business process log
-                $log = new BusinessLog;
+                /*$log = new BusinessLog;
                 $log->request_id = $id;
                 $log->user_id = Auth::user()->id;
                 $log->name = $this->userAction;
                 $log->note = str_replace('-', ' ',$details->post_type)." ".$this->userAction." by ".Auth::user()->first_name." ".Auth::user()->surname ?? " ";
-                $log->save();
-                $responsiblePersons = ResponsiblePerson::where('post_id', $id)
+                $log->save();*/
+                /*$responsiblePersons = ResponsiblePerson::where('post_id', $id)
                                             ->get();
                 $responsiblePersonIds = [];
                 foreach($responsiblePersons as $per){
@@ -145,28 +150,28 @@ class ViewWorkflowTask extends Component
                         array_push($approverIds, $approver->user_id);
                     }
                 }
-                $remainingProcessors = array_diff($approverIds,$responsiblePersonIds);
+                $remainingProcessors = array_diff($approverIds,$responsiblePersonIds); */
                 //identify next supervisor
-                $supervise = new BusinessLog;
+                /*$supervise = new BusinessLog;
                 $supervise->request_id = $id;
                 $supervise->user_id = Auth::user()->id;
                 $supervise->name = 'Log entry';
                 $supervise->note = "Identifying next processor for ".str_replace('-', ' ',$details->post_type).": ".$details->post_title;
-                $supervise->save();
+                $supervise->save();*/
                 //Assign next processor
-                if(!empty($remainingProcessors) ){
-                    $reset = array_values($remainingProcessors);
-                    for($i = 0; $i<count($reset); $i++){
+                if(empty($this->mark_as_final) ){
+                    //$reset = array_values($remainingProcessors);
+                    //for($i = 0; $i<count($reset); $i++){
                         $next = new ResponsiblePerson;
                         $next->post_id = $id;
                         $next->post_type = $details->post_type;
-                        $next->user_id = $reset[$i];
+                        $next->user_id = $this->next_person;
                         $next->tenant_id = Auth::user()->tenant_id;
                         $next->save();
-                        $user = User::find($reset[$i]);
+                        $user = User::find($this->next_person);
                         $user->notify(new NewPostNotification($details));
-                    break;
-                    }
+                    /*break;
+                    }*/
                 }else{
                     $status = Post::find($id);
                     $status->post_status = $this->userAction;
@@ -182,12 +187,12 @@ class ViewWorkflowTask extends Component
                 $action->status = $this->userAction;
                 $action->save();
                 //Register business process log
-                $log = new BusinessLog;
+                /*$log = new BusinessLog;
                 $log->request_id = $id;
                 $log->user_id = Auth::user()->id;
                 $log->name = $this->userAction;
                 $log->note = str_replace('-', ' ',$details->post_type)." ".$this->userAction." by ".Auth::user()->first_name." ".Auth::user()->surname;
-                $log->save();
+                $log->save();*/
                  //update request table finally
                  $status = Post::find($id);
                  $status->post_status = $this->userAction;

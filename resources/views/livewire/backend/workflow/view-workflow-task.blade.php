@@ -125,6 +125,24 @@
                                                         {!! session()->get('success_code') !!}
                                                     </div>
                                                 @endif
+																							<div class="form-group">
+																								<label for="">Next Person</label>
+																								<select wire:model.debounce.9900000ms="next_person" id="next_person" class="form-control">
+																									<option disabled selected>--Select next person--</option>
+																									@foreach($users as $user)
+																										<option value="{{$user->id}}">{{$user->first_name ?? ''}} {{$user->surname ?? ''}}</option>
+																									@endforeach
+																								</select>
+																							</div>
+																									<div class="checkbox-fade fade-in-primary">
+																										<label>
+																											<input type="checkbox" value="1" wire:model.debounce.9900000ms="mark_as_final">
+																											<span class="cr">
+																													<i class="cr-icon icofont icofont-ui-check txt-primary"></i>
+																											</span>
+																											<span>Mark As Final</span>
+																										</label>
+																									</div>
                                             <div class="input-group input-group-primary">
                                                 <input type="password" class="form-control" wire:model.debounce.9900000ms="transactionPassword" placeholder="Transaction Password">
                                                     <span class="input-group-addon btn-mini" wire:click="verifyCode({{ $request->id }})">

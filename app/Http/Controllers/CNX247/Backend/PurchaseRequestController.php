@@ -27,6 +27,7 @@ class PurchaseRequestController extends Controller
     * Load Expense request index page
     */
     public function index(){
+    	$users = User::where('tenant_id', Auth::user()->tenant_id)->where('account_status', 1)->get();
 			$plan_details = DB::table('plan_features')
 				->where('plan_id', '=', Auth::user()->tenant->plan_id)
 				->first();
@@ -83,22 +84,23 @@ class PurchaseRequestController extends Controller
 				$storage = 1;
 
 			endif;
-        return view('backend.workflow.purchase.index', ['storage_capacity' => $storage]);
+        return view('backend.workflow.purchase.index', ['storage_capacity' => $storage, 'users'=>$users]);
     }
 
     public function store(Request $request){
         $this->validate($request,[
             'title'=>'required',
-            'amount'=>'required'
+            'amount'=>'required',
+						'responsible_person'=>'required'
         ]);
-        $processor = RequestApprover::select('user_id')
-                                    ->where('request_type', 'purchase-request')
-                                    ->where('depart_id', Auth::user()->department_id)
-                                    ->where('tenant_id', Auth::user()->tenant_id)
-                                    ->first();
-        if(empty($processor)){
-            return response()->json(["error"=>"Error! Could not submit. No processor found."],400);
-        }else{
+			/*$processor = RequestApprover::select('user_id')
+																	->where('request_type', 'purchase-request')
+																	->where('depart_id', Auth::user()->department_id)
+																	->where('tenant_id', Auth::user()->tenant_id)
+																	->first();
+			if(empty($processor)){
+					return response()->json(["error"=>"Error! Could not submit. No processor found."],400);
+			}else{*/
             if(!empty($request->file('attachment'))){
                 $extension = $request->file('attachment');
                 $extension = $request->file('attachment')->getClientOriginalExtension();
@@ -134,33 +136,33 @@ class PurchaseRequestController extends Controller
             $event = new ResponsiblePerson;
             $event->post_id = $id;
             $event->post_type = 'purchase-request';
-            $event->user_id = $processor->user_id;
+            $event->user_id = $request->responsible_person;
             $event->tenant_id = Auth::user()->tenant_id;
             $event->save();
-            $user = User::find($processor->user_id);
+            $user = User::find($request->responsible_person);
             $user->notify(new NewPostNotification($requisition));
 
             //Register business process log
-            $log = new BusinessLog;
+            /*$log = new BusinessLog;
             $log->request_id = $id;
             $log->user_id = Auth::user()->id;
             $log->note = "Approval for purchase request ".$request->title." registered.";
             $log->name = "Registering purchase request";
             $log->tenant_id = Auth::user()->tenant_id;
-            $log->save();
+            $log->save();*/
 
             //identify supervisor
-            $supervise = new BusinessLog;
+           /* $supervise = new BusinessLog;
             $supervise->request_id = $id;
             $supervise->user_id = Auth::user()->id;
             $supervise->name = "Log entry";
             $supervise->note = "Identifying processor for ".Auth::user()->first_name." ".Auth::user()->surname;
             $supervise->tenant_id = Auth::user()->tenant_id;
-            $supervise->save();
+            $supervise->save();*/
 
             session()->flash("success", "Purchase request saved.");
          return response()->json(['message'=>'Success! Purchase request  submitted.']);
 
-        }
+        //}
     }
 }
