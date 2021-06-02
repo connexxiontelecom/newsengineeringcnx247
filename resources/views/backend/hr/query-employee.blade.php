@@ -5,6 +5,9 @@
 @endsection
 
 @section('extra-styles')
+	<link rel="stylesheet" type="text/css" href="/assets/bower_components/bootstrap-multiselect/css/bootstrap-multiselect.css">
+	<link rel="stylesheet" type="text/css" href="/assets/bower_components/multiselect/css/multi-select.css">
+	<link rel="stylesheet" href="/assets/bower_components/select2/css/select2.min.css">
 <style>
 /* The heart of the matter */
 
@@ -75,6 +78,23 @@
                             </div>
 
                         </div>
+											<div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="">Notify</label>
+                                    <select name="notify[]"  class="js-example-basic-multiple form-control" multiple="multiple">
+                                        <option disabled selected>Select someone</option>
+																			@foreach($employees as $emp)
+                                        <option value="{{$emp->id}}">{{$emp->first_name ?? ''}} {{$emp->surname ?? ''}}</option>
+																			@endforeach
+                                    </select>
+                                    @error('query_type')
+                                        <i class="text-danger mt-2">{{$message}}</i>
+                                    @enderror
+                                </div>
+                            </div>
+
+                        </div>
                         <div class="row">
                             <div class="col-md-12" wire:ignore>
                                 <div class="form-group">
@@ -120,6 +140,10 @@
 
 @endsection
 @section('extra-scripts')
+		<script type="text/javascript" src="/assets/bower_components/select2/js/select2.full.min.js"></script>
+		<script type="text/javascript" src="/assets/bower_components/multiselect/js/jquery.multi-select.js"></script>
+		<script type="text/javascript" src="/assets/bower_components/bootstrap-multiselect/js/bootstrap-multiselect.js"></script>
+		<script type="text/javascript" src="/assets/pages/advance-elements/select2-custom.js"></script>
 <script type="text/javascript" src="/assets/bower_components/tinymce/tinymce.min.js"></script>
 <script type="text/javascript" src="/assets/js/cus/tinymce.js"></script>
 @endsection

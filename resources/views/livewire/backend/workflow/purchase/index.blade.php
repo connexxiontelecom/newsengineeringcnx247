@@ -122,6 +122,7 @@
                form_data.append('title',$('#title').val());
                form_data.append('attachment',file_data);
                form_data.append('post_type','expense');
+               form_data.append('responsible_person',$('#responsible_person').val());
                $('#addNewExpenseBtn').text('Processing...');
                 axios.post('/purchase-request',form_data, config)
                .then(response=>{

@@ -190,6 +190,7 @@ Route::get('/hr-dashboard', 'CNX247\Backend\HRController@hrDashboard')->name('hr
 Route::get('/employees', 'CNX247\Backend\HRController@index')->name('employees');
 Route::get('/appreciation', 'CNX247\Backend\HRController@appreciation')->name('appreciation');
 Route::get('/on-boarding', 'CNX247\Backend\HRController@onBoarding')->name('on-boarding');
+Route::post('/employee/update-record', 'CNX247\Backend\HRController@updateEmployeeRecord')->name('update-employee-record');
 #Resignation
 Route::get('/resignation', 'CNX247\Backend\HRController@resignation')->name('resignation');
 Route::post('/resignation', 'CNX247\Backend\HRController@submitResignation');

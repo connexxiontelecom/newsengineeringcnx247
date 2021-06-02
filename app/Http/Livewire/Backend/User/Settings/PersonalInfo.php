@@ -71,11 +71,11 @@ class PersonalInfo extends Component
         $this->validate([
             'first_name'=>'required',
             'surname'=>'required',
-            'mobile'=>'required|regex:/^\+[1-9]\d{1,14}$/',
+            'mobile'=>'required',
             'position'=>'required',
-            'hire_date'=>'required',
-            'confirm_date'=>'required',
-            'birth_date'=>'required',
+            //'hire_date'=>'required',
+            //'confirm_date'=>'required',
+            //birth_date'=>'required',
             'department'=>'required',
             'address'=>'required',
             'email'=>'required|email'
@@ -85,13 +85,13 @@ class PersonalInfo extends Component
         $user->surname = $this->surname;
         $user->mobile = $this->mobile;
         $user->position = $this->position;
-        $user->hire_date = $this->hire_date;
-        $user->confirm_date = $this->confirm_date;
-        $user->start_date = $this->start_date;
-        $user->birth_date = $this->birth_date;
+        //$user->hire_date = $this->hire_date;
+        //$user->confirm_date = $this->confirm_date;
+        //$user->start_date = $this->start_date;
+       // $user->birth_date = $this->birth_date;
         $user->department_id = $this->department;
         $user->address = $this->address;
-        $user->email = $this->email;
+        //$user->email = $this->email;
         $user->gender = $this->gender ?? 1;
         $user->marital_status = $this->marital_status;
         $user->save();

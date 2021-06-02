@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\CNX247\Backend;
 
 use App\Http\Controllers\Controller;
+use App\QueryNotify;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
@@ -108,6 +109,12 @@ class UserController extends Controller
             $queries = QueryEmployee::where('user_id', Auth::user()->id)
                                     ->where('tenant_id',Auth::user()->tenant_id)
                                     ->get();
+            $copiedQueries = DB::table('query_employees as qe')
+																->join('query_notifies as qn', 'qe.id', '=', 'qn.query_id')
+																->join('users as u', 'u.id', '=', 'qe.user_id')
+																->where('qn.user_id', Auth::user()->id)
+																->where('qn.tenant_id', Auth::user()->tenant_id)->get();
+							//QueryNotify::where('user_id', Auth::user()->id)->where('tenant_id', Auth::user()->tenant_id)->get();
             $queriesThisMonth = QueryEmployee::where('user_id', Auth::user()->id)
                                               ->where('tenant_id',Auth::user()->tenant_id)
                                               ->whereMonth('created_at', date('m'))
@@ -131,7 +138,8 @@ class UserController extends Controller
             'myAppraisals'=>$myAppraisals,
             'supervisors'=>$supervisors,'modules'=>$modules,
             'attendanceThisMonth'=>$attendanceThisMonth,'queriesThisMonth'=>$queriesThisMonth,
-            'attendanceLastMonth'=>$attendanceLastMonth, 'queriesLastMonth'=>$queriesLastMonth
+            'attendanceLastMonth'=>$attendanceLastMonth, 'queriesLastMonth'=>$queriesLastMonth,
+						'copiedQueries'=>$copiedQueries
         ]);
     }
     /*

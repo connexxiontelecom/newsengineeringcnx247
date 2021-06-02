@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\CNX247\Backend;
 
 use App\Http\Controllers\Controller;
+use App\QueryNotify;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
@@ -65,9 +66,9 @@ class HRController extends Controller
     * Get list of all employees
     */
     public function index(){
-        $data['employeees'] = User::where('tenant_id', Auth::user()->tenant_id)->get();
+        $employees = User::where('tenant_id', Auth::user()->tenant_id)/*->where('account_status', 1)*/->get();
        //print_r($data);
-        return view('backend.hr.employees', $data);
+        return view('backend.hr.employees', ['employees'=>$employees]);
     }
 
     /*
@@ -78,6 +79,22 @@ class HRController extends Controller
         return view('backend.hr.attendance', ['attendance'=>$attendance]);
     }
 
+    public function updateEmployeeRecord(Request $request){
+    	$this->validate($request,[
+    		'employee'=>'required',
+				'first_name'=>'required',
+				'surname'=>'required'
+			]);
+    	$employee = User::find($request->employee);
+    	$employee->hire_date = $request->hire_date ?? '';
+    	$employee->confirm_date = $request->confirm_date ?? '';
+    	$employee->first_name = $request->first_name ?? '';
+    	$employee->surname = $request->surname ?? '';
+    	$employee->save();
+    	session()->flash("success", "<strong>Success!</strong> Changes saved.");
+    	return back();
+
+		}
     /*
     * Leave management
     */
@@ -248,7 +265,8 @@ class HRController extends Controller
     */
     public function queryEmployee($url){
         $employee = User::where('url', $url)->where('tenant_id', Auth::user()->tenant_id)->first();
-        return view('backend.hr.query-employee', ['employee'=>$employee]);
+        $employees = User::where('tenant_id', Auth::user()->tenant_id)->get();
+        return view('backend.hr.query-employee', ['employee'=>$employee, 'employees'=>$employees]);
     }
 
     public function storeQueryEmployee(Request $request){
@@ -267,7 +285,20 @@ class HRController extends Controller
         $query->tenant_id = Auth::user()->tenant_id;
         $query->slug = substr(sha1(time()), 23,40);
         $query->save();
-        $user = User::find($request->employee_id);
+
+        #Query
+					$queryId = $query->id;
+				if(count($request->notify) > 0){
+					foreach($request->notify as $notice){
+						$notify = new QueryNotify();
+						$notify->user_id = $notice;
+						$notify->query_id = $queryId;
+						$notify->save();
+					}
+
+				}
+
+				$user = User::find($request->employee_id);
         $user->notify(new QueryEmployeeNotification($query));
         session()->flash("success", "Query submitted.");
         return redirect()->route('queries');
