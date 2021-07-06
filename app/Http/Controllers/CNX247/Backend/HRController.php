@@ -36,6 +36,7 @@ class HRController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+        $this->department = new Department();
     }
 
     /*
@@ -67,8 +68,8 @@ class HRController extends Controller
     */
     public function index(){
         $employees = User::where('tenant_id', Auth::user()->tenant_id)/*->where('account_status', 1)*/->get();
-       //print_r($data);
-        return view('backend.hr.employees', ['employees'=>$employees]);
+       	$departments = $this->department->getTenantDepartments();
+        return view('backend.hr.employees', ['employees'=>$employees, 'departments'=>$departments]);
     }
 
     /*
@@ -90,6 +91,9 @@ class HRController extends Controller
     	$employee->confirm_date = $request->confirm_date ?? '';
     	$employee->first_name = $request->first_name ?? '';
     	$employee->surname = $request->surname ?? '';
+    	$employee->birth_date = $request->birth_date ?? '';
+    	$employee->department_id = $request->department ?? '';
+    	$employee->mobile = $request->mobile_no ?? '';
     	$employee->save();
     	session()->flash("success", "<strong>Success!</strong> Changes saved.");
     	return back();
@@ -327,7 +331,8 @@ class HRController extends Controller
         $question->tenant_id = Auth::user()->tenant_id;
         $question->added_by = Auth::user()->id;
         $question->save();
-        return response()->json(['message'=>'Success! New question saved.'],200);
+        session()->flash("success", "<strong>Success!</strong> Question saved.");
+        return back();
     }
     public function editSelfAssessmentQuestion(Request $request){
         $this->validate($request,[
@@ -338,7 +343,9 @@ class HRController extends Controller
         $question->tenant_id = Auth::user()->tenant_id;
         $question->added_by = Auth::user()->id;
         $question->save();
-        return response()->json(['message'=>'Success! Changes saved.'],200);
+
+        session()->flash("success", "<strong>Success!</strong> Changes saved.");
+				return back();
     }
 
     public function quantitativeAssessmentQuestion(Request $request){

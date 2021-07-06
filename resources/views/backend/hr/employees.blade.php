@@ -30,7 +30,14 @@
 		<div class="col-sm-12">
 			<div class="card card-border-primary">
 				<div class="card-block">
-					<a href="{{route('issue-invoice')}}" class="btn btn-mini btn-primary float-right mb-4">Add New Invoice</a>
+					@if(session()->has('success'))
+						<div class="alert alert-success background-success">
+							<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+								<i class="icofont icofont-close-line-circled text-white"></i>
+							</button>
+							{!! session()->get('success') !!}
+						</div>
+					@endif
 					<div class="dt-responsive table-responsive">
 						<table id="simpletable" class="table table-striped table-bordered nowrap">
 							<thead>
@@ -76,30 +83,58 @@
 															<form action="{{route('update-employee-record')}}" method="post">
 																@csrf
 																<div class="row">
-																	<div class="col-md-6">
+																	<div class="col-md-10">
 																		<div class="form-group">
 																			<label for="">First Name</label>
-																			<input type="text" placeholder="First Name" name="first_name" value="{{$emp->first_name ?? ''}}" class="form-control">
+																			<input type="text" placeholder="First Name" name="first_name" value="{{$emp->first_name ?? ''}}" class="form-control col-md-12">
 																		</div>
 																	</div>
-																	<div class="col-md-6">
+																	<div class="col-md-10">
 																		<div class="form-group">
 																			<label for="">Surname</label>
-																			<input type="text" placeholder="Surname" name="surname" value="{{$emp->surname ?? ''}}" class="form-control">
+																			<input type="text" placeholder="Surname" name="surname" value="{{$emp->surname ?? ''}}" class="form-control  col-md-12">
+																		</div>
+																	</div>
+																	<div class="col-md-10">
+																		<div class="form-group">
+																			<label for="">Mobile No.</label>
+																			<input type="text" placeholder="Mobile No." name="mobile_no" value="{{$emp->mobile ?? ''}}" class="form-control  col-md-12">
+																		</div>
+																	</div>
+																	<div class="col-md-10">
+																		<div class="form-group">
+																			<label for="">Department</label>
+																			<select name="department" id="department" class="form-control">
+																				<option selected disabled>--Select department--</option>
+																				@foreach($departments as $department)
+																					<option value="{{$department->id}}" {{$department->id == $emp->department_id ? 'selected' : ''}}>{{$department->department_name ?? ''}}</option>
+																				@endforeach
+																			</select>
+
 																		</div>
 																	</div>
 																</div>
 																<div class="row">
-																	<div class="col-md-6">
+																	<div class="col-md-10">
 																		<div class="form-group">
 																			<label for="">Hire Date</label>
-																			<input type="date" placeholder="Hire Date" name="hire_date" value="{{$emp->hire_date ?? ''}}" class="form-control">
+																			<input type="date" placeholder="Hire Date" name="hire_date" value="{{$emp->hire_date ?? ''}}" class="form-control  col-md-12">
+																			<label for="" class="label label-info">{{!is_null($emp->hire_date) ? date('d M, Y', strtotime($emp->hire_date)) : '' }}</label>
 																		</div>
 																	</div>
-																	<div class="col-md-6">
+																	<div class="col-md-10">
 																		<div class="form-group">
 																			<label for="">Confirm Date</label>
-																			<input type="date" placeholder="Confirm Date" name="confirm_date" value="{{$emp->confirm_date ?? ''}}" class="form-control">
+																			<input type="date" placeholder="Confirm Date" name="confirm_date" value="{{$emp->confirm_date ?? ''}}" class="form-control  col-md-12">
+																			<label for="" class="label label-info">{{!is_null($emp->confirm_date) ? date('d M, Y', strtotime($emp->confirm_date)) : '' }}
+																		</div>
+																		<input type="hidden" value="{{$emp->id}}" name="employee">
+																	</div>
+																	<div class="col-md-10">
+																		<div class="form-group">
+																			<label for="">Birth Date</label>
+																			<input type="date" placeholder="Birth Date" name="birth_date" value="{{$emp->birth_date ?? ''}}" class="form-control  col-md-12">
+																			<label for="" class="label label-info">{{!is_null($emp->birth_date) ? date('d M, Y', strtotime($emp->birth_date)) : '' }}
 																		</div>
 																		<input type="hidden" value="{{$emp->id}}" name="employee">
 																	</div>
