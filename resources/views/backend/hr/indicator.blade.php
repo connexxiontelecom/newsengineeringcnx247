@@ -72,13 +72,43 @@
                                                                                @foreach($self as $question)
                                                                                     <tr>
                                                                                         <td>{{$i++}}</td>
-                                                                                        <td>{!! strlen($question->question) > 81 ? substr($question->question,0,81).'...' : $question->question !!}</td>
+																																											<td>{{ strlen(strip_tags($question->question)) > 81 ? substr(strip_tags($question->question),0,81).'...' : strip_tags($question->question) }}</td>
                                                                                         <td>
                                                                                             <a href="{{route('view-profile', $question->user->url)}}">{{$question->user->first_name ?? ''}} {{$question->user->surname ?? ''}}</a>
                                                                                         </td>
                                                                                         <td>{{date(Auth::user()->tenant->dateFormat->format ?? 'd F, Y', strtotime($question->created_at))}}</td>
                                                                                         <td>
-                                                                                            <a href="javascript:void(0);" data-toggle="modal" data-target="#selfQuestionModal" data-self-question="{{$question->question}}" data-sqid="{{$question->id}}" class="selfQuestionLauncherClass"> <i class="text-warning ti-pencil"></i> </a>
+                                                                                            <a href="javascript:void(0);" data-toggle="modal" data-target="#selfQuestionModal_{{$question->id}}" class=""> <i class="text-warning ti-pencil"></i> </a>
+																																													<div class="modal fade" id="selfQuestionModal_{{$question->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+																																														<div class="modal-dialog" role="document">
+																																															<div class="modal-content">
+																																																<div class="modal-header">
+																																																	<h5 class="modal-title" id="exampleModalLabel">Edit Question</h5>
+																																																	<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+																																																		<span aria-hidden="true">&times;</span>
+																																																	</button>
+																																																</div>
+																																																<div class="modal-body">
+																																																	<form action="{{route('edit-self-question')}}" method="post">
+																																																		@csrf
+																																																		<div class="form-group">
+																																																			<label>Question</label>
+																																																			<textarea class="form-control content" placeholder="Type question here..." name="question" id="selfQuestion">{{$question->question ?? ''}}</textarea>
+																																																			@error('question')
+																																																			<i>{{$message}}</i>
+																																																			@enderror
+																																																		</div>
+																																																		<div class="btn-group d-flex justify-content-center">
+																																																			<input
+																																																				type="hidden" name="id" value="{{$question->id}}">
+																																																			<button type="button" class="btn btn-danger btn-mini waves-effect " data-dismiss="modal"><i class="ti-close mr-2"></i>Close</button>
+																																																			<button type="submit" class="btn btn-primary btn-mini waves-effect waves-light" id=""><i class="ti-check mr-2"></i>Save changes</button>
+																																																		</div>
+																																																	</form>
+																																																</div>
+																																															</div>
+																																														</div>
+																																													</div>
                                                                                         </td>
                                                                                     </tr>
                                                                                @endforeach
@@ -211,21 +241,23 @@
             </button>
             </div>
             <div class="modal-body">
-                <div class="form-group">
-                    <label>Question</label>
-                    <textarea class="form-control content" placeholder="Type question here..." name="question" id="selfQuestion"></textarea>
-                    @error('question')
-                        <i>{{$message}}</i>
-                    @enderror
-                </div>
+							<form action="{{route('publish-self-question')}}" method="post">
+								@csrf
+								<div class="form-group">
+									<label>Question</label>
+									<textarea class="form-control content" placeholder="Type question here..." name="question" id="selfQuestion"></textarea>
+									@error('question')
+									<i>{{$message}}</i>
+									@enderror
+								</div>
+								<div class="btn-group d-flex justify-content-center">
+									<button type="button" class="btn btn-danger btn-mini waves-effect " data-dismiss="modal"><i class="ti-close mr-2"></i>Close</button>
+									<button type="submit" class="btn btn-primary btn-mini waves-effect waves-light" id=""><i class="ti-check mr-2"></i>Submit</button>
+								</div>
+							</form>
+
             </div>
-            <div class="modal-footer">
-                <div class="btn-group d-flex justify-content-center">
-                    <button type="button" class="btn btn-danger btn-mini waves-effect " data-dismiss="modal"><i class="ti-close mr-2"></i>Close</button>
-                    <button type="button" class="btn btn-warning btn-mini waves-effect waves-light" id="selfAssessChangesBtn"><i class="ti-pencil mr-2"></i>Save changes</button>
-                    <button type="button" class="btn btn-primary btn-mini waves-effect waves-light" id="selfAssessBtn"><i class="ti-check mr-2"></i>Submit</button>
-                </div>
-            </div>
+
         </div>
     </div>
 </div>

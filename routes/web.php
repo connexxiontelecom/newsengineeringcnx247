@@ -206,8 +206,8 @@ Route::get('/timesheet', 'CNX247\Backend\HRController@timesheet')->name('timeshe
 #Performance
 Route::get('/performance-indicator', 'CNX247\Backend\HRController@performanceIndicator')->name('performance-indicator');
 Route::get('/job-role/{id}/questions', 'CNX247\Backend\HRController@jobRoleQuestions')->name('job-role-questions');
-Route::post('/performance-indicator/self', 'CNX247\Backend\HRController@selfAssessmentQuestion');
-Route::post('/performance-indicator/self/edit', 'CNX247\Backend\HRController@editSelfAssessmentQuestion');
+Route::post('/performance-indicator/self', 'CNX247\Backend\HRController@selfAssessmentQuestion')->name('publish-self-question');
+Route::post('/performance-indicator/self/edit', 'CNX247\Backend\HRController@editSelfAssessmentQuestion')->name('edit-self-question');
 Route::post('/performance-indicator/quantitative', 'CNX247\Backend\HRController@quantitativeAssessmentQuestion');
 Route::post('/performance-indicator/quantitative/edit', 'CNX247\Backend\HRController@editQuantitativeAssessmentQuestion');
 Route::post('/performance-indicator/qualitative', 'CNX247\Backend\HRController@qualitativeAssessmentQuestion');

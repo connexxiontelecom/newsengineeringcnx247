@@ -331,7 +331,8 @@ class HRController extends Controller
         $question->tenant_id = Auth::user()->tenant_id;
         $question->added_by = Auth::user()->id;
         $question->save();
-        return response()->json(['message'=>'Success! New question saved.'],200);
+        session()->flash("success", "<strong>Success!</strong> Question saved.");
+        return back();
     }
     public function editSelfAssessmentQuestion(Request $request){
         $this->validate($request,[
@@ -342,7 +343,9 @@ class HRController extends Controller
         $question->tenant_id = Auth::user()->tenant_id;
         $question->added_by = Auth::user()->id;
         $question->save();
-        return response()->json(['message'=>'Success! Changes saved.'],200);
+
+        session()->flash("success", "<strong>Success!</strong> Changes saved.");
+				return back();
     }
 
     public function quantitativeAssessmentQuestion(Request $request){
