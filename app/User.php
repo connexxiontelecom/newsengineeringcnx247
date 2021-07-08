@@ -6,6 +6,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 //use Illuminate\Contracts\Auth\Access\Authorizable;
+use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Traits\HasRoles;
 use Cache;
 use Tymon\JWTAuth\Contracts\JWTSubject;
@@ -112,6 +113,10 @@ class User extends Authenticatable implements JWTSubject
         return $this->belongsTo(Policy::class, 'tenant_id');
 
     }
+
+	public function getAllActiveEmployees(){
+		return User::where('account_status', 1)->where('tenant_id', Auth::user()->tenant_id)->orderBy('first_name', 'ASC')->get();
+	}
  /*    public function leaveWallet(){
         return $this->belongsTo(LeaveWallet::class);
     } */
