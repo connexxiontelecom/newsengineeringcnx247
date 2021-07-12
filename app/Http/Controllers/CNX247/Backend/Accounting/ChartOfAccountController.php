@@ -396,10 +396,11 @@ class ChartOfAccountController extends Controller
 
     public function updateBank(Request $request){
     	$this->validate($request,[
-    		'bank'=>'required',
+    		'bank_account_number'=>'required',
 				'bank_name'=>'required',
-				'bank_glcode'=>'required',
-				'account_no'=>'required'
+				'bank_gl_code'=>'required',
+				'bank_branch'=>'required',
+				'bank_id'=>'required',
 			]);
     	$this->bank->updateBank($request);
     	session()->flash("success", "<strong>Success!</strong> Changes saved.");

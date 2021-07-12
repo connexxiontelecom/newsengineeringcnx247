@@ -175,7 +175,7 @@
                                 @csrf
                                 <div class="form-group">
                                     <label for="">Bank Name</label>
-                                    <input type="text" name="bank_name" value="{{ $bank->bank_name }}" disabled placeholder="Bank Name" class="form-control">
+                                    <input type="text" name="bank_name" value="{{ $bank->bank_name }}"  placeholder="Bank Name" class="form-control">
                                     @error('bank_name')
                                     <i class="text-danger mt-2">{{$message}}</i>
                                     @enderror
@@ -186,7 +186,7 @@
                                 <input type="hidden" name="bank_id" value="{{ $bank->id  }}" class="form-control">
                                 <div class="form-group">
                                     <label for="">Account Number </label>
-                                    <input type="text" name="bank_account_number" disabled value="{{ $bank->bank_account_number  }}"  placeholder="Account Number" class="form-control">
+                                    <input type="text" name="bank_account_number"  value="{{ $bank->bank_account_number  }}"  placeholder="Account Number" class="form-control">
                                     @error('bank_account_number')
                                     <i class="text-danger mt-2">{{$message}}</i>
                                     @enderror
@@ -194,7 +194,7 @@
 
                                 <div class="form-group">
                                     <label for="">Bank Branch/ Address</label>
-                                    <textarea class="form-control" name="bank_branch" disabled placeholder="Bank Address/Branch">
+                                    <textarea class="form-control" name="bank_branch"  placeholder="Bank Address/Branch">
 
                                             {{ $bank->bank_branch  }}
                                            </textarea>
