@@ -370,8 +370,8 @@ class ChartOfAccountController extends Controller
 
 	public function addNewBank(Request $request){
 		$this->validate($request, [
-			'bank_name'=>'required|unique:banks,bank_name',
-			'bank_gl_code' =>'required|unique:banks,bank_gl_code',
+			'bank_name'=>'required',
+			'bank_gl_code' =>'required',
 			'bank_branch'=>'required',
 			'bank_account_number' => 'required',
 

@@ -443,7 +443,8 @@ class HRController extends Controller
         $question->role_id = $request->role;
         $question->department_id = $department->department_id;
         $question->save();
-        return response()->json(['message'=>'Success! New question saved.'],200);
+        session()->flash("success", "<strong>Success!</strong> New question published.");
+        return back();
     }
     public function editQuantitativeAssessmentQuestion(Request $request){
         $this->validate($request,[
@@ -456,7 +457,8 @@ class HRController extends Controller
         $question->tenant_id = Auth::user()->tenant_id;
         $question->added_by = Auth::user()->id;
         $question->save();
-        return response()->json(['message'=>'Success! Changes saved.'],200);
+        session()->flash("success", "<strong>Success</strong> Changes saved.");
+        return back();
     }
     public function qualitativeAssessmentQuestion(Request $request){
         $this->validate($request,[

@@ -208,8 +208,8 @@ Route::get('/performance-indicator', 'CNX247\Backend\HRController@performanceInd
 Route::get('/job-role/{id}/questions', 'CNX247\Backend\HRController@jobRoleQuestions')->name('job-role-questions');
 Route::post('/performance-indicator/self', 'CNX247\Backend\HRController@selfAssessmentQuestion')->name('publish-self-question');
 Route::post('/performance-indicator/self/edit', 'CNX247\Backend\HRController@editSelfAssessmentQuestion')->name('edit-self-question');
-Route::post('/performance-indicator/quantitative', 'CNX247\Backend\HRController@quantitativeAssessmentQuestion');
-Route::post('/performance-indicator/quantitative/edit', 'CNX247\Backend\HRController@editQuantitativeAssessmentQuestion');
+Route::post('/performance-indicator/quantitative', 'CNX247\Backend\HRController@quantitativeAssessmentQuestion')->name('add-new-quantitative-question');
+Route::post('/performance-indicator/quantitative/edit', 'CNX247\Backend\HRController@editQuantitativeAssessmentQuestion')->name('edit-quantitative-question');
 Route::post('/performance-indicator/qualitative', 'CNX247\Backend\HRController@qualitativeAssessmentQuestion');
 Route::post('/performance-indicator/qualitative/edit', 'CNX247\Backend\HRController@editQualitativeAssessmentQuestion');
 Route::get('/employees-appraisal', 'CNX247\Backend\HRController@employeePerformance')->name('employees-appraisal');

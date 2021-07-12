@@ -63,13 +63,44 @@
                                                             <td>{!! strip_tags($question->question ?? '')  !!}</td>
                                                             <td>{{date(Auth::user()->tenant->dateFormat->format ?? 'd F, Y', strtotime($question->created_at))}}</td>
                                                             <td>
-                                                                <a href="javascript:void(0);" data-toggle="modal" data-target="#quantitativeQuestionModal" data-question="{{$question->question ?? ''}}" class="roleDetailLauncherClass"> <i class="text-info ti-eye"></i> </a>
+                                                                <a href="javascript:void(0);" data-toggle="modal" data-target="#editQuantitativeQuestionModal_{{$question->id}}" class=""> <i class="text-info ti-eye"></i> </a>
+																															<div class="modal fade" id="editQuantitativeQuestionModal_{{$question->id}}" tabindex="-1" role="dialog">
+																																<div class="modal-dialog" role="document">
+																																	<div class="modal-content">
+																																		<div class="modal-header bg-primary">
+																																			<h6 class="modal-title bg-primary">Edit Quantitative Question</h6>
+																																			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+																																				<span aria-hidden="true" class="text-white">&times;</span>
+																																			</button>
+																																		</div>
+																																		<div class="modal-body">
+																																			<form action="{{route('edit-quantitative-question')}}" method="post">
+																																				@csrf
+																																				<div class="form-group">
+																																					<label>Question</label>
+																																					<textarea class="form-control content" id="" placeholder="Type question here..." name="question">{{$question->question ?? ''}}</textarea>
+																																					@error('question')
+																																					<i>{{$message}}</i>
+																																					@enderror
+																																				</div>
+																																				<div class="btn-group d-flex justify-content-center">
+																																					<input type="hidden" name="id" value="{{$question->id}}">
+																																					<button type="button" class="btn btn-danger btn-mini waves-effect " data-dismiss="modal"><i class="ti-close mr-2"></i>Close</button>
+																																					<button type="submit" class="btn btn-warning btn-mini waves-effect waves-light" id=""><i class="ti-pencil mr-2"></i>Save changes</button>
+																																				</div>
+																																			</form>
+
+																																		</div>
+
+																																	</div>
+																																</div>
+																															</div>
                                                             </td>
                                                         </tr>
                                                    @endforeach
                                                     </tbody>
                                                 </table>
-                                                <input type="hidden" name="roleId" id="roleId" value="{{$id}}">
+
                                             </div>
                                         </div>
                                     </div>
@@ -121,21 +152,22 @@
             </button>
             </div>
             <div class="modal-body">
-                <div class="form-group">
-                    <label>Question</label>
-                    <textarea class="form-control content" id="quantitativeQuestion" placeholder="Type question here..." wire:model.debounce.90000ms="question"></textarea>
-                    @error('question')
-                        <i>{{$message}}</i>
-                    @enderror
-                </div>
-            </div>
-            <div class="modal-footer">
-                <div class="btn-group d-flex justify-content-center">
-                    <input type="hidden" id="projectId">
-                    <button type="button" class="btn btn-danger btn-mini waves-effect " data-dismiss="modal"><i class="ti-close mr-2"></i>Close</button>
-                        <button type="submit" class="btn btn-warning btn-mini waves-effect waves-light" id="quantitativeAssessChangesBtn"><i class="ti-pencil mr-2"></i>Save changes</button>
-                        <button type="submit" class="btn btn-primary btn-mini waves-effect waves-light" id="quantitativeAssessBtn"><i class="ti-check mr-2"></i>Submit</button>
-                </div>
+							<form action="{{route('add-new-quantitative-question')}}" method="post">
+								@csrf
+								<div class="form-group">
+									<label>Question</label>
+									<textarea class="form-control content"  placeholder="Type question here..." name="question">{{old('question')}}</textarea>
+									@error('question')
+									<i>{{$message}}</i>
+									@enderror
+									<input type="hidden" name="role" id="roleId" value="{{$id}}">
+								</div>
+								<div class="btn-group d-flex justify-content-center">
+									<button type="button" class="btn btn-danger btn-mini waves-effect " data-dismiss="modal"><i class="ti-close mr-2"></i>Close</button>
+									<button type="submit" class="btn btn-primary btn-mini waves-effect waves-light" id=""><i class="ti-check mr-2"></i>Submit</button>
+								</div>
+							</form>
+
             </div>
         </div>
     </div>
@@ -174,6 +206,6 @@
 <script type="text/javascript" src="/assets/bower_components/tinymce/tinymce.min.js"></script>
 <script type="text/javascript" src="/assets/js/cus/tinymce.js"></script>
 <script type="text/javascript" src="/assets/js/cus/self-assess.js"></script>
-<script type="text/javascript" src="/assets/js/cus/quantitative-assess.js"></script>
+
 <script type="text/javascript" src="/assets/js/cus/qualitative-assess.js"></script>
 @endsection
