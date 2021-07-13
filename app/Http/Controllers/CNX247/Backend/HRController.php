@@ -443,7 +443,8 @@ class HRController extends Controller
         $question->role_id = $request->role;
         $question->department_id = $department->department_id;
         $question->save();
-        return response()->json(['message'=>'Success! New question saved.'],200);
+        session()->flash("success", "<strong>Success!</strong> New question published.");
+        return back();
     }
     public function editQuantitativeAssessmentQuestion(Request $request){
         $this->validate($request,[
@@ -456,7 +457,8 @@ class HRController extends Controller
         $question->tenant_id = Auth::user()->tenant_id;
         $question->added_by = Auth::user()->id;
         $question->save();
-        return response()->json(['message'=>'Success! Changes saved.'],200);
+        session()->flash("success", "<strong>Success</strong> Changes saved.");
+        return back();
     }
     public function qualitativeAssessmentQuestion(Request $request){
         $this->validate($request,[
@@ -593,31 +595,37 @@ class HRController extends Controller
     public function storeSupervisorAppraisal(Request $request){
         //return dd($request->all());
         $this->validate($request,[
-            'quantitative'=>'required',
+            'appraisal_id'=>'required',
+            /*'quantitative'=>'required',
             'qualitative'=>'required',
             'quantitative_rating'=>'required',
-            'qualitative_rating'=>'required'
+            'qualitative_rating'=>'required'*/
         ]);
-        for($i = 0; $i<count($request->quantitative); $i++){
-            $self = new AnswerQuantitative;
-            $self->question_id = $request->quantitative[$i];
-            $self->rating = $request->quantitative_rating[$i];
-            $self->appraisal_id = $request->appraisal_id;
-            $self->tenant_id = Auth::user()->tenant_id;
-            $self->user_id = $request->user_id;
-            $self->supervisor = Auth::user()->id;
-            $self->save();
-        }
-        for($i = 0; $i<count($request->qualitative); $i++){
-            $self = new AnswerQualitative;
-            $self->question_id = $request->qualitative[$i];
-            $self->rating = $request->qualitative_rating[$i];
-            $self->appraisal_id = $request->appraisal_id;
-            $self->tenant_id = Auth::user()->tenant_id;
-            $self->user_id = $request->user_id;
-            $self->supervisor = Auth::user()->id;
-            $self->save();
-        }
+        if(isset($request->quantitative)){
+					for($i = 0; $i<count($request->quantitative); $i++){
+						$self = new AnswerQuantitative;
+						$self->question_id = $request->quantitative[$i];
+						$self->rating = $request->quantitative_rating[$i];
+						$self->appraisal_id = $request->appraisal_id;
+						$self->tenant_id = Auth::user()->tenant_id;
+						$self->user_id = $request->user_id;
+						$self->supervisor = Auth::user()->id;
+						$self->save();
+					}
+				}
+        if(isset($request->qualitative)){
+					for($i = 0; $i<count($request->qualitative); $i++){
+						$self = new AnswerQualitative;
+						$self->question_id = $request->qualitative[$i];
+						$self->rating = $request->qualitative_rating[$i];
+						$self->appraisal_id = $request->appraisal_id;
+						$self->tenant_id = Auth::user()->tenant_id;
+						$self->user_id = $request->user_id;
+						$self->supervisor = Auth::user()->id;
+						$self->save();
+					}
+				}
+
         $appraisal = EmployeeAppraisal::where('tenant_id', Auth::user()->tenant_id)
                                         ->where('appraisal_id', $request->appraisal_id)->first();
         if(!empty($appraisal) ){

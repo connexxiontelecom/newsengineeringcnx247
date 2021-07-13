@@ -26,10 +26,11 @@ class Bank extends Model
 
 	}
 	public function updateBank(Request $request){
-		$bank = Bank::find($request->bank);
+		$bank = Bank::find($request->bank_id);
 		$bank->bank_name = $request->bank_name ?? '';
-		$bank->bank_gl_code = $request->bank_glcode ?? '';
-		$bank->bank_account_number = $request->account_no ?? '';
+		$bank->bank_gl_code = $request->bank_gl_code ?? '';
+		$bank->bank_account_number = $request->bank_account_number ?? '';
+		$bank->bank_branch = $request->bank_branch ?? '';
 		$bank->save();
 
 	}
