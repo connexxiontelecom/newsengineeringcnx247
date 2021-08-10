@@ -4,6 +4,7 @@ namespace App\Http\Controllers\CNX247\Backend;
 
 use App\ApplicationLog;
 use App\Http\Controllers\Controller;
+use App\MilestoneComment;
 use App\MilestoneResponsiblePerson;
 use App\MilestoneSubmission;
 use App\MilestoneSubmissionAttachment;
@@ -49,6 +50,7 @@ class ProjectController extends Controller
 		$this->milestonesubmissionattachment = new MilestoneSubmissionAttachment();
 		$this->milestonesubmission = new MilestoneSubmission();
 		$this->post = new Post();
+		$this->milestonecomment = new MilestoneComment();
 	}
 
 	/*
@@ -350,6 +352,30 @@ class ProjectController extends Controller
 		$milestone = $this->milestonesubmission->setNewMilestoneReport($request);
 		$this->milestonesubmissionattachment->uploadFiles($request, $milestone);
 		session()->flash("success", "<strong>Success!</strong> Your report was submitted");
+		return back();
+	}
+
+	public function updateMilestoneStatus(Request $request){
+		$this->validate($request,[
+			'milestone_status'=>'required',
+			'update_milestone'=>'required',
+			'update_project'=>'required'
+		]);
+		$this->milestone->updateMilestoneStatus($request);
+		session()->flash("success", "<strong>Success!</strong> Milestone status updated ");
+		return back();
+	}
+
+	public function postMilestoneComment(Request $request){
+		$this->validate($request,[
+			'm_project'=>'required',
+			'm_comment'=>'required',
+			'm_milestone'=>'required'
+		],[
+			'm_comment.required'=>'Type in your comment'
+		]);
+		$this->milestonecomment->setNewMilestoneComment($request);
+		session()->flash("success", "<strong>Success!</strong> Your comment was saved");
 		return back();
 	}
 

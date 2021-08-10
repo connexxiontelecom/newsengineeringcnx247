@@ -22,6 +22,10 @@ class Milestone extends Model
     	return $this->hasMany(MilestoneSubmission::class, 'milestone_id')->orderBy('id', 'DESC');
 		}
 
+		public function getMilestoneComments(){
+    	return $this->hasMany(MilestoneComment::class, 'milestone_id');
+		}
+
 
     /*
      *
@@ -39,5 +43,13 @@ class Milestone extends Model
 		return $milestone;
 		//$message = Auth::user()->first_name.' created new project milestone with the project ID: '.$request->post_id;
 		//$this->applog->setNewLog(Auth::user()->tenant_id, Auth::user()->id, $message);
+	}
+
+	public function updateMilestoneStatus(Request $request){
+		$mile = Milestone::find($request->update_milestone);
+		$mile->status = $request->milestone_status;
+		$mile->date_updated = now();
+		$mile->updated_by = Auth::user()->id;
+		$mile->save();
 	}
 }
