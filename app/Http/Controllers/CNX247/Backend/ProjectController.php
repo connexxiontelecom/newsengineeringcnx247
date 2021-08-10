@@ -4,6 +4,12 @@ namespace App\Http\Controllers\CNX247\Backend;
 
 use App\ApplicationLog;
 use App\Http\Controllers\Controller;
+use App\MilestoneResponsiblePerson;
+use App\MilestoneSubmission;
+use App\MilestoneSubmissionAttachment;
+use App\Notifications\SubmitTask;
+use App\PostSubmission;
+use App\PostSubmissionAttachment;
 use Illuminate\Http\Request;
 use App\Notifications\NewPostNotification;
 use App\Post;
@@ -37,6 +43,12 @@ class ProjectController extends Controller
 	{
 		$this->middleware('auth');
 		$this->applog = new ApplicationLog();
+		$this->user = new User();
+		$this->milestone = new Milestone();
+		$this->milestoneresponsibleperson = new MilestoneResponsiblePerson();
+		$this->milestonesubmissionattachment = new MilestoneSubmissionAttachment();
+		$this->milestonesubmission = new MilestoneSubmission();
+		$this->post = new Post();
 	}
 
 	/*
@@ -85,9 +97,6 @@ class ProjectController extends Controller
 		$project->sponsor = $request->project_sponsor;
 
 
-		/*  $project->start_date = $request->start_date ?? '';
-		 $project->end_date = $request->due_date; */
-
 		$startDateInstance = new DateTime($request->start_date);
 		$project->start_date = $startDateInstance->format('Y-m-d H:i:s');
 
@@ -103,9 +112,6 @@ class ProjectController extends Controller
 		//responsible persons
 		if(!empty($request->responsible_persons)){
 			foreach($request->responsible_persons as $responsible){
-
-				/*  $user = User::select('first_name', 'surname', 'email', 'id')->where('id', $participant)->first();
-				 \Mail::to($user->email)->send(new MailTask($user, $request, $url)); */
 				$part = new ResponsiblePerson;
 				$part->post_id = $project_id;
 				$part->post_type = 'project';
@@ -155,9 +161,13 @@ class ProjectController extends Controller
 	/*
 	* New task
 	*/
-	public function viewProject(){
-
-		return view('backend.project.view-project');
+	public function viewProject($param){
+		$project = $this->post->getPostBySlug($param);
+		if(!empty($project)){
+			return view('backend.project.view-project',['users'=>$this->user->getAllActiveEmployees(), 'project'=>$project]);
+		}else{
+			abort('404', 'Resource not found.');
+		}
 	}
 	public function projectBudget($url){
 
@@ -301,19 +311,88 @@ class ProjectController extends Controller
 	public function createProjectMilestone(Request $request){
 		$this->validate($request,[
 			'title'=>'required',
-			'due_date'=>'required|date'
+			'due_date'=>'required|date',
+			'assign_to.*'=>'required',
+			'description'=>'required'
+		],[
+			'title.required'=>'Enter milestone title',
+			'due_date.required'=>'Choose milestone due date',
+			'assign_to.required'=>'Select people responsible for this milestone',
+			'description.required'=>'Enter milestone description'
 		]);
-		$milestone = new Milestone;
-		$milestone->title = $request->title;
-		$milestone->due_date = $request->due_date;
-		$milestone->description = $request->description;
-		$milestone->tenant_id = Auth::user()->tenant_id;
-		$milestone->user_id = Auth::user()->id;
-		$milestone->post_id = $request->post_id;
-		$milestone->save();
-		$message = Auth::user()->first_name.' created new project milestone with the project ID: '.$request->post_id;
-		$this->applog->setNewLog(Auth::user()->tenant_id, Auth::user()->id, $message);
-		return response()->json(['message'=>'Success! Project milestone created.'], 200);
+		$milestone = $this->milestone->setNewMilestone($request);
+		foreach ($request->assign_to as $assign_to){
+			$this->milestoneresponsibleperson->setNewMilestoneResponsiblePerson($request, $assign_to, $milestone);
+		}
+		session()->flash("success", "<strong>Success!</strong> New milestone set successfully.");
+		return back();
+		//return response()->json(['message'=>'Success! Project milestone created.'], 200);
+	}
+
+	public function submitMilestone($url)
+	{
+		$post = Post::where('tenant_id', Auth::user()->tenant_id)->where('post_url', $url)->first();
+		if (!empty($post)) {
+			return view('backend.project.submit-milestone-report', ['task' => $post]);
+		} else {
+			return redirect()->route('404');
+		}
+	}
+
+	public function submitMilestoneReport(Request $request){
+		$this->validate($request,[
+			'leave_note'=>'required',
+			'milestone'=>'required',
+			'project'=>'required'
+		],[
+			'leave_note.required'=>'Enter a report for this milestone'
+		]);
+		$milestone = $this->milestonesubmission->setNewMilestoneReport($request);
+		$this->milestonesubmissionattachment->uploadFiles($request, $milestone);
+		session()->flash("success", "<strong>Success!</strong> Your report was submitted");
+		return back();
+	}
+
+	public function storeAssignedMilestone(Request $request)
+	{
+		$this->validate($request, [
+			'leave_note' => 'required',
+			'post' => 'required',
+			'owner' => 'required',
+			'type' => 'required',
+		]);
+		$submit = new PostSubmission;
+		$submit->post_id = $request->post;
+		$submit->submitted_by = Auth::user()->id;
+		$submit->owner = $request->owner;
+		$submit->post_type = $request->type;
+		$submit->post_id = $request->post;
+		$submit->tenant_id = Auth::user()->tenant_id;
+		$submit->date_submitted = now();
+		$submit->note = $request->leave_note;
+		$submit->save();
+
+		if (!empty($request->file('attachment'))) {
+			$extension = $request->file('attachment');
+			$extension = $request->file('attachment')->getClientOriginalExtension(); // getting excel extension
+			$dir = 'assets/uploads/attachments/';
+			$filename = 'task_' . uniqid() . '_' . time() . '_' . date('Ymd') . '.' . $extension;
+			$request->file('attachment')->move(public_path($dir), $filename);
+		} else {
+			$filename = '';
+		}
+		if (!empty($request->file('attachment'))) {
+			$attach = new PostSubmissionAttachment;
+			$attach->post_id = $request->post;
+			$attach->attachment = $filename;
+			$attach->tenant_id = Auth::user()->tenant_id;
+			$attach->save();
+		}
+		$user = User::where('id', $request->owner)->where('tenant_id', Auth::user()->tenant_id)->first();
+		$content = Post::where('id', $request->post)->where('tenant_id', Auth::user()->tenant_id)->first();
+		$user->notify(new SubmitTask($submit, $content));
+		session()->flash("success", "<strong>Success!</strong> Submission done.");
+		return back();
 	}
 
 	public function deleteProject(Request $request){

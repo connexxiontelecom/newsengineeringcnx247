@@ -30,6 +30,7 @@ class ViewProject extends Component
     public $review;
     public $attachments;
     public $milestones;
+    public $milestonepersons;
     public $users;
     public $client;
     //public $invoices = [];

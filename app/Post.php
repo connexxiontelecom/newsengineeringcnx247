@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Traits\HasRoles;
 
 class Post extends Model
@@ -99,6 +100,17 @@ class Post extends Model
         return $this->hasMany(BudgetFinancial::class, 'project_id');
 		}
 
+
+
+
+
+		/*
+		 * Use-case methods
+		 */
+
+	public function getPostBySlug($slug){
+		return Post::where('tenant_id', Auth::user()->tenant_id)->where('post_url', $slug)->first();
+	}
 
 
 }
