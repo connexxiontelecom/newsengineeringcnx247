@@ -17,7 +17,7 @@
 			</div>
 	</div>
 	<div class="nav-item nav-grid">
-			<a href="{{ route('load-project-gantt-chart',$project->post_url) }}" class="btn btn-info btn-mini btn-round text-white"><i class="icofont icofont-pie-chart "></i>  Gantt</a>
+			<a href="{{ route('project-gantt-chart',$project->post_url) }}" class="btn btn-info btn-mini btn-round text-white"><i class="icofont icofont-pie-chart "></i>  Gantt</a>
 			<a href="{{ route('project-calendar') }}" class="btn btn-info btn-mini btn-round text-white"><i class="ti-calendar"></i>  Calendar</a>
 			<a href="{{ route('project-analytics') }}" class="btn btn-danger btn-mini btn-round text-white"><i class="icofont icofont-pie-chart "></i>  Analytics </a>
 	</div>

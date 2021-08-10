@@ -201,7 +201,7 @@
                     <i class="icofont icofont-users-alt-4"></i> Responsible Person(s)
                 </h5>
             <button id="AddRespPersons" class="btn btn-sm btn-primary f-right btn-mini"
-            style="margin-bottom: 10px"  {{-- wire:click="markAsComplete({{$task->id}})"  --}}
+            style="margin-bottom: 10px"
             title="Add a responsible person" data-toggle="modal" data-target="#modal-1" >
                 <i class="fa fa-plus-square"></i>Add person</button>
             </div>
@@ -627,9 +627,54 @@
             <div class="card-block">
                 <h5 class="sub-title">
                     <i class="icofont icofont-measure m-r-5"></i> Project Milestones
-                    <button class="btn btn-mini btn-primary float-right mb-2 milestone-laucher" data-post-id="{{$project->id}}" data-target="#milestoneModal" data-toggle="modal"><i class="ti-plus mr-2"></i> Create Milestone</button>
                 </h5>
-                <div class="row">
+							<div class="btn-group float-right">
+								<button id="milestoneHandler" class="btn btn-mini btn-primary float-right mb-2 milestone-laucher" data-post-id="{{$project->id}}" ><i class="ti-plus mr-2"></i> Create Milestone</button>
+								<a href="" class="btn btn-secondary btn-mini"><i class="ti-eye mr-2"></i>View Reports</a>
+							</div>
+						</div>
+					<div style="display:none; padding-right: 10px; padding-left:10px;" id="milestone-wrapper">
+						@if(session()->has('success'))
+							<div class="alert alert-success background-success">{!! session()->get('success') !!}</div>
+						@endif
+						<form method="post" action="{{route('publish-milestone')}}" enctype="multipart/form-data" id="_addResponsiblePerson">
+							@csrf
+							<div class="row">
+								<div class="col-md-12">
+									<div class="form-group">
+										<label>Title <sup class="text-danger">*</sup></label>
+										<input type="text" name="title" class="form-control" placeholder="Milestone Title" id="milestone_title">
+										@error('title') <i class="text-danger mt-2">{{$message}}</i>@enderror
+									</div>
+									<div class="form-group">
+										<label for="">Assign to</label>
+										<select name="assign_to[]" class="js-example-basic-multiple col-sm-12" multiple="multiple">
+											<option selected disabled>Add Person(s)</option>
+											@foreach($project->responsiblePersons  as $mperson)
+												<option value="{{$mperson->user_id}}">{{$mperson->user->first_name ?? ''}} {{$mperson->user->surname ?? ''}}</option>
+											@endforeach
+										</select>
+										@error('assign_to') <i class="text-danger mt-2">{{$message}}</i>@enderror
+									</div>
+									<div class="form-group">
+										<label>Due Date <sup class="text-danger">*</sup></label>
+										<input type="datetime-local" name="due_date" class="form-control" placeholder="Due Date" id="due_date">
+										@error('due_date') <i class="text-danger mt-2">{{$message}}</i>@enderror
+									</div>
+									<div class="form-group">
+										<label>Description <sup class="text-danger">*</sup></label>
+										<textarea class="form-control" name="description" rows="5" style="resize:none;" placeholder="Type description..." id="description"></textarea>
+										@error('description') <i class="text-danger mt-2">{{$message}}</i>@enderror
+									</div>
+									<input type="hidden" id="projectId" name="project" value="{{$project->id}}">
+									<div class="form-group">
+										<button type="submit" class="btn-primary btn btn-mini"><i class="ti-check mr-2"></i> Submit</button>
+									</div>
+								</div>
+							</div>
+						</form>
+					</div>
+					<div class="row">
                     <div class="col-md-12">
                         <div class="card">
                             <div class="card-block accordion-block">
@@ -641,16 +686,14 @@
                                                 <div class="accordion-heading" role="tab" id="heading_"{{$milestone->id}}>
                                                     <h3 class="card-title accordion-title">
                                                     <a class="accordion-msg scale_active collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapse_{{$milestone->id}}" aria-expanded="false" aria-controls="collapse_{{$milestone->id}}">
-                                                        <img data-toggle="tooltip" data-placement="top" title="" data-original-title="Created by: {{$milestone->user->first_name ?? ''}} {{$milestone->user->surname ?? ''}}" src="/assets/images/avatars/thumbnails/{{$milestone->user->avatar ?? 'avatar.png'}}" class="img-30" alt="{{$milestone->user->first_name ?? ''}}"> {{$milestone->title}}
-                                                        <span class="float-right">
-                                                            Date: <label class="label label-primary">{{date(Auth::user()->tenant->dateFormat->format ?? 'd F, Y', strtotime($milestone->created_at))}}</label>
-                                                            Due Date:  <label class="label label-danger">{{date(Auth::user()->tenant->dateFormat->format ?? 'd F, Y', strtotime($milestone->due_date))}}</label>
-                                                        </span>
+                                                        <img data-toggle="tooltip" data-placement="top" title="" data-original-title="Created by: {{$milestone->user->first_name ?? ''}} {{$milestone->user->surname ?? ''}}" src="/assets/images/avatars/thumbnails/{{$milestone->user->avatar ?? 'avatar.png'}}" class="img-30" alt="{{$milestone->user->first_name ?? ''}}">  {{$milestone->title}}
+
                                                     </a>
                                                 </h3>
                                                 </div>
                                                 <div id="collapse_{{$milestone->id}}" class="panel-collapse in collapse" role="tabpanel" aria-labelledby="heading_{{$milestone->id}}" style="">
                                                     <div class="accordion-content accordion-desc">
+																											<p>Created by: &nbsp; {{$milestone->user->first_name ?? ''}} {{$milestone->user->surname ?? ''}}</p>
                                                         <p class="mb-3">Status:
                                                             @if($milestone->status == 0)
                                                                 <label class="label label-warning">Open</label>
@@ -658,10 +701,154 @@
                                                                 <label class="label label-success">Closed</label>
 
                                                             @endif
+																													<span class="float-right">
+
+                                                            Date: <label class="label label-primary">{{date(Auth::user()->tenant->dateFormat->format ?? 'd F, Y', strtotime($milestone->created_at))}}</label>
+                                                            Due Date:  <label class="label label-danger">{{date(Auth::user()->tenant->dateFormat->format ?? 'd F, Y', strtotime($milestone->due_date))}}</label>
+                                                        </span>
                                                         </p>
                                                         <p>
                                                             {{$milestone->description ?? ''}}
                                                         </p>
+																											<h6 class="sub-title mt-4">Assigned To:</h6>
+																											<ul>
+																												@php $as = 1; @endphp
+																												@foreach($milestone->getMilestonePersons as $mr)
+																													<li class="mb-2"><label for="" class="badge-danger badge">{{$as++}}</label> {{$mr->getUser->first_name ?? '' }} {{$mr->getUser->surname ?? '' }}
+																														@ <small>{{date('d M, Y h:ia', strtotime($mr->created_at))}}</small>
+
+																														@switch($mr->status)
+																															@case(0)
+																														<label for="" class="label label-warning">Pending</label>
+																															@break
+																															@case(1)
+																															<label for="" class="label label-success">Approved</label>
+																															@break
+																															@case(2)
+																															<label for="" class="label label-danger">Declined</label>
+																															@break
+																														@endswitch
+																														@if($mr->status == 0 && Auth::user()->id == $mr->user_id)
+																															<button type="button" data-toggle="modal" data-target="#milestoneSubmisionModal_{{$mr->id}}" class="btn btn-mini btn-primary float-right">Submit Report</button>
+																															<div class="modal fade" id="milestoneSubmisionModal_{{$mr->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+																																<div class="modal-dialog" role="document">
+																																	<div class="modal-content">
+																																		<div class="modal-header">
+																																			<h6 class="modal-title" id="exampleModalLabel">Submit Milestone Report</h6>
+																																			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+																																				<span aria-hidden="true">&times;</span>
+																																			</button>
+																																		</div>
+																																		<div class="modal-body">
+																																			<form action="{{route('submit-milestone-report')}}" method="post" enctype="multipart/form-data">
+																																				@csrf
+																																				<div class="form-group">
+																																					<label class="">Leave a Note</label>
+																																					<textarea name="leave_note" rows="10" class="form-control form-control-normal content col-md-12" style="resize:none;" placeholder="Leave note...">{{old('leave_note')}}</textarea>
+																																					@error('leave_note')
+																																					<span class="mt-3">
+																																						 <i class="text-danger">{{ $message }}</i>
+																																					</span>
+																																					@enderror
+																																				</div>
+																																				<div class="form-group">
+																																					<label class="">Attachment <br> <i>(Optional)</i></label>
+																																					<div  class="col-sm-10 col-md-2">
+																																						<input type="file" id="attachment" name="attachments[]" multiple>
+																																						<input type="hidden" name="milestone" value="{{$milestone->id}}">
+																																						<input type="hidden" name="project" value="{{$project->id}}">
+																																					</div>
+																																				</div>
+																																				<div class=" row m-t-30 d-flex justify-content-center">
+																																					<div class="col-sm-10 col-md-12">
+																																						<div class="btn-group d-flex justify-content-center">
+																																							<button class="btn btn-danger btn-mini"><i class="ti-close mr-2"></i>Cancel</button>
+																																							<button class="btn btn-primary btn-mini"  type="submit"><i class="ti-check mr-2"></i>Submit</button>
+																																						</div>
+																																					</div>
+																																				</div>
+																																			</form>
+																																		</div>
+																																	</div>
+																																</div>
+																															</div>
+																														@endif
+																													</li>
+																												<h5 class="sub-title">Reports</h5>
+																													<div class="table-responsive">
+																														<table class="table table-bordered">
+																															<tr>
+																																<td>#</td>
+																																<td>Date</td>
+																																<td>Note</td>
+																																<td>Status</td>
+																																<td>Action</td>
+																															</tr>
+																															@php
+																																$r = 1;
+																															@endphp
+																															@foreach($milestone->getAllSubmissions as $submit)
+																																<tr>
+																																	<td>{{$r++}}</td>
+																																	<td>{{date('d M, Y h:i a', strtotime($submit->created_at))}}</td>
+																																	<td>{{ strlen(strip_tags($submit->note)) > 20 ? substr(strip_tags($submit->note),0,20).'...' : strip_tags($submit->note) }}</td>
+																																	<td>
+																																		@switch($submit->status)
+																																			@case(0)
+																																			<label for="" class="label label-warning">Pending</label>
+																																			@break
+																																			@case(1)
+																																			<label for="" class="label label-success">Approved</label>
+																																			@break
+																																			@case(2)
+																																			<label for="" class="label label-danger">Declined</label>
+																																			@break
+																																		@endswitch
+																																	</td>
+																																	<td>
+																																		<a href="javascript:void(0);" data-toggle="modal" data-target="#reportModal_{{$submit->id}}" class="btn btn-primary btn-mini"><i class="ti-eye mr-2"></i></a>
+																																		<div class="modal fade modal-flex" id="reportModal_{{$submit->id}}" tabindex="-1" role="dialog">
+																																			<div class="modal-dialog" role="document">
+																																				<div class="modal-content">
+																																					<div class="modal-body model-container">
+																																						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+																																							<span aria-hidden="true">&times;</span>
+																																						</button>
+																																						<h5 class="font-header sub-title">Milestone Report</h5>
+																																						<div class="row">
+																																							{!! $submit->note ?? '' !!}
+																																							@foreach($submit->getAllMilestoneReportAttachments as $att)
+																																								<a class="mr-2 btn btn-secondary btn-mini" href="/assets/drive/{{$att->attachment}}" target="_blank"> <i class="ti-download"></i> Download </a>
+																																							@endforeach
+																																						</div>
+
+																																					</div>
+																																				</div>
+																																			</div>
+																																		</div>
+																																	</td>
+																																</tr>
+																															@endforeach
+																														</table>
+																													</div>
+																												@endforeach
+																											</ul>
+																											<hr>
+																											<h6>Comments</h6>
+																											<ul class="media-list revision-blc">
+
+																														<li class="media d-flex m-b-15">
+																															<div class="p-l-15 p-r-20 d-inline-block v-middle">
+																																<a href="#">
+																																	<img class="media-object img-radius comment-img" src="/assets/images/avatars/thumbnails/'avatar.png'" alt="">
+																																</a>
+																															</div>
+																															<div class="d-inline-block">
+																																comment
+																																<div class="media-annotation">date</div>
+																															</div>
+																														</li>
+																											</ul>
                                                         <div class="btn-group d-flex justify-content-end">
                                                             <a href="javascript:void(0);" class="text-danger"><i class="ti-trash text-danger mr-2"></i> Delete</a>
                                                             <a href="javascript:void(0);" class="text-primary"><i class="ti-check text-primary ml-2"></i> Close</a>
@@ -678,8 +865,8 @@
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
+				</div>
+
         <div class="card comment-block" id="invoices">
             <div class="card-block">
                 <h5 class="sub-title  text-success">
@@ -1159,6 +1346,8 @@
 <script src="\assets\bower_components\datatables.net-responsive\js\dataTables.responsive.min.js"></script>
 <script src="\assets\bower_components\datatables.net-responsive-bs4\js\responsive.bootstrap4.min.js"></script>
 <script src="\assets\pages\data-table\js\data-table-custom.js"></script>
+<script type="text/javascript" src="/assets/bower_components/tinymce/tinymce.min.js"></script>
+<script type="text/javascript" src="/assets/js/cus/tinymce.js"></script>
 <script>
     $(document).ready(function(){
 			$('.portableTables').DataTable();
@@ -1176,6 +1365,9 @@
 
         });
 
+			$('#milestoneHandler').on('click', function(){
+				$("#milestone-wrapper").toggle();//.css("display","block");
+			});
 
 
         $('#_addpart').on('click', function(){

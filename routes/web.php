@@ -380,7 +380,11 @@ Route::get('/project/project-analytics', 'CNX247\Backend\ProjectController@proje
 Route::post('/delete/project', 'CNX247\Backend\ProjectController@deleteProject');
 Route::get('/project/edit/{url}', 'CNX247\Backend\ProjectController@editProject')->name('edit-project');
 Route::post('/project/update', 'CNX247\Backend\ProjectController@updateProject')->name('update-project');
-Route::post('/project/milestone', 'CNX247\Backend\ProjectController@createProjectMilestone');
+Route::post('/project/milestone', 'CNX247\Backend\ProjectController@createProjectMilestone')->name('publish-milestone');
+//Route::get('/milestone/submit-milestone/{url}', 'CNX247\Backend\ProjectController@submitMilestone')->name('submit-milestone');
+Route::post('/submit-assigned-milestone', 'CNX247\Backend\ProjectController@storeAssignedMilestone')->name('submit-assigned-milestone');
+Route::post('/submit-milestone-report', 'CNX247\Backend\ProjectController@submitMilestoneReport')->name('submit-milestone-report');
+
 #Invoice
 Route::get('/project/invoice/{slug}', 'CNX247\Backend\ProjectController@projectInvoice')->name('project-invoice');
 Route::post('/project/invoice', 'CNX247\Backend\ProjectController@storeProjectInvoice')->name('store-project-invoice');

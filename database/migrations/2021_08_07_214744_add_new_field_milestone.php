@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTitlesTable extends Migration
+class AddNewFieldMilestone extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,12 @@ class CreateTitlesTable extends Migration
      */
     public function up()
     {
-       Schema::create('titles', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
-        });
+			Schema::table('milestones', function (Blueprint $table) {
+				$table->unsignedBigInteger('updated_by')->nullable();
+				$table->dateTime('date_updated')->nullable();
+			});
+
+
     }
 
     /**
@@ -26,6 +28,6 @@ class CreateTitlesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('titles');
+        //
     }
 }
