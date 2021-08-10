@@ -21,6 +21,7 @@
                     <i class="icofont icofont-ui-note m-r-10"></i> Project Details
                 </h5>
             </div>
+
             <div class="card-block task-details">
                 <table class="table table-border table-xs">
                     <tbody>
@@ -506,34 +507,28 @@
                 <i class="icofont icofont-checked text-success m-r-10"></i>Mark as Completed
             </a>
             @endif
-
-
-           {{--  <a class="dropdown-item waves-light waves-effect" href="{{ route('edit-task', $task->post_url) }}">
-                <i class="icofont icofont-edit-alt m-r-10 text-warning"></i>Edit task
-            </a>
-
-            <a class="dropdown-item waves-light waves-effect" href="{{ route('view-task', $task->post_url) }}">
-                <i class="ti-eye text-primary m-r-10"></i>View task
-            </a> --}}
         </div>
                 <div style="height: 20px"></div>
-
-
-
-
-
-
-
-
-
-
-
-
-                {{-- <button class="btn btn-mini btn-primary  f-right" wire:click="markAsComplete({{$project->id}})">
-                    <i class="icofont icofont-ui-alarm"></i>Mark as completed
-                </button> --}}
                 <div class="">
                     <div class="m-b-20">
+											@if(session()->has('success'))
+											<div class="row">
+												<div class="col-md-12">
+													<div class="alert alert-success background-success">
+														{!! session()->get('success') !!}
+													</div>
+												</div>
+											</div>
+											@endif
+												@if(session()->has('error'))
+													<div class="row">
+														<div class="col-md-12">
+															<div class="alert alert-warning background-warning">
+																{!! session()->get('error') !!}
+															</div>
+														</div>
+													</div>
+												@endif
                         <h6 class="sub-title m-b-15">Overview</h6>
                         {!! $project->post_content !!}
                     </div>
@@ -630,7 +625,6 @@
                 </h5>
 							<div class="btn-group float-right">
 								<button id="milestoneHandler" class="btn btn-mini btn-primary float-right mb-2 milestone-laucher" data-post-id="{{$project->id}}" ><i class="ti-plus mr-2"></i> Create Milestone</button>
-								<a href="" class="btn btn-secondary btn-mini"><i class="ti-eye mr-2"></i>View Reports</a>
 							</div>
 						</div>
 					<div style="display:none; padding-right: 10px; padding-left:10px;" id="milestone-wrapper">
@@ -695,12 +689,20 @@
                                                     <div class="accordion-content accordion-desc">
 																											<p>Created by: &nbsp; {{$milestone->user->first_name ?? ''}} {{$milestone->user->surname ?? ''}}</p>
                                                         <p class="mb-3">Status:
-                                                            @if($milestone->status == 0)
-                                                                <label class="label label-warning">Open</label>
-                                                            @else
-                                                                <label class="label label-success">Closed</label>
-
-                                                            @endif
+																													@switch($milestone->status)
+																														@case(0)
+																															<label class="label label-info">Open</label>
+																														@break
+																														@case(1)
+																														<label class="label label-warning">In-progress</label>
+																														@break
+																														@case(2)
+																														<label class="label label-danger">Cancelled</label>
+																														@break
+																														@case(3)
+																														<label class="label label-success">Completed</label>
+																														@break
+																													@endswitch
 																													<span class="float-right">
 
                                                             Date: <label class="label label-primary">{{date(Auth::user()->tenant->dateFormat->format ?? 'd F, Y', strtotime($milestone->created_at))}}</label>
@@ -807,15 +809,15 @@
 																																	</td>
 																																	<td>
 																																		<a href="javascript:void(0);" data-toggle="modal" data-target="#reportModal_{{$submit->id}}" class="btn btn-primary btn-mini"><i class="ti-eye mr-2"></i></a>
-																																		<div class="modal fade modal-flex" id="reportModal_{{$submit->id}}" tabindex="-1" role="dialog">
+																																		<div class="modal fade modal-flex" id="reportModal_{{$submit->id}}"  role="dialog">
 																																			<div class="modal-dialog" role="document">
 																																				<div class="modal-content">
 																																					<div class="modal-body model-container">
 																																						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 																																							<span aria-hidden="true">&times;</span>
 																																						</button>
-																																						<h5 class="font-header sub-title">Milestone Report</h5>
-																																						<div class="row">
+																																						<div class="overflow-container">
+																																							<h5 class="font-header sub-title">Milestone Report</h5>
 																																							{!! $submit->note ?? '' !!}
 																																							@foreach($submit->getAllMilestoneReportAttachments as $att)
 																																								<a class="mr-2 btn btn-secondary btn-mini" href="/assets/drive/{{$att->attachment}}" target="_blank"> <i class="ti-download"></i> Download </a>
@@ -837,21 +839,77 @@
 																											<h6>Comments</h6>
 																											<ul class="media-list revision-blc">
 
-																														<li class="media d-flex m-b-15">
-																															<div class="p-l-15 p-r-20 d-inline-block v-middle">
-																																<a href="#">
-																																	<img class="media-object img-radius comment-img" src="/assets/images/avatars/thumbnails/'avatar.png'" alt="">
-																																</a>
+																														@foreach($milestone->getMilestoneComments as $comm)
+																														<div class="media">
+																															<a class="media-left" href="{{ route('view-profile', $comm->getUser->url) }}">
+																																<img class="media-object img-radius comment-img" src="/assets/images/avatars/thumbnails/{{$comm->getUser->avatar ?? 'avatar.png'}}" alt="{{$comm->getUser->first_name}} {{$comm->getUser->surname ?? ''}}">
+																															</a>
+																															<div class="media-body b-b-theme social-client-description">
+																																<div class="chat-header">{{$comm->getUser->first_name}} {{$comm->getUser->surname ?? ''}}<span class="text-muted">{{date('d M, Y', strtotime($comm->created_at))}}</span></div>
+																																{!! $comm->comment ?? '' !!}
 																															</div>
-																															<div class="d-inline-block">
-																																comment
-																																<div class="media-annotation">date</div>
-																															</div>
-																														</li>
+																														</div>
+																													@endforeach
 																											</ul>
+																											<div class="card-footer">
+																												<div class="col-md-12 btn-add-task">
+																													<form action="{{route('post-milestone-comment')}}" method="post" autocomplete="off">
+																														@csrf
+																														<div class="input-group input-group-button">
+																															<input type="text" value="{{old('m_comment')}}" name="m_comment" class="form-control" placeholder="Comment">
+																															<button type="submit" class="input-group-addon btn btn-primary btn-sm" >
+																																<i class="icofont icofont-plus f-w-600 mr-2"></i>
+																																Submit
+																														</button>
+																															<input type="hidden" name="m_milestone" value="{{$milestone->id}}">
+																															<input type="hidden" name="m_project" value="{{$project->id}}">
+																														</div>
+																														@error('m_comment')
+																														<i class="text-danger">{{$message}}</i>
+																														@enderror
+																													</form>
+																												</div>
+																											</div>
                                                         <div class="btn-group d-flex justify-content-end">
-                                                            <a href="javascript:void(0);" class="text-danger"><i class="ti-trash text-danger mr-2"></i> Delete</a>
-                                                            <a href="javascript:void(0);" class="text-primary"><i class="ti-check text-primary ml-2"></i> Close</a>
+																													@if($milestone->status == 0)
+                                                            <a href="javascript:void(0);" data-toggle="modal" data-target="#closeMilestoneModal_{{$milestone->id}}" class="text-primary"><i class="ti-check text-primary ml-2"></i> Close</a>
+																													@endif
+																													<div class="modal fade" id="closeMilestoneModal_{{$milestone->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+																														<div class="modal-dialog" role="document">
+																															<div class="modal-content">
+																																<div class="modal-header">
+																																	<h5 class="modal-title" id="exampleModalLabel">Update Milestone Status</h5>
+																																	<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+																																		<span aria-hidden="true">&times;</span>
+																																	</button>
+																																</div>
+																																<div class="modal-body">
+																																	<form action="{{route('update-milestone-status')}}" method="post">
+																																		@csrf
+																																		<div class="form-group">
+																																			<label for="">Status</label>
+																																			<select name="milestone_status" id="milestone_status"
+																																							class="form-control">
+																																				<option selected disabled>--Select status--</option>
+																																				<option value="0">Pending</option>
+																																				<option value="1">In-progress</option>
+																																				<option value="2">Cancelled</option>
+																																				<option value="3">Completed</option>
+																																			</select>
+																																			<input type="hidden" name="update_milestone" value="{{$milestone->id}}">
+																																			<input type="hidden" name="update_project" value="{{$project->id}}">
+																																		</div>
+																																		<div class="form-group">
+																																			<div class="btn-group float-right">
+																																				<button type="button" class="btn btn-secondary btn-mini" data-dismiss="modal">Close</button>
+																																				<button type="submit" class="btn btn-primary btn-mini">Save changes</button>
+																																			</div>
+																																		</div>
+																																	</form>
+																																</div>
+																															</div>
+																														</div>
+																													</div>
                                                         </div>
                                                     </div>
                                                 </div>

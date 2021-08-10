@@ -138,35 +138,6 @@
             var post_id = $(this).data('post-id');
             $('#projectId').val(post_id);
         });
-
-
-        /*$(document).on('click', '#createMilestone', function(e){
-            e.preventDefault();
-            var title = $('#milestone_title').val();
-            var due_date = $('#due_date').val();
-            var description = $('#description').val();
-            if(title == '' || due_date == '' || description == ''){
-                $.notify("Ooops! Kindly complete the form to create a new milestone", "error");
-            }else{
-                axios.post('/project/milestone', {
-                    title:title,
-                    due_date:due_date,
-                    description:description,
-                    post_id:$('#projectId').val()
-                })
-                .then(response=>{
-                    $.notify("New project milestone created.", "success");
-                    $('#milestone_title').val('');
-                    $('#due_date').val('');
-                    $('#description').val('');
-                    $('#milestoneModal').modal('hide');
-                    location.reload();
-                })
-                .catch(error=>{
-                    $.notify("Ooops! Could not create new project milestone. Try again.", "error");
-                });
-            }
-        });*/
     })
 </script>
 @stack('project-script')

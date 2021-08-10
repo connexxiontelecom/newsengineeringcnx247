@@ -384,7 +384,8 @@ Route::post('/project/milestone', 'CNX247\Backend\ProjectController@createProjec
 //Route::get('/milestone/submit-milestone/{url}', 'CNX247\Backend\ProjectController@submitMilestone')->name('submit-milestone');
 Route::post('/submit-assigned-milestone', 'CNX247\Backend\ProjectController@storeAssignedMilestone')->name('submit-assigned-milestone');
 Route::post('/submit-milestone-report', 'CNX247\Backend\ProjectController@submitMilestoneReport')->name('submit-milestone-report');
-
+Route::post('/update-milestone-status', 'CNX247\Backend\ProjectController@updateMilestoneStatus')->name('update-milestone-status');
+Route::post('/post-milestone-comment', 'CNX247\Backend\ProjectController@postMilestoneComment')->name('post-milestone-comment');
 #Invoice
 Route::get('/project/invoice/{slug}', 'CNX247\Backend\ProjectController@projectInvoice')->name('project-invoice');
 Route::post('/project/invoice', 'CNX247\Backend\ProjectController@storeProjectInvoice')->name('store-project-invoice');
